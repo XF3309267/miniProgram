@@ -1,0 +1,1 @@
+<view class="content"><image class="logo" src="/static/logo.png"></image><view class="text-area"><text class="title">{{title}}</text><button data-event-opts="{{[['tap',[['clickLoginClound',['$event']]]]]}}" bindtap="__e">调用云函数getTicket</button></view></view>
