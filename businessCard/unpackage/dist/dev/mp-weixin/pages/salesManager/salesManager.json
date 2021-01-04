@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "sales-manager-card": "/components/SalesManagerCard",
+    "personal-icon": "/components/PersonalIcon",
+    "fixed-chat": "/components/FixedChat"
+  }
+}

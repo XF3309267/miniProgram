@@ -1,0 +1,1 @@
+<view data-event-opts="{{[['tap',[['toPersonal',['$event']]]]]}}" class="peson-icon data-v-4ba45134" bindtap="__e"><view class="self-avatar person-avatar data-v-4ba45134"><open-data type="userAvatarUrl" class="data-v-4ba45134"></open-data></view><text class="cu-tag round person-tag data-v-4ba45134">个人中心</text></view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "sales-manager-card": "/components/SalesManagerCard"
+  }
+}
