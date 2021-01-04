@@ -1,7 +1,7 @@
 <template>
 	<view class="sale-card">
 		<view class="left">
-			<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg" mode="aspectFill"> </image>
+			<image :src="salesManagerInfo.avatar" mode="aspectFill"> </image>
 		</view>
 		<view class="right">
 			<view class="flex justify-between">
@@ -19,11 +19,11 @@
 			</view>
 			
 			<view class="flex align-center justify-between padding-xs">
-				<view class="flex align-center">
+				<view class="flex align-center" @click.stop="phoneCall" >
 					<text class="cuIcon-phone  padding-right"></text>
-					<text class="underLine " @click="phoneCall" > {{salesManagerInfo.phone}} </text>
+					<text class="underLine " > {{salesManagerInfo.phone}} </text>
 				</view>
-				<text class="cu-tag round bg-gradual-green" @click="addPhonePerson" > 保存通讯录 </text>
+				<text class="cu-tag round bg-gradual-green" @click.stop="addPhonePerson" > 保存通讯录 </text>
 			</view>
 			
 			<view class="flex align-center padding-xs">
@@ -44,15 +44,18 @@
 			return {
 				salesManagerInfo:{
 					name:'王珞丹',
+					avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
+					wxId:'wx_id1245343543',
 					phone:'13970853937',
 					company:'江西省家院里科技江西省家院里科技',
 					mail:'123123222@gmail.com'
 				}
 			};
 		},
-		method:{
-			phoneCall(e){
-				e.stopPropagation()
+
+		methods:{
+			phoneCall(){
+				
 				uni.makePhoneCall({
 					phoneNumber: this.salesManagerInfo.phone,
 					success(res) {
@@ -67,6 +70,7 @@
 			},
 			addPhonePerson(){
 				uni.addPhoneContact({
+					firstName:this.salesManagerInfo.name.slice(0,1),
 				    nickName: this.salesManagerInfo.name,
 				    mobilePhoneNumber: this.salesManagerInfo.phone, //手机号
 					email:this.salesManagerInfo.mail,

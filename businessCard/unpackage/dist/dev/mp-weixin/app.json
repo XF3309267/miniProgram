@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/salesManager/salesManager",
+    "pages/personal/personal",
     "pages/index/index",
-    "pages/personal/personal"
+    "pages/salesManager/salesManager",
+    "pages/contactUserList/contactUserList"
   ],
   "subPackages": [],
   "window": {

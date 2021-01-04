@@ -44,11 +44,7 @@
 	.padding-container{
 		padding: 20rpx;
 	}
-	
-	
-	
-	
-	
+
 	/*  关于文字  */
 	.limit-text{
 		height: 1.2em;

@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/FixedChat":1,"components/PersonalIcon":1,"components/SalesManagerCard":1};
+/******/ 		var cssChunks = {"components/SalesManagerCard":1,"components/FixedChat":1,"components/PersonalIcon":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/FixedChat":"components/FixedChat","components/PersonalIcon":"components/PersonalIcon","components/SalesManagerCard":"components/SalesManagerCard","components/ItemCard":"components/ItemCard"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/SalesManagerCard":"components/SalesManagerCard","components/FixedChat":"components/FixedChat","components/ItemCard":"components/ItemCard","components/PersonalIcon":"components/PersonalIcon"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

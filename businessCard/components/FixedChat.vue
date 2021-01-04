@@ -14,7 +14,7 @@
 
 <script>
 	export default{
-		name:"FixedChat",
+		name:'FixedChat',
 		data(){
 			return{
 				avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',

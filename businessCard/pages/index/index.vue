@@ -5,7 +5,7 @@
 			<!-- <block slot="backText">返回</block> -->
 			<block slot="content"> <text class="text-bold"> 凤凰云 </text> </block>
 		</cu-custom>
-		<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true"
+		<swiper class="screen-swiper<strong></strong>" :class="'square-dot'" :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
 				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
@@ -46,7 +46,6 @@
 	export default {
 		data() {
 			return {
-				
 				cardCur: 0,
 				swiperList: [{
 					id: 0,
