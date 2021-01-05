@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 52));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 71));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 64));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 75));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 82));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 68));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -237,9 +237,12 @@ __webpack_require__.r(__webpack_exports__);
       userIsAppreciate: false,
       salesManagerInfo: {
         name: '王珞丹',
+        avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
+        position: '',
         wxId: 'wx_id1245343543',
         phone: '13970853937',
         company: '江西省家院里科技江西省家院里科技',
+        brief: '',
         mail: '123123222@gmail.com' },
 
 

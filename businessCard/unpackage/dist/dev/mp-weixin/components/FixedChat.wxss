@@ -23,8 +23,8 @@
 	width: 4em;
 }
 .avatar.data-v-34359421{
-	width: 3.5em;
-	height: 3.5em;
+	width: 3em;
+	height: 3em;
 	border: 5rpx solid #FFF;
 	border-radius: 50%;
 	overflow: hidden;

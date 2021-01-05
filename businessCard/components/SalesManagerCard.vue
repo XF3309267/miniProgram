@@ -45,9 +45,11 @@
 				salesManagerInfo:{
 					name:'王珞丹',
 					avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
+					position:'',
 					wxId:'wx_id1245343543',
 					phone:'13970853937',
 					company:'江西省家院里科技江西省家院里科技',
+					brief:'',
 					mail:'123123222@gmail.com'
 				}
 			};

@@ -1,4 +1,4 @@
-import Vue from 'vue'
+		import Vue from 'vue'
 import App from './App'
 
 import cuCustom from './colorui/components/cu-custom.vue'

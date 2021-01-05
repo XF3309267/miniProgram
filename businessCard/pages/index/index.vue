@@ -1,12 +1,11 @@
 <template>
 	<view class="contain">
-		<FixedChat/>
-		<cu-custom bgColor="bg-gradual-blue" >
+		<FixedChat  :userType="userType" />
+		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" bgColor="bg-gradual-blue" >
 			<!-- <block slot="backText">返回</block> -->
 			<block slot="content"> <text class="text-bold"> 凤凰云 </text> </block>
 		</cu-custom>
-		<swiper class="screen-swiper<strong></strong>" :class="'square-dot'" :indicator-dots="true" :circular="true"
-		 :autoplay="true" interval="5000" duration="500">
+		<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
 				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
 				<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
@@ -76,7 +75,7 @@
 					type: 'image',
 					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
 				}],
-				
+				userType:-1,
 				towerStart: 0,
 				direction: '',
 				
@@ -94,10 +93,21 @@
 				
 			}
 		},
+		onShow() {
+			if(this.userType===-1){
+				this.initUserType()
+			}
+		},
 		onLoad() {
 			this.TowerSwiper('swiperList');
 		},
 		methods: {
+			
+			
+			initUserType(){
+				this.userType = getApp().globalData.userType
+			},
+			
 			// cardSwiper
 			cardSwiper(e) {
 				this.cardCur = e.detail.current

@@ -30,6 +30,14 @@
 		},
 		onHide: function() {
 			console.log('App Hide')
+		},
+		globalData:{
+			userType:1,
+			userInfo:{
+				name:'',
+				avatar:'',
+				phone:'',
+			}
 		}
 	}
 </script>

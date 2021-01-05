@@ -1,51 +1,33 @@
 <template>
-	<view style="min-height: 100vh;overflow: hidden;">
+	<view class="contact-container">
 		<cu-custom  bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="true"><block slot="backText">返回</block>
-			<block slot="content">索引</block>
+			<block slot="content"> 搜索 </block>
 		</cu-custom>
-		<view class="cu-bar bg-white search fixed" :style="[{top:CustomBar + 'px'}]">
+		<view class="cu-bar bg-white search " >
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
-				<input type="text" placeholder="输入搜索的关键词" confirm-type="search"></input>
+				<input type="text" v-model="inputV" placeholder="输入搜索的关键词" confirm-type="search" @input="searchChange"  @confirm="searchConfirm"></input>
 			</view>
 			<view class="action">
-				<button class="cu-btn bg-gradual-green shadow-blur round">搜索</button>
+				<button class="cu-btn bg-gradual-green shadow-blur round"  @click="searchConfirm">搜索</button>
 			</view>
 		</view>
-		<view class="indexBar" :style="[{height:'calc(100vh - ' + CustomBar + 'px - 50px)',zIndex:'100'}]">
-			<view class="indexBar-box" @touchstart="tStart" @touchend="tEnd" @touchmove.stop="tMove">
-				<view  class="indexBar-item" v-for="(item,index) in list" :key="index" :id="index" @touchstart="getCur" @touchend="setCur"> {{item.name}}</view>
-			</view>
+		<view class="tag-list">
+			<text  v-for="(item,index) in tagList" :key="item.id" class="item cu-tag round " :class="[index===activeTagIndex?'active-tag bg-white':'']"   @click="tagClick(item,index)" > {{item.title}} </text>
 		</view>
-		<!--选择显示-->
-		<view v-show="!hidden" class="indexToast">
-			{{listCur}}
-		</view>
-		<scroll-view scroll-y class="indexes" :scroll-into-view="'indexes-'+ listCurID" :style="[{height:'calc(100vh - '+ CustomBar + 'px)'}]"
-		 :scroll-with-animation="true" :enable-back-to-top="true">
-			<block v-for="(item,index) in userList"   :key="index">
-				<view :class="'indexItem-' + item.indexName" :id="'indexes-' + item.indexName" :data-index="item.indexName">
-					<view  class="padding">{{item.indexName}}</view>
-					<view class="cu-list menu-avatar no-padding">
-						<view class="cu-item flex" v-for="(userItem,sub) in item.list"   :key="sub">
-							<view class="cu-avatar self-avatar" style="width: 2em;height: 2em;">
-								<image :src="userItem.avatar" style="width: 100%; height: 100%;" mode="aspectFill"></image>
-							</view>
-							<view class="content">
-								<view class="text-grey">{{userItem.name + ' ' + userItem.addInfo   }} </view>
-								<view class="text-gray text-sm">
-									{{userItem.phone}}
-								</view>
-							</view>
-						</view>
-						
+		<view class="cu-list menu-avatar no-padding">
+			<view class="cu-item flex" v-for="(userItem,sub) in searchResList"   :key="sub">
+				<view class="cu-avatar self-avatar" style="width: 2em;height: 2em;">
+					<image :src="userItem.avatar" style="width: 100%; height: 100%;" mode="aspectFill"></image>
+				</view>
+				<view class="content">
+					<view class="text-grey">{{userItem.name + ' ' + userItem.addInfo   }} </view>
+					<view class="text-gray text-sm">
+						{{userItem.phone}}
 					</view>
 				</view>
-			</block>
-			<view class="text-center padding">
-				没有更多了
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -55,203 +37,129 @@
 			return {
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
-				hidden: true,
-				listCurID: '',
-				list: [],
-				userList:[
-					{
-						indexName:'A',
-						list:[
-							{name:'A总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-							{name:'A1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-						],
-					},
-					{
-						indexName:'B',
-						list:[
-							{name:'B总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-							{name:'B1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-						],
-					},
-					{
-						indexName:'C',
-						list:[
-							{name:'C总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-							{name:'C1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-						],
-					},
-					{
-						indexName:'D',
-						list:[
-							{name:'D总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-							{name:'D1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-						],
-					},
-					{
-						indexName:'E',
-						list:[
-							{name:'E总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-							{name:'E1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-						],
-					},
-					{
-						indexName:'G',
-						list:[
-							{name:'G总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-							{name:'G1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-						],
-					}
-					
+				tagList:[
+					{id:0,title:'已成交'},
+					{id:1,title:'有意向'},
+					{id:2,title:'周末联系'},
+					{id:3,title:'暂不联系'},
+					{id:4,title:'可推广'}
 				],
-				listCur: '',
+				activeTagIndex:-1,
+				inputV:'',
+				searchResList:[]
 			};
 		},
 		onLoad() {
 			
 		},
 		onReady() {
-			let that = this;
-			uni.createSelectorQuery().select('.indexBar-box').boundingClientRect(function(res) {
-				that.boxTop = res.top
-			}).exec();
-			uni.createSelectorQuery().select('.indexes').boundingClientRect(function(res) {
-				that.barTop = res.top
-			}).exec()
+
 		},
 		created() {
-			this.initIndexList()
+			
 		},
 		mounted() {
 			
 		},
 		methods: {
-			initIndexList(){
-				let list = [{}];
-				for (let i = 0; i < this.userList.length; i++) {
-					list[i] = {};
-					list[i].name = this.userList[i].indexName
+			// 模拟搜索接口
+			moniSearch(){
+				let res = {code:200,data:{}};
+				return new Promise(function(resolve,reject){
+					setTimeout(()=>{
+						const res = {
+								code:200,
+								data:{
+										list:[
+											{name:'柴总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+											{name:'江总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+											{name:'Z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+											{name:'z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+										],
+									},
+								}
+						resolve(res)
+					},500)
+				})
+			},
+			
+			
+			// 发起搜索
+			async searchText(text){
+				text = text.trim()
+				
+				if(!text){
+					uni.showToast({
+						title:'您还未输入任何内容',
+						icon:'none'
+					})
+					return 
 				}
-				this.list = list;
-				this.listCur = list[0];
-			},
-			//获取文字信息
-			getCur(e) {
-				this.hidden = false;
-				this.listCur = this.list[e.target.id].name;
-			},
-			setCur(e) {
-				this.hidden = true;
-				this.listCur = this.listCur
-			},
-			//滑动选择Item
-			tMove(e) {
-				let y = e.touches[0].clientY,
-					offsettop = this.boxTop,
-					that = this;
-				//判断选择区域,只有在选择区才会生效
-				if (y > offsettop) {
-					let num = parseInt((y - offsettop) / 20);
-					this.listCur = that.list[num].name
-				};
-			},
-
-			//触发全部开始选择
-			tStart() {
-				this.hidden = false
-			},
-
-			//触发结束选择
-			tEnd() {
-				this.hidden = true;
-				this.listCurID = this.listCur
-			},
-			indexSelect(e) {
-				let that = this;
-				let barHeight = this.barHeight;
-				let list = this.list;
-				let scrollY = Math.ceil(list.length * e.detail.y / barHeight);
-				for (let i = 0; i < list.length; i++) {
-					if (scrollY < i + 1) {
-						that.listCur = list[i].name;
-						that.movableY = i * 20
-						return false
-					}
+				
+				console.log('搜索的 内容')
+				console.log(text)
+				
+				uni.showLoading({
+					title:'搜索中...',
+					mask:true,
+				})
+				const res = await this.moniSearch(text)
+				
+				if(res.code === 200){
+					this.searchResList = res.data.list
+				}else{
+					console.log(res)
+					uni.showToast({
+						title:res.msg,
+						icon:'none'
+					})
 				}
+				uni.hideLoading()
+			},
+			// 搜索框 change 事件
+			searchChange(){
+				this.activeTagIndex = -1
+				console.log(this.activeTagIndex)
+			},
+			
+			// search 搜索框 点击搜索
+			searchConfirm(){
+				this.searchText(this.inputV)
+			},
+			
+			
+			// 点击标签
+			tagClick(item,index){
+				this.inputV = item.title
+				this.searchText(item.title)
+				this.activeTagIndex = index
 			}
 		}
 	}
 </script>
 
-<style>
-	page {
-		padding-top: 100upx;
+<style  lang="scss">
+	page{
+		// padding-top: 100rpx;
 	}
-
-	.indexes {
-		position: relative;
+	.contact-container {
+		min-height: 100vh;
+		background-color: #FFFFFF;
+		// padding-top: 100rpx;
 	}
-
-	.indexBar {
-		position: fixed;
-		right: 0px;
-		bottom: 0px;
-		padding: 20upx 20upx 20upx 60upx;
+	.tag-list{
 		display: flex;
-		align-items: center;
-	}
-
-	.indexBar .indexBar-box {
-		width: 40upx;
-		height: auto;
-		background: #fff;
-		display: flex;
-		flex-direction: column;
-		box-shadow: 0 0 20upx rgba(0, 0, 0, 0.1);
-		border-radius: 10upx;
-	}
-
-	.indexBar-item {
-		flex: 1;
-		width: 40upx;
-		height: 40upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 24upx;
-		color: #888;
-	}
-
-	movable-view.indexBar-item {
-		width: 40upx;
-		height: 40upx;
-		z-index: 9;
-		position: relative;
-	}
-
-	movable-view.indexBar-item::before {
-		content: "";
-		display: block;
-		position: absolute;
-		left: 0;
-		top: 10upx;
-		height: 20upx;
-		width: 4upx;
-		background-color: #f37b1d;
-	}
-
-	.indexToast {
-		position: fixed;
-		top: 0;
-		right: 80upx;
-		bottom: 0;
-		background: rgba(0, 0, 0, 0.5);
-		width: 100upx;
-		height: 100upx;
-		border-radius: 10upx;
-		margin: auto;
-		color: #fff;
-		line-height: 100upx;
-		text-align: center;
-		font-size: 48upx;
+		flex-flow: row wrap;
+		padding: 20rpx;
+		background-color: #FFFFFF;
+		
+		.item{
+			margin: 20rpx 0 0 30rpx ;
+			font-size: 1.1em;
+		}
+		.active-tag{
+			border: 1rpx solid #19BE6B;
+			color: #19BE6B;
+		}
 	}
 </style>
