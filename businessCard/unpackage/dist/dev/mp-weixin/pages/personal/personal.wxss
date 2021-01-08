@@ -121,7 +121,7 @@
 .indexBar.data-v-3df0de86 {
   position: fixed;
   right: 0px;
-  bottom: 0px;
+  bottom: 50rpx;
   padding: 20rpx 20rpx 20rpx 60rpx;
   display: -webkit-box;
   display: -webkit-flex;

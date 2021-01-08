@@ -62,7 +62,7 @@
 					</view>
 				</view>
 			</block>
-			<view class="indexBar" :style="[{zIndex:'1000'}]">
+			<view class="indexBar" :style="[{zIndex:'1000',bottom: (26-list.length)*15+'rpx' }]">
 				<view class="indexBar-box" @touchstart="tStart" @touchend="tEnd" @touchmove.stop="tMove">
 					<view class="indexBar-item" v-for="(item,index) in list" :key="index" :id="index" @touchstart="getCur" @touchend="setCur"> {{item.name}}</view>
 				</view>
@@ -464,7 +464,7 @@
 	.indexBar {
 		position: fixed;
 		right: 0px;
-		bottom: 0px;
+		bottom: 50rpx;
 		padding: 20upx 20upx 20upx 60upx;
 		display: flex;
 		align-items: center;

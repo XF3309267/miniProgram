@@ -3,7 +3,7 @@
 		<FixedChat  :userType="userType" />
 		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" bgColor="bg-gradual-blue" >
 			<!-- <block slot="backText">返回</block> -->
-			<block slot="content"> <text class="text-bold"> 凤凰云 </text> </block>
+			<block slot="content"> <text class="text-bold"> 家院里 </text> </block>
 		</cu-custom>
 		<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
@@ -17,7 +17,7 @@
 					<image src="../../static/logo.png" mode="widthFix"></image>
 				</view>
 				<view class="main">
-					碧桂凤凰云
+					家院里
 				</view>
 				<view class="right">
 					<button class="cu-btn block line-green"> 关注 </button>
@@ -98,11 +98,28 @@
 				this.initUserType()
 			}
 		},
+		onShareAppMessage() {
+			return {
+				title: '快来分享',
+				path: '/pages/index/index'
+			}
+		},
 		onLoad() {
 			this.TowerSwiper('swiperList');
+			uni.previewImage({
+				urls:'https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg',
+				success:(res)=>{
+					console.log('previewImage success')
+					console.log(res)
+				},
+				fail:(res)=>{
+					console.log('previewImage fail')
+					console.log(res)
+				},
+			})
 		},
 		methods: {
-			
+				
 			
 			initUserType(){
 				this.userType = getApp().globalData.userType

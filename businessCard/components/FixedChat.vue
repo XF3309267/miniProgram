@@ -6,7 +6,7 @@
 			<image v-if="userType === 0 " :src="salesAvatar" mode="aspectFill"></image>	
 			<image v-if="userType === 1" :src="normalAvatar" mode="aspectFill"></image>
 		</view>
-		<view class="bottom-btn">
+		<view class="bottom-btn" @click="toChat">
 			<view class="tag cu-tag badge bg-red">
 				1
 			</view>
@@ -50,7 +50,17 @@
 			}
 		},
 		methods:{
-			
+			toChat(){
+				if(this.userType){
+					uni.navigateTo({
+						url:'/pages/chatSalesManager/chatSalesManager'
+					})
+					return 
+				}
+				uni.navigateTo({
+					url:'/pages/chatPerson/chatPerson'
+				})
+			}
 		}
 	}
 </script>

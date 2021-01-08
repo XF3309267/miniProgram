@@ -1,15 +1,13 @@
 {
+	
+	"easycom": {
+			"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		
-		{
-		    "path" : "pages/salesManagerInfoEdit/salesManagerInfoEdit",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		},
+
+
+
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -49,7 +47,33 @@
 		        "navigationBarTitleText": "",
 		        "enablePullDownRefresh": false
 		    }
+		},
+		{
+		    "path" : "pages/salesManagerInfoEdit/salesManagerInfoEdit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
 		    
+		},
+		{
+		    "path" : "pages/chatSalesManager/chatSalesManager",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/chatPerson/chatPerson",
+		    "style" :                                                                                    
+		    {
+				"navigationStyle": "default",
+		        "navigationBarTitleText": "销售经理"
+		       
+		    }
 		}
 
     ],
@@ -58,7 +82,10 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+		    "softinputNavBar": "adjustPan"
+		}
 	},
 	"tabBar":{
 		"selectedColor": "#0e932e",

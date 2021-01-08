@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/FixedChat":1,"components/SalesManagerCard":1,"components/PersonalIcon":1};
+/******/ 		var cssChunks = {"components/FixedChat":1,"components/SalesManagerCard":1,"components/PersonalIcon":1,"components/uni-popup/uni-popup":1,"uview-ui/components/u-upload/u-upload":1,"components/uni-popup/uni-popup-dialog":1,"components/uni-popup/uni-popup-message":1,"uview-ui/components/u-popup/u-popup":1,"uview-ui/components/u-navbar/u-navbar":1,"components/uni-transition/uni-transition":1,"uview-ui/components/u-icon/u-icon":1,"uview-ui/components/u-line-progress/u-line-progress":1,"uview-ui/components/u-mask/u-mask":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/FixedChat":"components/FixedChat","components/ItemCard":"components/ItemCard","components/SalesManagerCard":"components/SalesManagerCard","components/PersonalIcon":"components/PersonalIcon"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/FixedChat":"components/FixedChat","components/ItemCard":"components/ItemCard","components/SalesManagerCard":"components/SalesManagerCard","components/PersonalIcon":"components/PersonalIcon","components/uni-popup/uni-popup":"components/uni-popup/uni-popup","uview-ui/components/u-upload/u-upload":"uview-ui/components/u-upload/u-upload","components/uni-popup/uni-popup-dialog":"components/uni-popup/uni-popup-dialog","components/uni-popup/uni-popup-message":"components/uni-popup/uni-popup-message","uview-ui/components/u-popup/u-popup":"uview-ui/components/u-popup/u-popup","uview-ui/components/u-navbar/u-navbar":"uview-ui/components/u-navbar/u-navbar","components/uni-transition/uni-transition":"components/uni-transition/uni-transition","uview-ui/components/u-icon/u-icon":"uview-ui/components/u-icon/u-icon","uview-ui/components/u-line-progress/u-line-progress":"uview-ui/components/u-line-progress/u-line-progress","uview-ui/components/u-mask/u-mask":"uview-ui/components/u-mask/u-mask"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

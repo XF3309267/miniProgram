@@ -72,6 +72,10 @@
 				type: [String, Number],
 				default: ''
 			},
+			top:{
+				type: [String, Number],
+				default: ''
+			},
 			// 返回箭头的颜色
 			backIconColor: {
 				type: String,
@@ -186,9 +190,10 @@
 			// 整个导航栏的样式
 			navbarStyle() {
 				let style = {};
+				let absoluteTop = {position: 'fixed',top: this.top + 'px' }
 				style.zIndex = this.zIndex ? this.zIndex : this.$u.zIndex.navbar;
 				// 合并用户传递的背景色对象
-				Object.assign(style, this.background);
+				Object.assign(style, this.background,absoluteTop);
 				return style;
 			},
 			// 导航中间的标题的样式

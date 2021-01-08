@@ -206,10 +206,7 @@
 				innerAudioContext.src =  this.audioSrc
 				
 				innerAudioContext.onCanplay(()=>{
-					this.audioCurrentTime = innerAudioContext.currentTime
-					
-				
-					
+					this.audioCurrentTime = innerAudioContext.currentTime 
 					innerAudioContext.play()
 					this.audioIsPlay = true
 						
@@ -219,8 +216,6 @@
 					 innerAudioContext.onTimeUpdate(()=>{
 					 	this.allTime = innerAudioContext.duration
 					 	this.audioCurrentTime = innerAudioContext.currentTime
-						console.log('duration')
-					 	console.log(this.allTime)
 					 	
 					 	const restTime = parseInt(this.allTime - this.audioCurrentTime )
 					 	if(!restTime){

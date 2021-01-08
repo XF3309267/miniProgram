@@ -32,6 +32,10 @@
 			console.log('App Hide')
 		},
 		globalData:{
+			// mMqttClient:require('@/static/js/mqtt.min.js').connect('wss://test.mosquitto.org'),
+			
+			
+			// 用户信息
 			userType:1,
 			userInfo:{
 				name:'',
@@ -42,7 +46,8 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	@import "uview-ui/index.scss";
 	@import "colorui/main.css";
 	@import "colorui/icon.css";
 	.container{
