@@ -1,9 +1,9 @@
 <template>
 	<view class="u-time-axis-item">
 		<slot name="content" />
-		<view class="u-time-axis-node" :style="[nodeStyle]">
+		<view class="u-time-axis-node">
 			<slot name="node">
-				<view class="u-dot">
+				<view class="u-dot" :style="[nodeStyle]">
 				</view>
 			</slot>
 		</view>
@@ -75,8 +75,8 @@
 	}
 
 	.u-dot {
-		height: 16rpx;
-		width: 16rpx;
+		height: 20rpx;
+		width: 20rpx;
 		border-radius: 100rpx;
 		background: #ddd;
 	}

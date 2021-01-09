@@ -20,11 +20,17 @@
 				</view>
 				<text> 加好友 </text>
 			</view>
-			<view class="head-item">
+			<view class="head-item"  @click="toSetCustomerLabel">
 				<view class="img-container">
-					<image src="@/static/img/chatImg/card.png" mode="widthFix"></image>
+					<image src="@/static/img/chatImg/remarks.png" mode="widthFix"></image>
 				</view>
-				<text> 查看名片 </text>
+				<text> 备注/标签 </text>
+			</view>
+			<view class="head-item" @click="toCustomerRecord">
+				<view class="img-container">
+					<image src="@/static/img/chatImg/record.png" mode="widthFix"></image>
+				</view>
+				<text> 用户追踪 </text>
 			</view>
 		</view>
 		<scroll-view :scroll-top="scrollViewTop" :style="{height:scrollViewHeight}" id="scrollView" scroll-y="true" >
@@ -170,6 +176,22 @@
 			
 		},
 		methods: {
+			// 前往设置 用户标签页
+			toSetCustomerLabel(customerId){
+				uni.navigateTo({
+					url:'/pages/setCustomerLabel/setCustomerLabel?customerId='+customerId
+				})
+			},
+			// 用户追踪情况页面
+			toCustomerRecord(customerId){
+				uni.navigateTo({
+					url:'/pages/customerRecord/customerRecord?customerId='+customerId
+				})
+			},
+			
+			
+			
+			// 发送信息时,页面做相应的滚动
 			initScrollTop(){
 				this.scrollViewTop = 1000
 			},
@@ -192,7 +214,6 @@
 				console.log(e)
 				this.InputBottom = e.detail.height
 			},
-			
 			
 			submit(){
 				const info = this.inputV.trim()

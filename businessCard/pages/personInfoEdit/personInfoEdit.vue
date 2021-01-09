@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<cu-custom  bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="true">
+		<cu-custom  :bgImage="getApp().globalData.navBgImg" :isBack="true">
 			<block slot="backText"><text @click="personInfoEditBack"> 返回</text>  </block>
 			<block slot="content"> 个人资料 </block>
 		</cu-custom>

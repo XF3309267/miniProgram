@@ -1,6 +1,6 @@
 <template>
 	<view class="padding-bottom bg-white">
-		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="true" :selfBack="true" bgColor="bg-gradual-blue" id="customNav" >
+		<cu-custom :bgImage="getApp().globalData.navBgImg" :isBack="true" :selfBack="true" bgColor="bg-gradual-blue" id="customNav" >
 			<block slot="backText"> 返回 </block>
 			<block slot="content"> <text class="text-bold"> 修改名片 </text> </block>
 		</cu-custom>
@@ -12,7 +12,87 @@
 				个人形象照
 			</view>
 		</view>
-		<view class="cu-list menu sm-border  margin-top" >
+		<view class="bg-white padding">
+			<u-form :model="salesManagerInfo" :label-style="formItemStyle" :label-width="150" ref="uForm">
+				<u-form-item label="姓名" prop="name">
+					<u-input :trim="true" v-model="salesManagerInfo.name" />
+				</u-form-item>
+				<u-form-item label="职位"  prop="position">
+					<u-input :trim="true" v-model="salesManagerInfo.position" />
+				</u-form-item>
+				<u-form-item label="公司名"  prop="company">
+					<u-input :trim="true"  v-model="salesManagerInfo.company" />
+				</u-form-item>
+				<u-gap  height="20" bg-color="#eee"></u-gap>
+				<u-form-item label="个人简介" >
+				</u-form-item>
+				<u-form-item  prop="brief" >
+					<u-input :trim="true" type="textarea" :custom-style="{padding: '20rpx'}"  :autoHeight="true"  v-model="salesManagerInfo.brief" />
+				</u-form-item>
+			<!-- 	<view class="cu-item padding" >
+					<textarea class="self-area" :value="salesManagerInfo.brief" @input="areaChange" placeholder="输入您的个人简介" adjust-position="false"  ></textarea>
+				</view>
+				<view class="text-gray padding-sm text-xs padding-top u-border-bottom">
+					注：个人简介限制 50个汉字
+				</view> -->
+				<u-gap height="20" bg-color="#eee"></u-gap>
+				<view class="padding">
+					<view class=" round voice-container play-line padding solids flex justify-between">
+						<view class="flex-main">
+							<view class="self-voice" @touchstart="recordVoiceStart" @touchend="recordVoiceEnd" >
+								<text :class="[voiceTouced?'text-green':'text-gray','cuIcon-voicefill   text-xl play ']" @touchStart="" ></text>
+							</view>
+							<text class="text-green"> {{showRecordText}} </text>
+						</view>
+				
+						<view class="flex-right">
+							<view class="self-round" @click="playAudio">
+								<text class="cuIcon-playfill text-green text-xl play"  v-show="!audioIsPlay" ></text>
+								<text class="cuIcon-stop text-gray text-xl play" v-show="audioIsPlay"></text>
+							</view>
+						</view>
+					</view>
+				</view>
+				<u-gap height="20" bg-color="#eee"></u-gap>
+				<u-form-item label="联系方式" >
+				</u-form-item>
+				<u-form-item label="手机"  prop="phone">
+					<u-input :trim="true" v-model="salesManagerInfo.phone" />
+				</u-form-item>
+				<u-form-item label="微信"  prop="wxId">
+					<u-input :trim="true" v-model="salesManagerInfo.wxId" />
+				</u-form-item>
+				<u-form-item label="邮箱"  prop="mail">
+					<u-input :trim="true" v-model="salesManagerInfo.mail" />
+				</u-form-item>
+				<u-gap height="20" bg-color="#eee"></u-gap>
+				
+				
+				
+				<u-form-item label="图册"  prop="imgList">
+				</u-form-item>
+				
+				<view class="padding-sm flex justify-between">
+					<u-upload 
+						ref="uUpload"
+						width="180"
+						:auto-upload="true"
+						:action="action" 
+						:max-size="1 * 1024 * 1024"
+						:file-list="uploadImgList" 
+						@on-change="imgUploadFinal"
+					></u-upload>
+				</view>
+				
+			</u-form>
+
+		</view>
+		<view class="padding">
+			<u-button type="success" @click="submit">保存</u-button>
+		</view>
+		
+		
+<!-- 		<view class="cu-list menu sm-border  margin-top" >
 			<view class="cu-item " >
 				<view class="flex align-center">
 					<text class="item-label "> 姓名 </text>
@@ -57,14 +137,7 @@
 							<text class="cuIcon-playfill text-green text-xl play"  v-show="!audioIsPlay" ></text>
 							<text class="cuIcon-stop text-gray text-xl play" v-show="audioIsPlay"></text>
 						</view>
-						
-						<!-- <view class="delete" @click="">
-							<text class="cuIcon-deletefill text-red  text-xl play"  v-show="" ></text>
-						</view> -->
 					</view>
-					
-					
-					
 				</view>
 			</view>
 			
@@ -108,19 +181,19 @@
 			</view>
 			
 		</view>
-		
+		 -->
 		
 		
 		<!--
 			请求录音权限弹出框
 		  -->
-		<u-popup v-model="poupShow" mode="center" z-index="10075" border-radius="14">
+		<u-popup v-model="poupShow" mode="center"  z-index="10075" border-radius="14">
 			<view class="padding bg-white" style="border-radius: 10rpx;">
 				<view class="padding">
 					为了您更好的使用小程序，请打开录音权限
 				</view>
 				<view class="padding flex justify-around">
-					<button class="cu-btn  "  open-type="openSetting" bindopensetting="openSettingcallback"> 设置 </button>
+					<button class="cu-btn  "  open-type="openSetting" @opensetting="openSettingcallback"> 设置 </button>
 					<button class="cu-btn  text-red" @click="poupClose()" > 取消 </button>
 				</view>
 			</view>
@@ -142,11 +215,70 @@
 					avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
 					position:'销售经理',
 					wxId:'wx_id1245343543',
-					phone:'13970853937',
+					phone:'13970853968',
 					company:'江西省家院里科技江西省家院里科技',
-					brief:'',
-					mail:'123123222@gmail.com'
+					brief:'这里是个人简介',
+					mail:'123123222@gmail.com',
 				},
+				formItemStyle:{
+					 padding:'0 10rpx'
+				},
+				formInputStyle:{
+					backgroundColor:'#ffffff'
+				},
+				rules: {
+					name: [
+						{
+							required: true,
+							message: '请输入姓名',
+							trigger: ['blur', 'change']
+						}
+					],
+					position: [
+						{
+							required: true,
+							message: '请输入职位',
+							trigger: ['blur', 'change']
+						}
+					],
+					company: [
+						{
+							required: true,
+							message: '请输入公司名',
+							trigger: ['blur', 'change']
+						}
+					],
+					brief: [
+						{
+							required: true,
+							message: '请输入个人简介',
+							trigger: ['blur', 'change']
+						}
+					],
+					phone: [
+						{
+							required: true,
+							message: '请输入手机号',
+							trigger: ['blur', 'change']
+						}
+					],
+					wxId: [
+						{
+							required: true,
+							message: '请输入微信号',
+							trigger: ['blur', 'change']
+						}
+					],
+					mail: [
+						{
+							required: true,
+							message: '请输入邮箱',
+							trigger: ['blur', 'change']
+						}
+					],
+				},
+				
+				
 				imgList: [{
 					id: 0,
 					type: 'image',
@@ -186,8 +318,6 @@
 				audioIsPlay: false,
 				allTime:0,
 				audioCurrentTime:0,
-				
-				
 				uploadImgList:[],
 				action: 'http://www.example.com/upload',
 				
@@ -224,6 +354,9 @@
 			this.recorderManager = recorderManager
 			this.initAudioObj()
 			this.judgeLuYinPower()
+		},
+		onReady(){
+			this.$refs.uForm.setRules(this.rules);
 		},
 		mounted() {
 
@@ -329,21 +462,12 @@
 					 })
 					});
 				})
-				// innerAudioContext.onError(()=>{
-				// 	uni.showToast({
-				// 		title:'音频播放错误',
-				// 		icon:'none'
-				// 	})
-				// 	this.audioIsPlay = false
-				// 	innerAudioContext.destroy()
-				// })
 			},
 			
 			
 			// 设置权限返回值
 			openSettingcallback(res){
-				this.poupClose()
-				console.log(res)
+				this.judgeLuYinPower()
 			},
 			
 			// 判断用户 录音权限是否开启
@@ -353,12 +477,24 @@
 					success:(res)=>{
 						console.log('成功开启 录音权限')
 						this.recordPower = true
+						this.poupClose()
 					},
 					fail:(res)=>{
 						this.poupOpen()
 						this.recordPower = false
 					}
 				})
+			},
+			submit(){
+				console.log('点击发送')
+				this.$refs.uForm.validate(valid => {
+					if (valid) {
+						console.log('验证通过');
+					} else {
+						console.log('验证失败');
+					}
+				});
+				
 			},
 			poupOpen(){
 				this.poupShow = true

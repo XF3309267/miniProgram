@@ -1,30 +1,31 @@
 <template>
 	<view class="contain">
 		<FixedChat  :userType="userType" />
-		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" bgColor="bg-gradual-blue" >
+		<!-- :bgImage="getApp().globalData.navBgImg" -->
+		<cu-custom  bgColor="bg-gradual-blue" >
 			<!-- <block slot="backText">返回</block> -->
 			<block slot="content"> <text class="text-bold"> 家院里 </text> </block>
 		</cu-custom>
+		<!-- <u-swiper :list="swiperList" name="url" ></u-swiper> -->
 		<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
 				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
-				<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
 			</swiper-item>
 		</swiper>
 		<view class="self-card bg-white">
 			<view class="card-head">
 				<view class="avatar">
-					<image src="../../static/logo.png" mode="widthFix"></image>
+					<image :src="companyInfo.companyLogo" mode="widthFix"></image>
 				</view>
 				<view class="main">
-					家院里
+					{{companyInfo.companyName}}
 				</view>
 				<view class="right">
 					<button class="cu-btn block line-green"> 关注 </button>
 				</view>
 			</view>
 			<view class="card-content solid-bottom text-df text-gray">
-				为公司新业务孵化和新业态探索的平台，推动包括基础支付、金融应用在内的金融科技业务、广告营销服务和国际业务等领域的发展和创新。同时作为专业支持平台，为公司及各事业群提供战略规划、投资并购、投资者关系及国际传讯、市场公关等专业支持。
+				{{companyInfo.companyManifesto}}
 			</view>
 		</view>
 		<view class=" flex justify-between padding-sm margin-top bg-white">
@@ -42,6 +43,9 @@
 <script>
 	import ItemCard  from '@/components/ItemCard'
 	import FixedChat from '@/components/FixedChat.vue'
+	
+	import {allCompanyInfo} from '@/services/services.js'
+	
 	export default {
 		data() {
 			return {
@@ -79,6 +83,7 @@
 				towerStart: 0,
 				direction: '',
 				
+				companyInfo:'',
 				productList:[
 					// {
 					// 	id:0,
@@ -106,17 +111,9 @@
 		},
 		onLoad() {
 			this.TowerSwiper('swiperList');
-			uni.previewImage({
-				urls:'https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg',
-				success:(res)=>{
-					console.log('previewImage success')
-					console.log(res)
-				},
-				fail:(res)=>{
-					console.log('previewImage fail')
-					console.log(res)
-				},
-			})
+		},
+		created() {
+			this.initCompanyInfo()
 		},
 		methods: {
 				
@@ -124,7 +121,24 @@
 			initUserType(){
 				this.userType = getApp().globalData.userType
 			},
-			
+			// 获取公司信息
+			async initCompanyInfo(){
+				uni.showLoading({
+					title:'资源获取中...',
+					mask:true
+				})
+				
+				
+				let res = await allCompanyInfo()
+				if(res.statusCode===200){
+					this.companyInfo = res.data.data
+					console.log('这里应该拿到 res')
+				}else{
+					this.companyInfo = -1
+				}
+				uni.hideLoading()
+				console.log('这里应该拿到 function finally')
+			},
 			// cardSwiper
 			cardSwiper(e) {
 				this.cardCur = e.detail.current

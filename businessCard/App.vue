@@ -32,7 +32,8 @@
 			console.log('App Hide')
 		},
 		globalData:{
-			// mMqttClient:require('@/static/js/mqtt.min.js').connect('wss://test.mosquitto.org'),
+			// 该小程序 基本全局信息
+			navBgImg:'https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg',
 			
 			
 			// 用户信息

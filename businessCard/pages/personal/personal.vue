@@ -1,6 +1,7 @@
 <template>
 	<view class="person-contain">
-		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" bgColor="bg-gradual-blue" id="customNav" >
+		<!-- :bgImage="getApp().globalData.navBgImg" -->
+		<cu-custom  bgColor="bg-gradual-blue" id="customNav" >
 			<block slot="content"> <text class="text-bold"> 家园里 </text> </block>
 		</cu-custom>
 		<view class="person-head" id="personHead">
@@ -45,7 +46,7 @@
 				</view>
 			</view>
 			<block v-for="(item,index) in userList" :key="index" >
-				<view :class="'indexItem-' + item.indexName" :id="'indexes-' + item.indexName" :data-index="item.indexName">
+				<view :class="'indexItem-' + item.indexName" :id="'indexes-' + item.indexName" :data-index="item.indexName"  @click="customerClick(item.id)" >
 					<view class="padding">{{item.indexName}}</view>
 					<view class="cu-list menu-avatar no-padding">
 						<view class="cu-item flex" v-for="(userItem,sub) in item.list"   :key="sub">
@@ -99,18 +100,18 @@
 					mail:'123123222@gmail.com'
 				},
 				demoList:[
-					{name:'A总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'张总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'章总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'史总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'B总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'b总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'波总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'董总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'柴总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'江总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'Z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{name:'z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'A总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'张总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'章总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'史总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'B总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'b总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'波总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'董总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'柴总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'江总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'Z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+					{id:1,name:'z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
 				],
 				// 所有索引列表
 				StatusBar: this.StatusBar,
@@ -209,6 +210,11 @@
 			
 		},
 		methods: {
+			customerClick(customerId){
+				uni.navigateTo({
+					url:'/pages/chatSalesManager/chatSalesManager?customerId=customerId'+customerId
+				})
+			},
 			// 初始化 userType
 			initUserType(){
 				this.userType = getApp().globalData.userType
