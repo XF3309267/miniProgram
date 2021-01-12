@@ -1,6 +1,6 @@
 <template>
 	<view class="" style="padding-bottom: 120rpx;">
-		<FixedChat/>
+		<FixedChat  :userType="userType"/>
 		<cu-custom bgColor="bg-gradual-blue" :isBack="false" :selfBack="true">
 			<block slot="backText">
 				<!-- <view class="flex">
@@ -13,6 +13,9 @@
 			</block>
 			<block slot="content"> <text class="text-bold"> 销售经理 </text> </block>
 		</cu-custom>
+		<view class="bigCanvas-container">
+			<canvas :id="myCanvasId" :canvas-id="myCanvasId" class="canvasW" :style="[ctxWStr,ctxHStr]" ></canvas>
+		</view>
 		<view class="">
 			<view class="bg-white padding-top">
 				<SalesManagerCard/>
@@ -56,7 +59,7 @@
 					<text class="  text-lg text-bold"> 精彩图册 </text> 
 				</view>
 				<view class="padding-sm">
-					<view class="img-container" v-for="(item,index) in altas" :key="item.id">
+					<view class="img-container " v-for="(item,index) in altas" :key="item.id">
 						<image   :src="item.url" mode="widthFix" ></image>
 						<view class="brief"> 这里是对图片的说明  </view>
 					</view>
@@ -64,7 +67,7 @@
 			</view>
 			
 			<view class="fixed-bottom">
-				<button open-type="share" class="cu-tag round padding-sm bg-green self-text margin-0"> 分享名片</button>
+				<button @click="showBottomPoup" class="cu-tag round padding-sm bg-green self-text margin-0"> 分享名片</button>
 				<view class="cu-tag round padding-sm bg-green self-text" @click="copyWxId"> 
 					加微信
 					<view  class="sm-title">
@@ -81,7 +84,28 @@
 				</view>
 			</view>
 		</view>
-		
+		<u-popup v-model="bottomPoup" height="260rpx" mode="bottom" border-radius="14">
+			<view class="poup-container">
+				<view class="item-container">
+					<button open-type="share" class="hidden-btn">  </button>
+					<view class="bottom-img-container bg-green">
+						<image src="@/static/img/salesPersonImg/wexin.png" mode="widthFix"></image>
+					</view>
+					<view class="info">
+						微信好友
+					</view>
+				</view>
+				
+				<view class="item-container">
+					<view class="bottom-img-container bg-blue">
+						<image src="@/static/img/salesPersonImg/card.png" mode="widthFix"></image>
+					</view>
+					<view class="info">
+						名片海报
+					</view>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -91,9 +115,12 @@
 	import PersonalIcon from '@/components/PersonalIcon'
 	import FixedChat from '@/components/FixedChat.vue'
 	
+	
+	import {initGetAlbum,getImgInfo,urlToLocalPath} from '@/static/js/common.js'
 	export default {
 		data() {
 			return {
+				userType:-1,
 				avatar: [
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg',
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg',
@@ -151,6 +178,37 @@
 				audioCurrentTime:0,
 				// type  区分 销售 和 普通用户, 0: 普通用户， 1: 销售
 				type:0,
+				
+				bottomPoup: false,
+				
+				// 画布所需
+				myCanvasId:'myCanvas',
+				avatar:'',
+				tempFilePath:'',
+				smCtxW:0,
+				smCtxH:0,
+				ctx:null,
+				pixeRatio:0,
+				getalbum:false,
+				
+				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/phone.png
+				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/home.png
+				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png
+				
+				
+				paintArr:[
+					//  销售头像
+					// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/81f6b5a961a5cd27d64f05192440b47.jpg
+					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/81f6b5a961a5cd27d64f05192440b47.jpg',xPosition:0,yPosition:0},
+					
+					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/phone.png',xPosition:0,yPosition:0},
+					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/home.png',xPosition:0,yPosition:0},
+					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png',xPosition:0,yPosition:0},
+					// 公司  logo
+					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png',xPosition:0,yPosition:0},
+					{type:'text',content:'你好发送方大哥哥但是广东省法规收到',xPosition:0,yPosition:0}
+				],
+				newPainArr:[],			
 			}
 		},
 		
@@ -169,7 +227,21 @@
 				
 				return parseInt(this.allTime - this.audioCurrentTime ) + 's'
 			},
-			// 拨打电话
+			// 画布的 宽度
+			ctxWStr(){
+				if(this.smCtxW){
+					return{
+						'width':this.smCtxW * this.pixeRatio + 'px'
+					}
+				}
+			},
+			ctxHStr(){
+				if(this.smCtxH){
+					return{
+						'height':this.smCtxH * this.pixeRatio + 'px'
+					}
+				}
+			},
 
 		},
 		onShareAppMessage() {
@@ -185,13 +257,45 @@
 				}
 			}
 		},
+		onShow() {
+			if(this.userType===-1){
+				this.initUserType()
+			}
+			getImgInfo('@/static/img/salecPersonImg/home.png')
+		},
 		onLoad() {
+			
+			// uni.chooseImage({
+			// 	success: async (res) => {
+			// 		console.log('选择图片后')
+			// 		let imgLoaclUrl = res.tempFilePaths[0]
+			// 		let obj = await urlToLocalPath(imgLoaclUrl)
+			// 		console.log('-----------------')
+			// 		console.log(obj)
+			// 		console.log('----*************-')
+			// 	},
+				
+			// })
 			uni.showToast({
 				title:'您好，我是您的销售经理。有什么问题可以随时咨询我哦！',
 				icon:'none',
 			})
 		},
+		created() {
+			this.initCanvas(this.myCanvasId)
+			
+			console.log(this.paintArr)
+			this.newPainArr =  this.arrangPaintList(this.paintArr)
+			console.log(this.newPainArr)
+			this.canvansTodo(this.ctx,this.myCanvasId,this.pixeRatio,this.newPainArr,this.smCtxW *this.pixeRatio ,this.smCtxH * this.pixeRatio )
+		},
+		mounted() {
+			
+		},
 		methods: {
+			initUserType(){
+				this.userType = getApp().globalData.userType
+			},
 			// 播放音频
 			playAudio(){
 				if(this.audioIsPlay){
@@ -272,6 +376,138 @@
 					}
 				})
 			},
+			// 弹出 弹出框
+			showBottomPoup(){
+				this.bottomPoup = true
+			},
+			
+			// 将要绘制的元素加入 绘制 数组
+			addEleToList(ele,type,x,y){
+				if(type==='img'){
+					
+				}
+			},
+			
+			
+			// 画布所需
+			initCanvas(canvansId){
+				this.ctx = uni.createCanvasContext(canvansId)
+				uni.getSystemInfo({
+					success:(res)=>{
+						this.smCtxH = res.screenHeight * 0.8
+						this.smCtxW = this.smCtxH * 0.5
+						if(res.screenWidth < this.smCtxW ){
+							this.smCtxW = res.screenWidth
+						}
+						this.pixeRatio = res.pixelRatio
+					}
+				})
+			},
+			
+			// 绘制文字
+			paintText(ctx,text,color,fontSize,x,y){
+				ctx.setFillColor(color)
+				ctx.setFontSize(fontSize)
+				ctx.fillText(text,x,y)
+			},
+			// 绘制 换行文字
+			paintLogText(ctx,text,color,fontSize,x,y,lineStep,limitLength){
+				if(!limitLength){
+					limitLength = 8
+				}
+				if(!lineStep){
+					lineStep = 17
+				}
+				let textLengthArr = []
+				textLengthArr.length = Math.ceil(textLength / limitLength)
+				
+				const textLength = text.length
+				if(textLength>limitLength){
+					for (let i = 0; i < textLengthArr.length; i++) {
+						let str2 = text.subString(limitLength * i ,limitLength * (i + 1))
+						textLengthArr[i] = str2
+						this.paintText(ctx,str2,color,fontSize,x,y + (addStep * i * this.pixeRatio) )
+					}
+				}else{
+					this.paintText(ctx,text,color,fontSize,x,y)
+				}
+			},
+			
+			// 绘制 纯色背景
+			paintBgColor(ctx,color,canvansW,canvansH){
+				ctx.setFillColor(color)
+				canvansW = this.smCtxW * this.pixelRatio 
+				canvansH = this.smCtxH * this.pixelRatio 
+				ctx.fillRect(0,0,canvansW,canvansH)
+			},
+			
+			
+			// 过滤 绘制数组，将图片转为本地图片
+			arrangPaintList(paintArr){
+				console.log(paintArr)
+				let arr = paintArr
+				arr.forEach(async (ele,index)=>{
+				
+					if(ele.type === 'img'){
+						console.log('for  ')
+						console.log(ele)
+						const res = await urlToLocalPath(ele.content)
+				
+						
+						
+						ele.content = res.path
+						ele.widtth = res.width
+						ele.height = res.height
+					}
+				})
+				console.log('----------arrr-------------')
+				console.log(arr)
+				return arr
+			},
+			
+			canvansTodo(ctx,canvasId,pixelRatio,paintArr,finalW,finalH){
+				uni.showLoading({
+					title:'名片海报生成中',
+					mask:true
+				})
+				
+				
+				let HraceW = paintArr[0].height / paintArr[0].width;
+				
+				let dwidth = finalW / 5;
+				let dHeight = dwidth * HraceW;
+			
+				if(paintArr[0].content!==undefined){
+					console.log('首项数据')
+					console.log(paintArr[0].conent)
+					ctx.drawImage(paintArr[0].content,paintArr[0].xPosition,paintArr[0].yPosition, 200, 200)
+					ctx.draw(true)
+					setTimeout( async ()=>{
+						uni.hideLoading()
+						const resTempFile = await this.canvansToFile(canvasId,finalW,finalH)
+						console.log(resTempFile)
+					},1000)
+				}
+				
+
+			},
+			canvansToFile(canvansId,clipW,clipH){
+				return new Promise(function(resolve,reject){
+					uni.canvasToTempFilePath({
+						x:0,
+						y:0,
+						destWidth:clipW,
+						destHeight:clipH,
+						canvasId:canvansId,
+						success:(res)=>{
+							resolve(res.tempFilePath)
+						},
+						fail:(res)=>{
+							resolve(res.tempFilePath)
+						}
+					})
+				})
+			}
 		},
 		components:{
 			SalesManagerCard,
@@ -281,10 +517,8 @@
 	}
 </script>
 
-<style scoped>
-.sales-container{
+<style lang="scss" scoped>
 
-}
 .play-line{
 	display: flex;
 	justify-content: space-between;
@@ -300,14 +534,16 @@
 	border:4rpx solid #4CD964;
 	border-radius: 50%;
 	text-align: center;
-}
-.self-round .play{
 	
-	line-height: 42rpx;
-	/* width: 1em;
-	height: 1em; */
-	margin: auto;
+	.play{
+		
+		line-height: 42rpx;
+		/* width: 1em;
+		height: 1em; */
+		margin: auto;
+	}
 }
+
 
 
 /*  精彩图册  */
@@ -319,19 +555,22 @@
 	border-radius: 10rpx;
 	margin: 20rpx auto;
 	background-color: #FFF;
+	
+	image{
+		width: 100%;
+		height: 100%;
+		border-radius: 10rpx;
+	}
+	
+	.brief{
+		position: absolute;
+		bottom: 30rpx;
+		left: 30rpx;
+		color: #FFFFFF;
+	}
 }
 
-.img-container image{
-	width: 100%;
-	height: 100%;
-	border-radius: 10rpx;
-}
-.img-container .brief{
-	position: absolute;
-	bottom: 30rpx;
-	left: 30rpx;
-	color: #FFFFFF;
-}
+
 
 .fixed-bottom{
 	position: fixed;
@@ -343,14 +582,81 @@
 	width: 100%;
 	background-color: #FFFFFF;
 	font-size: 40rpx;
+	
+	.self-text{
+		display: flex;
+		flex-flow: column nowrap; 
+		height: 3em;
+		padding: 20rpx 30rpx;
+		
+		.sm-title{
+			font-size: .7em;
+		}
+	}
 }
-.fixed-bottom .self-text{
+
+
+
+
+.poup-container{
 	display: flex;
-	flex-flow: column nowrap; 
-	height: 3em;
-	padding: 20rpx 30rpx;
+	justify-content: space-around;
+	padding: 20rpx;
+	.item-container{
+		position: relative;
+		width: 220rpx;
+		height: 220rpx;
+		padding: 20rpx;
+		overflow: hidden;
+		
+		.hidden-btn{
+			position: absolute;
+			z-index: 100;
+			top: -20%;
+			left: -20%;
+			width: 140%;
+			height: 140%;
+			background-color: rgba(255,255,255,0);
+		}
+		
+		.bottom-img-container{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 120rpx;
+			height: 120rpx;
+			padding: 20rpx;
+			border-radius: 50%;
+			margin: auto;
+			image{
+				width: 80rpx;
+				height: 80rpx;
+			}
+		}
+		
+		
+		.info{
+			width: 100%;
+			height: 40rpx;
+			line-height: 40rpx;
+			text-align: center;
+		}
+		
+	}
+	
 }
-.fixed-bottom .self-text .sm-title{
-	font-size: .7em;
+
+
+// 画布样式
+.bigCanvas-container{
+	position: relative;
+	height: 0rpx;
+	overflow: hidden;
 }
+.canvasW{
+	position: absolute;
+	top: 10000000rpx;
+	width: 100%;
+}
+
 </style>

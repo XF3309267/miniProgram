@@ -6,7 +6,7 @@ import App from './App'
 // 821515jyl		小程序密码
 
 import cuCustom from './colorui/components/cu-custom.vue'
-import localLanguageObj from '@/static/js/momentLocal.js'
+// import localLanguageObj from '@/static/js/momentLocal.js'
 import moment from '@/static/js/moment.js'
 import uView from "uview-ui";
 Vue.use(uView);
@@ -18,7 +18,7 @@ App.mpType = 'app'
 
 
 Vue.prototype.moment = moment
-moment.locale('zh-cn', localLanguageObj)
+// moment.locale('zh-cn', localLanguageObj)
 
 const app = new Vue({
     ...App

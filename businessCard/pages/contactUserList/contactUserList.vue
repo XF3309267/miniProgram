@@ -1,6 +1,6 @@
 <template>
 	<view class="contact-container">
-		<cu-custom :bgImage="getApp().globalData.navBgImg" :isBack="true"><block slot="backText">返回</block>
+		<cu-custom  :isBack="true"><block slot="backText">返回</block>
 			<block slot="content"> 搜索 </block>
 		</cu-custom>
 		<view class="cu-bar bg-white search " >

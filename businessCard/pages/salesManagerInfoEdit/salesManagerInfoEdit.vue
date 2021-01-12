@@ -1,6 +1,6 @@
 <template>
 	<view class="padding-bottom bg-white">
-		<cu-custom :bgImage="getApp().globalData.navBgImg" :isBack="true" :selfBack="true" bgColor="bg-gradual-blue" id="customNav" >
+		<cu-custom  :isBack="true" :selfBack="true" bgColor="bg-gradual-blue" id="customNav" >
 			<block slot="backText"> 返回 </block>
 			<block slot="content"> <text class="text-bold"> 修改名片 </text> </block>
 		</cu-custom>

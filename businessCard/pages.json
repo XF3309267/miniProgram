@@ -5,9 +5,10 @@
 		},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		
-
+		
+		
 		{
-		    "path" : "pages/customerRecord/customerRecord",
+		    "path" : "pages/salesManager/salesManager",
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",
@@ -15,6 +16,7 @@
 		    }
 		    
 		},
+
 
 		{
 			"path": "pages/index/index",
@@ -30,15 +32,9 @@
 		        "enablePullDownRefresh": false
 		    }
 		},
-		{
-		    "path" : "pages/salesManager/salesManager",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		},
+
+
+
 		{
 		    "path" : "pages/salesManagerInfoEdit/salesManagerInfoEdit",
 		    "style" :                                                                                    
@@ -87,15 +83,36 @@
 		    }
 		}
 
-        ,{
-            "path" : "pages/setCustomerLabel/setCustomerLabel",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+        ,
+		
+		
+		{
+		    "path" : "pages/customerRecord/customerRecord",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/setCustomerLabel/setCustomerLabel",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/setTag/setTag",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
 
     ],
 	"globalStyle": {

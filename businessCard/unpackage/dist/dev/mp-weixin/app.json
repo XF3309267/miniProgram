@@ -1,15 +1,16 @@
 {
   "pages": [
-    "pages/customerRecord/customerRecord",
+    "pages/salesManager/salesManager",
     "pages/index/index",
     "pages/personal/personal",
-    "pages/salesManager/salesManager",
     "pages/salesManagerInfoEdit/salesManagerInfoEdit",
     "pages/contactUserList/contactUserList",
     "pages/personInfoEdit/personInfoEdit",
     "pages/chatSalesManager/chatSalesManager",
     "pages/chatPerson/chatPerson",
-    "pages/setCustomerLabel/setCustomerLabel"
+    "pages/customerRecord/customerRecord",
+    "pages/setCustomerLabel/setCustomerLabel",
+    "pages/setTag/setTag"
   ],
   "subPackages": [],
   "window": {
