@@ -30,18 +30,19 @@
   display: -webkit-flex;
   display: flex;
   margin-left: 20rpx;
+  font-size: .9em;
 }
 .peson-icon .person-avatar.data-v-4ba45134 {
-  width: 2em;
-  height: 2em;
+  width: 1.5em;
+  height: 1.5em;
 }
 .peson-icon .person-tag.data-v-4ba45134 {
   position: absolute;
   z-index: -1;
   left: 0;
   top: 5rpx;
-  height: 2em;
-  line-height: 2em;
+  height: 1.5em;
+  line-height: 1.5em;
   padding-left: 3em;
   background-color: #FFFFFF;
   color: #c0c0c0;

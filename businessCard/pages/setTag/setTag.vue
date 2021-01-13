@@ -38,6 +38,10 @@
 					{id:2,title:'标签3'},
 					{id:3,title:'标签4标签'},
 					{id:4,title:'标签5标签'},
+				],
+				activeTagList:[
+					{id:3,title:'标签4标签'},
+					{id:4,title:'标签5标签'},
 				]
 			}
 		},

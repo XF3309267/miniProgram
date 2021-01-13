@@ -1,18 +1,24 @@
 <template>
 	<view class="contain">
 		<FixedChat  :userType="userType" />
-		<!-- :bgImage="getApp().globalData.navBgImg" -->
-		<cu-custom  bgColor="bg-gradual-blue" >
+		<cu-custom bgColor="bg-gradual-blue" >
 			<!-- <block slot="backText">返回</block> -->
 			<block slot="content"> <text class="text-bold"> 家院里 </text> </block>
 		</cu-custom>
-		<!-- <u-swiper :list="swiperList" name="url" ></u-swiper> -->
 		<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
 				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
 			</swiper-item>
 		</swiper>
-		<view class="self-card bg-white">
+		<view class="padding bg-white">
+			<view class="bg-white">
+				公司简介
+			</view>
+			<view class="padding-sm">
+				公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介
+			</view>
+		</view>
+<!-- 		<view class="self-card bg-white">
 			<view class="card-head">
 				<view class="avatar">
 					<image :src="companyInfo.companyLogo" mode="widthFix"></image>
@@ -27,14 +33,14 @@
 			<view class="card-content solid-bottom text-df text-gray">
 				{{companyInfo.companyManifesto}}
 			</view>
-		</view>
-		<view class=" flex justify-between padding-sm margin-top bg-white">
+		</view> -->
+<!-- 		<view class=" flex justify-between padding-sm margin-top bg-white">
 			<text class="  text-lg text-bold"> 公司产品 </text> 
 			<view class="">
 				<text class="text-lg text-gray"> 更多  </text>
 				<text class="lg text-gray" :class="cuIcon-right"></text>
 			</view>
-		</view>
+		</view> -->
 		<ItemCard/>
 		<view class="text-gray text-center padding-sm" > 没有更多了 </view>
 	</view>
@@ -44,7 +50,7 @@
 	import ItemCard  from '@/components/ItemCard'
 	import FixedChat from '@/components/FixedChat.vue'
 	
-	import {allCompanyInfo} from '@/services/services.js'
+	import {getCompanyInfo} from '@/services/services.js'
 	
 	export default {
 		data() {
@@ -83,6 +89,23 @@
 				towerStart: 0,
 				direction: '',
 				
+				//  "id": 1,
+				// "companyPhone": "3",
+				// "companyAddress": "3",
+				// "companyMailbox": "3",
+				// "companyName": "3",
+				// "companyLogo": "3",
+				// "companyManifesto": "3",
+				// "companyWordIntroduce": "3",
+				// "companyVoiceIntroduce": "3",
+				// "companyImagesIntroduce": "3",
+				// "createTime": "2021-01-05 06:28:52",
+				// "updateTime": "2021-01-07 19:22:00",
+				// "deleted": 1
+				
+				
+				
+				companyId:1,
 				companyInfo:'',
 				productList:[
 					// {
@@ -129,10 +152,11 @@
 				})
 				
 				
-				let res = await allCompanyInfo()
+				let res = await getCompanyInfo({id:this.companyId})
 				if(res.statusCode===200){
 					this.companyInfo = res.data.data
 					console.log('这里应该拿到 res')
+					console.log(this.companyInfo)
 				}else{
 					this.companyInfo = -1
 				}

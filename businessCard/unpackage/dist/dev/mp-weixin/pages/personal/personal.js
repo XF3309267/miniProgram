@@ -295,7 +295,7 @@ var _pinyin = __webpack_require__(/*! @/static/js/pinyin.js */ 66); //
 //
 //
 //
-var salesManagerCard = function salesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard.vue */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { scrollTop: 0, indexList: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"], // userType 区分用户 与销售
+var salesManagerCard = function salesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard.vue */ 151));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { scrollTop: 0, indexList: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"], // userType 区分用户 与销售
       userType: -1, salesManagerInfo: { avatar: '', name: '王珞丹', phone: '13970853937', company: '江西省家院里科技江西省家院里科技', mail: '123123222@gmail.com' }, demoList: [{ id: 1, name: 'A总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '张总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '章总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '史总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'B总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'b总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '波总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '董总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '柴总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '江总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'Z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }], // 所有索引列表
       StatusBar: this.StatusBar, CustomBar: this.CustomBar, hidden: true, sourceUserList: [], userList: [// {
         // 	indexName:'A',
@@ -472,6 +472,14 @@ var salesManagerCard = function salesManagerCard() {__webpack_require__.e(/*! re
         url: '/pages/contactUserList/contactUserList' });
 
     },
+    // 前往用户资料中心
+    toPersonEdit: function toPersonEdit() {
+      uni.navigateTo({
+        url: '/pages/personInfoEdit/personInfoEdit' });
+
+    },
+
+
 
     // 前往名片详情
     toCardDetail: function toCardDetail() {

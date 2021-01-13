@@ -176,7 +176,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _services = __webpack_require__(/*! @/services/services.js */ 57);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var ItemCard = function ItemCard() {__webpack_require__.e(/*! require.ensure | components/ItemCard */ "components/ItemCard").then((function () {return resolve(__webpack_require__(/*! @/components/ItemCard */ 166));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 159));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+var _services = __webpack_require__(/*! @/services/services.js */ 57);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var ItemCard = function ItemCard() {__webpack_require__.e(/*! require.ensure | components/ItemCard */ "components/ItemCard").then((function () {return resolve(__webpack_require__(/*! @/components/ItemCard */ 172));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 165));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
   data: function data() {
@@ -215,6 +221,23 @@ var _services = __webpack_require__(/*! @/services/services.js */ 57);function _
       towerStart: 0,
       direction: '',
 
+      //  "id": 1,
+      // "companyPhone": "3",
+      // "companyAddress": "3",
+      // "companyMailbox": "3",
+      // "companyName": "3",
+      // "companyLogo": "3",
+      // "companyManifesto": "3",
+      // "companyWordIntroduce": "3",
+      // "companyVoiceIntroduce": "3",
+      // "companyImagesIntroduce": "3",
+      // "createTime": "2021-01-05 06:28:52",
+      // "updateTime": "2021-01-07 19:22:00",
+      // "deleted": 1
+
+
+
+      companyId: 1,
       companyInfo: '',
       productList: [
         // {
@@ -261,10 +284,11 @@ var _services = __webpack_require__(/*! @/services/services.js */ 57);function _
 
 
 
-                  (0, _services.allCompanyInfo)());case 3:res = _context.sent;
+                  (0, _services.getCompanyInfo)({ id: _this.companyId }));case 3:res = _context.sent;
                 if (res.statusCode === 200) {
                   _this.companyInfo = res.data.data;
                   console.log('这里应该拿到 res');
+                  console.log(_this.companyInfo);
                 } else {
                   _this.companyInfo = -1;
                 }

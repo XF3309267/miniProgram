@@ -5,7 +5,7 @@
 			<block slot="content"> <text class="text-bold"> 家园里 </text> </block>
 		</cu-custom>
 		<view class="person-head" id="personHead">
-			<view class="avatar" @click="toPersonCenter">
+			<view class="avatar" @click="toPersonEdit">
 				<open-data type="userAvatarUrl"></open-data>
 			</view>
 			<view class="content padding-sm text-xl">
@@ -340,6 +340,14 @@
 					url:'/pages/contactUserList/contactUserList'
 				})
 			},
+			// 前往用户资料中心
+			toPersonEdit(){
+				uni.navigateTo({
+					url:'/pages/personInfoEdit/personInfoEdit'
+				})
+			},
+			
+			
 			
 			// 前往名片详情
 			toCardDetail(){

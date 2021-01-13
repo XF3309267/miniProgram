@@ -59,11 +59,9 @@ const getImgInfo = function(src){
 		uni.getImageInfo({
 			src: src,	
 			success:(res)=>{
-				console.log(res)
 				resolve(res)
 			},
 			fail:(res)=>{
-				console.log(res)
 				resolve(res)
 			}
 		})
@@ -79,13 +77,22 @@ const getImgInfo = function(src){
 
 // 网络图片转为 本地链接  和 宽高信息
 
-const urlToLocalPath = async function(url){
-	const getImginfoRes = await getImgInfo(url)
-	const obj = {}
-	obj.tempFilePath = getImginfoRes.path
-	obj.width = getImginfoRes.width
-	obj.height = getImginfoRes.height
-	return obj
+const urlToLocalPath =  function(url){
+	// const getImginfoRes = await getImgInfo(url)
+	return new Promise(function(resolve,reject){
+		const obj = {}
+		uni.downloadFile({
+			url:url,
+			success: (res) => {
+				const temp = res.tempFilePath
+				resolve(temp)
+			},
+			fail:(res)=>{
+				resolve(res)
+			}
+		})
+	})
+
 }
 
 

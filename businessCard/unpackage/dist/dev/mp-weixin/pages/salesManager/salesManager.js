@@ -96,7 +96,7 @@ var components
 try {
   components = {
     uPopup: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 138))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 144))
     }
   }
 } catch (e) {
@@ -281,7 +281,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 152));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 159));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 151));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 158));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 165));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   data: function data() {var _ref;
     return _ref = {
@@ -301,7 +303,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
         position: '',
         wxId: 'wx_id1245343543',
         phone: '13970853937',
-        company: '江西省家院里科技江西省家院里科技',
+        company: '江西省家院里科技江西省家',
         brief: '',
         mail: '123123222@gmail.com' },
 
@@ -354,8 +356,8 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
     0), _defineProperty(_ref, "ctx",
     null), _defineProperty(_ref, "pixeRatio",
     0), _defineProperty(_ref, "getalbum",
+    false), _defineProperty(_ref, "initCanvasRes",
     false), _defineProperty(_ref, "paintArr",
-
 
 
 
@@ -371,7 +373,8 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
     { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png', xPosition: 0, yPosition: 0 },
     // 公司  logo
     { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png', xPosition: 0, yPosition: 0 },
-    { type: 'text', content: '你好发送方大哥哥但是广东省法规收到', xPosition: 0, yPosition: 0 }]), _defineProperty(_ref, "newPainArr",
+    // 公司  小程序二维码
+    { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/jigou.png', xPosition: 0, yPosition: 0 }]), _defineProperty(_ref, "newPainArr",
 
     []), _ref;
 
@@ -446,13 +449,15 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
       icon: 'none' });
 
   },
-  created: function created() {
-    this.initCanvas(this.myCanvasId);
+  created: function created() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var initCanvasRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+                _this.initCanvas(_this.myCanvasId));case 2:initCanvasRes = _context.sent;
+              _this.initCanvasRes = initCanvasRes;
 
-    console.log(this.paintArr);
-    this.newPainArr = this.arrangPaintList(this.paintArr);
-    console.log(this.newPainArr);
-    this.canvansTodo(this.ctx, this.myCanvasId, this.pixeRatio, this.newPainArr, this.smCtxW * this.pixeRatio, this.smCtxH * this.pixeRatio);
+
+
+              // 对于异步的处理  
+              // 建议 不要用在 for 循环中（特别是 使用 async await )
+            case 4:case "end":return _context.stop();}}}, _callee);}))();
   },
   mounted: function mounted() {
 
@@ -462,7 +467,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
       this.userType = getApp().globalData.userType;
     },
     // 播放音频
-    playAudio: function playAudio() {var _this = this;
+    playAudio: function playAudio() {var _this2 = this;
       if (this.audioIsPlay) {
         console.log('音乐播放中');
         this.startTime = 0;
@@ -475,21 +480,20 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
       innerAudioContext.src = this.audioSrc;
 
       innerAudioContext.onCanplay(function () {
-        _this.audioCurrentTime = innerAudioContext.currentTime;
+        _this2.audioCurrentTime = innerAudioContext.currentTime;
         innerAudioContext.play();
-        _this.audioIsPlay = true;
+        _this2.audioIsPlay = true;
 
         innerAudioContext.onPlay(function () {
-          _this.audioCurrentTime = innerAudioContext.currentTime;
-          _this.audioObj = innerAudioContext;
+          _this2.audioCurrentTime = innerAudioContext.currentTime;
+          _this2.audioObj = innerAudioContext;
           innerAudioContext.onTimeUpdate(function () {
-            _this.allTime = innerAudioContext.duration;
-            _this.audioCurrentTime = innerAudioContext.currentTime;
-
-            var restTime = parseInt(_this.allTime - _this.audioCurrentTime);
+            _this2.allTime = innerAudioContext.duration;
+            _this2.audioCurrentTime = innerAudioContext.currentTime;
+            var restTime = parseInt(_this2.allTime - _this2.audioCurrentTime);
             if (!restTime) {
               innerAudioContext.destroy();
-              _this.audioIsPlay = false;
+              _this2.audioIsPlay = false;
             }
           });
         });
@@ -499,7 +503,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
           title: '音频播放错误',
           icon: 'none' });
 
-        _this.audioIsPlay = false;
+        _this2.audioIsPlay = false;
         innerAudioContext.destroy();
       });
     },
@@ -552,28 +556,37 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
 
       }
     },
-
-
+    // 生成名片海报
+    createPostCard: function createPostCard() {
+      if (this.initCanvasRes) {
+        this.canvansTodo(this.ctx, this.myCanvasId, this.pixeRatio, this.paintArr, this.smCtxW * this.pixeRatio, this.smCtxH * this.pixeRatio);
+      }
+    },
     // 画布所需
-    initCanvas: function initCanvas(canvansId) {var _this2 = this;
-      this.ctx = uni.createCanvasContext(canvansId);
-      uni.getSystemInfo({
-        success: function success(res) {
-          _this2.smCtxH = res.screenHeight * 0.8;
-          _this2.smCtxW = _this2.smCtxH * 0.5;
-          if (res.screenWidth < _this2.smCtxW) {
-            _this2.smCtxW = res.screenWidth;
-          }
-          _this2.pixeRatio = res.pixelRatio;
-        } });
+    initCanvas: function initCanvas(canvansId) {var _this3 = this;
+      return new Promise(function (resolve, reject) {
+        _this3.ctx = uni.createCanvasContext(canvansId);
+        uni.getSystemInfo({
+          success: function success(res) {
+            console.log(res);
 
+            _this3.smCtxH = res.screenHeight * 0.5;
+            _this3.smCtxW = _this3.smCtxH * 0.8;
+            if (res.screenWidth < _this3.smCtxW) {
+              _this3.smCtxW = res.screenWidth;
+            }
+            _this3.pixeRatio = res.pixelRatio;
+            resolve(true);
+          } });
+
+      });
     },
 
     // 绘制文字
-    paintText: function paintText(ctx, text, color, fontSize, x, y) {
-      ctx.setFillColor(color);
-      ctx.setFontSize(fontSize);
-      ctx.fillText(text, x, y);
+    paintText: function paintText(ctx, pixelRatio, text, color, fontSize, x, y) {
+      ctx.setFillStyle(color);
+      ctx.setFontSize(fontSize * pixelRatio);
+      ctx.fillText(text, x * pixelRatio, y * pixelRatio);
     },
     // 绘制 换行文字
     paintLogText: function paintLogText(ctx, text, color, fontSize, x, y, lineStep, limitLength) {
@@ -600,62 +613,197 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
 
     // 绘制 纯色背景
     paintBgColor: function paintBgColor(ctx, color, canvansW, canvansH) {
-      ctx.setFillColor(color);
-      canvansW = this.smCtxW * this.pixelRatio;
-      canvansH = this.smCtxH * this.pixelRatio;
-      ctx.fillRect(0, 0, canvansW, canvansH);
+      ctx.rect(0, 0, canvansW, canvansH);
+      ctx.fillStyle = color;
+      ctx.fill();
+    },
+
+
+
+    /**该方法用来绘制一个有填充色的圆角矩形 
+       *@param cxt:canvas的上下文环境 
+       *@param x:左上角x轴坐标 
+       *@param y:左上角y轴坐标 
+       *@param width:矩形的宽度 
+       *@param height:矩形的高度 
+       *@param radius:圆的半径 
+       *@param fillColor:填充颜色 
+       **/
+    fillRoundRect: function fillRoundRect(cxt, x, y, width, height, radius, fillColor) {
+      //圆的直径必然要小于矩形的宽高          
+      if (2 * radius > width || 2 * radius > height) {return false;}
+
+      cxt.save();
+      cxt.translate(x, y);
+      //绘制圆角矩形的各个边  
+      this.drawRoundRectPath(cxt, width, height, radius);
+      cxt.fillStyle = fillColor || "#000"; //若是给定了值就用给定的值否则给予默认值  
+      cxt.fill();
+      cxt.restore();
+    },
+
+
+    // 绘制 圆角矩形
+    drawRoundRectPath: function drawRoundRectPath(cxt, width, height, radius) {
+      cxt.beginPath(0);
+      //从右下角顺时针绘制，弧度从0到1/2PI  
+      cxt.arc(width - radius, height - radius, radius, 0, Math.PI / 2);
+
+      //矩形下边线  
+      cxt.lineTo(radius, height);
+
+      //左下角圆弧，弧度从1/2PI到PI  
+      cxt.arc(radius, height - radius, radius, Math.PI / 2, Math.PI);
+
+      //矩形左边线  
+      cxt.lineTo(0, radius);
+
+      //左上角圆弧，弧度从PI到3/2PI  
+      cxt.arc(radius, radius, radius, Math.PI, Math.PI * 3 / 2);
+
+      //上边线  
+      cxt.lineTo(width - radius, 0);
+
+      //右上角圆弧  
+      cxt.arc(width - radius, radius, radius, Math.PI * 3 / 2, Math.PI * 2);
+
+      //右边线  
+      cxt.lineTo(width, height - radius);
+      cxt.closePath();
     },
 
 
     // 过滤 绘制数组，将图片转为本地图片
-    arrangPaintList: function arrangPaintList(paintArr) {
-      console.log(paintArr);
-      var arr = paintArr;
-      arr.forEach( /*#__PURE__*/function () {var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(ele, index) {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:if (!(
-
-                  ele.type === 'img')) {_context.next = 9;break;}
-                  console.log('for  ');
-                  console.log(ele);_context.next = 5;return (
-                    (0, _common.urlToLocalPath)(ele.content));case 5:res = _context.sent;
+    arrangPaintList: function arrangPaintList(paintArr) {return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var i, res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
 
 
 
-                  ele.content = res.path;
-                  ele.widtth = res.width;
-                  ele.height = res.height;case 9:case "end":return _context.stop();}}}, _callee);}));return function (_x, _x2) {return _ref2.apply(this, arguments);};}());
 
 
-      console.log('----------arrr-------------');
-      console.log(arr);
-      return arr;
-    },
+                i = 0;case 1:if (!(i < paintArr.length)) {_context2.next = 15;break;}_context2.next = 4;return (
+                  (0, _common.getImgInfo)(paintArr[i].content));case 4:res = _context2.sent;
+                paintArr[i].content = res.path;
+                paintArr[i].width = res.width;
+                paintArr[i].height = res.height;if (!(
 
-    canvansTodo: function canvansTodo(ctx, canvasId, pixelRatio, paintArr, finalW, finalH) {var _this3 = this;
-      uni.showLoading({
-        title: '名片海报生成中',
-        mask: true });
+                i === paintArr.length - 1)) {_context2.next = 12;break;}
+                console.log('finally');
+                console.log(paintArr);return _context2.abrupt("return",
 
-
-
-      var HraceW = paintArr[0].height / paintArr[0].width;
-
-      var dwidth = finalW / 5;
-      var dHeight = dwidth * HraceW;
-
-      if (paintArr[0].content !== undefined) {
-        console.log('首项数据');
-        console.log(paintArr[0].conent);
-        ctx.drawImage(paintArr[0].content, paintArr[0].xPosition, paintArr[0].yPosition, 200, 200);
-        ctx.draw(true);
-        setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var resTempFile;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-                  uni.hideLoading();_context2.next = 3;return (
-                    _this3.canvansToFile(canvasId, finalW, finalH));case 3:resTempFile = _context2.sent;
-                  console.log(resTempFile);case 5:case "end":return _context2.stop();}}}, _callee2);})),
-        1000);
-      }
+                paintArr);case 12:i++;_context2.next = 1;break;case 15:case "end":return _context2.stop();}}}, _callee2);}))();
 
 
     },
+
+    // 画布绘制图像
+    canvasDrawImage: function canvasDrawImage(ctx, pixelRatio, imgObj, dx, dy, dWidth, dHeight) {var lager = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
+      // if(!sWidth){
+      // 	sWidth = imgObj.width
+      // }
+      // if(!sHeight){
+      // 	sHeight = imgObj.height
+      // }
+
+
+      dx = parseInt(dx * pixelRatio);
+      dy = parseInt(dy * pixelRatio);
+
+      dWidth = parseInt(dWidth * pixelRatio);
+      dHeight = parseInt(dHeight * pixelRatio);
+
+      var sx = 0;
+      var sy = 0;
+      var sWidth = dWidth;
+      var sHeight = dHeight;
+
+
+      ctx.drawImage(imgObj.content, dx, dy, dWidth, dHeight);
+    },
+
+
+    canvansTodo: function canvansTodo(ctx, canvasId, pixelRatio, paintArr, finalW, finalH) {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var readyArr, startX, startY, addYStep, addYStepsm, addXStep, addXStepsm, fontSize, iconWidth, iconHeight, HraceW, dWidth, dHeight;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+                _this4.paintBgColor(ctx, '#FFFFFF', finalW, finalH);
+
+                uni.showLoading({
+                  title: '名片海报生成中',
+                  mask: true });_context4.next = 4;return (
+
+
+                  _this4.arrangPaintList(paintArr));case 4:readyArr = _context4.sent;
+                startX = _this4.smCtxW / 10;
+                startY = _this4.smCtxH / 10;
+                addYStep = _this4.smCtxW / 7;
+                addYStepsm = _this4.smCtxH / 24;
+                addXStep = 10;
+                addXStepsm = 10;
+                fontSize = _this4.smCtxW / 750 * 20;
+                iconWidth = 15;
+                iconHeight = 15;
+
+                HraceW = readyArr[0].height / readyArr[0].width;
+                dWidth = _this4.smCtxW / 10 * 3;
+                dHeight = HraceW * dWidth;
+                _this4.fillRoundRect(ctx, (startX - 10) * pixelRatio, (startY - 10) * pixelRatio, (_this4.smCtxW / 10 * 8 + 20) * pixelRatio, (dHeight + 20) * pixelRatio, 10 * pixelRatio, '#efefef');
+                _this4.canvasDrawImage(ctx, pixelRatio, readyArr[0], startX, startY - 0.5, dWidth, dHeight);
+
+
+
+                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.name, '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm);
+                _this4.paintText(ctx, pixelRatio, '销售经理', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 2);
+
+                _this4.canvasDrawImage(ctx, pixelRatio, readyArr[4], startX + dWidth + addXStep + fontSize * 10, startY + addYStepsm - iconHeight, iconWidth, iconWidth);
+
+
+                _this4.paintText(ctx, pixelRatio, '电话：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 3);
+                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.phone, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 3);
+
+                _this4.paintText(ctx, pixelRatio, '公司：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 4);
+                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.company, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 4);
+
+                _this4.paintText(ctx, pixelRatio, '邮箱：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 5);
+                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.mail, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 5);
+
+                _this4.paintText(ctx, pixelRatio, '您好', '#000', fontSize * 1.2, startX, startY + addYStep + dHeight);
+                _this4.paintText(ctx, pixelRatio, '我是' + _this4.salesManagerInfo.company + '的销售经理' + _this4.salesManagerInfo.name, '#000', fontSize * 1.2, startX, startY + addYStep * 1.5 + dHeight);
+                _this4.paintText(ctx, pixelRatio, '这是我的名片，请保存', '#000', fontSize * 1.2, startX, startY + addYStep * 2 + dHeight);
+                _this4.paintText(ctx, pixelRatio, '谢谢！', '#000', fontSize * 1.2, startX, startY + addYStep * 2.5 + dHeight);
+
+                _this4.paintText(ctx, pixelRatio, '长按识别二维码收下名片', '#000', fontSize, startX, _this4.smCtxH - 60);
+                _this4.canvasDrawImage(ctx, pixelRatio, readyArr[5], _this4.smCtxW - iconWidth * 8, _this4.smCtxH - 60 - iconWidth * 2.5, iconWidth * 5, iconWidth * 5);
+                // ctx.drawImage(readyArr[1].content,)
+
+                ctx.draw();
+                setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var resTempFile;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+                          uni.hideLoading();_context3.next = 3;return (
+                            _this4.canvansToFile(canvasId, finalW, finalH));case 3:resTempFile = _context3.sent;
+                          _this4.saveToAlbum(resTempFile);
+                          console.log(resTempFile);case 6:case "end":return _context3.stop();}}}, _callee3);})),
+                1000);case 36:case "end":return _context4.stop();}}}, _callee4);}))();
+    },
+
+
+
+    // 图片存入 本地相册
+    saveToAlbum: function saveToAlbum(tempFilePath) {
+      uni.saveImageToPhotosAlbum({
+        filePath: tempFilePath,
+        success: function success(res) {
+          uni.showToast({
+            title: '存入相册成功' });
+
+        },
+        fail: function fail(res) {
+          uni.showToast({
+            title: '存入相册失败',
+            icon: 'none' });
+
+        } });
+
+    },
+
+
+    // 画布生成本地路径
+
     canvansToFile: function canvansToFile(canvansId, clipW, clipH) {
       return new Promise(function (resolve, reject) {
         uni.canvasToTempFilePath({

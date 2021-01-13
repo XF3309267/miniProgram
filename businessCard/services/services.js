@@ -1,14 +1,22 @@
 
-const baseURL = 'http://192.168.188.110:9999'
+const baseURL = 'http://192.168.188.139:9999'
 const normalHeader = {
 	
 }
 const token = function(){
 	let value = uni.getStorageSync('token')
+	return 'bearer a347a4b8-6d71-4b73-9eaa-0f4276df50ad'
 	if(value){
 		return value
+	}else{
+		return 'bearer a347a4b8-6d71-4b73-9eaa-0f4276df50ad'
 	}
 }
+
+const tokenHeadr ={
+	Authorization: token()
+}
+
 
 const myHttp = function({url,data,method,header}){
 	if(!data){
@@ -27,9 +35,15 @@ const myHttp = function({url,data,method,header}){
 			header:header,
 			data:data,
 			success:(res)=>{
+				console.log('success')
+				
+				console.log(res)
 				resolve(res)
 			},
 			fail:(res)=>{
+				console.log('fail')
+				
+				console.log(res)
 				resolve(res)
 			}
 		})
@@ -64,9 +78,16 @@ const getOpenId = async function(){
 } 
 
 //	获取公司信息
-// /card/wx/cardcompanyinfo/all
-const allCompanyInfo = function(data){
-	return myHttp({url:'/card/wx/cardcompanyinfo/all'})   
+// /card/wx/cardcompanyinfo/getCompany/
+const getCompanyInfo = function(data){
+	console.log('tokenHeadr')
+	console.log(tokenHeadr)
+	return myHttp(
+		{
+			url:'/card/wx/cardcompanyinfo/getCompany/'+ data.id,
+			header:tokenHeadr,
+		}
+	)   
 } 
 
 // function({addUrl,data,method,  }  ){
@@ -91,5 +112,5 @@ const allCompanyInfo = function(data){
 
 
 module.exports = {
-	allCompanyInfo
+	getCompanyInfo
 }

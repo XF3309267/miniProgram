@@ -33,6 +33,24 @@
 					</view>
 				</view>
 			</view>
+			<view class="fixed-bottom">
+				<button @click="showBottomPoup" class="cu-tag round padding-sm bg-green self-text margin-0"> 分享名片</button>
+				<view class="cu-tag round padding-sm bg-green self-text" @click="copyWxId"> 
+					加微信
+					<view  class="sm-title">
+						WX_id54633342
+					</view>
+				</view>
+				<view class="cu-tag round bg-green self-text" @click="phoneCall"> 
+					<view class="" >
+						联系她
+					</view>
+					<view  class="sm-title">
+						您的手机号码不会被泄露
+					</view>
+				</view>
+			</view>
+			
 			<view class="padding bg-white margin-top">
 				<view class="">
 					个人简介
@@ -66,23 +84,7 @@
 				</view>
 			</view>
 			
-			<view class="fixed-bottom">
-				<button @click="showBottomPoup" class="cu-tag round padding-sm bg-green self-text margin-0"> 分享名片</button>
-				<view class="cu-tag round padding-sm bg-green self-text" @click="copyWxId"> 
-					加微信
-					<view  class="sm-title">
-						WX_id54633342
-					</view>
-				</view>
-				<view class="cu-tag round bg-green self-text" @click="phoneCall"> 
-					<view class="" >
-						联系她
-					</view>
-					<view  class="sm-title">
-						您的手机号码不会被泄露
-					</view>
-				</view>
-			</view>
+			
 		</view>
 		<u-popup v-model="bottomPoup" height="260rpx" mode="bottom" border-radius="14">
 			<view class="poup-container">
@@ -96,7 +98,7 @@
 					</view>
 				</view>
 				
-				<view class="item-container">
+				<view class="item-container" @click="createPostCard">
 					<view class="bottom-img-container bg-blue">
 						<image src="@/static/img/salesPersonImg/card.png" mode="widthFix"></image>
 					</view>
@@ -136,7 +138,7 @@
 					position:'',
 					wxId:'wx_id1245343543',
 					phone:'13970853937',
-					company:'江西省家院里科技江西省家院里科技',
+					company:'江西省家院里科技江西省家',
 					brief:'',
 					mail:'123123222@gmail.com'
 				},
@@ -190,7 +192,7 @@
 				ctx:null,
 				pixeRatio:0,
 				getalbum:false,
-				
+				initCanvasRes: false,
 				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/phone.png
 				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/home.png
 				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png
@@ -206,7 +208,8 @@
 					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png',xPosition:0,yPosition:0},
 					// 公司  logo
 					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png',xPosition:0,yPosition:0},
-					{type:'text',content:'你好发送方大哥哥但是广东省法规收到',xPosition:0,yPosition:0}
+					// 公司  小程序二维码
+					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/jigou.png',xPosition:0,yPosition:0},
 				],
 				newPainArr:[],			
 			}
@@ -281,13 +284,15 @@
 				icon:'none',
 			})
 		},
-		created() {
-			this.initCanvas(this.myCanvasId)
+		async created() {
+			const initCanvasRes = await this.initCanvas(this.myCanvasId)
+			this.initCanvasRes = initCanvasRes
+
 			
-			console.log(this.paintArr)
-			this.newPainArr =  this.arrangPaintList(this.paintArr)
-			console.log(this.newPainArr)
-			this.canvansTodo(this.ctx,this.myCanvasId,this.pixeRatio,this.newPainArr,this.smCtxW *this.pixeRatio ,this.smCtxH * this.pixeRatio )
+			
+			// 对于异步的处理  
+			// 建议 不要用在 for 循环中（特别是 使用 async await )
+			
 		},
 		mounted() {
 			
@@ -320,7 +325,6 @@
 					 innerAudioContext.onTimeUpdate(()=>{
 					 	this.allTime = innerAudioContext.duration
 					 	this.audioCurrentTime = innerAudioContext.currentTime
-					 	
 					 	const restTime = parseInt(this.allTime - this.audioCurrentTime )
 					 	if(!restTime){
 					 		innerAudioContext.destroy()
@@ -387,28 +391,37 @@
 					
 				}
 			},
-			
-			
+			// 生成名片海报
+			createPostCard(){
+				if(this.initCanvasRes){
+					this.canvansTodo(this.ctx,this.myCanvasId,this.pixeRatio,this.paintArr,this.smCtxW *this.pixeRatio ,this.smCtxH * this.pixeRatio )
+				}
+			},	
 			// 画布所需
 			initCanvas(canvansId){
-				this.ctx = uni.createCanvasContext(canvansId)
-				uni.getSystemInfo({
-					success:(res)=>{
-						this.smCtxH = res.screenHeight * 0.8
-						this.smCtxW = this.smCtxH * 0.5
-						if(res.screenWidth < this.smCtxW ){
-							this.smCtxW = res.screenWidth
+				return new Promise((resolve,reject)=>{
+					this.ctx = uni.createCanvasContext(canvansId)
+					uni.getSystemInfo({
+						success:(res)=>{
+							console.log(res)
+							
+							this.smCtxH = res.screenHeight * 0.5
+							this.smCtxW = this.smCtxH * 0.8
+							if(res.screenWidth < this.smCtxW ){
+								this.smCtxW = res.screenWidth
+							}
+							this.pixeRatio = res.pixelRatio
+							resolve(true)
 						}
-						this.pixeRatio = res.pixelRatio
-					}
+					})
 				})
 			},
 			
 			// 绘制文字
-			paintText(ctx,text,color,fontSize,x,y){
-				ctx.setFillColor(color)
-				ctx.setFontSize(fontSize)
-				ctx.fillText(text,x,y)
+			paintText(ctx,pixelRatio,text,color,fontSize,x,y){
+				ctx.setFillStyle(color)
+				ctx.setFontSize(fontSize * pixelRatio )
+				ctx.fillText(text,x * pixelRatio,y * pixelRatio)
 			},
 			// 绘制 换行文字
 			paintLogText(ctx,text,color,fontSize,x,y,lineStep,limitLength){
@@ -435,62 +448,197 @@
 			
 			// 绘制 纯色背景
 			paintBgColor(ctx,color,canvansW,canvansH){
-				ctx.setFillColor(color)
-				canvansW = this.smCtxW * this.pixelRatio 
-				canvansH = this.smCtxH * this.pixelRatio 
-				ctx.fillRect(0,0,canvansW,canvansH)
+				ctx.rect(0,0,canvansW,canvansH);
+				ctx.fillStyle = color;
+				ctx.fill();
+			},
+			
+			
+			
+		  /**该方法用来绘制一个有填充色的圆角矩形 
+			 *@param cxt:canvas的上下文环境 
+			 *@param x:左上角x轴坐标 
+			 *@param y:左上角y轴坐标 
+			 *@param width:矩形的宽度 
+			 *@param height:矩形的高度 
+			 *@param radius:圆的半径 
+			 *@param fillColor:填充颜色 
+			 **/
+			fillRoundRect(cxt, x, y, width, height, radius, fillColor) {
+				//圆的直径必然要小于矩形的宽高          
+				if (2 * radius > width || 2 * radius > height) { return false; }
+		 
+				cxt.save();
+				cxt.translate(x, y);
+				//绘制圆角矩形的各个边  
+				this.drawRoundRectPath(cxt, width, height, radius);
+				cxt.fillStyle = fillColor || "#000"; //若是给定了值就用给定的值否则给予默认值  
+				cxt.fill();
+				cxt.restore();
+			},
+			
+			
+			// 绘制 圆角矩形
+			drawRoundRectPath(cxt, width, height, radius) {
+				cxt.beginPath(0);
+				//从右下角顺时针绘制，弧度从0到1/2PI  
+				cxt.arc(width - radius, height - radius, radius, 0, Math.PI / 2);
+		
+				//矩形下边线  
+				cxt.lineTo(radius, height);
+		
+				//左下角圆弧，弧度从1/2PI到PI  
+				cxt.arc(radius, height - radius, radius, Math.PI / 2, Math.PI);
+		
+				//矩形左边线  
+				cxt.lineTo(0, radius);
+		
+				//左上角圆弧，弧度从PI到3/2PI  
+				cxt.arc(radius, radius, radius, Math.PI, Math.PI * 3 / 2);
+		
+				//上边线  
+				cxt.lineTo(width - radius, 0);
+		
+				//右上角圆弧  
+				cxt.arc(width - radius, radius, radius, Math.PI * 3 / 2, Math.PI * 2);
+		
+				//右边线  
+				cxt.lineTo(width, height - radius);
+				cxt.closePath();
 			},
 			
 			
 			// 过滤 绘制数组，将图片转为本地图片
-			arrangPaintList(paintArr){
-				console.log(paintArr)
-				let arr = paintArr
-				arr.forEach(async (ele,index)=>{
-				
-					if(ele.type === 'img'){
-						console.log('for  ')
-						console.log(ele)
-						const res = await urlToLocalPath(ele.content)
-				
+			async arrangPaintList(paintArr){
+				// let arr = []
+				// paintArr.forEach((item,index)=>{
+				// 	let obj = Object.assign({},item)
+				// 	arr[index] = obj
+				// })
+				for (let i = 0; i < paintArr.length; i++) {
+					const res = await getImgInfo(paintArr[i].content)
+					paintArr[i].content = res.path
+					paintArr[i].width = res.width
+					paintArr[i].height = res.height
+					
+					if(i === paintArr.length-1){
+						console.log('finally')
+						console.log(paintArr)
 						
-						
-						ele.content = res.path
-						ele.widtth = res.width
-						ele.height = res.height
-					}
-				})
-				console.log('----------arrr-------------')
-				console.log(arr)
-				return arr
+						return paintArr
+					}	
+				}
 			},
 			
-			canvansTodo(ctx,canvasId,pixelRatio,paintArr,finalW,finalH){
+			// 画布绘制图像
+			canvasDrawImage(ctx,pixelRatio,imgObj,dx,dy,dWidth,dHeight,lager = 1){
+				// if(!sWidth){
+				// 	sWidth = imgObj.width
+				// }
+				// if(!sHeight){
+				// 	sHeight = imgObj.height
+				// }
+			
+				
+				 dx = parseInt( dx * pixelRatio)
+				 dy = parseInt(dy  * pixelRatio)
+				 
+				dWidth = parseInt(dWidth * pixelRatio ) 
+				dHeight = parseInt(dHeight * pixelRatio) 
+				
+				let sx = 0
+				let sy = 0 
+				let sWidth = dWidth
+				let sHeight = dHeight
+
+				
+				ctx.drawImage(imgObj.content,dx , dy, dWidth , dHeight)
+			},
+			
+			
+			async canvansTodo(ctx,canvasId,pixelRatio,paintArr,finalW,finalH){
+				 this.paintBgColor(ctx,'#FFFFFF',finalW,finalH)
+				
 				uni.showLoading({
 					title:'名片海报生成中',
-					mask:true
+					mask:true,
 				})
 				
-				
-				let HraceW = paintArr[0].height / paintArr[0].width;
-				
-				let dwidth = finalW / 5;
-				let dHeight = dwidth * HraceW;
-			
-				if(paintArr[0].content!==undefined){
-					console.log('首项数据')
-					console.log(paintArr[0].conent)
-					ctx.drawImage(paintArr[0].content,paintArr[0].xPosition,paintArr[0].yPosition, 200, 200)
-					ctx.draw(true)
-					setTimeout( async ()=>{
-						uni.hideLoading()
-						const resTempFile = await this.canvansToFile(canvasId,finalW,finalH)
-						console.log(resTempFile)
-					},1000)
-				}
-				
+				const readyArr = await this.arrangPaintList(paintArr)
+				const startX = this.smCtxW / 10
+				const startY = this.smCtxH / 10
+				const addYStep = this.smCtxW / 7
+				const addYStepsm = this.smCtxH / 24
+				const addXStep = 10
+				const addXStepsm = 10
+				const fontSize = this.smCtxW / 750 * 20
+				const iconWidth = 15
+				const iconHeight = 15
 
+				let HraceW = readyArr[0].height / readyArr[0].width;
+				let dWidth = this.smCtxW / 10 * 3
+				let dHeight = HraceW * dWidth
+				this.fillRoundRect(ctx,(startX-10) *pixelRatio ,(startY -10)*pixelRatio,(this.smCtxW / 10 * 8 +20 )*pixelRatio ,(dHeight + 20) *pixelRatio,10*pixelRatio,'#efefef')
+				this.canvasDrawImage(ctx,pixelRatio,readyArr[0],startX,(startY - 0.5) ,dWidth,dHeight)
+
+				
+				
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.name,'#000',fontSize,(startX + dWidth + addXStep),startY + addYStepsm)
+				this.paintText(ctx,pixelRatio,'销售经理' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *2 )
+				
+				this.canvasDrawImage(ctx,pixelRatio,readyArr[4],(startX + dWidth + addXStep + fontSize * 10),startY + addYStepsm - iconHeight, iconWidth , iconWidth)
+				
+				
+				this.paintText(ctx,pixelRatio,'电话：' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *3)
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.phone,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *3)
+				
+				this.paintText(ctx,pixelRatio,'公司：' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *4)
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.company ,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *4)
+				
+				this.paintText(ctx,pixelRatio,'邮箱：' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *5)
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.mail ,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *5)
+				
+				this.paintText(ctx,pixelRatio,'您好' ,'#000',fontSize * 1.2,(startX),startY  + addYStep + dHeight)
+				this.paintText(ctx,pixelRatio,'我是' + this.salesManagerInfo.company + '的销售经理' + this.salesManagerInfo.name ,'#000',fontSize * 1.2,(startX),startY  + addYStep * 1.5 + dHeight)
+				this.paintText(ctx,pixelRatio,'这是我的名片，请保存' ,'#000',fontSize * 1.2,(startX),startY  + addYStep *2 + dHeight)
+				this.paintText(ctx,pixelRatio,'谢谢！' ,'#000',fontSize * 1.2,(startX),startY  + addYStep *2.5 + dHeight)
+
+				this.paintText(ctx,pixelRatio,'长按识别二维码收下名片' ,'#000',fontSize,(startX),this.smCtxH - 60)
+				this.canvasDrawImage(ctx,pixelRatio,readyArr[5],this.smCtxW- iconWidth * 8,this.smCtxH - 60 - iconWidth *2.5, iconWidth * 5 , iconWidth * 5)
+				// ctx.drawImage(readyArr[1].content,)
+
+				ctx.draw()
+				setTimeout(async ()=>{
+					uni.hideLoading()
+					const resTempFile = await this.canvansToFile(canvasId,finalW,finalH)
+					this.saveToAlbum(resTempFile)
+					console.log(resTempFile)
+				},1000)
 			},
+
+			
+			
+			// 图片存入 本地相册
+			saveToAlbum(tempFilePath){
+				uni.saveImageToPhotosAlbum({
+					filePath:tempFilePath,
+					success: (res) => {
+						uni.showToast({
+							title:'存入相册成功'
+						})
+					},
+					fail:(res)=>{
+						uni.showToast({
+							title:'存入相册失败',
+							icon:'none'
+						})
+					}
+				})
+			},
+			
+			
+			// 画布生成本地路径
+			
 			canvansToFile(canvansId,clipW,clipH){
 				return new Promise(function(resolve,reject){
 					uni.canvasToTempFilePath({
@@ -573,9 +721,9 @@
 
 
 .fixed-bottom{
-	position: fixed;
-	bottom: 0;
-	left: 0;
+	// position: fixed;
+	// bottom: 0;
+	// left: 0;
 	display: flex;
 	justify-content: space-around;
 	padding: 30rpx 20rpx;

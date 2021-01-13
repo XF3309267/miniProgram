@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<cu-custom  :bgImage="getApp().globalData.navBgImg" :isBack="true">
+		<cu-custom  :isBack="true">
 			<block slot="backText"><text @click="personInfoEditBack"> 返回</text>  </block>
 			<block slot="content"> 个人资料 </block>
 		</cu-custom>

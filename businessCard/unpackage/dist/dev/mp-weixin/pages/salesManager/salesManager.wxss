@@ -73,9 +73,6 @@
   color: #FFFFFF;
 }
 .fixed-bottom.data-v-33855cb4 {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

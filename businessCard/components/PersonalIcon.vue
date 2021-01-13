@@ -31,11 +31,10 @@
 	position: relative;
 	display: flex;
 	margin-left: 20rpx;
-	
+	font-size: .9em;
 	.person-avatar{
-		width: 2em;
-		height: 2em;
-		
+		width: 1.5em;
+		height: 1.5em;
 	}
 	
 	.person-tag{
@@ -43,8 +42,8 @@
 		z-index: -1;
 		left: 0;
 		top: 5rpx;
-		height: 2em;
-		line-height: 2em;
+		height: 1.5em;
+		line-height: 1.5em;
 		padding-left: 3em;
 		background-color: #FFFFFF;
 		color: #c0c0c0;

@@ -114,6 +114,15 @@
 		    
 		}
 
+        ,{
+            "path" : "pages/products/products",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "custom",
@@ -129,10 +138,22 @@
 		"selectedColor": "#0e932e",
 		"list":[
 			{
-				"text":"首页",
+				"text": "名片",
+				"pagePath": "pages/salesManager/salesManager",
+				"iconPath": "/static/img/tabBarIcon/card.png",
+				"selectedIconPath": "/static/img/tabBarIcon/cardA.png"
+			},
+			{
+				"text":"企业介绍",
 				"pagePath": "pages/index/index",
 				"iconPath": "/static/img/tabBarIcon/home.png",
 				"selectedIconPath": "/static/img/tabBarIcon/homeA.png"
+			},
+			{
+				"text":"产品介绍",
+				"pagePath": "pages/products/products",
+				"iconPath": "/static/img/tabBarIcon/product.png",
+				"selectedIconPath": "/static/img/tabBarIcon/productA.png"
 			},
 			{
 				"text": "我的",
