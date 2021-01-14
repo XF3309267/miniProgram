@@ -54,7 +54,7 @@
 /*  精彩图册  */
 .img-container.data-v-33855cb4 {
   position: relative;
-  width: 720rpx;
+  width: 710rpx;
   /* 	height: 380rpx; */
   padding: 20rpx;
   border-radius: 10rpx;
@@ -156,5 +156,18 @@
   position: absolute;
   top: 10000000rpx;
   width: 100%;
+}
+.self-avatar-list.data-v-33855cb4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.self-avatar-list .self-avatar-item.data-v-33855cb4 {
+  width: 60rpx;
+  height: 60rpx;
+  padding: 5rpx;
 }
 

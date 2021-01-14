@@ -6,7 +6,7 @@
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		
 		
-		
+
 		{
 		    "path" : "pages/salesManager/salesManager",
 		    "style" :                                                                                    
@@ -44,15 +44,28 @@
 		    }
 		    
 		},
+
+
 		{
 		    "path" : "pages/contactUserList/contactUserList",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "销售搜索页面",
 		        "enablePullDownRefresh": false
 		    }
 		    
 		},	
+
+
+
+
+
+
+
+
+
+
+
 		{
 		    "path" : "pages/personInfoEdit/personInfoEdit",
 		    "style" :                                                                                    
@@ -81,9 +94,7 @@
 		        "navigationBarTitleText": "销售经理"
 		       
 		    }
-		}
-
-        ,
+		} ,
 		
 		
 		{

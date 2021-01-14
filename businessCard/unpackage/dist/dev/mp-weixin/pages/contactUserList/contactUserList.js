@@ -93,6 +93,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uSearch: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-search/u-search */ "uview-ui/components/u-search/u-search").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-search/u-search.vue */ 410))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -130,40 +153,47 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 21));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _services = __webpack_require__(/*! @/services/services.js */ 48);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var _default =
 {
   data: function data() {
     return {
@@ -178,7 +208,8 @@ var _default =
 
       activeTagIndex: -1,
       inputV: '',
-      searchResList: [] };
+      searchResList: [],
+      salesId: 1 };
 
   },
   onLoad: function onLoad() {
@@ -194,36 +225,34 @@ var _default =
 
   },
   methods: {
-    // 模拟搜索接口
-    moniSearch: function moniSearch() {
-      var res = { code: 200, data: {} };
-      return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-          var res = {
-            code: 200,
-            data: {
-              list: [
-              { name: '柴总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
-              { name: '江总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
-              { name: 'Z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
-              { name: 'z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }] } };
 
-
-
-          resolve(res);
-        }, 500);
-      });
-    },
-
+    // clientAddress: "qweqw"
+    // clientBz: "客户"
+    // clientCompany: 1
+    // clientHeadPortrait: ""
+    // clientLable: "qweq"
+    // clientMailbox: "134848482@qq.com"
+    // clientName: "李四"
+    // clientOppenId: "xiong5"
+    // clientPhone: "17770059848"
+    // clientWx: "as45d5a"
+    // createTime: "2021-01-07 10:28:49"
+    // deleted: 1
+    // id: 42
+    // updateTime: "2021-01-13 10:52:35"
 
     // 发起搜索
-    searchText: function searchText(text) {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-                text = text.trim();if (
+    searchText: function searchText(text) {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var dataObj, res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                dataObj = {};
 
-                text) {_context.next = 4;break;}
+                text = text.trim();
+                dataObj.searchContent = text;
+                dataObj.saleId = _this.salesId;if (
+
+                text) {_context.next = 7;break;}
                 uni.showToast({
                   title: '您还未输入任何内容',
-                  icon: 'none' });return _context.abrupt("return");case 4:
+                  icon: 'none' });return _context.abrupt("return");case 7:
 
 
 
@@ -233,20 +262,26 @@ var _default =
 
                 uni.showLoading({
                   title: '搜索中...',
-                  mask: true });_context.next = 9;return (
+                  mask: true });_context.next = 12;return (
 
-                  _this.moniSearch(text));case 9:res = _context.sent;
-
-                if (res.code === 200) {
-                  _this.searchResList = res.data.list;
-                } else {
-                  console.log(res);
-                  uni.showToast({
-                    title: res.msg,
-                    icon: 'none' });
-
+                  (0, _services.getClientInfosBySearchContent)(dataObj));case 12:res = _context.sent;
+                if (res.statusCode === 200) {
+                  _this.searchResList = res.data.data;
                 }
-                uni.hideLoading();case 12:case "end":return _context.stop();}}}, _callee);}))();
+                console.log('调用搜索接口返回');
+                console.log(res);
+
+
+                // if(res.code === 200){
+                // 	this.searchResList = res.data.list
+                // }else{
+                // 	console.log(res)
+                // 	uni.showToast({
+                // 		title:res.msg,
+                // 		icon:'none'
+                // 	})
+                // }
+                uni.hideLoading();case 17:case "end":return _context.stop();}}}, _callee);}))();
     },
     // 搜索框 change 事件
     searchChange: function searchChange() {
@@ -258,7 +293,9 @@ var _default =
     searchConfirm: function searchConfirm() {
       this.searchText(this.inputV);
     },
-
+    clearSearchBar: function clearSearchBar() {
+      this.inputV = '';
+    },
 
     // 点击标签
     tagClick: function tagClick(item, index) {

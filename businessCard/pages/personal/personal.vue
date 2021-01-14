@@ -32,7 +32,7 @@
 				</view>
 			</view>
 			<view class="" @click="toCardDetail">
-				<salesManagerCard/>
+				<SalesManagerCard :salesManagerInfo="salesManagerInfo"  :companyInfo="companyInfo" @onMailList="onMailList" />
 			</view>
 		</view>
 		
@@ -54,9 +54,12 @@
 								<image :src="userItem.avatar" style="width: 100%; height: 100%;" mode="aspectFill"></image>
 							</view>
 							<view class="content">
-								<view class="text-grey">{{userItem.name + ' ' + userItem.addInfo   }} </view>
+								<view class="text-grey flex align-center">
+									<text> {{userItem.clientName}}  </text>
+									<text class="u-p-l-20 u-font-20"> {{userItem.clientBz}}  </text>
+								</view>
 								<view class="text-gray text-sm">
-									{{userItem.phone}}
+									{{userItem.clientPhone}}
 								</view>
 							</view>
 						</view>
@@ -82,9 +85,13 @@
 
 <script>
 	import {pinyin} from '@/static/js/pinyin.js'
-	import salesManagerCard from '@/components/SalesManagerCard.vue'
+	import SalesManagerCard from '@/components/SalesManagerCard.vue'
 	
 	import {uniBadge} from '@dcloudio/uni-ui'
+	import {previewImg,getSalesInfo,getCompanyInfo,userAction} from '@/static/js/common.js'
+	
+	import {getClientInfosByCardSalesId} from '@/services/services.js'
+	
 	export default {
 		data() {
 			return {
@@ -92,14 +99,9 @@
 				indexList: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U","V", "W", "X", "Y", "Z"],
 				// userType 区分用户 与销售
 				userType:-1,
-				salesManagerInfo:{
-					avatar:'',
-					name:'王珞丹',
-					phone:'13970853937',
-					company:'江西省家院里科技江西省家院里科技',
-					mail:'123123222@gmail.com'
-				},
-				demoList:[
+				companyInfo:'',
+				salesManagerInfo:{},
+				searchResList:[
 					{id:1,name:'A总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
 					{id:1,name:'张总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
 					{id:1,name:'章总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
@@ -113,68 +115,18 @@
 					{id:1,name:'Z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
 					{id:1,name:'z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
 				],
+				
+				clientId:2,
+				salesId:20,
+				
+				
 				// 所有索引列表
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				hidden: true,
 				sourceUserList:[],
 				userList:[
-					// {
-					// 	indexName:'A',
-					// 	list:[
-					// 		{name:'A总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'A1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// },
-					// {
-					// 	indexName:'B',
-					// 	list:[
-					// 		{name:'B总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'B1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// },
-					// {
-					// 	indexName:'C',
-					// 	list:[
-					// 		{name:'C总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'C1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// },
-					// {
-					// 	indexName:'D',
-					// 	list:[
-					// 		{name:'D总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'D1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// },
-					// {
-					// 	indexName:'E',
-					// 	list:[
-					// 		{name:'E总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'E1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// },
-					// {
-					// 	indexName:'F',
-					// 	list:[
-					// 		{name:'F总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'F1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// },
-					// {
-					// 	indexName:'G',
-					// 	list:[
-					// 		{name:'G总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'G1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// },
-					// {
-					// 	indexName:'H',
-					// 	list:[
-					// 		{name:'H总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					// 		{name:'H1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-					// 	],
-					// }
+
 					
 				],
 				list: [],
@@ -201,10 +153,14 @@
 				this.initUserType()
 			}
 		},
-		created() {
+		async created() {
 			// this.initIndexList()
-			this.arrangeUserList(this.demoList)
 			
+			const getSalesInfoRes = await this.initSalesInfo(this.salesId)
+			this.initSalesBinds(this.salesId)
+			if(getSalesInfoRes){
+				this.initCompanyInfo(this.salesManagerInfo.companyId)
+			}
 		},
 		mounted() {
 			
@@ -219,6 +175,75 @@
 			initUserType(){
 				this.userType = getApp().globalData.userType
 			},
+			// 初始化 销售的信息
+			initSalesInfo(salesId){
+				return new Promise(async (resolve,reject)=>{
+					uni.showLoading({
+						title:'您的专属销售正在赶路的路上...',
+						mask:true
+					})
+					
+					let data = {id:salesId}
+					const getSalesInfoRes = await getSalesInfo(data)
+					if(getSalesInfoRes.statu===200){
+						this.salesManagerInfo = Object.assign({},getSalesInfoRes.value)
+						resolve(true)
+					}else{
+						uni.showToast({
+							title: getSalesInfoRes.msg,
+							icon:'none'
+						})
+						resolve(false)
+					}
+					uni.hideLoading()
+				})
+				
+			},
+			// 初始化  公司信息
+			
+			async initCompanyInfo(companyId){
+				uni.showLoading({
+					title:'公司信息资源获取中....',
+					mask:true
+				})
+				
+				let data = {id:companyId}
+				const getCompanyInfoRes = await getCompanyInfo(data)
+				if(getCompanyInfoRes.statu===200){
+					this.companyInfo = getCompanyInfoRes.value
+					console.log('----- company  ---')
+					console.log(getCompanyInfoRes.value)
+				}else{
+					uni.showToast({
+						title: getCompanyInfoRes.msg,
+						icon:'none'
+					})
+				}
+				uni.hideLoading()
+			},
+			//  初始化 销售所绑定的 用户的信息
+			async initSalesBinds(salesId){
+				let argObj = {}
+				
+				//**********************************
+				// 这里 暂时更改 salesId
+				salesId = 1
+				
+				
+				argObj.id = salesId
+				
+				console.log('argObj')
+				console.log(argObj)
+				
+				let getRes = await getClientInfosByCardSalesId(argObj)
+				if(getRes.statusCode === 200){
+					this.searchResList = getRes.data.data
+					this.arrangeUserList(this.searchResList)
+				}
+			},
+			
+			
+			// 跳转至 销售编辑页面
 			toMangaerInfoEdit(){
 				uni.navigateTo({
 					url:'/pages/salesManagerInfoEdit/salesManagerInfoEdit'
@@ -231,7 +256,7 @@
 				const list = sourceUserList
 				list.forEach(item=>{
 					// 名字首字母
-					let nameInitial = this.returnCapWord(item.name)
+					let nameInitial = this.returnCapWord(item.clientName)
 					// 名字首字母的索引
 					let initIndex = nameInitial.charCodeAt() - 'A'.charCodeAt()
 					initialArr[initIndex].list.push(item)
@@ -269,6 +294,11 @@
 			},
 			// 返回汉字的拼音 首字母
 			returnCapWord(wordStr){
+				if(!wordStr){
+					return 'A'
+				}
+				
+				
 				wordStr = wordStr.trim()
 				let pinyinStr = pinyin(wordStr)
 				let initial = pinyinStr.slice(0,1).toUpperCase()
@@ -299,6 +329,14 @@
 				this.list = list;
 				this.listCur = list[0];
 			},
+			
+			
+			// 保存通讯录的 额外操作
+			// 因为只是单方面的对 销售的信息操作，不涉及后台
+			onMailList(){
+				userAction(this.clientId,this.salesId,4)
+			},
+			
 			
 			// 获取用户手机号码
 			getPhoneNum(e){
@@ -391,7 +429,7 @@
 			},
 		},
 		components:{
-			salesManagerCard
+			SalesManagerCard
 		}
 	}
 </script>

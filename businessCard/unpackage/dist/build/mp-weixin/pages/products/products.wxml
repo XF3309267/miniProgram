@@ -1,0 +1,1 @@
+<view><cu-custom vue-id="08007ac0-1" bgColor="bg-gradual-blue" isBack="{{false}}" bind:__l="__l" vue-slots="{{['content']}}"><view slot="content">产品介绍</view></cu-custom>产品介绍</view>

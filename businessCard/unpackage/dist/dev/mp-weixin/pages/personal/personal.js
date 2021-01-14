@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 21));
 
 
 
@@ -213,157 +213,182 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _pinyin = __webpack_require__(/*! @/static/js/pinyin.js */ 66); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var salesManagerCard = function salesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard.vue */ 151));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { scrollTop: 0, indexList: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"], // userType 区分用户 与销售
-      userType: -1, salesManagerInfo: { avatar: '', name: '王珞丹', phone: '13970853937', company: '江西省家院里科技江西省家院里科技', mail: '123123222@gmail.com' }, demoList: [{ id: 1, name: 'A总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '张总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '章总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '史总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'B总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'b总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '波总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '董总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '柴总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: '江总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'Z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }, { id: 1, name: 'z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }], // 所有索引列表
-      StatusBar: this.StatusBar, CustomBar: this.CustomBar, hidden: true, sourceUserList: [], userList: [// {
-        // 	indexName:'A',
-        // 	list:[
-        // 		{name:'A总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'A1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // },
-        // {
-        // 	indexName:'B',
-        // 	list:[
-        // 		{name:'B总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'B1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // },
-        // {
-        // 	indexName:'C',
-        // 	list:[
-        // 		{name:'C总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'C1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // },
-        // {
-        // 	indexName:'D',
-        // 	list:[
-        // 		{name:'D总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'D1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // },
-        // {
-        // 	indexName:'E',
-        // 	list:[
-        // 		{name:'E总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'E1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // },
-        // {
-        // 	indexName:'F',
-        // 	list:[
-        // 		{name:'F总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'F1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // },
-        // {
-        // 	indexName:'G',
-        // 	list:[
-        // 		{name:'G总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'G1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // },
-        // {
-        // 	indexName:'H',
-        // 	list:[
-        // 		{name:'H总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-        // 		{name:'H1总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'}
-        // 	],
-        // }
-      ], list: [], listCur: '' };}, watch: {}, onPageScroll: function onPageScroll(e) {this.scrollTop = e.scrollTop;}, onLoad: function onLoad() {}, onReady: function onReady() {var that = this;uni.createSelectorQuery().select('.indexBar-box').boundingClientRect(function (res) {that.boxTop = res.top;}).exec();}, onShow: function onShow() {if (this.userType === -1) {this.initUserType();}}, created: function created() {// this.initIndexList()
-    this.arrangeUserList(this.demoList);}, mounted: function mounted() {}, methods: { customerClick: function customerClick(customerId) {uni.navigateTo({ url: '/pages/chatSalesManager/chatSalesManager?customerId=customerId' + customerId });}, // 初始化 userType
-    initUserType: function initUserType() {this.userType = getApp().globalData.userType;}, toMangaerInfoEdit: function toMangaerInfoEdit() {uni.navigateTo({ url: '/pages/salesManagerInfoEdit/salesManagerInfoEdit' });},
+
+
+
+var _pinyin = __webpack_require__(/*! @/static/js/pinyin.js */ 66);
+
+
+
+var _common = __webpack_require__(/*! @/static/js/common.js */ 49);
+
+var _services = __webpack_require__(/*! @/services/services.js */ 48);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard.vue */ 158));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+{
+  data: function data() {
+    return {
+      scrollTop: 0,
+      indexList: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+      // userType 区分用户 与销售
+      userType: -1,
+      companyInfo: '',
+      salesManagerInfo: {},
+      searchResList: [
+      { id: 1, name: 'A总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: '张总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: '章总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: '史总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: 'B总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: 'b总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: '波总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: '董总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: '柴总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: '江总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: 'Z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' },
+      { id: 1, name: 'z总', avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg', phone: '15938279383', addInfo: '有意向' }],
+
+
+      clientId: 2,
+      salesId: 20,
+
+
+      // 所有索引列表
+      StatusBar: this.StatusBar,
+      CustomBar: this.CustomBar,
+      hidden: true,
+      sourceUserList: [],
+      userList: [],
+
+
+
+      list: [],
+      listCur: '' };
+
+  },
+  watch: {},
+
+
+  onPageScroll: function onPageScroll(e) {
+    this.scrollTop = e.scrollTop;
+  },
+  onLoad: function onLoad() {
+
+  },
+  onReady: function onReady() {
+    var that = this;
+    uni.createSelectorQuery().select('.indexBar-box').boundingClientRect(function (res) {
+      that.boxTop = res.top;
+    }).exec();
+  },
+  onShow: function onShow() {
+    if (this.userType === -1) {
+      this.initUserType();
+    }
+  },
+  created: function created() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var getSalesInfoRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+
+
+                _this.initSalesInfo(_this.salesId));case 2:getSalesInfoRes = _context.sent;
+              _this.initSalesBinds(_this.salesId);
+              if (getSalesInfoRes) {
+                _this.initCompanyInfo(_this.salesManagerInfo.companyId);
+              }case 5:case "end":return _context.stop();}}}, _callee);}))();
+  },
+  mounted: function mounted() {
+
+  },
+  methods: {
+    customerClick: function customerClick(customerId) {
+      uni.navigateTo({
+        url: '/pages/chatSalesManager/chatSalesManager?customerId=customerId' + customerId });
+
+    },
+    // 初始化 userType
+    initUserType: function initUserType() {
+      this.userType = getApp().globalData.userType;
+    },
+    // 初始化 销售的信息
+    initSalesInfo: function initSalesInfo(salesId) {var _this2 = this;
+      return new Promise( /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(resolve, reject) {var data, getSalesInfoRes;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                  uni.showLoading({
+                    title: '您的专属销售正在赶路的路上...',
+                    mask: true });
+
+
+                  data = { id: salesId };_context2.next = 4;return (
+                    (0, _common.getSalesInfo)(data));case 4:getSalesInfoRes = _context2.sent;
+                  if (getSalesInfoRes.statu === 200) {
+                    _this2.salesManagerInfo = Object.assign({}, getSalesInfoRes.value);
+                    resolve(true);
+                  } else {
+                    uni.showToast({
+                      title: getSalesInfoRes.msg,
+                      icon: 'none' });
+
+                    resolve(false);
+                  }
+                  uni.hideLoading();case 7:case "end":return _context2.stop();}}}, _callee2);}));return function (_x, _x2) {return _ref.apply(this, arguments);};}());
+
+
+    },
+    // 初始化  公司信息
+
+    initCompanyInfo: function initCompanyInfo(companyId) {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var data, getCompanyInfoRes;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+                uni.showLoading({
+                  title: '公司信息资源获取中....',
+                  mask: true });
+
+
+                data = { id: companyId };_context3.next = 4;return (
+                  (0, _common.getCompanyInfo)(data));case 4:getCompanyInfoRes = _context3.sent;
+                if (getCompanyInfoRes.statu === 200) {
+                  _this3.companyInfo = getCompanyInfoRes.value;
+                  console.log('----- company  ---');
+                  console.log(getCompanyInfoRes.value);
+                } else {
+                  uni.showToast({
+                    title: getCompanyInfoRes.msg,
+                    icon: 'none' });
+
+                }
+                uni.hideLoading();case 7:case "end":return _context3.stop();}}}, _callee3);}))();
+    },
+    //  初始化 销售所绑定的 用户的信息
+    initSalesBinds: function initSalesBinds(salesId) {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var argObj, getRes;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+                argObj = {};
+
+                //**********************************
+                // 这里 暂时更改 salesId
+                salesId = 1;
+
+
+                argObj.id = salesId;
+
+                console.log('argObj');
+                console.log(argObj);_context4.next = 7;return (
+
+                  (0, _services.getClientInfosByCardSalesId)(argObj));case 7:getRes = _context4.sent;
+                if (getRes.statusCode === 200) {
+                  _this4.searchResList = getRes.data.data;
+                  _this4.arrangeUserList(_this4.searchResList);
+                }case 9:case "end":return _context4.stop();}}}, _callee4);}))();
+    },
+
+
+    // 跳转至 销售编辑页面
+    toMangaerInfoEdit: function toMangaerInfoEdit() {
+      uni.navigateTo({
+        url: '/pages/salesManagerInfoEdit/salesManagerInfoEdit' });
+
+    },
     // 对 用户信息 根据名字的拼音首字母 分组
-    arrangeUserList: function arrangeUserList(sourceUserList) {var _this = this;
+    arrangeUserList: function arrangeUserList(sourceUserList) {var _this5 = this;
       var resArr = [];
       var initialArr = this.returnInitObjList();
       var list = sourceUserList;
       list.forEach(function (item) {
         // 名字首字母
-        var nameInitial = _this.returnCapWord(item.name);
+        var nameInitial = _this5.returnCapWord(item.clientName);
         // 名字首字母的索引
         var initIndex = nameInitial.charCodeAt() - 'A'.charCodeAt();
         initialArr[initIndex].list.push(item);
@@ -401,6 +426,11 @@ var salesManagerCard = function salesManagerCard() {__webpack_require__.e(/*! re
     },
     // 返回汉字的拼音 首字母
     returnCapWord: function returnCapWord(wordStr) {
+      if (!wordStr) {
+        return 'A';
+      }
+
+
       wordStr = wordStr.trim();
       var pinyinStr = (0, _pinyin.pinyin)(wordStr);
       var initial = pinyinStr.slice(0, 1).toUpperCase();
@@ -431,6 +461,14 @@ var salesManagerCard = function salesManagerCard() {__webpack_require__.e(/*! re
       this.list = list;
       this.listCur = list[0];
     },
+
+
+    // 保存通讯录的 额外操作
+    // 因为只是单方面的对 销售的信息操作，不涉及后台
+    onMailList: function onMailList() {
+      (0, _common.userAction)(this.clientId, this.salesId, 4);
+    },
+
 
     // 获取用户手机号码
     getPhoneNum: function getPhoneNum(e) {
@@ -523,7 +561,7 @@ var salesManagerCard = function salesManagerCard() {__webpack_require__.e(/*! re
     } },
 
   components: {
-    salesManagerCard: salesManagerCard } };exports.default = _default;
+    SalesManagerCard: SalesManagerCard } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

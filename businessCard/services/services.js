@@ -5,11 +5,11 @@ const normalHeader = {
 }
 const token = function(){
 	let value = uni.getStorageSync('token')
-	return 'bearer a347a4b8-6d71-4b73-9eaa-0f4276df50ad'
+	return 'bearer ddbd3fcc-991d-4de2-a31d-1c351cc6170f'
 	if(value){
 		return value
 	}else{
-		return 'bearer a347a4b8-6d71-4b73-9eaa-0f4276df50ad'
+		return 'bearer ddbd3fcc-991d-4de2-a31d-1c351cc6170f'
 	}
 }
 
@@ -51,7 +51,7 @@ const myHttp = function({url,data,method,header}){
 
 }
 
-
+// 获取小程序用户 code
 const geCode = function(){
 	return new Promise(function(resolve,reject){
 		uni.login({
@@ -77,40 +77,82 @@ const getOpenId = async function(){
 	}
 } 
 
-//	获取公司信息
+//	获取公司信息   
+//  参数： 公司id
 // /card/wx/cardcompanyinfo/getCompany/
-const getCompanyInfo = function(data){
+const getCompanyInfoById = function(data){
 	console.log('tokenHeadr')
 	console.log(tokenHeadr)
+	console.log('获取公司信息')
+	console.log(data)
 	return myHttp(
 		{
 			url:'/card/wx/cardcompanyinfo/getCompany/'+ data.id,
+			method:'GET',
+			header:tokenHeadr,
+		}
+	)   
+} 
+//	获取销售信息   
+//  参数： 销售id
+//	/card/cardWeChat/cardsalesinfo/getCardSalesInfoById/
+const getCardSalesInfoById = function(data){
+	
+	return myHttp(
+		{
+			url:'/card/cardWeChat/cardsalesinfo/getCardSalesInfoById/'+ data.id,
+			method:'GET',
 			header:tokenHeadr,
 		}
 	)   
 } 
 
-// function({addUrl,data,method,  }  ){
-// 	return new Promise(function(resolve,reject){
-// 		uni.request({
-// 			url:baseURL + '/card/wx/cardcompanyinfo/all' ,
-// 			data:{ },
-// 			method: 'GET',
-// 			success:(res)=>{
-// 				resolve(res)
-// 			},
-// 			fail:(res)=>{
-// 				resolve(res)
-// 			},
-// 			complete:(res)=>{
-				
-// 			},
-// 		})
-// 	})
-// }
+// 添加用户活跃记录
+//	/card/cardWeChat/cardClientActiverecord/addActiverecord
+const addActiverecord = function(data){
+	
+	return myHttp(
+		{
+			url:'/card/cardWeChat/cardClientActiverecord/addActiverecord',
+			method:'POST',
+			header:tokenHeadr,
+			data:data
+		}
+	)   
+}
 
+// 	根据 销售Id 获取销售所绑定的用户
+//  /card/cardWeChat/cardclientinfo/getClientInfosByCardSalesId/
+const getClientInfosByCardSalesId = function(data){
+	
+	return myHttp(
+		{
+			url:'/card/cardWeChat/cardclientinfo/getClientInfosByCardSalesId/'+ data.id,
+			method:'GET',
+			header:tokenHeadr,
+		}
+	)   
+} 
+
+// 	根据输入内容 搜索用户
+//	/card/cardWeChat/cardclientinfo/getClientInfosBySearchContent
+const getClientInfosBySearchContent =  function(data){
+
+	return myHttp(
+		{
+			url:'/card/cardWeChat/cardclientinfo/getClientInfosBySearchContent',
+			method:'GET',
+			data:data,
+			header:tokenHeadr,
+		}
+	)   
+} 
 
 
 module.exports = {
-	getCompanyInfo
+	getCompanyInfoById,
+	getCardSalesInfoById,
+	getClientInfosByCardSalesId,
+	getClientInfosBySearchContent,
+	addActiverecord
 }

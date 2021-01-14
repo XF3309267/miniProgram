@@ -67,6 +67,12 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+	.self-bold{
+		font-weight: bold;
+		color: #000;
+	}
+	
+	
 	
 	.underLine{
 		text-decoration: underline;

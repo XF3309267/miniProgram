@@ -1,38 +1,39 @@
 <template>
 	<view class="sale-card">
 		<view class="left">
-			<image :src="salesManagerInfo.avatar" mode="aspectFill"> </image>
+			<image :src="salesManagerInfo.headPortrait" mode="aspectFill"> </image>
 		</view>
 		<view class="right">
 			<view class="flex justify-between">
 				<view class="">
 					<view class="text-bold text-lg padding-xs">
-						{{salesManagerInfo.name}}
+						{{salesManagerInfo.salesName}}
 					</view>
 					<view class="padding-xs">
-						销售经理
+						{{salesManagerInfo.jobTitle}}
 					</view>
 				</view>
 				<view class="">
-					<text class="cu-tag"> 公司logo </text>
+					<u-image :src="companyInfo.companyLogo" width="100rpx" height="30rpx" mode="aspectFit" ></u-image>
+					<!-- <text class="cu-tag"> 公司logo </text> -->
 				</view>
 			</view>
 			
 			<view class="flex align-center justify-between padding-xs">
 				<view class="flex align-center" @click.stop="phoneCall" >
 					<text class="cuIcon-phone  padding-right"></text>
-					<text class="underLine " > {{salesManagerInfo.phone}} </text>
+					<text class="underLine " > {{salesManagerInfo.salesPhone}} </text>
 				</view>
 				<text class="cu-tag round bg-gradual-green" @click.stop="addPhonePerson" > 保存通讯录 </text>
 			</view>
 			
 			<view class="flex align-center padding-xs">
 				<text class="cuIcon-home padding-right"></text>
-				<text> {{salesManagerInfo.company}} </text>
+				<text> {{companyInfo.companyName}} </text>
 			</view>
 			<view class="flex align-center padding-xs">
 				<text class="cuIcon-mail padding-right"></text>
-				<text> {{salesManagerInfo.mail}} </text>
+				<text> {{salesManagerInfo.salesMailbox}} </text>
 			</view>
 		</view>
 	</view>
@@ -41,25 +42,56 @@
 <script>
 	export default {
 		data() {
-			return {
-				salesManagerInfo:{
-					name:'王珞丹',
-					avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
-					position:'',
-					wxId:'wx_id1245343543',
-					phone:'13970853937',
-					company:'江西省家院里科技江西省家院里科技',
-					brief:'',
-					mail:'123123222@gmail.com'
-				}
-			};
+			return {};
 		},
-
+		props:{
+			salesManagerInfo:{
+				type:Object,
+				default:{
+					companyId: -1,
+					createTime: "",
+					deleted: -1,
+					headPortrait: "",
+					id: -1,
+					jobTitle: "",
+					likeNum: -1,
+					readNum: -1,
+					resignStatus: -1,
+					salesLoginPhone: "0",
+					salesMailbox: "",
+					salesName: "1111111",
+					salesOpenId: -1,
+					salesPhone: "0",
+					salesVoiceIntroduce: "",
+					salesWordIntroduce: "",
+					salesWx: "",
+					updateTime: ""
+				}
+			},
+			companyInfo:{
+				type:Object,
+				default:{
+					"companyAddress": "",
+					"companyImagesIntroduce": "",
+					"companyLogo": "",
+					"companyMailbox": "",
+					"companyManifesto": "",
+					"companyName": "",
+					"companyPhone": "",
+					"companyVoiceIntroduce": "",
+					"companyWordIntroduce": "",
+					"createTime": "",
+					"deleted": 0,
+					"id": 0,
+					"updateTime": ""
+				}
+			}
+		},
 		methods:{
 			phoneCall(){
 				
 				uni.makePhoneCall({
-					phoneNumber: this.salesManagerInfo.phone,
+					phoneNumber: this.salesManagerInfo.salesPhone,
 					success(res) {
 						console.log('makePhoneCall success')
 						console.log(res)
@@ -72,15 +104,16 @@
 			},
 			addPhonePerson(){
 				uni.addPhoneContact({
-					firstName:this.salesManagerInfo.name.slice(0,1),
-				    nickName: this.salesManagerInfo.name,
-				    mobilePhoneNumber: this.salesManagerInfo.phone, //手机号
-					email:this.salesManagerInfo.mail,
-				    success(res) {
+					firstName:this.salesManagerInfo.salesName.slice(0,1),
+				    nickName: this.salesManagerInfo.salesName,
+				    mobilePhoneNumber: this.salesManagerInfo.salesPhone, //手机号
+					email:this.salesManagerInfo.salesMailbox,
+				    success:(res)=>{
+						this.$emit('onMailList')
 				        console.log('success addPhoneContact');
 						console.log(res)
 				    },
-				    fail(res) {
+				    fail:(res)=>{
 				        console.log('fail addPhoneContact');
 						console.log(res)
 				    }

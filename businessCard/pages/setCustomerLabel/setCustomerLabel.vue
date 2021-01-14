@@ -39,7 +39,8 @@
 					{id:2,title:'标签3'},
 					{id:3,title:'标签4'},
 					{id:4,title:'标签5'}
-				]
+				],
+				salesId:20,
 			}
 		},
 		methods: {

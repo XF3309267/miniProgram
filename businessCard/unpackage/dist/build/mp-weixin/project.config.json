@@ -8,21 +8,23 @@
   },
   "compileType": "miniprogram",
   "libVersion": "",
-  "appid": "wxbb7fbda7b9d8e243",
+  "appid": "wx35fcaefd77a58c6c",
   "projectname": "businessCard",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
+      "current": -1,
       "list": []
     },
     "conversation": {
+      "current": -1,
       "list": []
     },
     "game": {
+      "current": -1,
       "list": []
     },
     "miniprogram": {
+      "current": -1,
       "list": []
     }
   }

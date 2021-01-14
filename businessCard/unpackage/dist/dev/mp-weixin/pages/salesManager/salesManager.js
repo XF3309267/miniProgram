@@ -28,7 +28,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _salesManager_vue_vue_type_template_id_33855cb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./salesManager.vue?vue&type=template&id=33855cb4&scoped=true& */ 44);
 /* harmony import */ var _salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./salesManager.vue?vue&type=script&lang=js& */ 46);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 49);
+/* harmony import */ var _salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 50);
 /* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
@@ -95,8 +95,11 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
+    uAvatar: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-avatar/u-avatar */ "uview-ui/components/u-avatar/u-avatar").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-avatar/u-avatar.vue */ 144))
+    },
     uPopup: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 144))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 151))
     }
   }
 } catch (e) {
@@ -283,30 +286,63 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 151));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 158));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 165));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+var _services = __webpack_require__(/*! @/services/services.js */ 48);
+
+var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 158));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 165));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 172));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
-  data: function data() {var _ref;
-    return _ref = {
+  data: function data() {
+    return {
       userType: -1,
-      avatar: [
+      newsCount: 12,
+      avatarList: [
       'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg',
       'https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg',
       'https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg',
+      'https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg',
       'https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg'],
 
-      browseCount: 123,
-      appreciateCount: 53,
-      userIsAppreciate: false,
-      salesManagerInfo: {
-        name: '王珞丹',
-        avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
-        position: '',
-        wxId: 'wx_id1245343543',
-        phone: '13970853937',
-        company: '江西省家院里科技江西省家',
-        brief: '',
-        mail: '123123222@gmail.com' },
 
+      userIsAppreciate: false,
+
+      clientId: 2,
+      salesId: 20,
+
+      salesManagerInfo: {
+        companyId: -1,
+        createTime: "",
+        deleted: -1,
+        headPortrait: "",
+        id: -1,
+        jobTitle: "",
+        likeNum: -1,
+        readNum: -1,
+        resignStatus: -1,
+        salesLoginPhone: "",
+        salesMailbox: "",
+        salesName: "",
+        salesOpenId: "",
+        salesPhone: "",
+        salesVoiceIntroduce: "",
+        salesWordIntroduce: "",
+        salesWx: "",
+        updateTime: "" },
+
+      companyInfo: {
+        "companyAddress": "",
+        "companyImagesIntroduce": "",
+        "companyLogo": "",
+        "companyMailbox": "",
+        "companyManifesto": "",
+        "companyName": "",
+        "companyPhone": "",
+        "companyVoiceIntroduce": "",
+        "companyWordIntroduce": "",
+        "createTime": "",
+        "deleted": 0,
+        "id": 0,
+        "updateTime": "" },
 
       altas: [{
         id: 0,
@@ -349,72 +385,49 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
       bottomPoup: false,
 
       // 画布所需
-      myCanvasId: 'myCanvas' }, _defineProperty(_ref, "avatar",
-    ''), _defineProperty(_ref, "tempFilePath",
-    ''), _defineProperty(_ref, "smCtxW",
-    0), _defineProperty(_ref, "smCtxH",
-    0), _defineProperty(_ref, "ctx",
-    null), _defineProperty(_ref, "pixeRatio",
-    0), _defineProperty(_ref, "getalbum",
-    false), _defineProperty(_ref, "initCanvasRes",
-    false), _defineProperty(_ref, "paintArr",
+      myCanvasId: 'myCanvas',
+      avatar: '',
+      tempFilePath: '',
+      smCtxW: 0,
+      smCtxH: 0,
+      ctx: null,
+      pixeRatio: 0,
+      getalbum: false,
+      initCanvasRes: false,
 
-
-
-
-
-    [
-    //  销售头像
-    // https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/81f6b5a961a5cd27d64f05192440b47.jpg
-    { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/81f6b5a961a5cd27d64f05192440b47.jpg', xPosition: 0, yPosition: 0 },
-
-    { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/phone.png', xPosition: 0, yPosition: 0 },
-    { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/home.png', xPosition: 0, yPosition: 0 },
-    { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png', xPosition: 0, yPosition: 0 },
-    // 公司  logo
-    { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png', xPosition: 0, yPosition: 0 },
-    // 公司  小程序二维码
-    { type: 'img', content: 'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/jigou.png', xPosition: 0, yPosition: 0 }]), _defineProperty(_ref, "newPainArr",
-
-    []), _ref;
+      paintArr: [] };
 
   },
+
+
+
+
+
 
   watch: {},
 
 
   computed: {
     showAudioTime: function showAudioTime() {
-      if (!this.audioIsPlay) {
-        return parseInt(this.allTime) + 's';
-      }
-
-      if (this.allTime === 0) {
-        return '0s';
-      }
-
+      if (!this.audioIsPlay) {return parseInt(this.allTime) + 's';}
+      if (this.allTime === 0) {return '0s';}
       return parseInt(this.allTime - this.audioCurrentTime) + 's';
     },
     // 画布的 宽度
     ctxWStr: function ctxWStr() {
       if (this.smCtxW) {
-        return {
-          'width': this.smCtxW * this.pixeRatio + 'px' };
-
+        return { 'width': this.smCtxW * this.pixeRatio + 'px' };
       }
     },
     ctxHStr: function ctxHStr() {
       if (this.smCtxH) {
-        return {
-          'height': this.smCtxH * this.pixeRatio + 'px' };
-
+        return { 'height': this.smCtxH * this.pixeRatio + 'px' };
       }
     } },
 
-
   onShareAppMessage: function onShareAppMessage() {
     return {
-      title: '您好，我是' + this.salesManagerInfo.name + ',一键保存，了解更多...',
+      title: '您好，我是' + this.salesManagerInfo.salesName + ',一键保存，了解更多...',
       success: function success(res) {
         console.log('分享 success');
         console.log(res);
@@ -429,35 +442,27 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
     if (this.userType === -1) {
       this.initUserType();
     }
+    this.sayHello(10000);
     (0, _common.getImgInfo)('@/static/img/salecPersonImg/home.png');
   },
   onLoad: function onLoad() {
 
-    // uni.chooseImage({
-    // 	success: async (res) => {
-    // 		console.log('选择图片后')
-    // 		let imgLoaclUrl = res.tempFilePaths[0]
-    // 		let obj = await urlToLocalPath(imgLoaclUrl)
-    // 		console.log('-----------------')
-    // 		console.log(obj)
-    // 		console.log('----*************-')
-    // 	},
-
-    // })
-    uni.showToast({
-      title: '您好，我是您的销售经理。有什么问题可以随时咨询我哦！',
-      icon: 'none' });
-
   },
-  created: function created() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var initCanvasRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
-                _this.initCanvas(_this.myCanvasId));case 2:initCanvasRes = _context.sent;
-              _this.initCanvasRes = initCanvasRes;
+  created: function created() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var initCanvasRes, getSalesInfoRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              // 进入页面 首次 就算 浏览名片一次
+              (0, _common.userAction)(_this.clientId, _this.salesId, 0);_context.next = 3;return (
 
+                _this.initCanvas(_this.myCanvasId));case 3:initCanvasRes = _context.sent;
+              _this.initCanvasRes = initCanvasRes;_context.next = 7;return (
+                _this.initSalesInfo(_this.salesId));case 7:getSalesInfoRes = _context.sent;
+              if (getSalesInfoRes) {
+                _this.initCompanyInfo(_this.salesManagerInfo.companyId);
+              }
 
 
               // 对于异步的处理  
               // 建议 不要用在 for 循环中（特别是 使用 async await )
-            case 4:case "end":return _context.stop();}}}, _callee);}))();
+            case 9:case "end":return _context.stop();}}}, _callee);}))();
   },
   mounted: function mounted() {
 
@@ -466,8 +471,89 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
     initUserType: function initUserType() {
       this.userType = getApp().globalData.userType;
     },
+
+    // 进入页面打招呼
+    sayHello: function sayHello() {var durationTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 2000;var title = arguments.length > 1 ? arguments[1] : undefined;
+      if (!title) {
+        title = '您好，我是您的销售经理。有什么问题可以随时咨询我哦！';
+      }
+      uni.showToast({
+        title: title,
+        icon: 'none',
+        duration: durationTime });
+
+    },
+    // 初始化 画布图片信息
+    inintPaintImgArr: function inintPaintImgArr() {
+      this.paintArr.push(this.salesManagerInfo.headPortrait);
+      this.paintArr.push(this.companyInfo.companyLogo);
+      this.paintArr.push(this.companyInfo.companyLogo);
+      console.log('push finally');
+      console.log(this.paintArr);
+    },
+    // 初始化 销售的信息
+    initSalesInfo: function initSalesInfo(salesId) {var _this2 = this;
+      return new Promise( /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(resolve, reject) {var data, getSalesInfoRes;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                  uni.showLoading({
+                    title: '您的专属销售正在赶路的路上...',
+                    mask: true });
+
+
+                  data = { id: salesId };_context2.next = 4;return (
+                    (0, _common.getSalesInfo)(data));case 4:getSalesInfoRes = _context2.sent;
+                  if (getSalesInfoRes.statu === 200) {
+                    _this2.salesManagerInfo = Object.assign({}, getSalesInfoRes.value);
+                    resolve(true);
+                  } else {
+                    uni.showToast({
+                      title: getSalesInfoRes.msg,
+                      icon: 'none' });
+
+                    resolve(false);
+                  }
+                  uni.hideLoading();case 7:case "end":return _context2.stop();}}}, _callee2);}));return function (_x, _x2) {return _ref.apply(this, arguments);};}());
+
+
+    },
+
+    // 初始化  公司信息
+
+    initCompanyInfo: function initCompanyInfo(companyId) {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var data, getCompanyInfoRes;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+                uni.showLoading({
+                  title: '公司信息资源获取中....',
+                  mask: true });
+
+
+                data = { id: companyId };_context3.next = 4;return (
+                  (0, _common.getCompanyInfo)(data));case 4:getCompanyInfoRes = _context3.sent;
+                if (getCompanyInfoRes.statu === 200) {
+                  _this3.companyInfo = getCompanyInfoRes.value;
+                  console.log('----- company  ---');
+                  console.log(getCompanyInfoRes.value);
+
+                  _this3.inintPaintImgArr();
+
+
+                } else {
+                  uni.showToast({
+                    title: getCompanyInfoRes.msg,
+                    icon: 'none' });
+
+                }
+                uni.hideLoading();case 7:case "end":return _context3.stop();}}}, _callee3);}))();
+    },
+    // 用户浏览 名片
+    userAppreciate: function userAppreciate() {
+      var res = (0, _common.userAction)(this.clientId, this.salesId, 1);
+      console.log('res');
+      console.log(res);
+
+    },
+
+
+
     // 播放音频
-    playAudio: function playAudio() {var _this2 = this;
+    playAudio: function playAudio() {var _this4 = this;
       if (this.audioIsPlay) {
         console.log('音乐播放中');
         this.startTime = 0;
@@ -477,23 +563,26 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
         return;
       }
       var innerAudioContext = uni.createInnerAudioContext();
-      innerAudioContext.src = this.audioSrc;
+      console.log('音频文件');
+      console.log(this.salesManagerInfo.salesVoiceIntroduce);
+
+      innerAudioContext.src = this.salesManagerInfo.salesVoiceIntroduce;
 
       innerAudioContext.onCanplay(function () {
-        _this2.audioCurrentTime = innerAudioContext.currentTime;
+        _this4.audioCurrentTime = innerAudioContext.currentTime;
         innerAudioContext.play();
-        _this2.audioIsPlay = true;
+        _this4.audioIsPlay = true;
 
         innerAudioContext.onPlay(function () {
-          _this2.audioCurrentTime = innerAudioContext.currentTime;
-          _this2.audioObj = innerAudioContext;
+          _this4.audioCurrentTime = innerAudioContext.currentTime;
+          _this4.audioObj = innerAudioContext;
           innerAudioContext.onTimeUpdate(function () {
-            _this2.allTime = innerAudioContext.duration;
-            _this2.audioCurrentTime = innerAudioContext.currentTime;
-            var restTime = parseInt(_this2.allTime - _this2.audioCurrentTime);
+            _this4.allTime = innerAudioContext.duration;
+            _this4.audioCurrentTime = innerAudioContext.currentTime;
+            var restTime = parseInt(_this4.allTime - _this4.audioCurrentTime);
             if (!restTime) {
               innerAudioContext.destroy();
-              _this2.audioIsPlay = false;
+              _this4.audioIsPlay = false;
             }
           });
         });
@@ -503,7 +592,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
           title: '音频播放错误',
           icon: 'none' });
 
-        _this2.audioIsPlay = false;
+        _this4.audioIsPlay = false;
         innerAudioContext.destroy();
       });
     },
@@ -512,15 +601,40 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
     appreciate: function appreciate() {
       if (this.userIsAppreciate) {
         console.log('用户已经点赞');
+        this.salesManagerInfo.likeNum--;
+        this.userIsAppreciate = false;
         return;
       }
-      this.appreciateCount++;
+      // const res = userAction(this.clientId,this.salesId,1)
+      // this.salesManagerInfo.likeNum++;
       this.userIsAppreciate = true;
     },
+
+
+    confirmCallPhone: function confirmCallPhone() {var _this5 = this;
+      uni.showModal({
+        title: '拨号提示',
+        content: '您确认拨打电话：' + this.salesManagerInfo.salesPhone + ' 吗？',
+        success: function success(res) {
+          if (res.confirm) {
+            console.log('用户点击了 确认');
+            _this5.phoneCall();
+          }
+        } });
+
+    },
+
+    // 保存通讯录的 额外操作
+    // 因为只是单方面的对 销售的信息操作，不涉及后台
+    onMailList: function onMailList() {
+      (0, _common.userAction)(this.clientId, this.salesId, 4);
+    },
+
     // 拨打电话
     phoneCall: function phoneCall() {
+
       uni.makePhoneCall({
-        phoneNumber: this.salesManagerInfo.phone,
+        phoneNumber: this.salesManagerInfo.salesPhone,
         success: function success(res) {
           console.log('makePhoneCall success');
           console.log(res);
@@ -531,14 +645,17 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
         } });
 
     },
+
+
     // 复制微信号
-    copyWxId: function copyWxId() {
+    copyWxId: function copyWxId() {var _this6 = this;
       uni.setClipboardData({
-        data: this.salesManagerInfo.wxId,
+        data: this.salesManagerInfo.salesWx,
         success: function success() {
           uni.showToast({
             title: '成功复制微信号' });
 
+          (0, _common.userAction)(_this6.clientId, _this6.salesId, 3);
         },
         fail: function fail() {
           console.log('复制失败');
@@ -558,24 +675,29 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
     },
     // 生成名片海报
     createPostCard: function createPostCard() {
+      (0, _common.userAction)(this.clientId, this.salesId, 2);
       if (this.initCanvasRes) {
         this.canvansTodo(this.ctx, this.myCanvasId, this.pixeRatio, this.paintArr, this.smCtxW * this.pixeRatio, this.smCtxH * this.pixeRatio);
       }
     },
+    // 点击分享名片
+    shareCard: function shareCard() {
+      (0, _common.userAction)(this.clientId, this.salesId, 2);
+    },
     // 画布所需
-    initCanvas: function initCanvas(canvansId) {var _this3 = this;
+    initCanvas: function initCanvas(canvansId) {var _this7 = this;
       return new Promise(function (resolve, reject) {
-        _this3.ctx = uni.createCanvasContext(canvansId);
+        _this7.ctx = uni.createCanvasContext(canvansId);
         uni.getSystemInfo({
           success: function success(res) {
             console.log(res);
 
-            _this3.smCtxH = res.screenHeight * 0.5;
-            _this3.smCtxW = _this3.smCtxH * 0.8;
-            if (res.screenWidth < _this3.smCtxW) {
-              _this3.smCtxW = res.screenWidth;
+            _this7.smCtxH = res.screenHeight * 0.5;
+            _this7.smCtxW = _this7.smCtxH * 0.8;
+            if (res.screenWidth < _this7.smCtxW) {
+              _this7.smCtxW = res.screenWidth;
             }
-            _this3.pixeRatio = res.pixelRatio;
+            _this7.pixeRatio = res.pixelRatio;
             resolve(true);
           } });
 
@@ -674,23 +796,28 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
 
 
     // 过滤 绘制数组，将图片转为本地图片
-    arrangPaintList: function arrangPaintList(paintArr) {return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var i, res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+    arrangPaintList: function arrangPaintList(paintArr) {var _this8 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var i, res, obj;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:if (!
 
 
 
 
 
-                i = 0;case 1:if (!(i < paintArr.length)) {_context2.next = 15;break;}_context2.next = 4;return (
-                  (0, _common.getImgInfo)(paintArr[i].content));case 4:res = _context2.sent;
-                paintArr[i].content = res.path;
-                paintArr[i].width = res.width;
-                paintArr[i].height = res.height;if (!(
+                _this8.paintArr[0].hasOwnProperty('content')) {_context4.next = 2;break;}return _context4.abrupt("return",
+                _this8.paintArr);case 2:
 
-                i === paintArr.length - 1)) {_context2.next = 12;break;}
+
+
+                i = 0;case 3:if (!(i < paintArr.length)) {_context4.next = 19;break;}_context4.next = 6;return (
+                  (0, _common.getImgInfo)(paintArr[i]));case 6:res = _context4.sent;
+                obj = {};
+                obj.content = res.path;
+                obj.width = res.width;
+                obj.height = res.height;
+                paintArr[i] = obj;if (!(
+                i === paintArr.length - 1)) {_context4.next = 16;break;}
                 console.log('finally');
-                console.log(paintArr);return _context2.abrupt("return",
-
-                paintArr);case 12:i++;_context2.next = 1;break;case 15:case "end":return _context2.stop();}}}, _callee2);}))();
+                console.log(paintArr);return _context4.abrupt("return",
+                paintArr);case 16:i++;_context4.next = 3;break;case 19:case "end":return _context4.stop();}}}, _callee4);}))();
 
 
     },
@@ -721,64 +848,65 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
     },
 
 
-    canvansTodo: function canvansTodo(ctx, canvasId, pixelRatio, paintArr, finalW, finalH) {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4() {var readyArr, startX, startY, addYStep, addYStepsm, addXStep, addXStepsm, fontSize, iconWidth, iconHeight, HraceW, dWidth, dHeight;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
-                _this4.paintBgColor(ctx, '#FFFFFF', finalW, finalH);
+    canvansTodo: function canvansTodo(ctx, canvasId, pixelRatio, paintArr, finalW, finalH) {var _this9 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6() {var readyArr, startX, startY, addYStep, addYStepsm, addXStep, addXStepsm, fontSize, iconWidth, iconHeight, HraceW, dWidth, dHeight;return _regenerator.default.wrap(function _callee6$(_context6) {while (1) {switch (_context6.prev = _context6.next) {case 0:
+                _this9.paintBgColor(ctx, '#FFFFFF', finalW, finalH);
 
                 uni.showLoading({
                   title: '名片海报生成中',
-                  mask: true });_context4.next = 4;return (
+                  mask: true });_context6.next = 4;return (
 
 
-                  _this4.arrangPaintList(paintArr));case 4:readyArr = _context4.sent;
-                startX = _this4.smCtxW / 10;
-                startY = _this4.smCtxH / 10;
-                addYStep = _this4.smCtxW / 7;
-                addYStepsm = _this4.smCtxH / 24;
+                  _this9.arrangPaintList(paintArr));case 4:readyArr = _context6.sent;
+                startX = _this9.smCtxW / 10;
+                startY = _this9.smCtxH / 10;
+                addYStep = _this9.smCtxW / 7;
+                addYStepsm = _this9.smCtxH / 24;
                 addXStep = 10;
                 addXStepsm = 10;
-                fontSize = _this4.smCtxW / 750 * 20;
+                fontSize = _this9.smCtxW / 750 * 20;
                 iconWidth = 15;
                 iconHeight = 15;
 
                 HraceW = readyArr[0].height / readyArr[0].width;
-                dWidth = _this4.smCtxW / 10 * 3;
+                dWidth = _this9.smCtxW / 10 * 3;
                 dHeight = HraceW * dWidth;
-                _this4.fillRoundRect(ctx, (startX - 10) * pixelRatio, (startY - 10) * pixelRatio, (_this4.smCtxW / 10 * 8 + 20) * pixelRatio, (dHeight + 20) * pixelRatio, 10 * pixelRatio, '#efefef');
-                _this4.canvasDrawImage(ctx, pixelRatio, readyArr[0], startX, startY - 0.5, dWidth, dHeight);
+                _this9.fillRoundRect(ctx, (startX - 10) * pixelRatio, (startY - 10) * pixelRatio, (_this9.smCtxW / 10 * 8 + 20) * pixelRatio, (dHeight + 20) * pixelRatio, 10 * pixelRatio, '#efefef');
+                _this9.canvasDrawImage(ctx, pixelRatio, readyArr[0], startX, startY - 0.5, dWidth, dHeight);
 
 
 
-                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.name, '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm);
-                _this4.paintText(ctx, pixelRatio, '销售经理', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 2);
+                _this9.paintText(ctx, pixelRatio, _this9.salesManagerInfo.salesName, '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm);
+                _this9.paintText(ctx, pixelRatio, _this9.salesManagerInfo.jobTitle, '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 2);
 
-                _this4.canvasDrawImage(ctx, pixelRatio, readyArr[4], startX + dWidth + addXStep + fontSize * 10, startY + addYStepsm - iconHeight, iconWidth, iconWidth);
+                _this9.canvasDrawImage(ctx, pixelRatio, readyArr[1], startX + dWidth + addXStep + fontSize * 12, startY + addYStepsm - iconHeight / 2, iconWidth, iconHeight);
 
 
-                _this4.paintText(ctx, pixelRatio, '电话：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 3);
-                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.phone, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 3);
+                _this9.paintText(ctx, pixelRatio, '电话：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 3);
+                _this9.paintText(ctx, pixelRatio, _this9.salesManagerInfo.salesPhone, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 3);
 
-                _this4.paintText(ctx, pixelRatio, '公司：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 4);
-                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.company, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 4);
+                _this9.paintText(ctx, pixelRatio, '公司：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 4);
+                _this9.paintText(ctx, pixelRatio, _this9.companyInfo.companyName, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 4);
 
-                _this4.paintText(ctx, pixelRatio, '邮箱：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 5);
-                _this4.paintText(ctx, pixelRatio, _this4.salesManagerInfo.mail, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 5);
+                _this9.paintText(ctx, pixelRatio, '邮箱：', '#000', fontSize, startX + dWidth + addXStep, startY + addYStepsm * 5);
+                _this9.paintText(ctx, pixelRatio, _this9.salesManagerInfo.salesMailbox, '#000', fontSize, startX + dWidth + addXStep + fontSize * 3, startY + addYStepsm * 5);
 
-                _this4.paintText(ctx, pixelRatio, '您好', '#000', fontSize * 1.2, startX, startY + addYStep + dHeight);
-                _this4.paintText(ctx, pixelRatio, '我是' + _this4.salesManagerInfo.company + '的销售经理' + _this4.salesManagerInfo.name, '#000', fontSize * 1.2, startX, startY + addYStep * 1.5 + dHeight);
-                _this4.paintText(ctx, pixelRatio, '这是我的名片，请保存', '#000', fontSize * 1.2, startX, startY + addYStep * 2 + dHeight);
-                _this4.paintText(ctx, pixelRatio, '谢谢！', '#000', fontSize * 1.2, startX, startY + addYStep * 2.5 + dHeight);
+                _this9.paintText(ctx, pixelRatio, '您好', '#000', fontSize * 1.2, startX, startY + addYStep + dHeight);
+                _this9.paintText(ctx, pixelRatio, '我是' + _this9.companyInfo.companyName + '的销售经理' + _this9.salesManagerInfo.salesName, '#000', fontSize * 1.2, startX, startY + addYStep * 1.5 + dHeight);
+                _this9.paintText(ctx, pixelRatio, '这是我的名片，请保存', '#000', fontSize * 1.2, startX, startY + addYStep * 2 + dHeight);
+                _this9.paintText(ctx, pixelRatio, '谢谢！', '#000', fontSize * 1.2, startX, startY + addYStep * 2.5 + dHeight);
 
-                _this4.paintText(ctx, pixelRatio, '长按识别二维码收下名片', '#000', fontSize, startX, _this4.smCtxH - 60);
-                _this4.canvasDrawImage(ctx, pixelRatio, readyArr[5], _this4.smCtxW - iconWidth * 8, _this4.smCtxH - 60 - iconWidth * 2.5, iconWidth * 5, iconWidth * 5);
+                _this9.paintText(ctx, pixelRatio, '长按识别二维码收下名片', '#000', fontSize, startX, _this9.smCtxH - 60);
+                _this9.canvasDrawImage(ctx, pixelRatio, readyArr[2], _this9.smCtxW - iconWidth * 8, _this9.smCtxH - 60 - iconWidth * 2.5, iconWidth * 5, iconHeight * 5);
                 // ctx.drawImage(readyArr[1].content,)
 
                 ctx.draw();
-                setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var resTempFile;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
-                          uni.hideLoading();_context3.next = 3;return (
-                            _this4.canvansToFile(canvasId, finalW, finalH));case 3:resTempFile = _context3.sent;
-                          _this4.saveToAlbum(resTempFile);
-                          console.log(resTempFile);case 6:case "end":return _context3.stop();}}}, _callee3);})),
-                1000);case 36:case "end":return _context4.stop();}}}, _callee4);}))();
+                setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5() {var resTempFile;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:
+                          uni.hideLoading();_context5.next = 3;return (
+                            _this9.canvansToFile(canvasId, finalW, finalH));case 3:resTempFile = _context5.sent;
+                          _this9.saveToAlbum(resTempFile);
+                          (0, _common.previewImg)(resTempFile);
+                          console.log(resTempFile);case 7:case "end":return _context5.stop();}}}, _callee5);})),
+                1000);case 36:case "end":return _context6.stop();}}}, _callee6);}))();
     },
 
 
@@ -830,7 +958,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
 
 /***/ }),
 
-/***/ 49:
+/***/ 50:
 /*!*****************************************************************************************************************************!*\
   !*** D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& ***!
   \*****************************************************************************************************************************/
@@ -839,14 +967,14 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 48);function _int
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/postcss-loader/src??ref--8-oneOf-1-3!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 50);
+/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/postcss-loader/src??ref--8-oneOf-1-3!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 51);
 /* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ 50:
+/***/ 51:
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/

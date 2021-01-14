@@ -1,0 +1,1 @@
+<view class="u-time-axis-item data-v-9b00f13c"><slot name="content"></slot><view class="u-time-axis-node data-v-9b00f13c"><block wx:if="{{$slots.node}}"><slot name="node"></slot></block><block wx:else><view class="u-dot data-v-9b00f13c" style="{{$root.s0}}"></view></block></view></view>

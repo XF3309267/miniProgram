@@ -5,17 +5,18 @@
 			<!-- <block slot="backText">返回</block> -->
 			<block slot="content"> <text class="text-bold"> 家院里 </text> </block>
 		</cu-custom>
+		
 		<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
-				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
+				<image :src="item.url" mode="aspectFill"></image>
 			</swiper-item>
 		</swiper>
 		<view class="padding bg-white">
-			<view class="bg-white">
+			<view class="bg-white self-bold">
 				公司简介
 			</view>
 			<view class="padding-sm">
-				公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介公司简介
+				{{companyInfo.companyWordIntroduce}}
 			</view>
 		</view>
 <!-- 		<view class="self-card bg-white">
@@ -41,7 +42,38 @@
 				<text class="lg text-gray" :class="cuIcon-right"></text>
 			</view>
 		</view> -->
-		<ItemCard/>
+		<view class="padding-sm">
+			<view class="img-container " v-for="(item,index) in altas" :key="item.id">
+				<image   :src="item.url" mode="widthFix" ></image>
+				<!-- <view class="brief"> 这里是对图片的说明  </view> -->
+			</view>
+		</view>
+		
+		<view class="company-bottom">
+			<view class="head u-border-bottom">
+				联系我们
+			</view>
+			<view class="bottom-item">
+				<view class="title">
+					地址
+				</view>
+				<view class="content">
+					{{companyInfo.companyAddress}}
+				</view>
+			</view>
+			<u-gap height="20" bg-color="#eee"></u-gap>
+			<view class="bottom-item">
+				<view class="title">
+					联系电话
+				</view>
+				<view class="content">
+					{{companyInfo.companyPhone}}
+				</view>
+			</view>
+			<u-gap height="20" bg-color="#eee"></u-gap>
+		</view>
+		
+		
 		<view class="text-gray text-center padding-sm" > 没有更多了 </view>
 	</view>
 </template>
@@ -50,12 +82,44 @@
 	import ItemCard  from '@/components/ItemCard'
 	import FixedChat from '@/components/FixedChat.vue'
 	
-	import {getCompanyInfo} from '@/services/services.js'
+	import {previewImg,getSalesInfo,getCompanyInfo,userAction} from '@/static/js/common.js'
 	
 	export default {
 		data() {
 			return {
 				cardCur: 0,
+				
+				// 公司简介
+				altas: [{
+					id: 0,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
+				}, {
+					id: 1,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
+				}, {
+					id: 2,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg'
+				}, {
+					id: 3,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'
+				}, {
+					id: 4,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg'
+				}, {
+					id: 5,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big21016.jpg'
+				}, {
+					id: 6,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
+				}],
+
 				swiperList: [{
 					id: 0,
 					type: 'image',
@@ -88,7 +152,8 @@
 				userType:-1,
 				towerStart: 0,
 				direction: '',
-				
+				salesManagerInfo:'',
+				companyInfo:'',
 				//  "id": 1,
 				// "companyPhone": "3",
 				// "companyAddress": "3",
@@ -106,7 +171,6 @@
 				
 				
 				companyId:1,
-				companyInfo:'',
 				productList:[
 					// {
 					// 	id:0,
@@ -135,8 +199,11 @@
 		onLoad() {
 			this.TowerSwiper('swiperList');
 		},
-		created() {
-			this.initCompanyInfo()
+		async created() {
+			const getSalesInfoRes = await this.initSalesInfo(this.salesId)
+			if(getSalesInfoRes){
+				this.initCompanyInfo(this.salesManagerInfo.companyId)
+			}
 		},
 		methods: {
 				
@@ -144,25 +211,64 @@
 			initUserType(){
 				this.userType = getApp().globalData.userType
 			},
+			
+			
+			// 初始化 销售的信息
+			initSalesInfo(salesId){
+				return new Promise(async (resolve,reject)=>{
+					uni.showLoading({
+						title:'您的专属销售正在赶路的路上...',
+						mask:true
+					})
+					
+					let data = {id:salesId}
+					const getSalesInfoRes = await getSalesInfo(data)
+					if(getSalesInfoRes.statu===200){
+						this.salesManagerInfo = Object.assign({},getSalesInfoRes.value)
+						resolve(true)
+					}else{
+						uni.showToast({
+							title: getSalesInfoRes.msg,
+							icon:'none'
+						})
+						resolve(false)
+					}
+					uni.hideLoading()
+				})
+				
+			},
+			
 			// 获取公司信息
-			async initCompanyInfo(){
+			async initCompanyInfo(companyId){
 				uni.showLoading({
-					title:'资源获取中...',
+					title:'公司信息资源获取中....',
 					mask:true
 				})
 				
-				
-				let res = await getCompanyInfo({id:this.companyId})
-				if(res.statusCode===200){
-					this.companyInfo = res.data.data
-					console.log('这里应该拿到 res')
-					console.log(this.companyInfo)
+				let data = {id:companyId}
+				const getCompanyInfoRes = await getCompanyInfo(data)
+				if(getCompanyInfoRes.statu===200){
+					this.companyInfo = getCompanyInfoRes.value
+					console.log('----- company  ---')
+					console.log(getCompanyInfoRes.value)
+					this.getCompanyInfoAfter()
 				}else{
-					this.companyInfo = -1
+					uni.showToast({
+						title: getCompanyInfoRes.msg,
+						icon:'none'
+					})
 				}
 				uni.hideLoading()
-				console.log('这里应该拿到 function finally')
 			},
+			// 获取公司信息后 分配 this 其他各值
+			getCompanyInfoAfter(){
+				const swiperItem = {}
+				swiperItem.url = this.companyInfo.companyImagesIntroduce
+				this.swiperList = [swiperItem]
+			},
+			
+			
+			
 			// cardSwiper
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
@@ -223,17 +329,43 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.contain{
 		width: 100%;
 		min-height: 100vh;
-		padding-bottom: 30rpx;
+		padding-bottom: 360rpx;
 	}
 	.tower-swiper .tower-item {
 		transform: scale(calc(0.5 + var(--index) / 10));
 		margin-left: calc(var(--left) * 100upx - 150upx);
 		z-index: var(--index);
 	}
+	
+	/*  精彩图册  */
+	.img-container{
+		position: relative;
+		width: 710rpx;
+	/* 	height: 380rpx; */
+		padding: 20rpx;
+		border-radius: 10rpx;
+		margin: 20rpx auto;
+		background-color: #FFF;
+		
+		image{
+			width: 100%;
+			height: 100%;
+			border-radius: 10rpx;
+		}
+
+		.brief{
+			position: absolute;
+			bottom: 30rpx;
+			left: 30rpx;
+			color: #FFFFFF;
+		}
+	}
+	
+	
 	.self-card{
 		padding: 10rpx 20rpx;
 		border-radius: 10rpx;
@@ -265,6 +397,39 @@
 		}
 		.card-content{
 			padding:  20rpx;
+		}
+	}
+	
+	.company-bottom{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 350rpx;
+		padding-bottom: 20rpx;
+		border-radius: 30rpx 30rpx 0 0;
+		background-color: #ffffff;
+		
+		
+		
+		.head{
+			font-weight: bold;
+			height: 70rpx;
+			padding: 20rpx 50rpx;
+		}
+		.bottom-item{
+			height: 120rpx;
+			padding: 20rpx 60rpx;
+			background-color: #FFFFFF;
+			.title{
+				height: 40rpx;
+				font-size: .8em;
+				color: #606266;
+			}
+			.content{
+				height: 40rpx;
+				padding-top: 5rpx;
+			}
 		}
 	}
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<view class="" style="padding-bottom: 120rpx;">
-		<FixedChat  :userType="userType"/>
+		<FixedChat  :userType="userType" :newsCount="newsCount"/>
 		<cu-custom bgColor="bg-gradual-blue" :isBack="false" :selfBack="true">
 			<block slot="backText">
 				<!-- <view class="flex">
@@ -9,27 +9,30 @@
 					</view>
 					<text class="cu-tag round padding-left-lg bg-white text-black"> 个人中心 </text>
 				</view> -->
-				<PersonalIcon/>
+				<PersonalIcon :salesManagerInfo="salesManagerInfo" />
 			</block>
-			<block slot="content"> <text class="text-bold"> 销售经理 </text> </block>
+			<block slot="content"> <text class="text-bold"> {{salesManagerInfo.jobTitle}} </text> </block>
 		</cu-custom>
 		<view class="bigCanvas-container">
 			<canvas :id="myCanvasId" :canvas-id="myCanvasId" class="canvasW" :style="[ctxWStr,ctxHStr]" ></canvas>
 		</view>
 		<view class="">
 			<view class="bg-white padding-top">
-				<SalesManagerCard/>
+				<SalesManagerCard :salesManagerInfo="salesManagerInfo"  :companyInfo="companyInfo"  @onMailList="onMailList"  />
 				<view class="padding-sm flex justify-between">
 					<view class="">
-						<view class="cu-avatar-group">
-							<view class="cu-avatar round sm" v-for="(item,index) in avatar" :key="index" :style="[{ backgroundImage:'url(' + avatar[index] + ')' }]"></view>
+						<view class="self-avatar-list">
+							<view v-for="(item,index) in avatarList" :key="index" class="self-avatar-item">
+								<u-avatar  size="50"  :src="item"></u-avatar>
+							</view>
+							<text class="u-p-l-20"> {{salesManagerInfo.readNum}} 人浏览 </text>
 						</view>
-						<text> {{browseCount}} 人浏览 </text>
+						
 					</view>
 					<view class="text-lg text-green" @click="appreciate" >
 						<text class="cuIcon-appreciate " v-if="!userIsAppreciate"></text>
 						<text class="cuIcon-appreciatefill" v-if="userIsAppreciate" > </text>
-						<text class="text-green"> {{appreciateCount}} </text>  
+						<text class="text-green"> {{salesManagerInfo.likeNum}} </text>  
 					</view>
 				</view>
 			</view>
@@ -41,7 +44,7 @@
 						WX_id54633342
 					</view>
 				</view>
-				<view class="cu-tag round bg-green self-text" @click="phoneCall"> 
+				<view class="cu-tag round bg-green self-text" @click="confirmCallPhone"> 
 					<view class="" >
 						联系她
 					</view>
@@ -56,7 +59,7 @@
 					个人简介
 				</view>
 				<view class="padding-top text-black">
-					数年来一直从事经济管理教育工作，曾执教过多门专业课程，主要讲授课程：统计学原理、管理会计、市场营销学、人力资源管理统计。
+					{{salesManagerInfo.salesWordIntroduce}}
 				</view>
 			</view>
 			<view class="bg-white padding">
@@ -89,7 +92,7 @@
 		<u-popup v-model="bottomPoup" height="260rpx" mode="bottom" border-radius="14">
 			<view class="poup-container">
 				<view class="item-container">
-					<button open-type="share" class="hidden-btn">  </button>
+					<button open-type="share" @click="shareCard" class="hidden-btn">  </button>
 					<view class="bottom-img-container bg-green">
 						<image src="@/static/img/salesPersonImg/wexin.png" mode="widthFix"></image>
 					</view>
@@ -117,32 +120,62 @@
 	import PersonalIcon from '@/components/PersonalIcon'
 	import FixedChat from '@/components/FixedChat.vue'
 	
+	import { getCardSalesInfoById ,addActiverecord} from '@/services/services.js'
 	
-	import {initGetAlbum,getImgInfo,urlToLocalPath} from '@/static/js/common.js'
+	import {initGetAlbum,getImgInfo,urlToLocalPath,previewImg,getSalesInfo,getCompanyInfo,userAction} from '@/static/js/common.js'
 	export default {
 		data() {
 			return {
 				userType:-1,
-				avatar: [
+				newsCount:12,
+				avatarList: [
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg',
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big81005.jpg',
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg',
+					'https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg',
 					'https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg'
 				],
-				browseCount:123,
-				appreciateCount:53,
+
 				userIsAppreciate: false,
-				salesManagerInfo:{
-					name:'王珞丹',
-					avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
-					position:'',
-					wxId:'wx_id1245343543',
-					phone:'13970853937',
-					company:'江西省家院里科技江西省家',
-					brief:'',
-					mail:'123123222@gmail.com'
-				},
 				
+				clientId:2,
+				salesId:20,
+
+				salesManagerInfo:{
+					companyId: -1,
+					createTime: "",
+					deleted: -1,
+					headPortrait: "",
+					id: -1,
+					jobTitle: "",
+					likeNum: -1,
+					readNum: -1,
+					resignStatus: -1,
+					salesLoginPhone: "",
+					salesMailbox: "",
+					salesName: "",
+					salesOpenId: "",
+					salesPhone: "",
+					salesVoiceIntroduce: "",
+					salesWordIntroduce: "",
+					salesWx: "",
+					updateTime: "",
+				},
+				companyInfo:{
+					"companyAddress": "",
+					"companyImagesIntroduce": "",
+					"companyLogo": "",
+					"companyMailbox": "",
+					"companyManifesto": "",
+					"companyName": "",
+					"companyPhone": "",
+					"companyVoiceIntroduce": "",
+					"companyWordIntroduce": "",
+					"createTime": "",
+					"deleted": 0,
+					"id": 0,
+					"updateTime": ""
+				},
 				altas: [{
 					id: 0,
 					type: 'image',
@@ -192,64 +225,41 @@
 				ctx:null,
 				pixeRatio:0,
 				getalbum:false,
-				initCanvasRes: false,
-				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/phone.png
-				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/home.png
-				// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png
+				initCanvasRes: false,				
 				
-				
-				paintArr:[
-					//  销售头像
-					// https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/81f6b5a961a5cd27d64f05192440b47.jpg
-					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/81f6b5a961a5cd27d64f05192440b47.jpg',xPosition:0,yPosition:0},
-					
-					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/phone.png',xPosition:0,yPosition:0},
-					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/home.png',xPosition:0,yPosition:0},
-					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png',xPosition:0,yPosition:0},
-					// 公司  logo
-					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/email.png',xPosition:0,yPosition:0},
-					// 公司  小程序二维码
-					{type:'img',content:'https://cdn.jsdelivr.net/gh/XF3309267/imgs/img/jigou.png',xPosition:0,yPosition:0},
-				],
-				newPainArr:[],			
+				paintArr:[],	
 			}
 		},
+		
+
+		
+		
+		
 		
 		watch:{
 			
 		},
 		computed:{
 			showAudioTime(){
-				if(!this.audioIsPlay){
-					return parseInt(this.allTime)+'s'
-				}
-				
-				if(this.allTime === 0){
-					return '0s'
-				}
-				
+				if(!this.audioIsPlay){return parseInt(this.allTime)+'s'}
+				if(this.allTime === 0){return '0s'}
 				return parseInt(this.allTime - this.audioCurrentTime ) + 's'
 			},
 			// 画布的 宽度
 			ctxWStr(){
 				if(this.smCtxW){
-					return{
-						'width':this.smCtxW * this.pixeRatio + 'px'
-					}
+					return{ 'width':this.smCtxW * this.pixeRatio + 'px'}
 				}
 			},
 			ctxHStr(){
 				if(this.smCtxH){
-					return{
-						'height':this.smCtxH * this.pixeRatio + 'px'
-					}
+					return{ 'height':this.smCtxH * this.pixeRatio + 'px' }
 				}
 			},
-
 		},
 		onShareAppMessage() {
 			return{
-				title:'您好，我是'+this.salesManagerInfo.name+',一键保存，了解更多...',
+				title:'您好，我是'+this.salesManagerInfo.salesName+',一键保存，了解更多...',
 				success:(res)=>{
 					console.log('分享 success')
 					console.log(res)
@@ -264,30 +274,22 @@
 			if(this.userType===-1){
 				this.initUserType()
 			}
+			this.sayHello(10000)
 			getImgInfo('@/static/img/salecPersonImg/home.png')
 		},
 		onLoad() {
 			
-			// uni.chooseImage({
-			// 	success: async (res) => {
-			// 		console.log('选择图片后')
-			// 		let imgLoaclUrl = res.tempFilePaths[0]
-			// 		let obj = await urlToLocalPath(imgLoaclUrl)
-			// 		console.log('-----------------')
-			// 		console.log(obj)
-			// 		console.log('----*************-')
-			// 	},
-				
-			// })
-			uni.showToast({
-				title:'您好，我是您的销售经理。有什么问题可以随时咨询我哦！',
-				icon:'none',
-			})
 		},
 		async created() {
+			// 进入页面 首次 就算 浏览名片一次
+			userAction(this.clientId,this.salesId,0)
+
 			const initCanvasRes = await this.initCanvas(this.myCanvasId)
 			this.initCanvasRes = initCanvasRes
-
+			const getSalesInfoRes = await this.initSalesInfo(this.salesId)
+			if(getSalesInfoRes){
+				this.initCompanyInfo(this.salesManagerInfo.companyId)
+			}
 			
 			
 			// 对于异步的处理  
@@ -301,6 +303,87 @@
 			initUserType(){
 				this.userType = getApp().globalData.userType
 			},
+			
+			// 进入页面打招呼
+			sayHello(durationTime=2000,title){
+				if(!title){
+					title = '您好，我是您的销售经理。有什么问题可以随时咨询我哦！'
+				}
+				uni.showToast({
+					title: title,
+					icon:'none',
+					duration:durationTime,
+				})
+			},
+			// 初始化 画布图片信息
+			inintPaintImgArr(){
+				this.paintArr.push(this.salesManagerInfo.headPortrait)
+				this.paintArr.push(this.companyInfo.companyLogo)
+				this.paintArr.push(this.companyInfo.companyLogo)
+				console.log('push finally')
+				console.log(this.paintArr)
+			},
+			// 初始化 销售的信息
+			initSalesInfo(salesId){
+				return new Promise(async (resolve,reject)=>{
+					uni.showLoading({
+						title:'您的专属销售正在赶路的路上...',
+						mask:true
+					})
+					
+					let data = {id:salesId}
+					const getSalesInfoRes = await getSalesInfo(data)
+					if(getSalesInfoRes.statu===200){
+						this.salesManagerInfo = Object.assign({},getSalesInfoRes.value)
+						resolve(true)
+					}else{
+						uni.showToast({
+							title: getSalesInfoRes.msg,
+							icon:'none'
+						})
+						resolve(false)
+					}
+					uni.hideLoading()
+				})
+				
+			},
+			
+			// 初始化  公司信息
+			
+			async initCompanyInfo(companyId){
+				uni.showLoading({
+					title:'公司信息资源获取中....',
+					mask:true
+				})
+				
+				let data = {id:companyId}
+				const getCompanyInfoRes = await getCompanyInfo(data)
+				if(getCompanyInfoRes.statu===200){
+					this.companyInfo = getCompanyInfoRes.value
+					console.log('----- company  ---')
+					console.log(getCompanyInfoRes.value)
+					
+					this.inintPaintImgArr()
+					
+					
+				}else{
+					uni.showToast({
+						title: getCompanyInfoRes.msg,
+						icon:'none'
+					})
+				}
+				uni.hideLoading()
+			},
+			// 用户浏览 名片
+			userAppreciate(){
+				const res = userAction(this.clientId,this.salesId,1)
+				console.log('res')
+				console.log(res)
+	
+			},
+			
+			
+			
 			// 播放音频
 			playAudio(){
 				if(this.audioIsPlay){
@@ -312,7 +395,10 @@
 					return 
 				}
 				const innerAudioContext = uni.createInnerAudioContext();
-				innerAudioContext.src =  this.audioSrc
+				console.log('音频文件')
+				console.log(this.salesManagerInfo.salesVoiceIntroduce)
+				
+				innerAudioContext.src =  this.salesManagerInfo.salesVoiceIntroduce
 				
 				innerAudioContext.onCanplay(()=>{
 					this.audioCurrentTime = innerAudioContext.currentTime 
@@ -347,15 +433,40 @@
 			appreciate(){
 				if(this.userIsAppreciate){
 					console.log('用户已经点赞')
+					this.salesManagerInfo.likeNum --
+					this.userIsAppreciate = false
 					return
 				}
-				this.appreciateCount++;
+				// const res = userAction(this.clientId,this.salesId,1)
+				// this.salesManagerInfo.likeNum++;
 				this.userIsAppreciate = true
 			},
+			
+			
+			confirmCallPhone(){
+				uni.showModal({
+					title:'拨号提示',
+					content:'您确认拨打电话：'+ this.salesManagerInfo.salesPhone+' 吗？',
+					success: (res) => {
+						if(res.confirm){
+							console.log('用户点击了 确认')
+							this.phoneCall()
+						}
+					}
+				})
+			},
+			
+			// 保存通讯录的 额外操作
+			// 因为只是单方面的对 销售的信息操作，不涉及后台
+			onMailList(){
+				userAction(this.clientId,this.salesId,4)
+			},
+			
 			// 拨打电话
 			phoneCall(){
+				
 				uni.makePhoneCall({
-					phoneNumber: this.salesManagerInfo.phone,
+					phoneNumber: this.salesManagerInfo.salesPhone,
 					success(res) {
 						console.log('makePhoneCall success')
 						console.log(res)
@@ -366,16 +477,19 @@
 					}
 				})
 			},
+			
+			
 			// 复制微信号
 			copyWxId(){
 				uni.setClipboardData({
-					data: this.salesManagerInfo.wxId,
-					success: function() {
+					data: this.salesManagerInfo.salesWx,
+					success: ()=>{
 						uni.showToast({
 							title:'成功复制微信号',
 						})
+						userAction(this.clientId,this.salesId,3)
 					},
-					fail:function(){
+					fail:()=>{
 						console.log('复制失败')
 					}
 				})
@@ -393,10 +507,15 @@
 			},
 			// 生成名片海报
 			createPostCard(){
+				userAction(this.clientId,this.salesId,2)
 				if(this.initCanvasRes){
 					this.canvansTodo(this.ctx,this.myCanvasId,this.pixeRatio,this.paintArr,this.smCtxW *this.pixeRatio ,this.smCtxH * this.pixeRatio )
 				}
 			},	
+			// 点击分享名片
+			shareCard(){
+				userAction(this.clientId,this.salesId,2)
+			},
 			// 画布所需
 			initCanvas(canvansId){
 				return new Promise((resolve,reject)=>{
@@ -515,16 +634,21 @@
 				// 	let obj = Object.assign({},item)
 				// 	arr[index] = obj
 				// })
+				if(this.paintArr[0].hasOwnProperty('content')){
+					return  this.paintArr
+				}
+				
+				
 				for (let i = 0; i < paintArr.length; i++) {
-					const res = await getImgInfo(paintArr[i].content)
-					paintArr[i].content = res.path
-					paintArr[i].width = res.width
-					paintArr[i].height = res.height
-					
+					const res = await getImgInfo(paintArr[i])
+					const obj = {}
+					obj.content = res.path
+					obj.width = res.width
+					obj.height = res.height
+					paintArr[i] = obj
 					if(i === paintArr.length-1){
 						console.log('finally')
 						console.log(paintArr)
-						
 						return paintArr
 					}	
 				}
@@ -583,28 +707,28 @@
 
 				
 				
-				this.paintText(ctx,pixelRatio,this.salesManagerInfo.name,'#000',fontSize,(startX + dWidth + addXStep),startY + addYStepsm)
-				this.paintText(ctx,pixelRatio,'销售经理' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *2 )
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.salesName,'#000',fontSize,(startX + dWidth + addXStep),startY + addYStepsm)
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.jobTitle ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *2 )
 				
-				this.canvasDrawImage(ctx,pixelRatio,readyArr[4],(startX + dWidth + addXStep + fontSize * 10),startY + addYStepsm - iconHeight, iconWidth , iconWidth)
+				this.canvasDrawImage(ctx,pixelRatio,readyArr[1],(startX + dWidth + addXStep + fontSize * 12),startY + addYStepsm - iconHeight / 2, iconWidth , iconHeight)
 				
 				
 				this.paintText(ctx,pixelRatio,'电话：' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *3)
-				this.paintText(ctx,pixelRatio,this.salesManagerInfo.phone,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *3)
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.salesPhone,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *3)
 				
 				this.paintText(ctx,pixelRatio,'公司：' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *4)
-				this.paintText(ctx,pixelRatio,this.salesManagerInfo.company ,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *4)
+				this.paintText(ctx,pixelRatio,this.companyInfo.companyName ,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *4)
 				
 				this.paintText(ctx,pixelRatio,'邮箱：' ,'#000',fontSize,(startX + dWidth + addXStep),startY  + addYStepsm *5)
-				this.paintText(ctx,pixelRatio,this.salesManagerInfo.mail ,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *5)
+				this.paintText(ctx,pixelRatio,this.salesManagerInfo.salesMailbox ,'#000',fontSize,(startX + dWidth + addXStep  + fontSize * 3),startY  + addYStepsm *5)
 				
 				this.paintText(ctx,pixelRatio,'您好' ,'#000',fontSize * 1.2,(startX),startY  + addYStep + dHeight)
-				this.paintText(ctx,pixelRatio,'我是' + this.salesManagerInfo.company + '的销售经理' + this.salesManagerInfo.name ,'#000',fontSize * 1.2,(startX),startY  + addYStep * 1.5 + dHeight)
+				this.paintText(ctx,pixelRatio,'我是' + this.companyInfo.companyName + '的销售经理' + this.salesManagerInfo.salesName ,'#000',fontSize * 1.2,(startX),startY  + addYStep * 1.5 + dHeight)
 				this.paintText(ctx,pixelRatio,'这是我的名片，请保存' ,'#000',fontSize * 1.2,(startX),startY  + addYStep *2 + dHeight)
 				this.paintText(ctx,pixelRatio,'谢谢！' ,'#000',fontSize * 1.2,(startX),startY  + addYStep *2.5 + dHeight)
 
 				this.paintText(ctx,pixelRatio,'长按识别二维码收下名片' ,'#000',fontSize,(startX),this.smCtxH - 60)
-				this.canvasDrawImage(ctx,pixelRatio,readyArr[5],this.smCtxW- iconWidth * 8,this.smCtxH - 60 - iconWidth *2.5, iconWidth * 5 , iconWidth * 5)
+				this.canvasDrawImage(ctx,pixelRatio,readyArr[2],this.smCtxW- iconWidth * 8,this.smCtxH - 60 - iconWidth *2.5, iconWidth * 5 , iconHeight * 5)
 				// ctx.drawImage(readyArr[1].content,)
 
 				ctx.draw()
@@ -612,6 +736,7 @@
 					uni.hideLoading()
 					const resTempFile = await this.canvansToFile(canvasId,finalW,finalH)
 					this.saveToAlbum(resTempFile)
+					previewImg(resTempFile)
 					console.log(resTempFile)
 				},1000)
 			},
@@ -697,7 +822,7 @@
 /*  精彩图册  */
 .img-container{
 	position: relative;
-	width: 720rpx;
+	width: 710rpx;
 /* 	height: 380rpx; */
 	padding: 20rpx;
 	border-radius: 10rpx;
@@ -806,5 +931,13 @@
 	top: 10000000rpx;
 	width: 100%;
 }
-
+.self-avatar-list{
+	display: flex;
+	align-items: center;
+	.self-avatar-item{
+		width: 60rpx;
+		height: 60rpx;
+		padding: 5rpx;
+	}
+}
 </style>

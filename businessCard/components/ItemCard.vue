@@ -89,7 +89,6 @@
 				this.$emit('praiseClick')
 			},
 			browseClick(){
-				
 				this.$emit('browseClick')
 			}
 		}

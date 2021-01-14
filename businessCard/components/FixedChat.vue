@@ -7,9 +7,7 @@
 			<image v-if="userType === 1" :src="normalAvatar" mode="aspectFill"></image>
 		</view>
 		<view class="bottom-btn" @click="toChat">
-			<view class="tag cu-tag badge bg-red">
-				1
-			</view>
+			<u-badge type="error"  :is-center="true" :count="newsCount"></u-badge>
 			<button v-if="userType === 0 " class="cu-btn round block sm text-green bg-white"> 咨询 </button>
 			<button v-if="userType === 1 " class="cu-btn round block sm text-green bg-white"> 回复 </button>
 		</view>
@@ -47,6 +45,10 @@
 			userType:{
 				type:Number,
 				default: 0,
+			},
+			newsCount:{
+				type:Number,
+				default: 0
 			}
 		},
 		methods:{

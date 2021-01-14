@@ -24,22 +24,43 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.contain {
+.contain.data-v-57280228 {
   width: 100%;
   min-height: 100vh;
-  padding-bottom: 30rpx;
+  padding-bottom: 360rpx;
 }
-.tower-swiper .tower-item {
+.tower-swiper .tower-item.data-v-57280228 {
   -webkit-transform: scale(calc(0.5 + var(--index) / 10));
           transform: scale(calc(0.5 + var(--index) / 10));
   margin-left: calc(var(--left) * 100rpx - 150rpx);
   z-index: var(--index);
 }
-.self-card {
+/*  精彩图册  */
+.img-container.data-v-57280228 {
+  position: relative;
+  width: 710rpx;
+  /* 	height: 380rpx; */
+  padding: 20rpx;
+  border-radius: 10rpx;
+  margin: 20rpx auto;
+  background-color: #FFF;
+}
+.img-container image.data-v-57280228 {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+}
+.img-container .brief.data-v-57280228 {
+  position: absolute;
+  bottom: 30rpx;
+  left: 30rpx;
+  color: #FFFFFF;
+}
+.self-card.data-v-57280228 {
   padding: 10rpx 20rpx;
   border-radius: 10rpx;
 }
-.self-card .card-head {
+.self-card .card-head.data-v-57280228 {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -48,17 +69,17 @@
           align-items: center;
   padding: 10rpx 20rpx;
 }
-.self-card .card-head .avatar {
+.self-card .card-head .avatar.data-v-57280228 {
   width: 3em;
   height: 3em;
   border-radius: 50%;
   overflow: hidden;
 }
-.self-card .card-head .avatar image {
+.self-card .card-head .avatar image.data-v-57280228 {
   width: 100%;
   height: 100%;
 }
-.self-card .card-head .main {
+.self-card .card-head .main.data-v-57280228 {
   -webkit-flex-basis: 1;
           flex-basis: 1;
   -webkit-box-flex: 1;
@@ -68,10 +89,39 @@
   font-weight: bold;
   padding-left: 20rpx;
 }
-.self-card .card-head .right {
+.self-card .card-head .right.data-v-57280228 {
   min-width: 4em;
 }
-.self-card .card-content {
+.self-card .card-content.data-v-57280228 {
   padding: 20rpx;
+}
+.company-bottom.data-v-57280228 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 350rpx;
+  padding-bottom: 20rpx;
+  border-radius: 30rpx 30rpx 0 0;
+  background-color: #ffffff;
+}
+.company-bottom .head.data-v-57280228 {
+  font-weight: bold;
+  height: 70rpx;
+  padding: 20rpx 50rpx;
+}
+.company-bottom .bottom-item.data-v-57280228 {
+  height: 120rpx;
+  padding: 20rpx 60rpx;
+  background-color: #FFFFFF;
+}
+.company-bottom .bottom-item .title.data-v-57280228 {
+  height: 40rpx;
+  font-size: .8em;
+  color: #606266;
+}
+.company-bottom .bottom-item .content.data-v-57280228 {
+  height: 40rpx;
+  padding-top: 5rpx;
 }
 
