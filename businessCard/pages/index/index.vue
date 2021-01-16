@@ -5,20 +5,48 @@
 			<!-- <block slot="backText">返回</block> -->
 			<block slot="content"> <text class="text-bold"> 家院里 </text> </block>
 		</cu-custom>
+		<view class="u-p-t-36">
+			<swiper 
+			
+				:class="'square-dot'" 
+				:indicator-dots="true" 
+				:circular="true" 
+				:autoplay="true" 
+				height="100"
+				interval="5000" 
+				duration="500">
+				<swiper-item v-for="(item,index) in swiperList" :key="index" >
+					<image :src="item.url" mode="aspectFill"></image>
+				</swiper-item>
+			</swiper>
+		</view>
 		
-		<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
-			<swiper-item v-for="(item,index) in swiperList" :key="index">
-				<image :src="item.url" mode="aspectFill"></image>
-			</swiper-item>
-		</swiper>
-		<view class="padding bg-white">
+		<view class="introduce-card add-introduce-card" >
+			<view class="card-head">
+				<view class="icon-container">
+					<image src="@/static/img/salesPersonImg/card-introduce.png"></image>
+				</view>
+				公司介绍
+			</view>
+			<view class="content">
+				<view class="">
+					{{companyInfo.companyWordIntroduce}}
+				</view>
+			</view>
+			
+		</view>
+
+		
+		
+		
+		<!-- <view class="padding bg-white">
 			<view class="bg-white self-bold">
 				公司简介
 			</view>
 			<view class="padding-sm">
 				{{companyInfo.companyWordIntroduce}}
 			</view>
-		</view>
+		</view> -->
 <!-- 		<view class="self-card bg-white">
 			<view class="card-head">
 				<view class="avatar">
@@ -42,7 +70,7 @@
 				<text class="lg text-gray" :class="cuIcon-right"></text>
 			</view>
 		</view> -->
-		<view class="padding-sm">
+		<view class="padding-sm reduce-introduce-crad">
 			<view class="img-container " v-for="(item,index) in altas" :key="item.id">
 				<image   :src="item.url" mode="widthFix" ></image>
 				<!-- <view class="brief"> 这里是对图片的说明  </view> -->
@@ -55,22 +83,22 @@
 			</view>
 			<view class="bottom-item">
 				<view class="title">
-					地址
+					地址:
 				</view>
 				<view class="content">
 					{{companyInfo.companyAddress}}
 				</view>
 			</view>
-			<u-gap height="20" bg-color="#eee"></u-gap>
+		
 			<view class="bottom-item">
 				<view class="title">
-					联系电话
+					联系电话:
 				</view>
 				<view class="content">
 					{{companyInfo.companyPhone}}
 				</view>
 			</view>
-			<u-gap height="20" bg-color="#eee"></u-gap>
+		
 		</view>
 		
 		
@@ -364,51 +392,60 @@
 			color: #FFFFFF;
 		}
 	}
-	
-	
-	.self-card{
-		padding: 10rpx 20rpx;
-		border-radius: 10rpx;
-		.card-head{
-			display: flex;
-			align-items: center;
-			padding: 10rpx 20rpx;
-			.avatar{
-				width: 3em;
-				height: 3em;
-				border-radius: 50%;
-				overflow: hidden;
-				image{
-					width: 100%;
-					height: 100%;
-				}
-				
-			}
-			.main{
-				flex-basis: 1;
-				flex-grow: 1;
-				font-size: 1.5em;
-				font-weight: bold;
-				padding-left: 20rpx;
-			}
-			.right{
-				min-width: 4em;
-			}
-		}
-		.card-content{
-			padding:  20rpx;
-		}
+	// 对 introduce-card 增加样式
+	.add-introduce-card{
+		position: relative;
+		z-index: 100;
+		top: -50rpx;
+		left: 2rpx;
+		margin-bottom: 0;
 	}
+	.reduce-introduce-crad{
+		margin-top: -100rpx;
+	}
+	// .self-card{
+	// 	padding: 10rpx 20rpx;
+	// 	border-radius: 10rpx;
+	// 	.card-head{
+	// 		display: flex;
+	// 		align-items: center;
+	// 		padding: 10rpx 20rpx;
+	// 		.avatar{
+	// 			width: 3em;
+	// 			height: 3em;
+	// 			border-radius: 50%;
+	// 			overflow: hidden;
+	// 			image{
+	// 				width: 100%;
+	// 				height: 100%;
+	// 			}
+				
+	// 		}
+	// 		.main{
+	// 			flex-basis: 1;
+	// 			flex-grow: 1;
+	// 			font-size: 1.5em;
+	// 			font-weight: bold;
+	// 			padding-left: 20rpx;
+	// 		}
+	// 		.right{
+	// 			min-width: 4em;
+	// 		}
+	// 	}
+	// 	.card-content{
+	// 		padding:  20rpx;
+	// 	}
+	// }
 	
 	.company-bottom{
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		height: 350rpx;
-		padding-bottom: 20rpx;
+		height: 368rpx;
+		padding-bottom: 28rpx;
 		border-radius: 30rpx 30rpx 0 0;
-		background-color: #ffffff;
+		background-color: #F6F6F6;
 		
 		
 		
@@ -418,18 +455,25 @@
 			padding: 20rpx 50rpx;
 		}
 		.bottom-item{
+			width: 710rpx;
 			height: 120rpx;
+			margin: auto;
+			margin-top: 20rpx;
 			padding: 20rpx 60rpx;
+			border-radius: 10rpx;
+			box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 			background-color: #FFFFFF;
 			.title{
-				height: 40rpx;
+				height: 35rpx;
 				font-size: .8em;
-				color: #606266;
+				color: #666666;
 			}
 			.content{
-				height: 40rpx;
+				height: 35rpx;
 				padding-top: 5rpx;
+				color: #666666;
 			}
 		}
 	}
+
 </style>

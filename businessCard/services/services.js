@@ -5,11 +5,11 @@ const normalHeader = {
 }
 const token = function(){
 	let value = uni.getStorageSync('token')
-	return 'bearer ddbd3fcc-991d-4de2-a31d-1c351cc6170f'
+	return 'bearer 58043982-63fa-4db8-aca3-e548309dfb24'
 	if(value){
 		return value
 	}else{
-		return 'bearer ddbd3fcc-991d-4de2-a31d-1c351cc6170f'
+		return 'bearer 58043982-63fa-4db8-aca3-e548309dfb24'
 	}
 }
 
@@ -35,13 +35,14 @@ const myHttp = function({url,data,method,header}){
 			header:header,
 			data:data,
 			success:(res)=>{
-				console.log('success')
+				console.log(url)
+				console.log('调用接口 success')
 				
 				console.log(res)
 				resolve(res)
 			},
 			fail:(res)=>{
-				console.log('fail')
+				console.log('调用接口 fail')
 				
 				console.log(res)
 				resolve(res)
@@ -97,7 +98,6 @@ const getCompanyInfoById = function(data){
 //  参数： 销售id
 //	/card/cardWeChat/cardsalesinfo/getCardSalesInfoById/
 const getCardSalesInfoById = function(data){
-	
 	return myHttp(
 		{
 			url:'/card/cardWeChat/cardsalesinfo/getCardSalesInfoById/'+ data.id,
@@ -107,10 +107,22 @@ const getCardSalesInfoById = function(data){
 	)   
 } 
 
+//	 修改销售信息
+//   /card/cardWeChat/cardsalesinfo/updateCardSalesInfo	
+const updateCardSalesInfo = function(data){
+	return myHttp(
+		{
+			url:'/card/cardWeChat/cardsalesinfo/updateCardSalesInfo',
+			method:'POST',
+			data:data,
+			header:tokenHeadr,
+		}
+	)   
+} 
+
 // 添加用户活跃记录
 //	/card/cardWeChat/cardClientActiverecord/addActiverecord
 const addActiverecord = function(data){
-	
 	return myHttp(
 		{
 			url:'/card/cardWeChat/cardClientActiverecord/addActiverecord',
@@ -124,7 +136,6 @@ const addActiverecord = function(data){
 // 	根据 销售Id 获取销售所绑定的用户
 //  /card/cardWeChat/cardclientinfo/getClientInfosByCardSalesId/
 const getClientInfosByCardSalesId = function(data){
-	
 	return myHttp(
 		{
 			url:'/card/cardWeChat/cardclientinfo/getClientInfosByCardSalesId/'+ data.id,
@@ -137,7 +148,6 @@ const getClientInfosByCardSalesId = function(data){
 // 	根据输入内容 搜索用户
 //	/card/cardWeChat/cardclientinfo/getClientInfosBySearchContent
 const getClientInfosBySearchContent =  function(data){
-
 	return myHttp(
 		{
 			url:'/card/cardWeChat/cardclientinfo/getClientInfosBySearchContent',
@@ -148,11 +158,39 @@ const getClientInfosBySearchContent =  function(data){
 	)   
 } 
 
+//根据销售 id 查询 其所有用户的活跃记录
+// 	/card/cardWeChat/cardClientActiverecord/getCardClientActiverecordByWeek
+const getCardClientActiverecordByWeek =  function(data){
+	return myHttp(
+		{
+			url:'/card/cardWeChat/cardClientActiverecord/getCardClientActiverecordByWeek',
+			method:'GET',
+			data:data,
+			header:tokenHeadr,
+		}
+	)   
+} 
+
+// 	销售增加用户追踪记录
+//	/card/cardWeChat/cardClientFollowupType/addFollowupType
+const addFollowupType = function(data){
+	// return myHttp(
+	// 	{
+	// 		url:'/card/cardWeChat/cardClientFollowupType/addFollowupType',
+	// 		method:'POST',
+	// 		data:data,
+	// 		header:tokenHeadr,
+	// 	}
+	// )   
+} 
+
 
 module.exports = {
 	getCompanyInfoById,
-	getCardSalesInfoById,
+	getCardSalesInfoById,				//	获取销售信息
+	updateCardSalesInfo,				//	修改销售信息
 	getClientInfosByCardSalesId,
 	getClientInfosBySearchContent,
-	addActiverecord
+	addActiverecord,
+	getCardClientActiverecordByWeek
 }

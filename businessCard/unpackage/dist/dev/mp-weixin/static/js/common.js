@@ -150,16 +150,16 @@ const getCompanyInfo = function(data){
 
 const userActiveList = [
 	'正在查看 你的 名片',				//	查看名片
-	'靠谱 +1 ，及时沟通，效率更高', 	//  点赞
 	'正在分享 你的 名片',				//  分享名片
+	'靠谱 +1 ，及时沟通，效率更高', 	//  点赞
+	'保留了您的电话号码，请及时回复',	//  保存通讯录
 	'保留了您的微信号，请及时回复',		//  复制微信号
-	'保留了您的电话号码，请及时回复'	//  保存通讯录
 ]
 
 
 const userAction = async function(clientId,saleId,type){
 	const activeContent = userActiveList[type]
-	const addRes = await addActiverecord({activeContent, clientId ,saleId})
+	const addRes = await addActiverecord({activeContent, clientId ,saleId,activeType:type})
 
 	if(addRes.data.data==1){
 		console.log('aaaaaaaaaaaa')

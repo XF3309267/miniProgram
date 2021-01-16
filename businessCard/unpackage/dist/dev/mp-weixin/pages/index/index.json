@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "uni-app",
   "usingComponents": {
-    "u-gap": "/uview-ui/components/u-gap/u-gap",
     "item-card": "/components/ItemCard",
     "fixed-chat": "/components/FixedChat"
   }

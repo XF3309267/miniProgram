@@ -74,6 +74,17 @@
 	
 	
 	
+	
+	.self-shadow{
+		box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5);
+	}
+	.btn-hover{
+		position: relative;
+		top: 5rpx;
+		background-color: #efefef;
+		box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5) inset;
+	}
+	
 	.underLine{
 		text-decoration: underline;
 	}
@@ -82,4 +93,74 @@
 		border-radius: 50%;
 		overflow: hidden;
 	}
+	
+	//  用以 不得不使用 button 的情况下
+	//   将 btn 定位使用 absolute 并且 背景透明
+	.absolute-btn-container{
+		position: relative;
+		overflow: hidden;
+		.absolute-btn{
+			position: absolute;
+			z-index: 100;
+			left: -10%;
+			top: -10%;
+			
+			width: 120%;
+			height: 120%;
+			background-color: rgba(255,255,255,0);
+		}
+	}
+	image{
+		width: 100%;
+		height: 100%;
+	}
+	// 卡片
+	.introduce-card{
+		width: 710rpx;
+		margin: auto;
+		border-radius: 20rpx;
+		box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5);
+		margin-bottom: 50rpx;
+	
+		.content{
+			background-color: #FFFFFF;
+			padding: 30rpx 20rpx;
+			border-radius: 0 0 20rpx 20rpx;
+			.bottom{
+				margin-top: 20rpx;
+				
+				.title{
+					color: #666666;
+				}
+				.bottom-main{
+					display: flex;
+					padding: 6rpx 00;
+				}
+			}
+			
+		}
+		
+	}
+	
+	
+	.card-head{
+		display: flex;
+		padding: 20rpx;
+		border-radius:20rpx 20rpx 0 0;
+		align-items: center;
+		background-color: #F6F6F6;
+		
+		.icon-container{
+			width: 2em;
+			height: 2em;
+			margin-right: 16rpx;
+			
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	
+	}
+	
 </style>

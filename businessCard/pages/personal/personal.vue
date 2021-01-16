@@ -1,34 +1,38 @@
 <template>
 	<view class="person-contain">
 		<!-- :bgImage="getApp().globalData.navBgImg" -->
-		<cu-custom  bgColor="bg-gradual-blue" id="customNav" >
+		<cu-custom  bgColor="bg-gradual-blue" id="customNav">
 			<block slot="content"> <text class="text-bold"> 家园里 </text> </block>
 		</cu-custom>
 		<view class="person-head" id="personHead">
-			<view class="avatar" @click="toPersonEdit">
-				<open-data type="userAvatarUrl"></open-data>
-			</view>
-			<view class="content padding-sm text-xl">
-				<view class="limit-text  padding-left-sm" style="max-width: 8em">
-					<open-data  type="userNickName"></open-data>
+			<view class="flex align-center">
+				<view class="avatar" @click="toPersonEdit">
+					<open-data type="userAvatarUrl"></open-data>
 				</view>
-				<view class="padding-xs text-xs">
-					<view class='cu-tag round bg-gradual-blue'>访客</view>
+				<view class="content padding-sm text-xl">
+					<view class="limit-text  padding-left-sm" style="max-width: 8em">
+						<open-data  type="userNickName"></open-data>
+					</view>
+					<!-- <view class="padding-xs text-xs">
+						<view class='cu-tag round bg-gradual-blue'>访客</view>
+					</view> -->
 				</view>
 			</view>
+			
 			<view class="right">
-				<button class="cu-btn block bg-gradual-green"   bindgetphonenumber='getPhoneNum' open-type='getPhoneNumber' > 去注册 <text class="cuIcon-right padding-xs"></text>  </button>
+				<u-icon name="arrow-right" color="#000000" size="80rpx" ></u-icon>
+				<!-- <button class="cu-btn block bg-gradual-green"   bindgetphonenumber='getPhoneNum' open-type='getPhoneNumber' > 去注册 <text class="cuIcon-right padding-xs"></text>  </button> -->
 			</view>
 		</view>
 		<!--  用户应该显示的画面 -->
-		<view  class="" >
-			<view v-if="userType === 0" class=" flex justify-between padding-sm">
+		<view >
+			<view v-if="userType === 0" class=" flex justify-between align-center  u-p-l-50 u-p-r-50">
 				<text class="  text-lg text-bold"> 我的销售经理 </text> 
 			</view>
-			<view v-if="userType === 1"  id="personCardTitle">
-				<view class=" flex justify-between padding-sm" style="height: 100rpx;">
+			<view v-if="userType === 1"  id="personCardTitle " class="  u-p-l-50 u-p-r-50">
+				<view class=" flex justify-between align-center"  style="height: 100rpx;">
 					<text class="  text-lg text-bold"> 我的名片 </text> 
-					<text @click="toMangaerInfoEdit" > 修改 <text class="cuIcon-right"> </text> </text>
+					<text class="u-type-info" @click="toMangaerInfoEdit" > 修改 <text class="cuIcon-right"> </text> </text>
 				</view>
 			</view>
 			<view class="" @click="toCardDetail">
@@ -36,36 +40,107 @@
 			</view>
 		</view>
 		
-		<view  v-if="userType === 1" class="">
+		<view  v-if="userType === 1" class="u-relative">
 			
-			<view class=" flex justify-between padding bg-white align-center" style="height: 100rpx;" id="personHead">
+			<!-- <view class=" flex justify-between padding bg-white align-center" style="height: 100rpx;" id="personHead">
 				<text class="text-lg text-bold"> 我的客户 </text>
 				<view class="padding-xs  round solids  flex align-center">
 					<text class="cuIcon-search padding-xs"></text>
 					<input type="text" value="" class="bg-white text-sm" :disabled="true"  @click="toUserListDetail" placeholder="搜索" />
 				</view>
-			</view>
-			<block v-for="(item,index) in userList" :key="index" >
-				<view :class="'indexItem-' + item.indexName" :id="'indexes-' + item.indexName" :data-index="item.indexName"  @click="customerClick(item.id)" >
-					<view class="padding">{{item.indexName}}</view>
-					<view class="cu-list menu-avatar no-padding">
-						<view class="cu-item flex" v-for="(userItem,sub) in item.list"   :key="sub">
-							<view class="cu-avatar self-avatar" style="width: 2em;height: 2em;">
-								<image :src="userItem.avatar" style="width: 100%; height: 100%;" mode="aspectFill"></image>
-							</view>
-							<view class="content">
-								<view class="text-grey flex align-center">
-									<text> {{userItem.clientName}}  </text>
-									<text class="u-p-l-20 u-font-20"> {{userItem.clientBz}}  </text>
+			</view> -->
+			<view class="sm-bar-container">
+				<view class="main">
+					<u-tabs-swiper ref="tabs" :list="smTablist" active-color="#ff5500" inactive-color="#606266" font-size="26" @change="smTabChange" :current="smTabCurrent"></u-tabs-swiper>
+					<!-- <view class=""  v-show="smTabCurrent===0" style="position: absolute;left: 0; width: 100%;">
+						<u-dropdown ref="uDropdown" @open="open" @close="close">
+							<u-dropdown-item :title="fliterDateStr" class="" style="position: relative;" >
+								<view class="slot-content bg-white" >
+									<view class=" u-p-20  u-m-b-20 flex justify-around">
+										<u-tag v-for="(item,index) in filterActiveList" :kye="index" :text="item.label" shape="circle" />
+									</view>
 								</view>
-								<view class="text-gray text-sm">
-									{{userItem.clientPhone}}
+							</u-dropdown-item>
+						</u-dropdown>
+					</view> -->
+					
+				</view>
+				<view  v-show="smTabCurrent===0" class="right-icon" @click="filterClick">
+					<text class="u-p-r-20"> {{fliterDateStr}} </text>
+					<u-icon  :name="isFilter?'arrow-up':'arrow-down' " size="40"></u-icon>
+				</view>
+				<view v-show="smTabCurrent===1 "  @click="toUserListDetail" class="right-icon">
+					<u-icon  name="search" size="40"></u-icon>
+				</view>
+			</view>
+			<view :class="['filter-list',isFilter?'filter-list-active':'' ]">
+				<u-tag 
+					v-for="(item,index) in filterActiveList" 
+					:key="index" 
+					:text="item.label" 
+					:mode="filterActiveIndex===index?'dark':'light' " 
+					@click="selectFilter(index)"
+					shape="circle" />
+			</view>
+			<view v-show="smTabCurrent===0" class="">
+				<view class="cu-list menu-avatar no-padding">
+					<view class="cu-item flex u-p-t-20 u-p-b-20 u-p-l-40 u-p-r-40" v-for="(userItem,sub) in userActiveList"   :key="sub">
+						<view class="cu-avatar self-avatar" style="width: 2em;height: 2em;">
+							<image :src="userItem.avatar"  mode="aspectFill"></image>
+						</view>
+						<view class="content">
+							<view class=" flex align-center">
+								<text class="text-bold text-black"> {{userItem.clientName}}  </text>
+								<!-- <text class="u-p-l-20 u-font-20 text-grey"> {{userItem.clientBz}}  </text> -->
+							</view>
+							<view class="text-gray text-sm">
+								{{userItem.activeContent}}
+							</view>
+						</view>
+						<view class="right-container" @click="customerClick(userItem.clientId)">
+							<view class="right-title">
+								{{ showTimeStr(userItem.createTime)}}
+							</view>
+							<view class="chat-icon u-m-r-20">
+								<image src="@/static/img/personImg/news.png"></image>
+							</view>
+						</view>
+					
+					</view>
+				</view>
+			</view>
+			
+			
+			<view v-show="smTabCurrent===1" class="">
+				<block v-for="(item,index) in userList" :key="index" >
+				
+					<view :class="'indexItem-' + item.indexName" :id="'indexes-' + item.indexName" :data-index="item.indexName"  @click="customerClick(item.id)" >
+						<view class="padding u-p-l-40">{{item.indexName}}</view>
+						<view class="cu-list menu-avatar no-padding">
+							<view class="cu-item flex u-p-b-20 u-p-l-40 u-p-r-40" v-for="(userItem,sub) in item.list"   :key="sub">
+								<view class="cu-avatar self-avatar" style="width: 2em;height: 2em;">
+									<image :src="userItem.avatar" style="width: 100%; height: 100%;" mode="aspectFill"></image>
+								</view>
+								<view class="content">
+									<view class=" flex align-center">
+										<text class="text-bold"> {{userItem.clientName}}  </text>
+										<text class="u-p-l-20 u-font-20 text-grey"> {{userItem.clientBz}}  </text>
+									</view>
+									<view class="text-gray text-sm">
+										{{userItem.clientPhone}}
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-			</block>
+				</block>
+			</view>
+			
+			
+			
+			
+			
+			
 			<view class="indexBar" :style="[{zIndex:'1000',bottom: (26-list.length)*15+'rpx' }]">
 				<view class="indexBar-box" @touchstart="tStart" @touchend="tEnd" @touchmove.stop="tMove">
 					<view class="indexBar-item" v-for="(item,index) in list" :key="index" :id="index" @touchstart="getCur" @touchend="setCur"> {{item.name}}</view>
@@ -90,7 +165,7 @@
 	import {uniBadge} from '@dcloudio/uni-ui'
 	import {previewImg,getSalesInfo,getCompanyInfo,userAction} from '@/static/js/common.js'
 	
-	import {getClientInfosByCardSalesId} from '@/services/services.js'
+	import {getClientInfosByCardSalesId,getCardClientActiverecordByWeek} from '@/services/services.js'
 	
 	export default {
 		data() {
@@ -101,20 +176,38 @@
 				userType:-1,
 				companyInfo:'',
 				salesManagerInfo:{},
-				searchResList:[
-					{id:1,name:'A总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'张总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'章总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'史总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'B总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'b总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'波总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'董总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'柴总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'江总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'Z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
-					{id:1,name:'z总',avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg',phone:'15938279383',addInfo:'有意向'},
+				searchResList:[],
+				
+				isFilter:false,
+				filterActiveIndex: 0,   // 筛选日期被选中的  数组索引
+				filterActiveList: [
+					{
+						label: '全部',
+						value: 0,
+					},
+					{
+						label: '一周',
+						value: 1,
+					},
+					{
+						label: '半个月',
+						value: 2,
+					},
+					{
+						label: '一个月',
+						value: 3,
+					}
 				],
+				
+				smTabCurrent:0,
+				smTablist:[
+					{
+						name: '用户访问'
+					}, {
+						name: '我的客户'
+					},
+				],
+				
 				
 				clientId:2,
 				salesId:20,
@@ -125,12 +218,30 @@
 				CustomBar: this.CustomBar,
 				hidden: true,
 				sourceUserList:[],
-				userList:[
+				userList:[],
+				userActiveList:[],
+				
+				
 
-					
-				],
 				list: [],
 				listCur: '',
+			}
+		},
+		computed:{
+			fliterDateStr(){
+				return this.filterActiveList[this.filterActiveIndex].label
+			},
+			filterStyle(){
+				if(this.isFilter){
+					return {top:'100rpx',opacity:1 }
+				}else{
+					return '{opacity:0}'
+				}
+			},
+			showTimeStr(){
+				return (data) => {
+					return this.timeDistance(data)
+				}
 			}
 		},
 		watch:{
@@ -155,9 +266,9 @@
 		},
 		async created() {
 			// this.initIndexList()
-			
 			const getSalesInfoRes = await this.initSalesInfo(this.salesId)
 			this.initSalesBinds(this.salesId)
+			this.getUserActive(this.salesId)
 			if(getSalesInfoRes){
 				this.initCompanyInfo(this.salesManagerInfo.companyId)
 			}
@@ -225,11 +336,9 @@
 			async initSalesBinds(salesId){
 				let argObj = {}
 				
-				//**********************************
+				//*********！！！！！！！！！！！！
 				// 这里 暂时更改 salesId
 				salesId = 1
-				
-				
 				argObj.id = salesId
 				
 				console.log('argObj')
@@ -241,7 +350,24 @@
 					this.arrangeUserList(this.searchResList)
 				}
 			},
+			// 获取该销售 所绑定的用户的 活跃记录
+			async getUserActive(){
+				let dataObj = {saleId:this.salesId}
+				const res = await getCardClientActiverecordByWeek(dataObj)
+				console.log('&&&&&&&&&&&&&')
+				console.log(res)
+				if(res.statusCode === 200){
+					this.userActiveList = res.data.data
+				}
+			},
+			// 
 			
+			
+			// 用户访问 我的客户  tabbar
+			smTabChange(index){
+				this.smTabCurrent = index
+				this.closeFliterList()
+			},
 			
 			// 跳转至 销售编辑页面
 			toMangaerInfoEdit(){
@@ -249,6 +375,59 @@
 					url:'/pages/salesManagerInfoEdit/salesManagerInfoEdit'
 				})
 			},
+			
+			// 时间差
+			//	参数：时间戳
+			timeDistance(oldTime,newTime){
+				if(!newTime){
+					newTime = this.moment()
+				}
+				
+				if(!oldTime){
+					oldTime = this.moment(1610767485276)
+				}
+				
+				const timeType = typeof oldTime
+				if(timeType==='String'){
+					oldTime = this.moment(oldTime).unix() * 1000
+				}
+				
+				
+				let oldMoment = this.moment(oldTime)
+				let newMoment = this.moment(newTime)
+				let tempTimeDay = newMoment.diff(oldMoment, 'day')
+			
+				let resStr = oldMoment.format('YYYY年MM月DD日')
+
+				
+				if(tempTimeDay<=7){
+					resStr = oldMoment.format('dddd')
+				}
+				
+				if(tempTimeDay===1){
+					resStr = '昨天' + oldMoment.format('a h:mm')
+				}
+				
+				if(tempTimeDay===0){
+					resStr = oldMoment.format('a h:mm')
+				}
+				return resStr
+			},
+			selectFilter(index){
+				this.filterActiveIndex = index
+				this.closeFliterList()
+			},
+			filterClick(){
+				this.isFilter = ! this.isFilter
+			},
+			// 打开下拉菜单
+			openFliterList(){
+				this.isFilter = true
+			},
+			closeFliterList(){
+				this.isFilter = false
+			},
+			
 			// 对 用户信息 根据名字的拼音首字母 分组
 			arrangeUserList(sourceUserList){
 				const resArr = []
@@ -263,6 +442,7 @@
 				})
 				let flitObj = this.flitUserList(initialArr)
 				this.userList = flitObj.userArr
+				console.log(this.userList)
 				this.list = flitObj.wordArr
 			},
 			// 返回 首字母的 列表  （纯函数）
@@ -334,7 +514,7 @@
 			// 保存通讯录的 额外操作
 			// 因为只是单方面的对 销售的信息操作，不涉及后台
 			onMailList(){
-				userAction(this.clientId,this.salesId,4)
+				userAction(this.clientId,this.salesId,3)
 			},
 			
 			
@@ -407,8 +587,8 @@
 			//滑动选择Item
 			tMove(e) {
 				let y = e.touches[0].clientY,
-					offsettop = this.boxTop,
-					that = this;
+				offsettop = this.boxTop,
+				that = this;
 				//判断选择区域,只有在选择区才会生效
 				if (y > offsettop) {
 					let num = parseInt((y - offsettop) / 14);
@@ -444,9 +624,11 @@
 	}
 	.person-contain{
 		padding: 20rpx 0;
+		background-color: #F8F8F9;
 	}
 	.person-head{
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
 		width: 700rpx;
 		height: 200rpx;
@@ -465,6 +647,7 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
+		padding-right: 36rpx;
 	}
 	.avatar{
 		width: 4em;
@@ -588,6 +771,67 @@
 		line-height: 24px;
 		background-color: #fff;
 	}
+	.sm-bar-container{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background-color: #FFFFFF;
+		padding: 20rpx 50rpx ;
+		.main{
+			z-index:1000;
+			flex-basis: 1;
+			flex-grow: 1;
+		}
+		.right-icon{
+			z-index:1000;
+			padding: 20rpx 30rpx;
+			background-color: #FFFFFF;
+		}
+		
+	}
+	.filter-list{
+		position: absolute;
+		z-index: 10;
+		left: 0;
+		
+		top: 0rpx;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+		width: 100%;			
+		height: 100rpx;
+		padding: 20rpx;
+		background-color: #FFFFFF;
+		transition: all .5s;
+		opacity: 0;
+	}
+	.filter-list-active{
+		top: 100rpx;
+		opacity: 1;
+	}
 	
 	
+	image{
+		width: 100%;
+		height: 100%;
+	}
+	.right-container{
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		
+		min-width: 6em;
+		padding: 10rpx;
+		text-align: center;
+		.chat-icon{
+			width: 2em;
+			height: 2em;
+			padding: .2em;
+		}
+		.right-title{
+			color: #999999;
+		}
+	}
+
 </style>

@@ -4,30 +4,34 @@
 			<block slot="backText"> 返回 </block>
 			<block slot="content"> <text class="text-bold"> 修改名片 </text> </block>
 		</cu-custom>
-		<view class="text-center">
+		<view class="text-center u-p-30">
 			<view class="avatar-container">
-				<image :src="salesManagerInfo.avatar"  mode="aspectFit"></image>
+				<image :src="salesManagerInfo.headPortrait"  mode="aspectFit"></image>
 			</view>
-			<view class="">
+			<view class="u-p-20">
 				个人形象照
 			</view>
 		</view>
 		<view class="bg-white padding">
 			<u-form :model="salesManagerInfo" :label-style="formItemStyle" :label-width="150" ref="uForm">
-				<u-form-item label="姓名" prop="name">
-					<u-input :trim="true" v-model="salesManagerInfo.name" />
+				<u-form-item label="姓名" prop="salesName">
+					<u-input :disabled="true" :trim="true" v-model="salesManagerInfo.salesName" />
 				</u-form-item>
-				<u-form-item label="职位"  prop="position">
-					<u-input :trim="true" v-model="salesManagerInfo.position" />
+				<u-form-item label="职位"  prop="jobTitle">
+					<u-input :disabled="true" :trim="true" v-model="salesManagerInfo.jobTitle" />
 				</u-form-item>
-				<u-form-item label="公司名"  prop="company">
-					<u-input :trim="true"  v-model="salesManagerInfo.company" />
+				<u-form-item label="公司名"  prop="companyName">
+					<u-input :disabled="true" :trim="true"  v-model="companyInfo.companyName" />
 				</u-form-item>
 				<u-gap  height="20" bg-color="#eee"></u-gap>
-				<u-form-item label="个人简介" >
-				</u-form-item>
+				<view class="card-head u-p-l-20" style="background-color: #FFFFFF;">
+					<view class="icon-container">
+						<image src="@/static/img/salesPersonImg/card-introduce.png"></image>
+					</view>
+					<text class="text-bold u-font-34"> 个人简介 </text>
+				</view>
 				<u-form-item  prop="brief" >
-					<u-input :trim="true" type="textarea" :custom-style="{padding: '20rpx'}"  :autoHeight="true"  v-model="salesManagerInfo.brief" />
+					<u-input :trim="true" type="textarea" :custom-style="{'min-height':'200rpx' }"  :autoHeight="true"  v-model="salesManagerInfo.salesWordIntroduce" />
 				</u-form-item>
 			<!-- 	<view class="cu-item padding" >
 					<textarea class="self-area" :value="salesManagerInfo.brief" @input="areaChange" placeholder="输入您的个人简介" adjust-position="false"  ></textarea>
@@ -56,21 +60,25 @@
 				<u-gap height="20" bg-color="#eee"></u-gap>
 				<u-form-item label="联系方式" >
 				</u-form-item>
-				<u-form-item label="手机"  prop="phone">
-					<u-input :trim="true" v-model="salesManagerInfo.phone" />
+				<u-form-item label="手机"  prop="salesPhone">
+					<u-input :trim="true" v-model="salesManagerInfo.salesPhone" />
 				</u-form-item>
-				<u-form-item label="微信"  prop="wxId">
-					<u-input :trim="true" v-model="salesManagerInfo.wxId" />
+				<u-form-item label="微信"  prop="salesWx">
+					<u-input :trim="true" v-model="salesManagerInfo.salesWx" />
 				</u-form-item>
-				<u-form-item label="邮箱"  prop="mail">
-					<u-input :trim="true" v-model="salesManagerInfo.mail" />
+				<u-form-item label="邮箱"  prop="salesMailbox">
+					<u-input :trim="true" v-model="salesManagerInfo.salesMailbox" />
 				</u-form-item>
 				<u-gap height="20" bg-color="#eee"></u-gap>
 				
 				
 				
-				<u-form-item label="图册"  prop="imgList">
-				</u-form-item>
+				<view class="card-head u-p-l-20" style="background-color: #FFFFFF;">
+					<view class="icon-container ">
+						<image src="@/static/img/salesPersonImg/album.png"></image>
+					</view>
+					<text class="text-bold u-font-34"> 图册 </text>
+				</view>
 				
 				<view class="padding-sm flex justify-between">
 					<u-upload 
@@ -88,9 +96,8 @@
 
 		</view>
 		<view class="padding">
-			<u-button type="success" @click="submit">保存</u-button>
+			<u-button type="default" @click="submit">保存</u-button>
 		</view>
-		
 		
 <!-- 		<view class="cu-list menu sm-border  margin-top" >
 			<view class="cu-item " >
@@ -206,10 +213,13 @@
 	import uniPopupMessage from '@/components/uni-popup/uni-popup-message.vue'
 	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	
-	
+	import {getCardSalesInfoById,updateCardSalesInfo} from '@/services/services.js'
+	import {getSalesInfo,getCompanyInfo} from '@/static/js/common.js'
 	export default {
 		data() {
 			return {
+				
+				companyInfo:null,
 				salesManagerInfo:{
 					name:'王珞丹',
 					avatar:'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
@@ -277,7 +287,8 @@
 						}
 					],
 				},
-				
+				clientId:2,
+				salesId:20,
 				
 				imgList: [{
 					id: 0,
@@ -361,7 +372,64 @@
 		mounted() {
 
 		},
+		async created() {
+			const getSalesInfoRes = await this.initSalesInfo(this.salesId)
+			if(getSalesInfoRes){
+				this.initCompanyInfo(this.salesManagerInfo.companyId)
+			}
+		},
 		methods: {
+			
+			// 初始化 销售的信息
+			initSalesInfo(salesId){
+				return new Promise(async (resolve,reject)=>{
+					uni.showLoading({
+						title:'您的专属销售正在赶路的路上...',
+						mask:true
+					})
+					
+					let data = {id:salesId}
+					const getSalesInfoRes = await getSalesInfo(data)
+					if(getSalesInfoRes.statu===200){
+						this.salesManagerInfo = Object.assign({},getSalesInfoRes.value)
+						this.voicePath = this.salesManagerInfo.salesVoiceIntroduce
+						resolve(true)
+					}else{
+						uni.showToast({
+							title: getSalesInfoRes.msg,
+							icon:'none'
+						})
+						resolve(false)
+					}
+					uni.hideLoading()
+				})
+				
+			},
+			
+			// 初始化  公司信息
+			
+			async initCompanyInfo(companyId){
+				uni.showLoading({
+					title:'公司信息资源获取中....',
+					mask:true
+				})
+				
+				let data = {id:companyId}
+				const getCompanyInfoRes = await getCompanyInfo(data)
+				if(getCompanyInfoRes.statu===200){
+					this.companyInfo = getCompanyInfoRes.value
+					console.log('----- company  ---')
+					console.log(getCompanyInfoRes.value)
+				}else{
+					uni.showToast({
+						title: getCompanyInfoRes.msg,
+						icon:'none'
+					})
+				}
+				uni.hideLoading()
+			},
+			
+			
 			imgUploadFinal(res, index, lists, name){
 				console.log(res)
 				console.log(index)
@@ -463,6 +531,8 @@
 					});
 				})
 			},
+			//
+			
 			
 			
 			// 设置权限返回值

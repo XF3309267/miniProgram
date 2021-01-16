@@ -4,35 +4,36 @@
 			<image :src="salesManagerInfo.headPortrait" mode="aspectFill"> </image>
 		</view>
 		<view class="right">
-			<view class="flex justify-between">
+			<view class=" head">
 				<view class="">
-					<view class="text-bold text-lg padding-xs">
+					<view class="text-bold text-md padding-xs">
 						{{salesManagerInfo.salesName}}
 					</view>
-					<view class="padding-xs">
-						{{salesManagerInfo.jobTitle}}
+					<view class="padding-xs text-md">
+						销售经理
 					</view>
 				</view>
-				<view class="">
+				<view class="padding-xs">
 					<u-image :src="companyInfo.companyLogo" width="100rpx" height="30rpx" mode="aspectFit" ></u-image>
 					<!-- <text class="cu-tag"> 公司logo </text> -->
 				</view>
 			</view>
 			
-			<view class="flex align-center justify-between padding-xs">
-				<view class="flex align-center" @click.stop="phoneCall" >
-					<text class="cuIcon-phone  padding-right"></text>
+			<view class="flex align-center justify-between normal-item">
+				<view class="flex align-center u-m-r-2" @click.stop="phoneCall" >
+					<text class="cuIcon-phone  u-p-r-10"></text>
 					<text class="underLine " > {{salesManagerInfo.salesPhone}} </text>
 				</view>
-				<text class="cu-tag round bg-gradual-green" @click.stop="addPhonePerson" > 保存通讯录 </text>
+				<u-tag text="保存通讯录" type="info"  shape="circle" size="mini" @click="addPhonePerson" />
+				<!-- <text class="cu-tag round bg-whtie text-black " style="font-size: .7em;" @click.stop="addPhonePerson" > 保存通讯录 </text> -->
 			</view>
 			
-			<view class="flex align-center padding-xs">
-				<text class="cuIcon-home padding-right"></text>
+			<view class="normal-item">
+				<text class="cuIcon-home u-p-r-10"></text>
 				<text> {{companyInfo.companyName}} </text>
 			</view>
-			<view class="flex align-center padding-xs">
-				<text class="cuIcon-mail padding-right"></text>
+			<view class="normal-item{">
+				<text class="cuIcon-mail u-p-r-10"></text>
 				<text> {{salesManagerInfo.salesMailbox}} </text>
 			</view>
 		</view>
@@ -123,31 +124,78 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped >
 	.sale-card{
 		position: relative;
 		display: flex;
-		width: 700rpx;
+		width: 670rpx;
 		height: 370rpx;
+		padding: 30rpx;
 		margin: auto;
-		border-radius: 20rpx;
+		margin-bottom: 30rpx;
+		font-size: .9em;
+		border-radius: 20rpx 70rpx 20rpx 70rpx;
 		background-color: #FFF;
+	
+		
+		box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5);
+		.left{
+			width: 250rpx;
+			height: 100%;
+			border-radius: 20rpx;
+			overflow: hidden;
+		}
+		
+		.absolute-right-icon{
+			position: absolute;
+			left: 300rpx;
+			top: 0;
+			font-size: 5em;
+		}
+		
+		
+		.right{
+			flex-basis: 1;
+			flex-grow: 1;
+			padding: 10rpx 20rpx;
+			
+			.head{
+				display: flex;
+				height: 140rpx;
+				justify-content: space-between;
+				align-items: flex-start;
+				font-size: 1.2em;
+			
+			}
+			.normal-item{
+				height: 50rpx;
+				line-height: 50rpx;
+				overflow: hidden;
+			}
+		}
 	}
-	.sale-card .left{
-		width: 250rpx;
-		height: 100%;
-		border-radius: 20rpx 0 0 20rpx ;
-		overflow: hidden;
-	}
-	.sale-card .absolute-right-icon{
-		position: absolute;
-		left: 300rpx;
-		top: 0;
-		font-size: 5em;
-	}
-	.sale-card .right{
-		flex-basis: 1;
-		flex-grow: 1;
+
+	/*  精彩图册  */
+	.img-container{
+		position: relative;
+		width: 710rpx;
+	/* 	height: 380rpx; */
 		padding: 20rpx;
+		border-radius: 10rpx;
+		margin: 20rpx auto;
+		background-color: #FFF;
+		
+		image{
+			width: 100%;
+			height: 100%;
+			border-radius: 10rpx;
+		}
+	
+		.brief{
+			position: absolute;
+			bottom: 30rpx;
+			left: 30rpx;
+			color: #FFFFFF;
+		}
 	}
 </style>

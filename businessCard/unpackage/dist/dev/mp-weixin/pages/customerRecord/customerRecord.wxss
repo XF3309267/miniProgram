@@ -61,8 +61,8 @@
 .min-5em.data-v-d4e92e34 {
   min-width: 4em;
 }
-.min-10em.data-v-d4e92e34 {
-  min-width: 10em;
+.min-9em.data-v-d4e92e34 {
+  min-width: 9em;
 }
 .min-650.data-v-d4e92e34 {
   min-width: 650rpx;

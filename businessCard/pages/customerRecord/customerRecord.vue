@@ -4,7 +4,68 @@
 			<block slot="content"> <text class="text-bold"> 用户追踪 </text> </block>
 		</cu-custom> -->
 		<u-navbar  title="用户追踪" :is-fixed="true" height="44"></u-navbar>
-		<view>
+		
+			<u-picker mode="time" v-model="datePickerShow" :params="dateParams" @confirm="selectTimeConfirm"></u-picker>
+			<view class="bg-white u-m-b-20" @click="datePickerShow = true">
+				<u-cell-item icon="clock" :title="toTimeStr(selectTimeNum)" :arrow="true" arrow-direction="right"></u-cell-item>
+			</view>
+			<view class="padding bg-white flex" >
+				<view class="text-center min-5em">
+					跟进方式
+				</view>
+				<view class="u-p-l-20">
+					<u-radio-group v-model="radioValue" @change="radioGroupChange">
+						<view  class="radio-group" style="display: flex;flex-flow: row wrap; " >
+							<view v-for="(item, index) in radioList" :key="index"  class="min-9em">
+								<u-radio
+									:name="item.value"
+									:disabled="item.disabled"
+								>
+									<text style="font-size: .8em;"> {{item.name}} </text>	
+								</u-radio>
+							</view>
+							
+						</view>
+						
+					</u-radio-group>
+				</view>
+			</view>
+			<view class=" flex u-p-20 bg-white margin-top u-font-34 ">
+				<text class="u-p-r-20"> 跟进进度 </text>
+				<view class="flex-aloneHold">
+					<!-- hold-keyboard -->
+					<input type="text" v-model="recordInputV"  placeholder="请输入跟进进度"  :adjust-position="false"  maxlength="300" ></input>
+				</view>
+			</view>
+			<!-- <view class="bg-white margin-top">
+				<u-field
+					v-model="recordInputV"
+					:trim="true"
+					label="跟进进度"
+					placeholder="请输入跟进记录"
+					placeholder-style="color: #c7c7c7"
+					required
+				>
+				</u-field>
+			</view> -->
+			<view class="u-p-30 text-center">
+				<button class="cu-btn round  min-650 bg-blue"   @click="submit"> 保存 </button>
+			</view>
+			<view class="u-p-20 bg-white">
+				<u-time-line >
+					<u-time-line-item  v-for="(item,index) in salesDefineRecordList" :key="index"  bg-color="#0055ff" nodeTop="2" >
+						<template  v-slot:content>
+							<view >
+								<view class="u-order-time">{{toTimeStr(item.time)}} </view>
+								<view class="u-p-t-14"> {{item.content}} </view>
+								<view class="u-order-time">{{ item.type }} </view>
+							</view>
+						</template>
+					</u-time-line-item>
+				</u-time-line >
+			</view>
+		
+<!-- 		<view>
 			<view>
 				<u-tabs-swiper ref="uTabs" :list="list" :current="current" @change="tabsChange" :is-scroll="false" swiperWidth="750"></u-tabs-swiper>
 			</view>
@@ -33,15 +94,15 @@
 							<view class="text-center min-5em">
 								跟进方式
 							</view>
-							<view class="u-p-l-20 u-p-r-20">
+							<view class="u-p-l-20">
 								<u-radio-group v-model="radioValue" @change="radioGroupChange">
-									<view  class="radio-group" >
-										<view v-for="(item, index) in radioList" :key="index"  class="min-10em">
+									<view  class="radio-group" style="display: flex;flex-flow: row wrap; " >
+										<view v-for="(item, index) in radioList" :key="index"  class="min-9em">
 											<u-radio
 												:name="item.value"
 												:disabled="item.disabled"
 											>
-												{{item.name}}
+												<text style="font-size: .8em;"> {{item.name}} </text>	
 											</u-radio>
 										</view>
 										
@@ -53,21 +114,9 @@
 						<view class=" flex u-p-20 bg-white margin-top u-font-34 ">
 							<text class="u-p-r-20"> 跟进进度 </text>
 							<view class="flex-aloneHold">
-								<!-- hold-keyboard -->
 								<input type="text" v-model="recordInputV"  placeholder="请输入跟进进度"  :adjust-position="false"  maxlength="300" ></input>
 							</view>
 						</view>
-						<!-- <view class="bg-white margin-top">
-							<u-field
-								v-model="recordInputV"
-								:trim="true"
-								label="跟进进度"
-								placeholder="请输入跟进记录"
-								placeholder-style="color: #c7c7c7"
-								required
-							>
-							</u-field>
-						</view> -->
 						<view class="u-p-30 text-center">
 							<button class="cu-btn round  min-650 bg-blue"   @click="submit"> 保存 </button>
 						</view>
@@ -87,7 +136,8 @@
 					</scroll-view>
 				</swiper-item>
 			</swiper>
-		</view>
+		</view> -->
+		
 	</view>
 </template>
 
@@ -333,8 +383,8 @@
 .min-5em{
 	min-width: 4em;
 }
-.min-10em{
-	min-width: 10em;
+.min-9em{
+	min-width: 9em;
 }
 .min-650{
 	min-width: 650rpx;

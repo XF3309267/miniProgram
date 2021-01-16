@@ -19,7 +19,7 @@
 }
 .bottom-btn.data-v-34359421{
 	position: relative;
-	top: -20rpx;
+	top: -10rpx;
 	width: 4em;
 }
 .avatar.data-v-34359421{

@@ -38,6 +38,8 @@
   width: 100%;
   padding: 20rpx 30rpx;
   background-color: #f8f8f8;
+  -webkit-transition: opacity 1s;
+  transition: opacity 1s;
 }
 .chat-head .head-item.data-v-294925b4 {
   width: 100rpx;
@@ -55,5 +57,56 @@
 .chat-head .head-item text.data-v-294925b4 {
   font-size: .8em;
   color: #999;
+}
+.chat-head-active.data-v-294925b4 {
+  opacity: 1;
+}
+.cu-chat .self .main .content.data-v-294925b4 {
+  background-color: #81F881;
+}
+.cu-bar.data-v-294925b4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  padding: 20rpx 0;
+}
+.cu-bar .chat-input.data-v-294925b4 {
+  width: 700rpx;
+  height: 70rpx;
+  line-height: 60rpx;
+  -webkit-transition: all 1s 1s;
+  transition: all 1s 1s;
+  border-radius: 50rpx;
+  border: 2rpx solid #bdbdbd;
+  padding: 10rpx 30rpx;
+  margin: auto;
+}
+.cu-bar .chat-iconList.data-v-294925b4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  width: 100%;
+  padding: 5rpx 30rpx;
+}
+.cu-bar .chat-iconList .icon-item.data-v-294925b4 {
+  width: 2em;
+  height: 2em;
+}
+image.data-v-294925b4 {
+  width: 100%;
+  height: 100%;
 }
 

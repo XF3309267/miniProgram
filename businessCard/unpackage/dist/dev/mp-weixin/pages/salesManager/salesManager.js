@@ -1,6 +1,6 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/salesManager/salesManager"],{
 
-/***/ 42:
+/***/ 53:
 /*!**************************************************************************************!*\
   !*** D:/project/businessCard/main.js?{"page":"pages%2FsalesManager%2FsalesManager"} ***!
   \**************************************************************************************/
@@ -10,13 +10,13 @@
 "use strict";
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _salesManager = _interopRequireDefault(__webpack_require__(/*! ./pages/salesManager/salesManager.vue */ 43));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _salesManager = _interopRequireDefault(__webpack_require__(/*! ./pages/salesManager/salesManager.vue */ 54));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_salesManager.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 
 /***/ }),
 
-/***/ 43:
+/***/ 54:
 /*!*******************************************************************!*\
   !*** D:/project/businessCard/pages/salesManager/salesManager.vue ***!
   \*******************************************************************/
@@ -25,10 +25,10 @@ createPage(_salesManager.default);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _salesManager_vue_vue_type_template_id_33855cb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./salesManager.vue?vue&type=template&id=33855cb4&scoped=true& */ 44);
-/* harmony import */ var _salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./salesManager.vue?vue&type=script&lang=js& */ 46);
+/* harmony import */ var _salesManager_vue_vue_type_template_id_33855cb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./salesManager.vue?vue&type=template&id=33855cb4&scoped=true& */ 55);
+/* harmony import */ var _salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./salesManager.vue?vue&type=script&lang=js& */ 57);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 50);
+/* harmony import */ var _salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 59);
 /* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 10);
 
 var renderjs
@@ -57,7 +57,7 @@ component.options.__file = "pages/salesManager/salesManager.vue"
 
 /***/ }),
 
-/***/ 44:
+/***/ 55:
 /*!**************************************************************************************************************!*\
   !*** D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=template&id=33855cb4&scoped=true& ***!
   \**************************************************************************************************************/
@@ -66,7 +66,7 @@ component.options.__file = "pages/salesManager/salesManager.vue"
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_16_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_uni_app_loader_page_meta_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_template_id_33855cb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=template&id=33855cb4&scoped=true& */ 45);
+/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_16_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_uni_app_loader_page_meta_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_template_id_33855cb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=template&id=33855cb4&scoped=true& */ 56);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_16_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_uni_app_loader_page_meta_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_template_id_33855cb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_16_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_template_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_uni_app_loader_page_meta_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_template_id_33855cb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
@@ -79,7 +79,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 45:
+/***/ 56:
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=template&id=33855cb4&scoped=true& ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
@@ -95,11 +95,14 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
-    uAvatar: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-avatar/u-avatar */ "uview-ui/components/u-avatar/u-avatar").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-avatar/u-avatar.vue */ 144))
+    uImage: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-image/u-image */ "uview-ui/components/u-image/u-image").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-image/u-image.vue */ 223))
+    },
+    uIcon: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-icon/u-icon */ "uview-ui/components/u-icon/u-icon").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-icon/u-icon.vue */ 230))
     },
     uPopup: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 151))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 193))
     }
   }
 } catch (e) {
@@ -142,7 +145,7 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ 46:
+/***/ 57:
 /*!********************************************************************************************!*\
   !*** D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=script&lang=js& ***!
   \********************************************************************************************/
@@ -151,14 +154,14 @@ render._withStripped = true
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_babel_loader_lib_index_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_12_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_script_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/babel-loader/lib!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=script&lang=js& */ 47);
+/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_babel_loader_lib_index_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_12_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_script_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/babel-loader/lib!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=script&lang=js& */ 58);
 /* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_babel_loader_lib_index_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_12_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_script_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_babel_loader_lib_index_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_12_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_script_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_babel_loader_lib_index_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_12_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_script_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_babel_loader_lib_index_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_12_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_script_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_babel_loader_lib_index_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_12_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_script_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ 47:
+/***/ 58:
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
@@ -166,7 +169,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 21));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));
 
 
 
@@ -288,9 +291,66 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _services = __webpack_require__(/*! @/services/services.js */ 48);
 
-var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 158));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 165));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 172));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _services = __webpack_require__(/*! @/services/services.js */ 49);
+
+var _common = __webpack_require__(/*! @/static/js/common.js */ 50);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var SalesManagerCard = function SalesManagerCard() {__webpack_require__.e(/*! require.ensure | components/SalesManagerCard */ "components/SalesManagerCard").then((function () {return resolve(__webpack_require__(/*! @/components/SalesManagerCard */ 237));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var PersonalIcon = function PersonalIcon() {__webpack_require__.e(/*! require.ensure | components/PersonalIcon */ "components/PersonalIcon").then((function () {return resolve(__webpack_require__(/*! @/components/PersonalIcon */ 244));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var FixedChat = function FixedChat() {__webpack_require__.e(/*! require.ensure | components/FixedChat */ "components/FixedChat").then((function () {return resolve(__webpack_require__(/*! @/components/FixedChat.vue */ 251));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   data: function data() {
     return {
@@ -486,8 +546,8 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
     // 初始化 画布图片信息
     inintPaintImgArr: function inintPaintImgArr() {
       this.paintArr.push(this.salesManagerInfo.headPortrait);
-      this.paintArr.push(this.companyInfo.companyLogo);
-      this.paintArr.push(this.companyInfo.companyLogo);
+      this.paintArr.push('https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg');
+      this.paintArr.push('https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg');
       console.log('push finally');
       console.log(this.paintArr);
     },
@@ -544,7 +604,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
     },
     // 用户浏览 名片
     userAppreciate: function userAppreciate() {
-      var res = (0, _common.userAction)(this.clientId, this.salesId, 1);
+      var res = (0, _common.userAction)(this.clientId, this.salesId, 0);
       console.log('res');
       console.log(res);
 
@@ -605,8 +665,8 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
         this.userIsAppreciate = false;
         return;
       }
-      // const res = userAction(this.clientId,this.salesId,1)
-      // this.salesManagerInfo.likeNum++;
+      var res = (0, _common.userAction)(this.clientId, this.salesId, 2);
+      this.salesManagerInfo.likeNum++;
       this.userIsAppreciate = true;
     },
 
@@ -627,7 +687,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
     // 保存通讯录的 额外操作
     // 因为只是单方面的对 销售的信息操作，不涉及后台
     onMailList: function onMailList() {
-      (0, _common.userAction)(this.clientId, this.salesId, 4);
+      (0, _common.userAction)(this.clientId, this.salesId, 3);
     },
 
     // 拨打电话
@@ -655,7 +715,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
           uni.showToast({
             title: '成功复制微信号' });
 
-          (0, _common.userAction)(_this6.clientId, _this6.salesId, 3);
+          (0, _common.userAction)(_this6.clientId, _this6.salesId, 4);
         },
         fail: function fail() {
           console.log('复制失败');
@@ -675,14 +735,14 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
     },
     // 生成名片海报
     createPostCard: function createPostCard() {
-      (0, _common.userAction)(this.clientId, this.salesId, 2);
+      (0, _common.userAction)(this.clientId, this.salesId, 1);
       if (this.initCanvasRes) {
         this.canvansTodo(this.ctx, this.myCanvasId, this.pixeRatio, this.paintArr, this.smCtxW * this.pixeRatio, this.smCtxH * this.pixeRatio);
       }
     },
     // 点击分享名片
     shareCard: function shareCard() {
-      (0, _common.userAction)(this.clientId, this.salesId, 2);
+      (0, _common.userAction)(this.clientId, this.salesId, 1);
     },
     // 画布所需
     initCanvas: function initCanvas(canvansId) {var _this7 = this;
@@ -958,7 +1018,7 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
 
 /***/ }),
 
-/***/ 50:
+/***/ 59:
 /*!*****************************************************************************************************************************!*\
   !*** D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& ***!
   \*****************************************************************************************************************************/
@@ -967,14 +1027,14 @@ var _common = __webpack_require__(/*! @/static/js/common.js */ 49);function _int
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/postcss-loader/src??ref--8-oneOf-1-3!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 51);
+/* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/postcss-loader/src??ref--8-oneOf-1-3!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!./salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& */ 60);
 /* harmony import */ var _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_loaders_stylePostLoader_js_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_2_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_webpack_preprocess_loader_index_js_ref_8_oneOf_1_5_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_index_js_vue_loader_options_chromeDownLoads_HBuilderX_2_9_8_20201110_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_webpack_uni_mp_loader_lib_style_js_salesManager_vue_vue_type_style_index_0_id_33855cb4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ 51:
+/***/ 60:
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!D:/project/businessCard/pages/salesManager/salesManager.vue?vue&type=style&index=0&id=33855cb4&lang=scss&scoped=true& ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
@@ -987,5 +1047,5 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ })
 
-},[[42,"common/runtime","common/vendor"]]]);
+},[[53,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/salesManager/salesManager.js.map

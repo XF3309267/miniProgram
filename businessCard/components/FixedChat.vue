@@ -1,7 +1,7 @@
 <template>
 	<view class="fixed-badge">
 	
-		<view class="avatar">
+		<view class="avatar" style="z-index: 100;">
 			
 			<image v-if="userType === 0 " :src="salesAvatar" mode="aspectFill"></image>	
 			<image v-if="userType === 1" :src="normalAvatar" mode="aspectFill"></image>
@@ -81,9 +81,8 @@
 	}
 	.bottom-btn{
 		position: relative;
-		top: -20rpx;
+		top: -10rpx;
 		width: 4em;
-		
 	}
 	.avatar{
 		width: 3em;

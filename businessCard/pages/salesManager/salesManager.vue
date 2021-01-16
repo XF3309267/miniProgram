@@ -1,5 +1,5 @@
 <template>
-	<view class="" style="padding-bottom: 120rpx;">
+	<view class="bg-white" style="padding-bottom: 120rpx;">
 		<FixedChat  :userType="userType" :newsCount="newsCount"/>
 		<cu-custom bgColor="bg-gradual-blue" :isBack="false" :selfBack="true">
 			<block slot="backText">
@@ -17,51 +17,105 @@
 			<canvas :id="myCanvasId" :canvas-id="myCanvasId" class="canvasW" :style="[ctxWStr,ctxHStr]" ></canvas>
 		</view>
 		<view class="">
-			<view class="bg-white padding-top">
-				<SalesManagerCard :salesManagerInfo="salesManagerInfo"  :companyInfo="companyInfo"  @onMailList="onMailList"  />
-				<view class="padding-sm flex justify-between">
-					<view class="">
-						<view class="self-avatar-list">
-							<view v-for="(item,index) in avatarList" :key="index" class="self-avatar-item">
-								<u-avatar  size="50"  :src="item"></u-avatar>
+			<view class="bg-white">
+				<view class="card-container">
+					<SalesManagerCard :salesManagerInfo="salesManagerInfo"  :companyInfo="companyInfo"  @onMailList="onMailList"  />
+				</view>
+				<view class="padding-sm flex justify-between align-center u-border-bottom">
+					<view class="self-avatar-list">
+						<!-- <view v-for="(item,index) in avatarList" :key="index" class="self-avatar-item">
+							<u-avatar  size="50"  :src="item"></u-avatar>
+						</view> -->
+						<view class="u-p-20 u-font-14">
+							<view class="cu-avatar-group">
+								<view class="cu-avatar round sm" v-for="(item,index) in avatarList" :key="index" :style="[{ backgroundImage:'url(' + item + ')' }]"></view>
 							</view>
-							<text class="u-p-l-20"> {{salesManagerInfo.readNum}} 人浏览 </text>
 						</view>
-						
+						<text class="u-p-l-20 u-type-info"> {{salesManagerInfo.readNum}} 人浏览 </text>
 					</view>
-					<view class="text-lg text-green" @click="appreciate" >
+					
+					
+					<view class="text-xl text-green u-p-r-40" @click="appreciate" >
 						<text class="cuIcon-appreciate " v-if="!userIsAppreciate"></text>
 						<text class="cuIcon-appreciatefill" v-if="userIsAppreciate" > </text>
 						<text class="text-green"> {{salesManagerInfo.likeNum}} </text>  
 					</view>
 				</view>
 			</view>
-			<view class="fixed-bottom">
-				<button @click="showBottomPoup" class="cu-tag round padding-sm bg-green self-text margin-0"> 分享名片</button>
-				<view class="cu-tag round padding-sm bg-green self-text" @click="copyWxId"> 
-					加微信
-					<view  class="sm-title">
-						WX_id54633342
+			<view class="tag-list">
+				<view class="cu-tag round padding-sm bg-white self-text tag-shadow absolute-btn-container" hover-class="btn-hover"  @click="showBottomPoup" >
+					<view class="icon-container">
+						<image src="@/static/img/salesPersonImg/tag-share.png" mode="aspectFill"></image>
 					</view>
+					分享名片
 				</view>
-				<view class="cu-tag round bg-green self-text" @click="confirmCallPhone"> 
-					<view class="" >
-						联系她
+				<view class="cu-tag round padding-sm bg-white self-text tag-shadow" hover-class="btn-hover"  @click="copyWxId"> 
+					<view class="icon-container">
+						<image src="@/static/img/salesPersonImg/tag-wechat.png" mode="aspectFill"></image>
 					</view>
-					<view  class="sm-title">
-						您的手机号码不会被泄露
+					<view class="">
+						<view class="">
+							加微信
+						</view>
+						<view  class="sm-title">
+							WX_id54633342
+						</view>
 					</view>
+					
+				</view>
+				<view class="cu-tag cu-btn round bg-white self-text tag-shadow" hover-class="btn-hover"  @click="confirmCallPhone"> 
+					<view class="icon-container">
+						<image src="@/static/img/salesPersonImg/tag-phone.png" mode="aspectFill"></image>
+					</view>
+					<view class="">
+						<view class="" >
+							联系她
+						</view>
+						<view  class="sm-title">
+							您的手机号码不会被泄露
+						</view>
+					</view>
+					
 				</view>
 			</view>
-			
-			<view class="padding bg-white margin-top">
-				<view class="">
-					个人简介
+			<view class="introduce-card">
+				<view class="card-head">
+					<view class="icon-container">
+						<image src="@/static/img/salesPersonImg/card-introduce.png"></image>
+					</view>
+					我的个人介绍
+					
 				</view>
-				<view class="padding-top text-black">
-					{{salesManagerInfo.salesWordIntroduce}}
+				<view class="content">
+					<view class="">
+						非常热爱市场销售工作，有着十分饱满的创业激情。在×××两年从事现磨现煮的咖啡市场销售工作中积累了大量的实践经验和客户资源。与省内主要的二百多家咖啡店铺经销商建立了十分密切的联系，并在行业中拥有广泛的业务关系。在去年某省的咖啡博览会上为公司首次签定了海外的定单。能团结自己的同事一起取得优异的销售业绩。
+					</view>
+					<view class="bottom">
+						<view class="title u-p-10">
+							语音留言
+						</view>
+						<view class="bottom-main">
+							<view class="self-avatar">
+								<u-image src="http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg" width="60" height="60" mode="aspectFill"></u-image>
+							</view>
+							<view class="chat-container ">
+								<view class="arrow">
+									<u-icon name="play-left-fill" color="#81F881"  ></u-icon>
+								</view>
+								
+								<view class="main-text self-shadow" hover-class="btn-hover" @click="playAudio" >
+									<view class="icon">
+										<image src="@/static/img/salesPersonImg/voice.png"></image>
+									</view>
+									<text class="u-p-l-20">  {{showAudioTime}}" </text>
+								</view>
+							</view>
+						</view>
+					</view>
 				</view>
+				
 			</view>
+		<!-- 	
 			<view class="bg-white padding">
 				<view class="text-gray padding-sm">
 					语音留言
@@ -73,11 +127,14 @@
 					</view>
 					<text class="text-green"> {{showAudioTime}} </text>
 				</view>
-			</view>
+			</view> -->
 			
-			<view class="margin-top">
-				<view class=" flex justify-between padding-sm margin-top bg-white">
-					<text class="  text-lg text-bold"> 精彩图册 </text> 
+			<view class="">
+				<view class="card-head u-p-l-40 u-p-r-40">
+					<view class="icon-container">
+						<image src="@/static/img/salesPersonImg/album.png"></image>
+					</view>
+					精彩图册
 				</view>
 				<view class="padding-sm">
 					<view class="img-container " v-for="(item,index) in altas" :key="item.id">
@@ -318,8 +375,8 @@
 			// 初始化 画布图片信息
 			inintPaintImgArr(){
 				this.paintArr.push(this.salesManagerInfo.headPortrait)
-				this.paintArr.push(this.companyInfo.companyLogo)
-				this.paintArr.push(this.companyInfo.companyLogo)
+				this.paintArr.push('https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg')
+				this.paintArr.push('https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg')
 				console.log('push finally')
 				console.log(this.paintArr)
 			},
@@ -376,7 +433,7 @@
 			},
 			// 用户浏览 名片
 			userAppreciate(){
-				const res = userAction(this.clientId,this.salesId,1)
+				const res = userAction(this.clientId,this.salesId,0)
 				console.log('res')
 				console.log(res)
 	
@@ -437,8 +494,8 @@
 					this.userIsAppreciate = false
 					return
 				}
-				// const res = userAction(this.clientId,this.salesId,1)
-				// this.salesManagerInfo.likeNum++;
+				const res = userAction(this.clientId,this.salesId,2)
+				this.salesManagerInfo.likeNum++;
 				this.userIsAppreciate = true
 			},
 			
@@ -459,7 +516,7 @@
 			// 保存通讯录的 额外操作
 			// 因为只是单方面的对 销售的信息操作，不涉及后台
 			onMailList(){
-				userAction(this.clientId,this.salesId,4)
+				userAction(this.clientId,this.salesId,3)
 			},
 			
 			// 拨打电话
@@ -487,7 +544,7 @@
 						uni.showToast({
 							title:'成功复制微信号',
 						})
-						userAction(this.clientId,this.salesId,3)
+						userAction(this.clientId,this.salesId,4)
 					},
 					fail:()=>{
 						console.log('复制失败')
@@ -507,14 +564,14 @@
 			},
 			// 生成名片海报
 			createPostCard(){
-				userAction(this.clientId,this.salesId,2)
+				userAction(this.clientId,this.salesId,1)
 				if(this.initCanvasRes){
 					this.canvansTodo(this.ctx,this.myCanvasId,this.pixeRatio,this.paintArr,this.smCtxW *this.pixeRatio ,this.smCtxH * this.pixeRatio )
 				}
 			},	
 			// 点击分享名片
 			shareCard(){
-				userAction(this.clientId,this.salesId,2)
+				userAction(this.clientId,this.salesId,1)
 			},
 			// 画布所需
 			initCanvas(canvansId){
@@ -817,8 +874,15 @@
 	}
 }
 
-
-
+.card-container{
+	background-color: #E6F7FF;
+	padding: 40rpx;
+}
+.tag-shadow{
+	
+	box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5);
+	opacity: 1;
+}
 /*  精彩图册  */
 .img-container{
 	position: relative;
@@ -845,10 +909,8 @@
 
 
 
-.fixed-bottom{
-	// position: fixed;
-	// bottom: 0;
-	// left: 0;
+.tag-list{
+
 	display: flex;
 	justify-content: space-around;
 	padding: 30rpx 20rpx;
@@ -858,10 +920,20 @@
 	
 	.self-text{
 		display: flex;
-		flex-flow: column nowrap; 
+		flex-flow: row nowrap; 
+		align-items: center;
 		height: 3em;
 		padding: 20rpx 30rpx;
-		
+		font-size: 23rpx;
+		.icon-container{
+			height: 1.5em;
+			width: 1.8em;
+			padding-right: .3em;
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		}
 		.sm-title{
 			font-size: .7em;
 		}
@@ -869,6 +941,51 @@
 }
 
 
+
+
+	.card-head{
+		display: flex;
+		padding: 20rpx;
+		
+		align-items: center;
+		background-color: #F6F6F6;
+		
+		.icon-container{
+			width: 2em;
+			height: 2em;
+			margin-right: 16rpx;
+			
+			image{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	
+	}
+
+.chat-container{
+	display: flex;
+	align-items: center;
+	.arrow{
+		position: relative;
+		left: .5em;
+		width: 1em;
+	}
+	.main-text{
+		display: flex;
+		align-items: center;
+		min-height: 2em;
+		padding: 10rpx 20rpx;
+		border-radius: 10rpx;
+		background-color: #81F881;
+		
+		.icon{
+			width: 1.5em;
+			height: 1.5em;
+			
+		}
+	}
+}
 
 
 .poup-container{
@@ -940,4 +1057,16 @@
 		padding: 5rpx;
 	}
 }
+
+image{
+	width: 100%;
+	height: 100%;
+}
+.btn-hover{
+	position: relative;
+	top: 5rpx;
+	background-color: #efefef;
+	box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5) inset;
+}
+
 </style>

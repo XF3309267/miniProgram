@@ -121,15 +121,51 @@
 
 		<!-- :style="[{bottom:InputBottom+'px',transition:'all 0s' }]" -->
 		
-		<view class="cu-bar foot input" style="position: static;height: 100rpx">
-			<view class="action">
+		<view class="cu-bar foot" style="position: static;height: 180rpx">
+			<!-- <view class="action">
 				<text class="cuIcon-sound text-grey"></text>
+			</view> -->
+			<view class="">
+				<input 
+					class="solid-bottom chat-input"  
+					type="text"
+					confirm-type="send" 
+					:confirm-hold="true"
+					:auto-focus="true" 
+					v-model="inputV"  
+					hold-keyboard 
+					:adjust-position="false"  
+					maxlength="300" 
+					cursor-spacing="50" 
+					@keyboardheightchange="keyboardHeight"
+					@confirm="submit"
+					@focus="InputFocus"  
+					@blur="InputBlur"></input>
 			</view>
-			<input class="solid-bottom" style="transition: all 1s 1s;"  :auto-focus="true" v-model="inputV"  hold-keyboard @keyboardheightchange="keyboardHeight"  :adjust-position="false"  maxlength="300" cursor-spacing="10" @focus="InputFocus"  @blur="InputBlur"></input>
-			<view class="action">
+			<view class="chat-iconList">
+				<view class="icon-item">
+					<image src="../../static/img/chatImg/chat-audio.png" mode="aspectFill"></image>
+				</view>
+				<view class="icon-item">
+					<image src="../../static/img/chatImg/chat-smile.png" mode="aspectFill"></image>
+				</view>
+				<view class="icon-item">
+					<image src="../../static/img/chatImg/chat-img.png" mode="aspectFill"></image>
+				</view>
+				<view class="icon-item">
+					<image src="../../static/img/chatImg/chat-camera.png" mode="aspectFill"></image>
+				</view>
+				<!-- <view class="icon-item">
+					<image src="../../static/img/chatImg/chat-smile.png" mode="aspectFill"></image>
+				</view> -->
+			</view>
+			
+			
+			
+		<!-- 	<view class="action">
 				<text class="cuIcon-emojifill text-grey"></text>
 			</view>
-			<button class="cu-btn bg-green shadow" @tap="submit">发送</button>
+			<button class="cu-btn bg-green shadow" @tap="submit">发送</button> -->
 		</view>
 		<view class="" :style="{height: (InputBottom) +'px'} ">
 			
@@ -162,7 +198,7 @@
 				return this.statusBarHeight  + px +'px'
 			},
 			scrollViewHeight(){
-				let str = `calc(100vh - ${this.statusBarHeight + 'px'} - 44px - 120rpx - 100rpx )`
+				let str = `calc(100vh - ${this.statusBarHeight + 'px'} - 44px - 120rpx - 180rpx )`
 				console.log('scorllview height')
 				console.log(str)
 				return str 
@@ -296,5 +332,49 @@ page{
 	.content{
 		min-width: 4em;
 	}
+}
+.cu-chat {
+	.self{
+		.main{
+			.content{
+				background-color: #81F881;
+			}
+		}
+	
+	}
+}
+
+
+.cu-bar{
+	display: flex;
+	flex-flow: column nowrap;
+	padding: 20rpx 0;
+	.chat-input{
+		width: 700rpx;
+		height: 70rpx;
+		line-height: 60rpx;
+		transition: all 1s 1s; 
+		border-radius: 50rpx;  
+		border: 2rpx solid #bdbdbd;
+		padding: 10rpx 30rpx;
+		margin: auto;
+	}
+	.chat-iconList{
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		justify-content: space-around;
+		width: 100%;
+		padding: 5rpx 30rpx;
+		.icon-item{
+			width: 2em;
+			height: 2em;
+			
+		}
+	}
+}
+image{
+	width: 100%;
+	height: 100%;
 }
 </style>

@@ -13,7 +13,7 @@
 			</view>
 		</view> -->
 		<view class="padding" >
-			<u-search :clearabled="true" v-model="inputV" placeholder="输入搜索的关键词" @clear="clearSearchBar"  @change="searchChange" @search="searchConfirm" @custom="searchConfirm"></u-search>
+			<u-search :clearabled="true" v-model="inputV" placeholder="输入搜索的关键词" @clear="clearSearchBar"  @change="searchChange" @search="searchConfirm"  @custom="searchConfirm"></u-search>
 		</view>
 		<view class="tag-list">
 			<text  v-for="(item,index) in tagList" :key="item.id" class="item cu-tag round " :class="[index===activeTagIndex?'active-tag bg-white':'']"   @click="tagClick(item,index)" > {{item.title}} </text>
@@ -32,6 +32,9 @@
 						{{userItem.clientPhone}}
 					</view>
 				</view>
+			</view>
+			<view class=""  >
+				
 			</view>
 		</view>
 	</view>
@@ -130,12 +133,16 @@
 			},
 			// 搜索框 change 事件
 			searchChange(){
-				this.activeTagIndex = -1
+				console.log('activeTagIndex--------------------')
+				
+				
+				// this.activeTagIndex = -1
 				console.log(this.activeTagIndex)
 			},
 			
 			// search 搜索框 点击搜索
 			searchConfirm(){
+				this.activeTagIndex = -1
 				this.searchText(this.inputV)
 			},
 			clearSearchBar(){
@@ -144,6 +151,7 @@
 			
 			// 点击标签
 			tagClick(item,index){
+				console.log('activeTagIndex+++++++++++++++++')
 				this.inputV = item.title
 				this.searchText(item.title)
 				this.activeTagIndex = index

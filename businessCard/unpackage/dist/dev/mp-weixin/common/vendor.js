@@ -801,7 +801,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1858,4651 +1858,6 @@ function normalizeComponent (
 /***/ }),
 
 /***/ 11:
-/*!***************************************************!*\
-  !*** D:/project/businessCard/static/js/moment.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(module) {var require;//! moment.js
-
-;(function (global, factory) {
-   true ? module.exports = factory() :
-  undefined;
-})(this, function () {'use strict';
-
-  var hookCallback;
-
-  function hooks() {
-    return hookCallback.apply(null, arguments);
-  }
-
-  // This is done to register the method called with moment()
-  // without creating circular dependencies.
-  function setHookCallback(callback) {
-    hookCallback = callback;
-  }
-
-  function isArray(input) {
-    return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
-  }
-
-  function isObject(input) {
-    // IE8 will treat undefined and null as object if it wasn't for
-    // input != null
-    return input != null && Object.prototype.toString.call(input) === '[object Object]';
-  }
-
-  function isObjectEmpty(obj) {
-    if (Object.getOwnPropertyNames) {
-      return Object.getOwnPropertyNames(obj).length === 0;
-    } else {
-      var k;
-      for (k in obj) {
-        if (obj.hasOwnProperty(k)) {
-          return false;
-        }
-      }
-      return true;
-    }
-  }
-
-  function isUndefined(input) {
-    return input === void 0;
-  }
-
-  function isNumber(input) {
-    return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
-  }
-
-  function isDate(input) {
-    return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
-  }
-
-  function map(arr, fn) {
-    var res = [],i;
-    for (i = 0; i < arr.length; ++i) {
-      res.push(fn(arr[i], i));
-    }
-    return res;
-  }
-
-  function hasOwnProp(a, b) {
-    return Object.prototype.hasOwnProperty.call(a, b);
-  }
-
-  function extend(a, b) {
-    for (var i in b) {
-      if (hasOwnProp(b, i)) {
-        a[i] = b[i];
-      }
-    }
-
-    if (hasOwnProp(b, 'toString')) {
-      a.toString = b.toString;
-    }
-
-    if (hasOwnProp(b, 'valueOf')) {
-      a.valueOf = b.valueOf;
-    }
-
-    return a;
-  }
-
-  function createUTC(input, format, locale, strict) {
-    return createLocalOrUTC(input, format, locale, strict, true).utc();
-  }
-
-  function defaultParsingFlags() {
-    // We need to deep clone this object.
-    return {
-      empty: false,
-      unusedTokens: [],
-      unusedInput: [],
-      overflow: -2,
-      charsLeftOver: 0,
-      nullInput: false,
-      invalidMonth: null,
-      invalidFormat: false,
-      userInvalidated: false,
-      iso: false,
-      parsedDateParts: [],
-      meridiem: null,
-      rfc2822: false,
-      weekdayMismatch: false };
-
-  }
-
-  function getParsingFlags(m) {
-    if (m._pf == null) {
-      m._pf = defaultParsingFlags();
-    }
-    return m._pf;
-  }
-
-  var some;
-  if (Array.prototype.some) {
-    some = Array.prototype.some;
-  } else {
-    some = function some(fun) {
-      var t = Object(this);
-      var len = t.length >>> 0;
-
-      for (var i = 0; i < len; i++) {
-        if (i in t && fun.call(this, t[i], i, t)) {
-          return true;
-        }
-      }
-
-      return false;
-    };
-  }
-
-  function isValid(m) {
-    if (m._isValid == null) {
-      var flags = getParsingFlags(m);
-      var parsedParts = some.call(flags.parsedDateParts, function (i) {
-        return i != null;
-      });
-      var isNowValid = !isNaN(m._d.getTime()) &&
-      flags.overflow < 0 &&
-      !flags.empty &&
-      !flags.invalidMonth &&
-      !flags.invalidWeekday &&
-      !flags.weekdayMismatch &&
-      !flags.nullInput &&
-      !flags.invalidFormat &&
-      !flags.userInvalidated && (
-      !flags.meridiem || flags.meridiem && parsedParts);
-
-      if (m._strict) {
-        isNowValid = isNowValid &&
-        flags.charsLeftOver === 0 &&
-        flags.unusedTokens.length === 0 &&
-        flags.bigHour === undefined;
-      }
-
-      if (Object.isFrozen == null || !Object.isFrozen(m)) {
-        m._isValid = isNowValid;
-      } else
-      {
-        return isNowValid;
-      }
-    }
-    return m._isValid;
-  }
-
-  function createInvalid(flags) {
-    var m = createUTC(NaN);
-    if (flags != null) {
-      extend(getParsingFlags(m), flags);
-    } else
-    {
-      getParsingFlags(m).userInvalidated = true;
-    }
-
-    return m;
-  }
-
-  // Plugins that add properties should also add the key here (null value),
-  // so we can properly clone ourselves.
-  var momentProperties = hooks.momentProperties = [];
-
-  function copyConfig(to, from) {
-    var i, prop, val;
-
-    if (!isUndefined(from._isAMomentObject)) {
-      to._isAMomentObject = from._isAMomentObject;
-    }
-    if (!isUndefined(from._i)) {
-      to._i = from._i;
-    }
-    if (!isUndefined(from._f)) {
-      to._f = from._f;
-    }
-    if (!isUndefined(from._l)) {
-      to._l = from._l;
-    }
-    if (!isUndefined(from._strict)) {
-      to._strict = from._strict;
-    }
-    if (!isUndefined(from._tzm)) {
-      to._tzm = from._tzm;
-    }
-    if (!isUndefined(from._isUTC)) {
-      to._isUTC = from._isUTC;
-    }
-    if (!isUndefined(from._offset)) {
-      to._offset = from._offset;
-    }
-    if (!isUndefined(from._pf)) {
-      to._pf = getParsingFlags(from);
-    }
-    if (!isUndefined(from._locale)) {
-      to._locale = from._locale;
-    }
-
-    if (momentProperties.length > 0) {
-      for (i = 0; i < momentProperties.length; i++) {
-        prop = momentProperties[i];
-        val = from[prop];
-        if (!isUndefined(val)) {
-          to[prop] = val;
-        }
-      }
-    }
-
-    return to;
-  }
-
-  var updateInProgress = false;
-
-  // Moment prototype object
-  function Moment(config) {
-    copyConfig(this, config);
-    this._d = new Date(config._d != null ? config._d.getTime() : NaN);
-    if (!this.isValid()) {
-      this._d = new Date(NaN);
-    }
-    // Prevent infinite loop in case updateOffset creates new moment
-    // objects.
-    if (updateInProgress === false) {
-      updateInProgress = true;
-      hooks.updateOffset(this);
-      updateInProgress = false;
-    }
-  }
-
-  function isMoment(obj) {
-    return obj instanceof Moment || obj != null && obj._isAMomentObject != null;
-  }
-
-  function absFloor(number) {
-    if (number < 0) {
-      // -0 -> 0
-      return Math.ceil(number) || 0;
-    } else {
-      return Math.floor(number);
-    }
-  }
-
-  function toInt(argumentForCoercion) {
-    var coercedNumber = +argumentForCoercion,
-    value = 0;
-
-    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
-      value = absFloor(coercedNumber);
-    }
-
-    return value;
-  }
-
-  // compare two arrays, return the number of differences
-  function compareArrays(array1, array2, dontConvert) {
-    var len = Math.min(array1.length, array2.length),
-    lengthDiff = Math.abs(array1.length - array2.length),
-    diffs = 0,
-    i;
-    for (i = 0; i < len; i++) {
-      if (dontConvert && array1[i] !== array2[i] ||
-      !dontConvert && toInt(array1[i]) !== toInt(array2[i])) {
-        diffs++;
-      }
-    }
-    return diffs + lengthDiff;
-  }
-
-  function warn(msg) {
-    if (hooks.suppressDeprecationWarnings === false &&
-    typeof console !== 'undefined' && console.warn) {
-      console.warn('Deprecation warning: ' + msg);
-    }
-  }
-
-  function deprecate(msg, fn) {
-    var firstTime = true;
-
-    return extend(function () {
-      if (hooks.deprecationHandler != null) {
-        hooks.deprecationHandler(null, msg);
-      }
-      if (firstTime) {
-        var args = [];
-        var arg;
-        for (var i = 0; i < arguments.length; i++) {
-          arg = '';
-          if (typeof arguments[i] === 'object') {
-            arg += '\n[' + i + '] ';
-            for (var key in arguments[0]) {
-              arg += key + ': ' + arguments[0][key] + ', ';
-            }
-            arg = arg.slice(0, -2); // Remove trailing comma and space
-          } else {
-            arg = arguments[i];
-          }
-          args.push(arg);
-        }
-        warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + new Error().stack);
-        firstTime = false;
-      }
-      return fn.apply(this, arguments);
-    }, fn);
-  }
-
-  var deprecations = {};
-
-  function deprecateSimple(name, msg) {
-    if (hooks.deprecationHandler != null) {
-      hooks.deprecationHandler(name, msg);
-    }
-    if (!deprecations[name]) {
-      warn(msg);
-      deprecations[name] = true;
-    }
-  }
-
-  hooks.suppressDeprecationWarnings = false;
-  hooks.deprecationHandler = null;
-
-  function isFunction(input) {
-    return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
-  }
-
-  function set(config) {
-    var prop, i;
-    for (i in config) {
-      prop = config[i];
-      if (isFunction(prop)) {
-        this[i] = prop;
-      } else {
-        this['_' + i] = prop;
-      }
-    }
-    this._config = config;
-    // Lenient ordinal parsing accepts just a number in addition to
-    // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
-    // TODO: Remove "ordinalParse" fallback in next major release.
-    this._dayOfMonthOrdinalParseLenient = new RegExp(
-    (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
-    '|' + /\d{1,2}/.source);
-  }
-
-  function mergeConfigs(parentConfig, childConfig) {
-    var res = extend({}, parentConfig),prop;
-    for (prop in childConfig) {
-      if (hasOwnProp(childConfig, prop)) {
-        if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
-          res[prop] = {};
-          extend(res[prop], parentConfig[prop]);
-          extend(res[prop], childConfig[prop]);
-        } else if (childConfig[prop] != null) {
-          res[prop] = childConfig[prop];
-        } else {
-          delete res[prop];
-        }
-      }
-    }
-    for (prop in parentConfig) {
-      if (hasOwnProp(parentConfig, prop) &&
-      !hasOwnProp(childConfig, prop) &&
-      isObject(parentConfig[prop])) {
-        // make sure changes to properties don't modify parent config
-        res[prop] = extend({}, res[prop]);
-      }
-    }
-    return res;
-  }
-
-  function Locale(config) {
-    if (config != null) {
-      this.set(config);
-    }
-  }
-
-  var keys;
-
-  if (Object.keys) {
-    keys = Object.keys;
-  } else {
-    keys = function keys(obj) {
-      var i,res = [];
-      for (i in obj) {
-        if (hasOwnProp(obj, i)) {
-          res.push(i);
-        }
-      }
-      return res;
-    };
-  }
-
-  var defaultCalendar = {
-    sameDay: '[Today at] LT',
-    nextDay: '[Tomorrow at] LT',
-    nextWeek: 'dddd [at] LT',
-    lastDay: '[Yesterday at] LT',
-    lastWeek: '[Last] dddd [at] LT',
-    sameElse: 'L' };
-
-
-  function calendar(key, mom, now) {
-    var output = this._calendar[key] || this._calendar['sameElse'];
-    return isFunction(output) ? output.call(mom, now) : output;
-  }
-
-  var defaultLongDateFormat = {
-    LTS: 'h:mm:ss A',
-    LT: 'h:mm A',
-    L: 'MM/DD/YYYY',
-    LL: 'MMMM D, YYYY',
-    LLL: 'MMMM D, YYYY h:mm A',
-    LLLL: 'dddd, MMMM D, YYYY h:mm A' };
-
-
-  function longDateFormat(key) {
-    var format = this._longDateFormat[key],
-    formatUpper = this._longDateFormat[key.toUpperCase()];
-
-    if (format || !formatUpper) {
-      return format;
-    }
-
-    this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
-      return val.slice(1);
-    });
-
-    return this._longDateFormat[key];
-  }
-
-  var defaultInvalidDate = 'Invalid date';
-
-  function invalidDate() {
-    return this._invalidDate;
-  }
-
-  var defaultOrdinal = '%d';
-  var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
-
-  function ordinal(number) {
-    return this._ordinal.replace('%d', number);
-  }
-
-  var defaultRelativeTime = {
-    future: 'in %s',
-    past: '%s ago',
-    s: 'a few seconds',
-    ss: '%d seconds',
-    m: 'a minute',
-    mm: '%d minutes',
-    h: 'an hour',
-    hh: '%d hours',
-    d: 'a day',
-    dd: '%d days',
-    M: 'a month',
-    MM: '%d months',
-    y: 'a year',
-    yy: '%d years' };
-
-
-  function relativeTime(number, withoutSuffix, string, isFuture) {
-    var output = this._relativeTime[string];
-    return isFunction(output) ?
-    output(number, withoutSuffix, string, isFuture) :
-    output.replace(/%d/i, number);
-  }
-
-  function pastFuture(diff, output) {
-    var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
-    return isFunction(format) ? format(output) : format.replace(/%s/i, output);
-  }
-
-  var aliases = {};
-
-  function addUnitAlias(unit, shorthand) {
-    var lowerCase = unit.toLowerCase();
-    aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
-  }
-
-  function normalizeUnits(units) {
-    return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
-  }
-
-  function normalizeObjectUnits(inputObject) {
-    var normalizedInput = {},
-    normalizedProp,
-    prop;
-
-    for (prop in inputObject) {
-      if (hasOwnProp(inputObject, prop)) {
-        normalizedProp = normalizeUnits(prop);
-        if (normalizedProp) {
-          normalizedInput[normalizedProp] = inputObject[prop];
-        }
-      }
-    }
-
-    return normalizedInput;
-  }
-
-  var priorities = {};
-
-  function addUnitPriority(unit, priority) {
-    priorities[unit] = priority;
-  }
-
-  function getPrioritizedUnits(unitsObj) {
-    var units = [];
-    for (var u in unitsObj) {
-      units.push({ unit: u, priority: priorities[u] });
-    }
-    units.sort(function (a, b) {
-      return a.priority - b.priority;
-    });
-    return units;
-  }
-
-  function zeroFill(number, targetLength, forceSign) {
-    var absNumber = '' + Math.abs(number),
-    zerosToFill = targetLength - absNumber.length,
-    sign = number >= 0;
-    return (sign ? forceSign ? '+' : '' : '-') +
-    Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
-  }
-
-  var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
-
-  var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
-
-  var formatFunctions = {};
-
-  var formatTokenFunctions = {};
-
-  // token:    'M'
-  // padded:   ['MM', 2]
-  // ordinal:  'Mo'
-  // callback: function () { this.month() + 1 }
-  function addFormatToken(token, padded, ordinal, callback) {
-    var func = callback;
-    if (typeof callback === 'string') {
-      func = function func() {
-        return this[callback]();
-      };
-    }
-    if (token) {
-      formatTokenFunctions[token] = func;
-    }
-    if (padded) {
-      formatTokenFunctions[padded[0]] = function () {
-        return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
-      };
-    }
-    if (ordinal) {
-      formatTokenFunctions[ordinal] = function () {
-        return this.localeData().ordinal(func.apply(this, arguments), token);
-      };
-    }
-  }
-
-  function removeFormattingTokens(input) {
-    if (input.match(/\[[\s\S]/)) {
-      return input.replace(/^\[|\]$/g, '');
-    }
-    return input.replace(/\\/g, '');
-  }
-
-  function makeFormatFunction(format) {
-    var array = format.match(formattingTokens),i,length;
-
-    for (i = 0, length = array.length; i < length; i++) {
-      if (formatTokenFunctions[array[i]]) {
-        array[i] = formatTokenFunctions[array[i]];
-      } else {
-        array[i] = removeFormattingTokens(array[i]);
-      }
-    }
-
-    return function (mom) {
-      var output = '',i;
-      for (i = 0; i < length; i++) {
-        output += isFunction(array[i]) ? array[i].call(mom, format) : array[i];
-      }
-      return output;
-    };
-  }
-
-  // format date using native date object
-  function formatMoment(m, format) {
-    if (!m.isValid()) {
-      return m.localeData().invalidDate();
-    }
-
-    format = expandFormat(format, m.localeData());
-    formatFunctions[format] = formatFunctions[format] || makeFormatFunction(format);
-
-    return formatFunctions[format](m);
-  }
-
-  function expandFormat(format, locale) {
-    var i = 5;
-
-    function replaceLongDateFormatTokens(input) {
-      return locale.longDateFormat(input) || input;
-    }
-
-    localFormattingTokens.lastIndex = 0;
-    while (i >= 0 && localFormattingTokens.test(format)) {
-      format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
-      localFormattingTokens.lastIndex = 0;
-      i -= 1;
-    }
-
-    return format;
-  }
-
-  var match1 = /\d/; //       0 - 9
-  var match2 = /\d\d/; //      00 - 99
-  var match3 = /\d{3}/; //     000 - 999
-  var match4 = /\d{4}/; //    0000 - 9999
-  var match6 = /[+-]?\d{6}/; // -999999 - 999999
-  var match1to2 = /\d\d?/; //       0 - 99
-  var match3to4 = /\d\d\d\d?/; //     999 - 9999
-  var match5to6 = /\d\d\d\d\d\d?/; //   99999 - 999999
-  var match1to3 = /\d{1,3}/; //       0 - 999
-  var match1to4 = /\d{1,4}/; //       0 - 9999
-  var match1to6 = /[+-]?\d{1,6}/; // -999999 - 999999
-
-  var matchUnsigned = /\d+/; //       0 - inf
-  var matchSigned = /[+-]?\d+/; //    -inf - inf
-
-  var matchOffset = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
-  var matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi; // +00 -00 +00:00 -00:00 +0000 -0000 or Z
-
-  var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
-
-  // any word (or two) characters or numbers including two/three word month in arabic.
-  // includes scottish gaelic two word and hyphenated months
-  var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
-
-  var regexes = {};
-
-  function addRegexToken(token, regex, strictRegex) {
-    regexes[token] = isFunction(regex) ? regex : function (isStrict, localeData) {
-      return isStrict && strictRegex ? strictRegex : regex;
-    };
-  }
-
-  function getParseRegexForToken(token, config) {
-    if (!hasOwnProp(regexes, token)) {
-      return new RegExp(unescapeFormat(token));
-    }
-
-    return regexes[token](config._strict, config._locale);
-  }
-
-  // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
-  function unescapeFormat(s) {
-    return regexEscape(s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
-      return p1 || p2 || p3 || p4;
-    }));
-  }
-
-  function regexEscape(s) {
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-  }
-
-  var tokens = {};
-
-  function addParseToken(token, callback) {
-    var i,func = callback;
-    if (typeof token === 'string') {
-      token = [token];
-    }
-    if (isNumber(callback)) {
-      func = function func(input, array) {
-        array[callback] = toInt(input);
-      };
-    }
-    for (i = 0; i < token.length; i++) {
-      tokens[token[i]] = func;
-    }
-  }
-
-  function addWeekParseToken(token, callback) {
-    addParseToken(token, function (input, array, config, token) {
-      config._w = config._w || {};
-      callback(input, config._w, config, token);
-    });
-  }
-
-  function addTimeToArrayFromToken(token, input, config) {
-    if (input != null && hasOwnProp(tokens, token)) {
-      tokens[token](input, config._a, config, token);
-    }
-  }
-
-  var YEAR = 0;
-  var MONTH = 1;
-  var DATE = 2;
-  var HOUR = 3;
-  var MINUTE = 4;
-  var SECOND = 5;
-  var MILLISECOND = 6;
-  var WEEK = 7;
-  var WEEKDAY = 8;
-
-  // FORMATTING
-
-  addFormatToken('Y', 0, 0, function () {
-    var y = this.year();
-    return y <= 9999 ? '' + y : '+' + y;
-  });
-
-  addFormatToken(0, ['YY', 2], 0, function () {
-    return this.year() % 100;
-  });
-
-  addFormatToken(0, ['YYYY', 4], 0, 'year');
-  addFormatToken(0, ['YYYYY', 5], 0, 'year');
-  addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-  // ALIASES
-
-  addUnitAlias('year', 'y');
-
-  // PRIORITIES
-
-  addUnitPriority('year', 1);
-
-  // PARSING
-
-  addRegexToken('Y', matchSigned);
-  addRegexToken('YY', match1to2, match2);
-  addRegexToken('YYYY', match1to4, match4);
-  addRegexToken('YYYYY', match1to6, match6);
-  addRegexToken('YYYYYY', match1to6, match6);
-
-  addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-  addParseToken('YYYY', function (input, array) {
-    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-  });
-  addParseToken('YY', function (input, array) {
-    array[YEAR] = hooks.parseTwoDigitYear(input);
-  });
-  addParseToken('Y', function (input, array) {
-    array[YEAR] = parseInt(input, 10);
-  });
-
-  // HELPERS
-
-  function daysInYear(year) {
-    return isLeapYear(year) ? 366 : 365;
-  }
-
-  function isLeapYear(year) {
-    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
-  }
-
-  // HOOKS
-
-  hooks.parseTwoDigitYear = function (input) {
-    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-  };
-
-  // MOMENTS
-
-  var getSetYear = makeGetSet('FullYear', true);
-
-  function getIsLeapYear() {
-    return isLeapYear(this.year());
-  }
-
-  function makeGetSet(unit, keepTime) {
-    return function (value) {
-      if (value != null) {
-        set$1(this, unit, value);
-        hooks.updateOffset(this, keepTime);
-        return this;
-      } else {
-        return get(this, unit);
-      }
-    };
-  }
-
-  function get(mom, unit) {
-    return mom.isValid() ?
-    mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-  }
-
-  function set$1(mom, unit, value) {
-    if (mom.isValid() && !isNaN(value)) {
-      if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
-      } else
-      {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-      }
-    }
-  }
-
-  // MOMENTS
-
-  function stringGet(units) {
-    units = normalizeUnits(units);
-    if (isFunction(this[units])) {
-      return this[units]();
-    }
-    return this;
-  }
-
-
-  function stringSet(units, value) {
-    if (typeof units === 'object') {
-      units = normalizeObjectUnits(units);
-      var prioritized = getPrioritizedUnits(units);
-      for (var i = 0; i < prioritized.length; i++) {
-        this[prioritized[i].unit](units[prioritized[i].unit]);
-      }
-    } else {
-      units = normalizeUnits(units);
-      if (isFunction(this[units])) {
-        return this[units](value);
-      }
-    }
-    return this;
-  }
-
-  function mod(n, x) {
-    return (n % x + x) % x;
-  }
-
-  var indexOf;
-
-  if (Array.prototype.indexOf) {
-    indexOf = Array.prototype.indexOf;
-  } else {
-    indexOf = function indexOf(o) {
-      // I know
-      var i;
-      for (i = 0; i < this.length; ++i) {
-        if (this[i] === o) {
-          return i;
-        }
-      }
-      return -1;
-    };
-  }
-
-  function daysInMonth(year, month) {
-    if (isNaN(year) || isNaN(month)) {
-      return NaN;
-    }
-    var modMonth = mod(month, 12);
-    year += (month - modMonth) / 12;
-    return modMonth === 1 ? isLeapYear(year) ? 29 : 28 : 31 - modMonth % 7 % 2;
-  }
-
-  // FORMATTING
-
-  addFormatToken('M', ['MM', 2], 'Mo', function () {
-    return this.month() + 1;
-  });
-
-  addFormatToken('MMM', 0, 0, function (format) {
-    return this.localeData().monthsShort(this, format);
-  });
-
-  addFormatToken('MMMM', 0, 0, function (format) {
-    return this.localeData().months(this, format);
-  });
-
-  // ALIASES
-
-  addUnitAlias('month', 'M');
-
-  // PRIORITY
-
-  addUnitPriority('month', 8);
-
-  // PARSING
-
-  addRegexToken('M', match1to2);
-  addRegexToken('MM', match1to2, match2);
-  addRegexToken('MMM', function (isStrict, locale) {
-    return locale.monthsShortRegex(isStrict);
-  });
-  addRegexToken('MMMM', function (isStrict, locale) {
-    return locale.monthsRegex(isStrict);
-  });
-
-  addParseToken(['M', 'MM'], function (input, array) {
-    array[MONTH] = toInt(input) - 1;
-  });
-
-  addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
-    var month = config._locale.monthsParse(input, token, config._strict);
-    // if we didn't find a month name, mark the date as invalid.
-    if (month != null) {
-      array[MONTH] = month;
-    } else {
-      getParsingFlags(config).invalidMonth = input;
-    }
-  });
-
-  // LOCALES
-
-  var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
-  var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
-  function localeMonths(m, format) {
-    if (!m) {
-      return isArray(this._months) ? this._months :
-      this._months['standalone'];
-    }
-    return isArray(this._months) ? this._months[m.month()] :
-    this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
-  }
-
-  var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
-  function localeMonthsShort(m, format) {
-    if (!m) {
-      return isArray(this._monthsShort) ? this._monthsShort :
-      this._monthsShort['standalone'];
-    }
-    return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
-    this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
-  }
-
-  function handleStrictParse(monthName, format, strict) {
-    var i,ii,mom,llc = monthName.toLocaleLowerCase();
-    if (!this._monthsParse) {
-      // this is not used
-      this._monthsParse = [];
-      this._longMonthsParse = [];
-      this._shortMonthsParse = [];
-      for (i = 0; i < 12; ++i) {
-        mom = createUTC([2000, i]);
-        this._shortMonthsParse[i] = this.monthsShort(mom, '').toLocaleLowerCase();
-        this._longMonthsParse[i] = this.months(mom, '').toLocaleLowerCase();
-      }
-    }
-
-    if (strict) {
-      if (format === 'MMM') {
-        ii = indexOf.call(this._shortMonthsParse, llc);
-        return ii !== -1 ? ii : null;
-      } else {
-        ii = indexOf.call(this._longMonthsParse, llc);
-        return ii !== -1 ? ii : null;
-      }
-    } else {
-      if (format === 'MMM') {
-        ii = indexOf.call(this._shortMonthsParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._longMonthsParse, llc);
-        return ii !== -1 ? ii : null;
-      } else {
-        ii = indexOf.call(this._longMonthsParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._shortMonthsParse, llc);
-        return ii !== -1 ? ii : null;
-      }
-    }
-  }
-
-  function localeMonthsParse(monthName, format, strict) {
-    var i, mom, regex;
-
-    if (this._monthsParseExact) {
-      return handleStrictParse.call(this, monthName, format, strict);
-    }
-
-    if (!this._monthsParse) {
-      this._monthsParse = [];
-      this._longMonthsParse = [];
-      this._shortMonthsParse = [];
-    }
-
-    // TODO: add sorting
-    // Sorting makes sure if one month (or abbr) is a prefix of another
-    // see sorting in computeMonthsParse
-    for (i = 0; i < 12; i++) {
-      // make the regex if we don't have it already
-      mom = createUTC([2000, i]);
-      if (strict && !this._longMonthsParse[i]) {
-        this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
-        this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
-      }
-      if (!strict && !this._monthsParse[i]) {
-        regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
-        this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
-      }
-      // test the regex
-      if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
-        return i;
-      } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
-        return i;
-      } else if (!strict && this._monthsParse[i].test(monthName)) {
-        return i;
-      }
-    }
-  }
-
-  // MOMENTS
-
-  function setMonth(mom, value) {
-    var dayOfMonth;
-
-    if (!mom.isValid()) {
-      // No op
-      return mom;
-    }
-
-    if (typeof value === 'string') {
-      if (/^\d+$/.test(value)) {
-        value = toInt(value);
-      } else {
-        value = mom.localeData().monthsParse(value);
-        // TODO: Another silent failure?
-        if (!isNumber(value)) {
-          return mom;
-        }
-      }
-    }
-
-    dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
-    mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
-    return mom;
-  }
-
-  function getSetMonth(value) {
-    if (value != null) {
-      setMonth(this, value);
-      hooks.updateOffset(this, true);
-      return this;
-    } else {
-      return get(this, 'Month');
-    }
-  }
-
-  function getDaysInMonth() {
-    return daysInMonth(this.year(), this.month());
-  }
-
-  var defaultMonthsShortRegex = matchWord;
-  function monthsShortRegex(isStrict) {
-    if (this._monthsParseExact) {
-      if (!hasOwnProp(this, '_monthsRegex')) {
-        computeMonthsParse.call(this);
-      }
-      if (isStrict) {
-        return this._monthsShortStrictRegex;
-      } else {
-        return this._monthsShortRegex;
-      }
-    } else {
-      if (!hasOwnProp(this, '_monthsShortRegex')) {
-        this._monthsShortRegex = defaultMonthsShortRegex;
-      }
-      return this._monthsShortStrictRegex && isStrict ?
-      this._monthsShortStrictRegex : this._monthsShortRegex;
-    }
-  }
-
-  var defaultMonthsRegex = matchWord;
-  function monthsRegex(isStrict) {
-    if (this._monthsParseExact) {
-      if (!hasOwnProp(this, '_monthsRegex')) {
-        computeMonthsParse.call(this);
-      }
-      if (isStrict) {
-        return this._monthsStrictRegex;
-      } else {
-        return this._monthsRegex;
-      }
-    } else {
-      if (!hasOwnProp(this, '_monthsRegex')) {
-        this._monthsRegex = defaultMonthsRegex;
-      }
-      return this._monthsStrictRegex && isStrict ?
-      this._monthsStrictRegex : this._monthsRegex;
-    }
-  }
-
-  function computeMonthsParse() {
-    function cmpLenRev(a, b) {
-      return b.length - a.length;
-    }
-
-    var shortPieces = [],longPieces = [],mixedPieces = [],
-    i,mom;
-    for (i = 0; i < 12; i++) {
-      // make the regex if we don't have it already
-      mom = createUTC([2000, i]);
-      shortPieces.push(this.monthsShort(mom, ''));
-      longPieces.push(this.months(mom, ''));
-      mixedPieces.push(this.months(mom, ''));
-      mixedPieces.push(this.monthsShort(mom, ''));
-    }
-    // Sorting makes sure if one month (or abbr) is a prefix of another it
-    // will match the longer piece.
-    shortPieces.sort(cmpLenRev);
-    longPieces.sort(cmpLenRev);
-    mixedPieces.sort(cmpLenRev);
-    for (i = 0; i < 12; i++) {
-      shortPieces[i] = regexEscape(shortPieces[i]);
-      longPieces[i] = regexEscape(longPieces[i]);
-    }
-    for (i = 0; i < 24; i++) {
-      mixedPieces[i] = regexEscape(mixedPieces[i]);
-    }
-
-    this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
-    this._monthsShortRegex = this._monthsRegex;
-    this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
-    this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-  }
-
-  function createDate(y, m, d, h, M, s, ms) {
-    // can't just apply() to create a date:
-    // https://stackoverflow.com/q/181348
-    var date;
-    // the date constructor remaps years 0-99 to 1900-1999
-    if (y < 100 && y >= 0) {
-      // preserve leap years using a full 400 year cycle, then reset
-      date = new Date(y + 400, m, d, h, M, s, ms);
-      if (isFinite(date.getFullYear())) {
-        date.setFullYear(y);
-      }
-    } else {
-      date = new Date(y, m, d, h, M, s, ms);
-    }
-
-    return date;
-  }
-
-  function createUTCDate(y) {
-    var date;
-    // the Date.UTC function remaps years 0-99 to 1900-1999
-    if (y < 100 && y >= 0) {
-      var args = Array.prototype.slice.call(arguments);
-      // preserve leap years using a full 400 year cycle, then reset
-      args[0] = y + 400;
-      date = new Date(Date.UTC.apply(null, args));
-      if (isFinite(date.getUTCFullYear())) {
-        date.setUTCFullYear(y);
-      }
-    } else {
-      date = new Date(Date.UTC.apply(null, arguments));
-    }
-
-    return date;
-  }
-
-  // start-of-first-week - start-of-year
-  function firstWeekOffset(year, dow, doy) {
-    var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
-    fwd = 7 + dow - doy,
-    // first-week day local weekday -- which local weekday is fwd
-    fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
-
-    return -fwdlw + fwd - 1;
-  }
-
-  // https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
-  function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
-    var localWeekday = (7 + weekday - dow) % 7,
-    weekOffset = firstWeekOffset(year, dow, doy),
-    dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
-    resYear,resDayOfYear;
-
-    if (dayOfYear <= 0) {
-      resYear = year - 1;
-      resDayOfYear = daysInYear(resYear) + dayOfYear;
-    } else if (dayOfYear > daysInYear(year)) {
-      resYear = year + 1;
-      resDayOfYear = dayOfYear - daysInYear(year);
-    } else {
-      resYear = year;
-      resDayOfYear = dayOfYear;
-    }
-
-    return {
-      year: resYear,
-      dayOfYear: resDayOfYear };
-
-  }
-
-  function weekOfYear(mom, dow, doy) {
-    var weekOffset = firstWeekOffset(mom.year(), dow, doy),
-    week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
-    resWeek,resYear;
-
-    if (week < 1) {
-      resYear = mom.year() - 1;
-      resWeek = week + weeksInYear(resYear, dow, doy);
-    } else if (week > weeksInYear(mom.year(), dow, doy)) {
-      resWeek = week - weeksInYear(mom.year(), dow, doy);
-      resYear = mom.year() + 1;
-    } else {
-      resYear = mom.year();
-      resWeek = week;
-    }
-
-    return {
-      week: resWeek,
-      year: resYear };
-
-  }
-
-  function weeksInYear(year, dow, doy) {
-    var weekOffset = firstWeekOffset(year, dow, doy),
-    weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
-    return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
-  }
-
-  // FORMATTING
-
-  addFormatToken('w', ['ww', 2], 'wo', 'week');
-  addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
-
-  // ALIASES
-
-  addUnitAlias('week', 'w');
-  addUnitAlias('isoWeek', 'W');
-
-  // PRIORITIES
-
-  addUnitPriority('week', 5);
-  addUnitPriority('isoWeek', 5);
-
-  // PARSING
-
-  addRegexToken('w', match1to2);
-  addRegexToken('ww', match1to2, match2);
-  addRegexToken('W', match1to2);
-  addRegexToken('WW', match1to2, match2);
-
-  addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
-    week[token.substr(0, 1)] = toInt(input);
-  });
-
-  // HELPERS
-
-  // LOCALES
-
-  function localeWeek(mom) {
-    return weekOfYear(mom, this._week.dow, this._week.doy).week;
-  }
-
-  var defaultLocaleWeek = {
-    dow: 0, // Sunday is the first day of the week.
-    doy: 6 // The week that contains Jan 6th is the first week of the year.
-  };
-
-  function localeFirstDayOfWeek() {
-    return this._week.dow;
-  }
-
-  function localeFirstDayOfYear() {
-    return this._week.doy;
-  }
-
-  // MOMENTS
-
-  function getSetWeek(input) {
-    var week = this.localeData().week(this);
-    return input == null ? week : this.add((input - week) * 7, 'd');
-  }
-
-  function getSetISOWeek(input) {
-    var week = weekOfYear(this, 1, 4).week;
-    return input == null ? week : this.add((input - week) * 7, 'd');
-  }
-
-  // FORMATTING
-
-  addFormatToken('d', 0, 'do', 'day');
-
-  addFormatToken('dd', 0, 0, function (format) {
-    return this.localeData().weekdaysMin(this, format);
-  });
-
-  addFormatToken('ddd', 0, 0, function (format) {
-    return this.localeData().weekdaysShort(this, format);
-  });
-
-  addFormatToken('dddd', 0, 0, function (format) {
-    return this.localeData().weekdays(this, format);
-  });
-
-  addFormatToken('e', 0, 0, 'weekday');
-  addFormatToken('E', 0, 0, 'isoWeekday');
-
-  // ALIASES
-
-  addUnitAlias('day', 'd');
-  addUnitAlias('weekday', 'e');
-  addUnitAlias('isoWeekday', 'E');
-
-  // PRIORITY
-  addUnitPriority('day', 11);
-  addUnitPriority('weekday', 11);
-  addUnitPriority('isoWeekday', 11);
-
-  // PARSING
-
-  addRegexToken('d', match1to2);
-  addRegexToken('e', match1to2);
-  addRegexToken('E', match1to2);
-  addRegexToken('dd', function (isStrict, locale) {
-    return locale.weekdaysMinRegex(isStrict);
-  });
-  addRegexToken('ddd', function (isStrict, locale) {
-    return locale.weekdaysShortRegex(isStrict);
-  });
-  addRegexToken('dddd', function (isStrict, locale) {
-    return locale.weekdaysRegex(isStrict);
-  });
-
-  addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
-    var weekday = config._locale.weekdaysParse(input, token, config._strict);
-    // if we didn't get a weekday name, mark the date as invalid
-    if (weekday != null) {
-      week.d = weekday;
-    } else {
-      getParsingFlags(config).invalidWeekday = input;
-    }
-  });
-
-  addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
-    week[token] = toInt(input);
-  });
-
-  // HELPERS
-
-  function parseWeekday(input, locale) {
-    if (typeof input !== 'string') {
-      return input;
-    }
-
-    if (!isNaN(input)) {
-      return parseInt(input, 10);
-    }
-
-    input = locale.weekdaysParse(input);
-    if (typeof input === 'number') {
-      return input;
-    }
-
-    return null;
-  }
-
-  function parseIsoWeekday(input, locale) {
-    if (typeof input === 'string') {
-      return locale.weekdaysParse(input) % 7 || 7;
-    }
-    return isNaN(input) ? null : input;
-  }
-
-  // LOCALES
-  function shiftWeekdays(ws, n) {
-    return ws.slice(n, 7).concat(ws.slice(0, n));
-  }
-
-  var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
-  function localeWeekdays(m, format) {
-    var weekdays = isArray(this._weekdays) ? this._weekdays :
-    this._weekdays[m && m !== true && this._weekdays.isFormat.test(format) ? 'format' : 'standalone'];
-    return m === true ? shiftWeekdays(weekdays, this._week.dow) :
-    m ? weekdays[m.day()] : weekdays;
-  }
-
-  var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
-  function localeWeekdaysShort(m) {
-    return m === true ? shiftWeekdays(this._weekdaysShort, this._week.dow) :
-    m ? this._weekdaysShort[m.day()] : this._weekdaysShort;
-  }
-
-  var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
-  function localeWeekdaysMin(m) {
-    return m === true ? shiftWeekdays(this._weekdaysMin, this._week.dow) :
-    m ? this._weekdaysMin[m.day()] : this._weekdaysMin;
-  }
-
-  function handleStrictParse$1(weekdayName, format, strict) {
-    var i,ii,mom,llc = weekdayName.toLocaleLowerCase();
-    if (!this._weekdaysParse) {
-      this._weekdaysParse = [];
-      this._shortWeekdaysParse = [];
-      this._minWeekdaysParse = [];
-
-      for (i = 0; i < 7; ++i) {
-        mom = createUTC([2000, 1]).day(i);
-        this._minWeekdaysParse[i] = this.weekdaysMin(mom, '').toLocaleLowerCase();
-        this._shortWeekdaysParse[i] = this.weekdaysShort(mom, '').toLocaleLowerCase();
-        this._weekdaysParse[i] = this.weekdays(mom, '').toLocaleLowerCase();
-      }
-    }
-
-    if (strict) {
-      if (format === 'dddd') {
-        ii = indexOf.call(this._weekdaysParse, llc);
-        return ii !== -1 ? ii : null;
-      } else if (format === 'ddd') {
-        ii = indexOf.call(this._shortWeekdaysParse, llc);
-        return ii !== -1 ? ii : null;
-      } else {
-        ii = indexOf.call(this._minWeekdaysParse, llc);
-        return ii !== -1 ? ii : null;
-      }
-    } else {
-      if (format === 'dddd') {
-        ii = indexOf.call(this._weekdaysParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._shortWeekdaysParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._minWeekdaysParse, llc);
-        return ii !== -1 ? ii : null;
-      } else if (format === 'ddd') {
-        ii = indexOf.call(this._shortWeekdaysParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._weekdaysParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._minWeekdaysParse, llc);
-        return ii !== -1 ? ii : null;
-      } else {
-        ii = indexOf.call(this._minWeekdaysParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._weekdaysParse, llc);
-        if (ii !== -1) {
-          return ii;
-        }
-        ii = indexOf.call(this._shortWeekdaysParse, llc);
-        return ii !== -1 ? ii : null;
-      }
-    }
-  }
-
-  function localeWeekdaysParse(weekdayName, format, strict) {
-    var i, mom, regex;
-
-    if (this._weekdaysParseExact) {
-      return handleStrictParse$1.call(this, weekdayName, format, strict);
-    }
-
-    if (!this._weekdaysParse) {
-      this._weekdaysParse = [];
-      this._minWeekdaysParse = [];
-      this._shortWeekdaysParse = [];
-      this._fullWeekdaysParse = [];
-    }
-
-    for (i = 0; i < 7; i++) {
-      // make the regex if we don't have it already
-
-      mom = createUTC([2000, 1]).day(i);
-      if (strict && !this._fullWeekdaysParse[i]) {
-        this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\\.?') + '$', 'i');
-        this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\\.?') + '$', 'i');
-        this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\\.?') + '$', 'i');
-      }
-      if (!this._weekdaysParse[i]) {
-        regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
-        this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
-      }
-      // test the regex
-      if (strict && format === 'dddd' && this._fullWeekdaysParse[i].test(weekdayName)) {
-        return i;
-      } else if (strict && format === 'ddd' && this._shortWeekdaysParse[i].test(weekdayName)) {
-        return i;
-      } else if (strict && format === 'dd' && this._minWeekdaysParse[i].test(weekdayName)) {
-        return i;
-      } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
-        return i;
-      }
-    }
-  }
-
-  // MOMENTS
-
-  function getSetDayOfWeek(input) {
-    if (!this.isValid()) {
-      return input != null ? this : NaN;
-    }
-    var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
-    if (input != null) {
-      input = parseWeekday(input, this.localeData());
-      return this.add(input - day, 'd');
-    } else {
-      return day;
-    }
-  }
-
-  function getSetLocaleDayOfWeek(input) {
-    if (!this.isValid()) {
-      return input != null ? this : NaN;
-    }
-    var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
-    return input == null ? weekday : this.add(input - weekday, 'd');
-  }
-
-  function getSetISODayOfWeek(input) {
-    if (!this.isValid()) {
-      return input != null ? this : NaN;
-    }
-
-    // behaves the same as moment#day except
-    // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
-    // as a setter, sunday should belong to the previous week.
-
-    if (input != null) {
-      var weekday = parseIsoWeekday(input, this.localeData());
-      return this.day(this.day() % 7 ? weekday : weekday - 7);
-    } else {
-      return this.day() || 7;
-    }
-  }
-
-  var defaultWeekdaysRegex = matchWord;
-  function weekdaysRegex(isStrict) {
-    if (this._weekdaysParseExact) {
-      if (!hasOwnProp(this, '_weekdaysRegex')) {
-        computeWeekdaysParse.call(this);
-      }
-      if (isStrict) {
-        return this._weekdaysStrictRegex;
-      } else {
-        return this._weekdaysRegex;
-      }
-    } else {
-      if (!hasOwnProp(this, '_weekdaysRegex')) {
-        this._weekdaysRegex = defaultWeekdaysRegex;
-      }
-      return this._weekdaysStrictRegex && isStrict ?
-      this._weekdaysStrictRegex : this._weekdaysRegex;
-    }
-  }
-
-  var defaultWeekdaysShortRegex = matchWord;
-  function weekdaysShortRegex(isStrict) {
-    if (this._weekdaysParseExact) {
-      if (!hasOwnProp(this, '_weekdaysRegex')) {
-        computeWeekdaysParse.call(this);
-      }
-      if (isStrict) {
-        return this._weekdaysShortStrictRegex;
-      } else {
-        return this._weekdaysShortRegex;
-      }
-    } else {
-      if (!hasOwnProp(this, '_weekdaysShortRegex')) {
-        this._weekdaysShortRegex = defaultWeekdaysShortRegex;
-      }
-      return this._weekdaysShortStrictRegex && isStrict ?
-      this._weekdaysShortStrictRegex : this._weekdaysShortRegex;
-    }
-  }
-
-  var defaultWeekdaysMinRegex = matchWord;
-  function weekdaysMinRegex(isStrict) {
-    if (this._weekdaysParseExact) {
-      if (!hasOwnProp(this, '_weekdaysRegex')) {
-        computeWeekdaysParse.call(this);
-      }
-      if (isStrict) {
-        return this._weekdaysMinStrictRegex;
-      } else {
-        return this._weekdaysMinRegex;
-      }
-    } else {
-      if (!hasOwnProp(this, '_weekdaysMinRegex')) {
-        this._weekdaysMinRegex = defaultWeekdaysMinRegex;
-      }
-      return this._weekdaysMinStrictRegex && isStrict ?
-      this._weekdaysMinStrictRegex : this._weekdaysMinRegex;
-    }
-  }
-
-
-  function computeWeekdaysParse() {
-    function cmpLenRev(a, b) {
-      return b.length - a.length;
-    }
-
-    var minPieces = [],shortPieces = [],longPieces = [],mixedPieces = [],
-    i,mom,minp,shortp,longp;
-    for (i = 0; i < 7; i++) {
-      // make the regex if we don't have it already
-      mom = createUTC([2000, 1]).day(i);
-      minp = this.weekdaysMin(mom, '');
-      shortp = this.weekdaysShort(mom, '');
-      longp = this.weekdays(mom, '');
-      minPieces.push(minp);
-      shortPieces.push(shortp);
-      longPieces.push(longp);
-      mixedPieces.push(minp);
-      mixedPieces.push(shortp);
-      mixedPieces.push(longp);
-    }
-    // Sorting makes sure if one weekday (or abbr) is a prefix of another it
-    // will match the longer piece.
-    minPieces.sort(cmpLenRev);
-    shortPieces.sort(cmpLenRev);
-    longPieces.sort(cmpLenRev);
-    mixedPieces.sort(cmpLenRev);
-    for (i = 0; i < 7; i++) {
-      shortPieces[i] = regexEscape(shortPieces[i]);
-      longPieces[i] = regexEscape(longPieces[i]);
-      mixedPieces[i] = regexEscape(mixedPieces[i]);
-    }
-
-    this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
-    this._weekdaysShortRegex = this._weekdaysRegex;
-    this._weekdaysMinRegex = this._weekdaysRegex;
-
-    this._weekdaysStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
-    this._weekdaysShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-    this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
-  }
-
-  // FORMATTING
-
-  function hFormat() {
-    return this.hours() % 12 || 12;
-  }
-
-  function kFormat() {
-    return this.hours() || 24;
-  }
-
-  addFormatToken('H', ['HH', 2], 0, 'hour');
-  addFormatToken('h', ['hh', 2], 0, hFormat);
-  addFormatToken('k', ['kk', 2], 0, kFormat);
-
-  addFormatToken('hmm', 0, 0, function () {
-    return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
-  });
-
-  addFormatToken('hmmss', 0, 0, function () {
-    return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2) +
-    zeroFill(this.seconds(), 2);
-  });
-
-  addFormatToken('Hmm', 0, 0, function () {
-    return '' + this.hours() + zeroFill(this.minutes(), 2);
-  });
-
-  addFormatToken('Hmmss', 0, 0, function () {
-    return '' + this.hours() + zeroFill(this.minutes(), 2) +
-    zeroFill(this.seconds(), 2);
-  });
-
-  function meridiem(token, lowercase) {
-    addFormatToken(token, 0, 0, function () {
-      return this.localeData().meridiem(this.hours(), this.minutes(), lowercase);
-    });
-  }
-
-  meridiem('a', true);
-  meridiem('A', false);
-
-  // ALIASES
-
-  addUnitAlias('hour', 'h');
-
-  // PRIORITY
-  addUnitPriority('hour', 13);
-
-  // PARSING
-
-  function matchMeridiem(isStrict, locale) {
-    return locale._meridiemParse;
-  }
-
-  addRegexToken('a', matchMeridiem);
-  addRegexToken('A', matchMeridiem);
-  addRegexToken('H', match1to2);
-  addRegexToken('h', match1to2);
-  addRegexToken('k', match1to2);
-  addRegexToken('HH', match1to2, match2);
-  addRegexToken('hh', match1to2, match2);
-  addRegexToken('kk', match1to2, match2);
-
-  addRegexToken('hmm', match3to4);
-  addRegexToken('hmmss', match5to6);
-  addRegexToken('Hmm', match3to4);
-  addRegexToken('Hmmss', match5to6);
-
-  addParseToken(['H', 'HH'], HOUR);
-  addParseToken(['k', 'kk'], function (input, array, config) {
-    var kInput = toInt(input);
-    array[HOUR] = kInput === 24 ? 0 : kInput;
-  });
-  addParseToken(['a', 'A'], function (input, array, config) {
-    config._isPm = config._locale.isPM(input);
-    config._meridiem = input;
-  });
-  addParseToken(['h', 'hh'], function (input, array, config) {
-    array[HOUR] = toInt(input);
-    getParsingFlags(config).bigHour = true;
-  });
-  addParseToken('hmm', function (input, array, config) {
-    var pos = input.length - 2;
-    array[HOUR] = toInt(input.substr(0, pos));
-    array[MINUTE] = toInt(input.substr(pos));
-    getParsingFlags(config).bigHour = true;
-  });
-  addParseToken('hmmss', function (input, array, config) {
-    var pos1 = input.length - 4;
-    var pos2 = input.length - 2;
-    array[HOUR] = toInt(input.substr(0, pos1));
-    array[MINUTE] = toInt(input.substr(pos1, 2));
-    array[SECOND] = toInt(input.substr(pos2));
-    getParsingFlags(config).bigHour = true;
-  });
-  addParseToken('Hmm', function (input, array, config) {
-    var pos = input.length - 2;
-    array[HOUR] = toInt(input.substr(0, pos));
-    array[MINUTE] = toInt(input.substr(pos));
-  });
-  addParseToken('Hmmss', function (input, array, config) {
-    var pos1 = input.length - 4;
-    var pos2 = input.length - 2;
-    array[HOUR] = toInt(input.substr(0, pos1));
-    array[MINUTE] = toInt(input.substr(pos1, 2));
-    array[SECOND] = toInt(input.substr(pos2));
-  });
-
-  // LOCALES
-
-  function localeIsPM(input) {
-    // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
-    // Using charAt should be more compatible.
-    return (input + '').toLowerCase().charAt(0) === 'p';
-  }
-
-  var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
-  function localeMeridiem(hours, minutes, isLower) {
-    if (hours > 11) {
-      return isLower ? 'pm' : 'PM';
-    } else {
-      return isLower ? 'am' : 'AM';
-    }
-  }
-
-
-  // MOMENTS
-
-  // Setting the hour should keep the time, because the user explicitly
-  // specified which hour they want. So trying to maintain the same hour (in
-  // a new timezone) makes sense. Adding/subtracting hours does not follow
-  // this rule.
-  var getSetHour = makeGetSet('Hours', true);
-
-  var baseConfig = {
-    calendar: defaultCalendar,
-    longDateFormat: defaultLongDateFormat,
-    invalidDate: defaultInvalidDate,
-    ordinal: defaultOrdinal,
-    dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
-    relativeTime: defaultRelativeTime,
-
-    months: defaultLocaleMonths,
-    monthsShort: defaultLocaleMonthsShort,
-
-    week: defaultLocaleWeek,
-
-    weekdays: defaultLocaleWeekdays,
-    weekdaysMin: defaultLocaleWeekdaysMin,
-    weekdaysShort: defaultLocaleWeekdaysShort,
-
-    meridiemParse: defaultLocaleMeridiemParse };
-
-
-  // internal storage for locale config files
-  var locales = {};
-  var localeFamilies = {};
-  var globalLocale;
-
-  function normalizeLocale(key) {
-    return key ? key.toLowerCase().replace('_', '-') : key;
-  }
-
-  // pick the locale from the array
-  // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
-  // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
-  function chooseLocale(names) {
-    var i = 0,j,next,locale,split;
-
-    while (i < names.length) {
-      split = normalizeLocale(names[i]).split('-');
-      j = split.length;
-      next = normalizeLocale(names[i + 1]);
-      next = next ? next.split('-') : null;
-      while (j > 0) {
-        locale = loadLocale(split.slice(0, j).join('-'));
-        if (locale) {
-          return locale;
-        }
-        if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
-          //the next array item is better than a shallower substring of this one
-          break;
-        }
-        j--;
-      }
-      i++;
-    }
-    return globalLocale;
-  }
-
-  function loadLocale(name) {
-    var oldLocale = null;
-    // TODO: Find a better way to register and load all the locales in Node
-    if (!locales[name] && typeof module !== 'undefined' &&
-    module && module.exports) {
-      try {
-        oldLocale = globalLocale._abbr;
-        var aliasedRequire = require;
-        !(function webpackMissingModule() { var e = new Error("Cannot find module 'undefined'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-        getSetGlobalLocale(oldLocale);
-      } catch (e) {}
-    }
-    return locales[name];
-  }
-
-  // This function will load locale and then set the global locale.  If
-  // no arguments are passed in, it will simply return the current global
-  // locale key.
-  function getSetGlobalLocale(key, values) {
-    var data;
-    if (key) {
-      if (isUndefined(values)) {
-        data = getLocale(key);
-      } else
-      {
-        data = defineLocale(key, values);
-      }
-
-      if (data) {
-        // moment.duration._locale = moment._locale = data;
-        globalLocale = data;
-      } else
-      {
-        if (typeof console !== 'undefined' && console.warn) {
-          //warn user if arguments are passed but the locale could not be set
-          console.warn('Locale ' + key + ' not found. Did you forget to load it?');
-        }
-      }
-    }
-
-    return globalLocale._abbr;
-  }
-
-  function defineLocale(name, config) {
-    if (config !== null) {
-      var locale,parentConfig = baseConfig;
-      config.abbr = name;
-      if (locales[name] != null) {
-        deprecateSimple('defineLocaleOverride',
-        'use moment.updateLocale(localeName, config) to change ' +
-        'an existing locale. moment.defineLocale(localeName, ' +
-        'config) should only be used for creating a new locale ' +
-        'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.');
-        parentConfig = locales[name]._config;
-      } else if (config.parentLocale != null) {
-        if (locales[config.parentLocale] != null) {
-          parentConfig = locales[config.parentLocale]._config;
-        } else {
-          locale = loadLocale(config.parentLocale);
-          if (locale != null) {
-            parentConfig = locale._config;
-          } else {
-            if (!localeFamilies[config.parentLocale]) {
-              localeFamilies[config.parentLocale] = [];
-            }
-            localeFamilies[config.parentLocale].push({
-              name: name,
-              config: config });
-
-            return null;
-          }
-        }
-      }
-      locales[name] = new Locale(mergeConfigs(parentConfig, config));
-
-      if (localeFamilies[name]) {
-        localeFamilies[name].forEach(function (x) {
-          defineLocale(x.name, x.config);
-        });
-      }
-
-      // backwards compat for now: also set the locale
-      // make sure we set the locale AFTER all child locales have been
-      // created, so we won't end up with the child locale set.
-      getSetGlobalLocale(name);
-
-
-      return locales[name];
-    } else {
-      // useful for testing
-      delete locales[name];
-      return null;
-    }
-  }
-
-  function updateLocale(name, config) {
-    if (config != null) {
-      var locale,tmpLocale,parentConfig = baseConfig;
-      // MERGE
-      tmpLocale = loadLocale(name);
-      if (tmpLocale != null) {
-        parentConfig = tmpLocale._config;
-      }
-      config = mergeConfigs(parentConfig, config);
-      locale = new Locale(config);
-      locale.parentLocale = locales[name];
-      locales[name] = locale;
-
-      // backwards compat for now: also set the locale
-      getSetGlobalLocale(name);
-    } else {
-      // pass null for config to unupdate, useful for tests
-      if (locales[name] != null) {
-        if (locales[name].parentLocale != null) {
-          locales[name] = locales[name].parentLocale;
-        } else if (locales[name] != null) {
-          delete locales[name];
-        }
-      }
-    }
-    return locales[name];
-  }
-
-  // returns locale data
-  function getLocale(key) {
-    var locale;
-
-    if (key && key._locale && key._locale._abbr) {
-      key = key._locale._abbr;
-    }
-
-    if (!key) {
-      return globalLocale;
-    }
-
-    if (!isArray(key)) {
-      //short-circuit everything else
-      locale = loadLocale(key);
-      if (locale) {
-        return locale;
-      }
-      key = [key];
-    }
-
-    return chooseLocale(key);
-  }
-
-  function listLocales() {
-    return keys(locales);
-  }
-
-  function checkOverflow(m) {
-    var overflow;
-    var a = m._a;
-
-    if (a && getParsingFlags(m).overflow === -2) {
-      overflow =
-      a[MONTH] < 0 || a[MONTH] > 11 ? MONTH :
-      a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH]) ? DATE :
-      a[HOUR] < 0 || a[HOUR] > 24 || a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0) ? HOUR :
-      a[MINUTE] < 0 || a[MINUTE] > 59 ? MINUTE :
-      a[SECOND] < 0 || a[SECOND] > 59 ? SECOND :
-      a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND :
-      -1;
-
-      if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
-        overflow = DATE;
-      }
-      if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
-        overflow = WEEK;
-      }
-      if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
-        overflow = WEEKDAY;
-      }
-
-      getParsingFlags(m).overflow = overflow;
-    }
-
-    return m;
-  }
-
-  // Pick the first defined of two or three arguments.
-  function defaults(a, b, c) {
-    if (a != null) {
-      return a;
-    }
-    if (b != null) {
-      return b;
-    }
-    return c;
-  }
-
-  function currentDateArray(config) {
-    // hooks is actually the exported moment object
-    var nowValue = new Date(hooks.now());
-    if (config._useUTC) {
-      return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
-    }
-    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
-  }
-
-  // convert an array to a date.
-  // the array should mirror the parameters below
-  // note: all values past the year are optional and will default to the lowest possible value.
-  // [year, month, day , hour, minute, second, millisecond]
-  function configFromArray(config) {
-    var i,date,input = [],currentDate,expectedWeekday,yearToUse;
-
-    if (config._d) {
-      return;
-    }
-
-    currentDate = currentDateArray(config);
-
-    //compute day of the year from weeks and weekdays
-    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
-      dayOfYearFromWeekInfo(config);
-    }
-
-    //if the day of the year is set, figure out what it is
-    if (config._dayOfYear != null) {
-      yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
-
-      if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
-        getParsingFlags(config)._overflowDayOfYear = true;
-      }
-
-      date = createUTCDate(yearToUse, 0, config._dayOfYear);
-      config._a[MONTH] = date.getUTCMonth();
-      config._a[DATE] = date.getUTCDate();
-    }
-
-    // Default to current date.
-    // * if no year, month, day of month are given, default to today
-    // * if day of month is given, default month and year
-    // * if month is given, default only year
-    // * if year is given, don't default anything
-    for (i = 0; i < 3 && config._a[i] == null; ++i) {
-      config._a[i] = input[i] = currentDate[i];
-    }
-
-    // Zero out whatever was not defaulted, including time
-    for (; i < 7; i++) {
-      config._a[i] = input[i] = config._a[i] == null ? i === 2 ? 1 : 0 : config._a[i];
-    }
-
-    // Check for 24:00:00.000
-    if (config._a[HOUR] === 24 &&
-    config._a[MINUTE] === 0 &&
-    config._a[SECOND] === 0 &&
-    config._a[MILLISECOND] === 0) {
-      config._nextDay = true;
-      config._a[HOUR] = 0;
-    }
-
-    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
-    expectedWeekday = config._useUTC ? config._d.getUTCDay() : config._d.getDay();
-
-    // Apply timezone offset from input. The actual utcOffset can be changed
-    // with parseZone.
-    if (config._tzm != null) {
-      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-    }
-
-    if (config._nextDay) {
-      config._a[HOUR] = 24;
-    }
-
-    // check for mismatching day of week
-    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== expectedWeekday) {
-      getParsingFlags(config).weekdayMismatch = true;
-    }
-  }
-
-  function dayOfYearFromWeekInfo(config) {
-    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
-
-    w = config._w;
-    if (w.GG != null || w.W != null || w.E != null) {
-      dow = 1;
-      doy = 4;
-
-      // TODO: We need to take the current isoWeekYear, but that depends on
-      // how we interpret now (local, utc, fixed offset). So create
-      // a now version of current config (take local/utc/offset flags, and
-      // create now).
-      weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
-      week = defaults(w.W, 1);
-      weekday = defaults(w.E, 1);
-      if (weekday < 1 || weekday > 7) {
-        weekdayOverflow = true;
-      }
-    } else {
-      dow = config._locale._week.dow;
-      doy = config._locale._week.doy;
-
-      var curWeek = weekOfYear(createLocal(), dow, doy);
-
-      weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
-
-      // Default to current week.
-      week = defaults(w.w, curWeek.week);
-
-      if (w.d != null) {
-        // weekday -- low day numbers are considered next week
-        weekday = w.d;
-        if (weekday < 0 || weekday > 6) {
-          weekdayOverflow = true;
-        }
-      } else if (w.e != null) {
-        // local weekday -- counting starts from beginning of week
-        weekday = w.e + dow;
-        if (w.e < 0 || w.e > 6) {
-          weekdayOverflow = true;
-        }
-      } else {
-        // default to beginning of week
-        weekday = dow;
-      }
-    }
-    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
-      getParsingFlags(config)._overflowWeeks = true;
-    } else if (weekdayOverflow != null) {
-      getParsingFlags(config)._overflowWeekday = true;
-    } else {
-      temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
-      config._a[YEAR] = temp.year;
-      config._dayOfYear = temp.dayOfYear;
-    }
-  }
-
-  // iso 8601 regex
-  // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
-  var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
-  var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
-
-  var tzRegex = /Z|[+-]\d\d(?::?\d\d)?/;
-
-  var isoDates = [
-  ['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/],
-  ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/],
-  ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/],
-  ['GGGG-[W]WW', /\d{4}-W\d\d/, false],
-  ['YYYY-DDD', /\d{4}-\d{3}/],
-  ['YYYY-MM', /\d{4}-\d\d/, false],
-  ['YYYYYYMMDD', /[+-]\d{10}/],
-  ['YYYYMMDD', /\d{8}/],
-  // YYYYMM is NOT allowed by the standard
-  ['GGGG[W]WWE', /\d{4}W\d{3}/],
-  ['GGGG[W]WW', /\d{4}W\d{2}/, false],
-  ['YYYYDDD', /\d{7}/]];
-
-
-  // iso time formats and regexes
-  var isoTimes = [
-  ['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/],
-  ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/],
-  ['HH:mm:ss', /\d\d:\d\d:\d\d/],
-  ['HH:mm', /\d\d:\d\d/],
-  ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/],
-  ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/],
-  ['HHmmss', /\d\d\d\d\d\d/],
-  ['HHmm', /\d\d\d\d/],
-  ['HH', /\d\d/]];
-
-
-  var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
-
-  // date from iso format
-  function configFromISO(config) {
-    var i,l,
-    string = config._i,
-    match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
-    allowTime,dateFormat,timeFormat,tzFormat;
-
-    if (match) {
-      getParsingFlags(config).iso = true;
-
-      for (i = 0, l = isoDates.length; i < l; i++) {
-        if (isoDates[i][1].exec(match[1])) {
-          dateFormat = isoDates[i][0];
-          allowTime = isoDates[i][2] !== false;
-          break;
-        }
-      }
-      if (dateFormat == null) {
-        config._isValid = false;
-        return;
-      }
-      if (match[3]) {
-        for (i = 0, l = isoTimes.length; i < l; i++) {
-          if (isoTimes[i][1].exec(match[3])) {
-            // match[2] should be 'T' or space
-            timeFormat = (match[2] || ' ') + isoTimes[i][0];
-            break;
-          }
-        }
-        if (timeFormat == null) {
-          config._isValid = false;
-          return;
-        }
-      }
-      if (!allowTime && timeFormat != null) {
-        config._isValid = false;
-        return;
-      }
-      if (match[4]) {
-        if (tzRegex.exec(match[4])) {
-          tzFormat = 'Z';
-        } else {
-          config._isValid = false;
-          return;
-        }
-      }
-      config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
-      configFromStringAndFormat(config);
-    } else {
-      config._isValid = false;
-    }
-  }
-
-  // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
-  var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
-
-  function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
-    var result = [
-    untruncateYear(yearStr),
-    defaultLocaleMonthsShort.indexOf(monthStr),
-    parseInt(dayStr, 10),
-    parseInt(hourStr, 10),
-    parseInt(minuteStr, 10)];
-
-
-    if (secondStr) {
-      result.push(parseInt(secondStr, 10));
-    }
-
-    return result;
-  }
-
-  function untruncateYear(yearStr) {
-    var year = parseInt(yearStr, 10);
-    if (year <= 49) {
-      return 2000 + year;
-    } else if (year <= 999) {
-      return 1900 + year;
-    }
-    return year;
-  }
-
-  function preprocessRFC2822(s) {
-    // Remove comments and folding whitespace and replace multiple-spaces with a single space
-    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-  }
-
-  function checkWeekday(weekdayStr, parsedInput, config) {
-    if (weekdayStr) {
-      // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
-      var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
-      weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
-      if (weekdayProvided !== weekdayActual) {
-        getParsingFlags(config).weekdayMismatch = true;
-        config._isValid = false;
-        return false;
-      }
-    }
-    return true;
-  }
-
-  var obsOffsets = {
-    UT: 0,
-    GMT: 0,
-    EDT: -4 * 60,
-    EST: -5 * 60,
-    CDT: -5 * 60,
-    CST: -6 * 60,
-    MDT: -6 * 60,
-    MST: -7 * 60,
-    PDT: -7 * 60,
-    PST: -8 * 60 };
-
-
-  function calculateOffset(obsOffset, militaryOffset, numOffset) {
-    if (obsOffset) {
-      return obsOffsets[obsOffset];
-    } else if (militaryOffset) {
-      // the only allowed military tz is Z
-      return 0;
-    } else {
-      var hm = parseInt(numOffset, 10);
-      var m = hm % 100,h = (hm - m) / 100;
-      return h * 60 + m;
-    }
-  }
-
-  // date and time from ref 2822 format
-  function configFromRFC2822(config) {
-    var match = rfc2822.exec(preprocessRFC2822(config._i));
-    if (match) {
-      var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
-      if (!checkWeekday(match[1], parsedArray, config)) {
-        return;
-      }
-
-      config._a = parsedArray;
-      config._tzm = calculateOffset(match[8], match[9], match[10]);
-
-      config._d = createUTCDate.apply(null, config._a);
-      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-
-      getParsingFlags(config).rfc2822 = true;
-    } else {
-      config._isValid = false;
-    }
-  }
-
-  // date from iso format or fallback
-  function configFromString(config) {
-    var matched = aspNetJsonRegex.exec(config._i);
-
-    if (matched !== null) {
-      config._d = new Date(+matched[1]);
-      return;
-    }
-
-    configFromISO(config);
-    if (config._isValid === false) {
-      delete config._isValid;
-    } else {
-      return;
-    }
-
-    configFromRFC2822(config);
-    if (config._isValid === false) {
-      delete config._isValid;
-    } else {
-      return;
-    }
-
-    // Final attempt, use Input Fallback
-    hooks.createFromInputFallback(config);
-  }
-
-  hooks.createFromInputFallback = deprecate(
-  'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' +
-  'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
-  'discouraged and will be removed in an upcoming major release. Please refer to ' +
-  'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
-  function (config) {
-    config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
-  });
-
-
-  // constant that refers to the ISO standard
-  hooks.ISO_8601 = function () {};
-
-  // constant that refers to the RFC 2822 form
-  hooks.RFC_2822 = function () {};
-
-  // date from string and format string
-  function configFromStringAndFormat(config) {
-    // TODO: Move this to another part of the creation flow to prevent circular deps
-    if (config._f === hooks.ISO_8601) {
-      configFromISO(config);
-      return;
-    }
-    if (config._f === hooks.RFC_2822) {
-      configFromRFC2822(config);
-      return;
-    }
-    config._a = [];
-    getParsingFlags(config).empty = true;
-
-    // This array is used to make a Date, either with `new Date` or `Date.UTC`
-    var string = '' + config._i,
-    i,parsedInput,tokens,token,skipped,
-    stringLength = string.length,
-    totalParsedInputLength = 0;
-
-    tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
-
-    for (i = 0; i < tokens.length; i++) {
-      token = tokens[i];
-      parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
-      // console.log('token', token, 'parsedInput', parsedInput,
-      //         'regex', getParseRegexForToken(token, config));
-      if (parsedInput) {
-        skipped = string.substr(0, string.indexOf(parsedInput));
-        if (skipped.length > 0) {
-          getParsingFlags(config).unusedInput.push(skipped);
-        }
-        string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
-        totalParsedInputLength += parsedInput.length;
-      }
-      // don't parse if it's not a known token
-      if (formatTokenFunctions[token]) {
-        if (parsedInput) {
-          getParsingFlags(config).empty = false;
-        } else
-        {
-          getParsingFlags(config).unusedTokens.push(token);
-        }
-        addTimeToArrayFromToken(token, parsedInput, config);
-      } else
-      if (config._strict && !parsedInput) {
-        getParsingFlags(config).unusedTokens.push(token);
-      }
-    }
-
-    // add remaining unparsed input length to the string
-    getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
-    if (string.length > 0) {
-      getParsingFlags(config).unusedInput.push(string);
-    }
-
-    // clear _12h flag if hour is <= 12
-    if (config._a[HOUR] <= 12 &&
-    getParsingFlags(config).bigHour === true &&
-    config._a[HOUR] > 0) {
-      getParsingFlags(config).bigHour = undefined;
-    }
-
-    getParsingFlags(config).parsedDateParts = config._a.slice(0);
-    getParsingFlags(config).meridiem = config._meridiem;
-    // handle meridiem
-    config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
-
-    configFromArray(config);
-    checkOverflow(config);
-  }
-
-
-  function meridiemFixWrap(locale, hour, meridiem) {
-    var isPm;
-
-    if (meridiem == null) {
-      // nothing to do
-      return hour;
-    }
-    if (locale.meridiemHour != null) {
-      return locale.meridiemHour(hour, meridiem);
-    } else if (locale.isPM != null) {
-      // Fallback
-      isPm = locale.isPM(meridiem);
-      if (isPm && hour < 12) {
-        hour += 12;
-      }
-      if (!isPm && hour === 12) {
-        hour = 0;
-      }
-      return hour;
-    } else {
-      // this is not supposed to happen
-      return hour;
-    }
-  }
-
-  // date from string and array of format strings
-  function configFromStringAndArray(config) {
-    var tempConfig,
-    bestMoment,
-
-    scoreToBeat,
-    i,
-    currentScore;
-
-    if (config._f.length === 0) {
-      getParsingFlags(config).invalidFormat = true;
-      config._d = new Date(NaN);
-      return;
-    }
-
-    for (i = 0; i < config._f.length; i++) {
-      currentScore = 0;
-      tempConfig = copyConfig({}, config);
-      if (config._useUTC != null) {
-        tempConfig._useUTC = config._useUTC;
-      }
-      tempConfig._f = config._f[i];
-      configFromStringAndFormat(tempConfig);
-
-      if (!isValid(tempConfig)) {
-        continue;
-      }
-
-      // if there is any input that was not parsed add a penalty for that format
-      currentScore += getParsingFlags(tempConfig).charsLeftOver;
-
-      //or tokens
-      currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
-
-      getParsingFlags(tempConfig).score = currentScore;
-
-      if (scoreToBeat == null || currentScore < scoreToBeat) {
-        scoreToBeat = currentScore;
-        bestMoment = tempConfig;
-      }
-    }
-
-    extend(config, bestMoment || tempConfig);
-  }
-
-  function configFromObject(config) {
-    if (config._d) {
-      return;
-    }
-
-    var i = normalizeObjectUnits(config._i);
-    config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
-      return obj && parseInt(obj, 10);
-    });
-
-    configFromArray(config);
-  }
-
-  function createFromConfig(config) {
-    var res = new Moment(checkOverflow(prepareConfig(config)));
-    if (res._nextDay) {
-      // Adding is smart enough around DST
-      res.add(1, 'd');
-      res._nextDay = undefined;
-    }
-
-    return res;
-  }
-
-  function prepareConfig(config) {
-    var input = config._i,
-    format = config._f;
-
-    config._locale = config._locale || getLocale(config._l);
-
-    if (input === null || format === undefined && input === '') {
-      return createInvalid({ nullInput: true });
-    }
-
-    if (typeof input === 'string') {
-      config._i = input = config._locale.preparse(input);
-    }
-
-    if (isMoment(input)) {
-      return new Moment(checkOverflow(input));
-    } else if (isDate(input)) {
-      config._d = input;
-    } else if (isArray(format)) {
-      configFromStringAndArray(config);
-    } else if (format) {
-      configFromStringAndFormat(config);
-    } else {
-      configFromInput(config);
-    }
-
-    if (!isValid(config)) {
-      config._d = null;
-    }
-
-    return config;
-  }
-
-  function configFromInput(config) {
-    var input = config._i;
-    if (isUndefined(input)) {
-      config._d = new Date(hooks.now());
-    } else if (isDate(input)) {
-      config._d = new Date(input.valueOf());
-    } else if (typeof input === 'string') {
-      configFromString(config);
-    } else if (isArray(input)) {
-      config._a = map(input.slice(0), function (obj) {
-        return parseInt(obj, 10);
-      });
-      configFromArray(config);
-    } else if (isObject(input)) {
-      configFromObject(config);
-    } else if (isNumber(input)) {
-      // from milliseconds
-      config._d = new Date(input);
-    } else {
-      hooks.createFromInputFallback(config);
-    }
-  }
-
-  function createLocalOrUTC(input, format, locale, strict, isUTC) {
-    var c = {};
-
-    if (locale === true || locale === false) {
-      strict = locale;
-      locale = undefined;
-    }
-
-    if (isObject(input) && isObjectEmpty(input) ||
-    isArray(input) && input.length === 0) {
-      input = undefined;
-    }
-    // object construction must be done this way.
-    // https://github.com/moment/moment/issues/1423
-    c._isAMomentObject = true;
-    c._useUTC = c._isUTC = isUTC;
-    c._l = locale;
-    c._i = input;
-    c._f = format;
-    c._strict = strict;
-
-    return createFromConfig(c);
-  }
-
-  function createLocal(input, format, locale, strict) {
-    return createLocalOrUTC(input, format, locale, strict, false);
-  }
-
-  var prototypeMin = deprecate(
-  'moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/',
-  function () {
-    var other = createLocal.apply(null, arguments);
-    if (this.isValid() && other.isValid()) {
-      return other < this ? this : other;
-    } else {
-      return createInvalid();
-    }
-  });
-
-
-  var prototypeMax = deprecate(
-  'moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/',
-  function () {
-    var other = createLocal.apply(null, arguments);
-    if (this.isValid() && other.isValid()) {
-      return other > this ? this : other;
-    } else {
-      return createInvalid();
-    }
-  });
-
-
-  // Pick a moment m from moments so that m[fn](other) is true for all
-  // other. This relies on the function fn to be transitive.
-  //
-  // moments should either be an array of moment objects or an array, whose
-  // first element is an array of moment objects.
-  function pickBy(fn, moments) {
-    var res, i;
-    if (moments.length === 1 && isArray(moments[0])) {
-      moments = moments[0];
-    }
-    if (!moments.length) {
-      return createLocal();
-    }
-    res = moments[0];
-    for (i = 1; i < moments.length; ++i) {
-      if (!moments[i].isValid() || moments[i][fn](res)) {
-        res = moments[i];
-      }
-    }
-    return res;
-  }
-
-  // TODO: Use [].sort instead?
-  function min() {
-    var args = [].slice.call(arguments, 0);
-
-    return pickBy('isBefore', args);
-  }
-
-  function max() {
-    var args = [].slice.call(arguments, 0);
-
-    return pickBy('isAfter', args);
-  }
-
-  var now = function now() {
-    return Date.now ? Date.now() : +new Date();
-  };
-
-  var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', 'millisecond'];
-
-  function isDurationValid(m) {
-    for (var key in m) {
-      if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
-        return false;
-      }
-    }
-
-    var unitHasDecimal = false;
-    for (var i = 0; i < ordering.length; ++i) {
-      if (m[ordering[i]]) {
-        if (unitHasDecimal) {
-          return false; // only allow non-integers for smallest unit
-        }
-        if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
-          unitHasDecimal = true;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  function isValid$1() {
-    return this._isValid;
-  }
-
-  function createInvalid$1() {
-    return createDuration(NaN);
-  }
-
-  function Duration(duration) {
-    var normalizedInput = normalizeObjectUnits(duration),
-    years = normalizedInput.year || 0,
-    quarters = normalizedInput.quarter || 0,
-    months = normalizedInput.month || 0,
-    weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
-    days = normalizedInput.day || 0,
-    hours = normalizedInput.hour || 0,
-    minutes = normalizedInput.minute || 0,
-    seconds = normalizedInput.second || 0,
-    milliseconds = normalizedInput.millisecond || 0;
-
-    this._isValid = isDurationValid(normalizedInput);
-
-    // representation for dateAddRemove
-    this._milliseconds = +milliseconds +
-    seconds * 1e3 + // 1000
-    minutes * 6e4 + // 1000 * 60
-    hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
-    // Because of dateAddRemove treats 24 hours as different from a
-    // day when working around DST, we need to store them separately
-    this._days = +days +
-    weeks * 7;
-    // It is impossible to translate months into days without knowing
-    // which months you are are talking about, so we have to store
-    // it separately.
-    this._months = +months +
-    quarters * 3 +
-    years * 12;
-
-    this._data = {};
-
-    this._locale = getLocale();
-
-    this._bubble();
-  }
-
-  function isDuration(obj) {
-    return obj instanceof Duration;
-  }
-
-  function absRound(number) {
-    if (number < 0) {
-      return Math.round(-1 * number) * -1;
-    } else {
-      return Math.round(number);
-    }
-  }
-
-  // FORMATTING
-
-  function offset(token, separator) {
-    addFormatToken(token, 0, 0, function () {
-      var offset = this.utcOffset();
-      var sign = '+';
-      if (offset < 0) {
-        offset = -offset;
-        sign = '-';
-      }
-      return sign + zeroFill(~~(offset / 60), 2) + separator + zeroFill(~~offset % 60, 2);
-    });
-  }
-
-  offset('Z', ':');
-  offset('ZZ', '');
-
-  // PARSING
-
-  addRegexToken('Z', matchShortOffset);
-  addRegexToken('ZZ', matchShortOffset);
-  addParseToken(['Z', 'ZZ'], function (input, array, config) {
-    config._useUTC = true;
-    config._tzm = offsetFromString(matchShortOffset, input);
-  });
-
-  // HELPERS
-
-  // timezone chunker
-  // '+10:00' > ['10',  '00']
-  // '-1530'  > ['-15', '30']
-  var chunkOffset = /([\+\-]|\d\d)/gi;
-
-  function offsetFromString(matcher, string) {
-    var matches = (string || '').match(matcher);
-
-    if (matches === null) {
-      return null;
-    }
-
-    var chunk = matches[matches.length - 1] || [];
-    var parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
-    var minutes = +(parts[1] * 60) + toInt(parts[2]);
-
-    return minutes === 0 ?
-    0 :
-    parts[0] === '+' ? minutes : -minutes;
-  }
-
-  // Return a moment from input, that is local/utc/zone equivalent to model.
-  function cloneWithOffset(input, model) {
-    var res, diff;
-    if (model._isUTC) {
-      res = model.clone();
-      diff = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf();
-      // Use low-level api, because this fn is low-level api.
-      res._d.setTime(res._d.valueOf() + diff);
-      hooks.updateOffset(res, false);
-      return res;
-    } else {
-      return createLocal(input).local();
-    }
-  }
-
-  function getDateOffset(m) {
-    // On Firefox.24 Date#getTimezoneOffset returns a floating point.
-    // https://github.com/moment/moment/pull/1871
-    return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
-  }
-
-  // HOOKS
-
-  // This function will be called whenever a moment is mutated.
-  // It is intended to keep the offset in sync with the timezone.
-  hooks.updateOffset = function () {};
-
-  // MOMENTS
-
-  // keepLocalTime = true means only change the timezone, without
-  // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
-  // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
-  // +0200, so we adjust the time as needed, to be valid.
-  //
-  // Keeping the time actually adds/subtracts (one hour)
-  // from the actual represented time. That is why we call updateOffset
-  // a second time. In case it wants us to change the offset again
-  // _changeInProgress == true case, then we have to adjust, because
-  // there is no such time in the given timezone.
-  function getSetOffset(input, keepLocalTime, keepMinutes) {
-    var offset = this._offset || 0,
-    localAdjust;
-    if (!this.isValid()) {
-      return input != null ? this : NaN;
-    }
-    if (input != null) {
-      if (typeof input === 'string') {
-        input = offsetFromString(matchShortOffset, input);
-        if (input === null) {
-          return this;
-        }
-      } else if (Math.abs(input) < 16 && !keepMinutes) {
-        input = input * 60;
-      }
-      if (!this._isUTC && keepLocalTime) {
-        localAdjust = getDateOffset(this);
-      }
-      this._offset = input;
-      this._isUTC = true;
-      if (localAdjust != null) {
-        this.add(localAdjust, 'm');
-      }
-      if (offset !== input) {
-        if (!keepLocalTime || this._changeInProgress) {
-          addSubtract(this, createDuration(input - offset, 'm'), 1, false);
-        } else if (!this._changeInProgress) {
-          this._changeInProgress = true;
-          hooks.updateOffset(this, true);
-          this._changeInProgress = null;
-        }
-      }
-      return this;
-    } else {
-      return this._isUTC ? offset : getDateOffset(this);
-    }
-  }
-
-  function getSetZone(input, keepLocalTime) {
-    if (input != null) {
-      if (typeof input !== 'string') {
-        input = -input;
-      }
-
-      this.utcOffset(input, keepLocalTime);
-
-      return this;
-    } else {
-      return -this.utcOffset();
-    }
-  }
-
-  function setOffsetToUTC(keepLocalTime) {
-    return this.utcOffset(0, keepLocalTime);
-  }
-
-  function setOffsetToLocal(keepLocalTime) {
-    if (this._isUTC) {
-      this.utcOffset(0, keepLocalTime);
-      this._isUTC = false;
-
-      if (keepLocalTime) {
-        this.subtract(getDateOffset(this), 'm');
-      }
-    }
-    return this;
-  }
-
-  function setOffsetToParsedOffset() {
-    if (this._tzm != null) {
-      this.utcOffset(this._tzm, false, true);
-    } else if (typeof this._i === 'string') {
-      var tZone = offsetFromString(matchOffset, this._i);
-      if (tZone != null) {
-        this.utcOffset(tZone);
-      } else
-      {
-        this.utcOffset(0, true);
-      }
-    }
-    return this;
-  }
-
-  function hasAlignedHourOffset(input) {
-    if (!this.isValid()) {
-      return false;
-    }
-    input = input ? createLocal(input).utcOffset() : 0;
-
-    return (this.utcOffset() - input) % 60 === 0;
-  }
-
-  function isDaylightSavingTime() {
-    return (
-      this.utcOffset() > this.clone().month(0).utcOffset() ||
-      this.utcOffset() > this.clone().month(5).utcOffset());
-
-  }
-
-  function isDaylightSavingTimeShifted() {
-    if (!isUndefined(this._isDSTShifted)) {
-      return this._isDSTShifted;
-    }
-
-    var c = {};
-
-    copyConfig(c, this);
-    c = prepareConfig(c);
-
-    if (c._a) {
-      var other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
-      this._isDSTShifted = this.isValid() &&
-      compareArrays(c._a, other.toArray()) > 0;
-    } else {
-      this._isDSTShifted = false;
-    }
-
-    return this._isDSTShifted;
-  }
-
-  function isLocal() {
-    return this.isValid() ? !this._isUTC : false;
-  }
-
-  function isUtcOffset() {
-    return this.isValid() ? this._isUTC : false;
-  }
-
-  function isUtc() {
-    return this.isValid() ? this._isUTC && this._offset === 0 : false;
-  }
-
-  // ASP.NET json date format regex
-  var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
-
-  // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
-  // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
-  // and further modified to allow for strings containing both week and day
-  var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
-
-  function createDuration(input, key) {
-    var duration = input,
-    // matching against regexp is expensive, do it on demand
-    match = null,
-    sign,
-    ret,
-    diffRes;
-
-    if (isDuration(input)) {
-      duration = {
-        ms: input._milliseconds,
-        d: input._days,
-        M: input._months };
-
-    } else if (isNumber(input)) {
-      duration = {};
-      if (key) {
-        duration[key] = input;
-      } else {
-        duration.milliseconds = input;
-      }
-    } else if (!!(match = aspNetRegex.exec(input))) {
-      sign = match[1] === '-' ? -1 : 1;
-      duration = {
-        y: 0,
-        d: toInt(match[DATE]) * sign,
-        h: toInt(match[HOUR]) * sign,
-        m: toInt(match[MINUTE]) * sign,
-        s: toInt(match[SECOND]) * sign,
-        ms: toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
-      };
-    } else if (!!(match = isoRegex.exec(input))) {
-      sign = match[1] === '-' ? -1 : 1;
-      duration = {
-        y: parseIso(match[2], sign),
-        M: parseIso(match[3], sign),
-        w: parseIso(match[4], sign),
-        d: parseIso(match[5], sign),
-        h: parseIso(match[6], sign),
-        m: parseIso(match[7], sign),
-        s: parseIso(match[8], sign) };
-
-    } else if (duration == null) {// checks for null or undefined
-      duration = {};
-    } else if (typeof duration === 'object' && ('from' in duration || 'to' in duration)) {
-      diffRes = momentsDifference(createLocal(duration.from), createLocal(duration.to));
-
-      duration = {};
-      duration.ms = diffRes.milliseconds;
-      duration.M = diffRes.months;
-    }
-
-    ret = new Duration(duration);
-
-    if (isDuration(input) && hasOwnProp(input, '_locale')) {
-      ret._locale = input._locale;
-    }
-
-    return ret;
-  }
-
-  createDuration.fn = Duration.prototype;
-  createDuration.invalid = createInvalid$1;
-
-  function parseIso(inp, sign) {
-    // We'd normally use ~~inp for this, but unfortunately it also
-    // converts floats to ints.
-    // inp may be undefined, so careful calling replace on it.
-    var res = inp && parseFloat(inp.replace(',', '.'));
-    // apply sign while we're at it
-    return (isNaN(res) ? 0 : res) * sign;
-  }
-
-  function positiveMomentsDifference(base, other) {
-    var res = {};
-
-    res.months = other.month() - base.month() +
-    (other.year() - base.year()) * 12;
-    if (base.clone().add(res.months, 'M').isAfter(other)) {
-      --res.months;
-    }
-
-    res.milliseconds = +other - +base.clone().add(res.months, 'M');
-
-    return res;
-  }
-
-  function momentsDifference(base, other) {
-    var res;
-    if (!(base.isValid() && other.isValid())) {
-      return { milliseconds: 0, months: 0 };
-    }
-
-    other = cloneWithOffset(other, base);
-    if (base.isBefore(other)) {
-      res = positiveMomentsDifference(base, other);
-    } else {
-      res = positiveMomentsDifference(other, base);
-      res.milliseconds = -res.milliseconds;
-      res.months = -res.months;
-    }
-
-    return res;
-  }
-
-  // TODO: remove 'name' arg after deprecation is removed
-  function createAdder(direction, name) {
-    return function (val, period) {
-      var dur, tmp;
-      //invert the arguments, but complain about it
-      if (period !== null && !isNaN(+period)) {
-        deprecateSimple(name, 'moment().' + name + '(period, number) is deprecated. Please use moment().' + name + '(number, period). ' +
-        'See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info.');
-        tmp = val;val = period;period = tmp;
-      }
-
-      val = typeof val === 'string' ? +val : val;
-      dur = createDuration(val, period);
-      addSubtract(this, dur, direction);
-      return this;
-    };
-  }
-
-  function addSubtract(mom, duration, isAdding, updateOffset) {
-    var milliseconds = duration._milliseconds,
-    days = absRound(duration._days),
-    months = absRound(duration._months);
-
-    if (!mom.isValid()) {
-      // No op
-      return;
-    }
-
-    updateOffset = updateOffset == null ? true : updateOffset;
-
-    if (months) {
-      setMonth(mom, get(mom, 'Month') + months * isAdding);
-    }
-    if (days) {
-      set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
-    }
-    if (milliseconds) {
-      mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
-    }
-    if (updateOffset) {
-      hooks.updateOffset(mom, days || months);
-    }
-  }
-
-  var add = createAdder(1, 'add');
-  var subtract = createAdder(-1, 'subtract');
-
-  function getCalendarFormat(myMoment, now) {
-    var diff = myMoment.diff(now, 'days', true);
-    return diff < -6 ? 'sameElse' :
-    diff < -1 ? 'lastWeek' :
-    diff < 0 ? 'lastDay' :
-    diff < 1 ? 'sameDay' :
-    diff < 2 ? 'nextDay' :
-    diff < 7 ? 'nextWeek' : 'sameElse';
-  }
-
-  function calendar$1(time, formats) {
-    // We want to compare the start of today, vs this.
-    // Getting start-of-today depends on whether we're local/utc/offset or not.
-    var now = time || createLocal(),
-    sod = cloneWithOffset(now, this).startOf('day'),
-    format = hooks.calendarFormat(this, sod) || 'sameElse';
-
-    var output = formats && (isFunction(formats[format]) ? formats[format].call(this, now) : formats[format]);
-
-    return this.format(output || this.localeData().calendar(format, this, createLocal(now)));
-  }
-
-  function clone() {
-    return new Moment(this);
-  }
-
-  function isAfter(input, units) {
-    var localInput = isMoment(input) ? input : createLocal(input);
-    if (!(this.isValid() && localInput.isValid())) {
-      return false;
-    }
-    units = normalizeUnits(units) || 'millisecond';
-    if (units === 'millisecond') {
-      return this.valueOf() > localInput.valueOf();
-    } else {
-      return localInput.valueOf() < this.clone().startOf(units).valueOf();
-    }
-  }
-
-  function isBefore(input, units) {
-    var localInput = isMoment(input) ? input : createLocal(input);
-    if (!(this.isValid() && localInput.isValid())) {
-      return false;
-    }
-    units = normalizeUnits(units) || 'millisecond';
-    if (units === 'millisecond') {
-      return this.valueOf() < localInput.valueOf();
-    } else {
-      return this.clone().endOf(units).valueOf() < localInput.valueOf();
-    }
-  }
-
-  function isBetween(from, to, units, inclusivity) {
-    var localFrom = isMoment(from) ? from : createLocal(from),
-    localTo = isMoment(to) ? to : createLocal(to);
-    if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
-      return false;
-    }
-    inclusivity = inclusivity || '()';
-    return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) && (
-    inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
-  }
-
-  function isSame(input, units) {
-    var localInput = isMoment(input) ? input : createLocal(input),
-    inputMs;
-    if (!(this.isValid() && localInput.isValid())) {
-      return false;
-    }
-    units = normalizeUnits(units) || 'millisecond';
-    if (units === 'millisecond') {
-      return this.valueOf() === localInput.valueOf();
-    } else {
-      inputMs = localInput.valueOf();
-      return this.clone().startOf(units).valueOf() <= inputMs && inputMs <= this.clone().endOf(units).valueOf();
-    }
-  }
-
-  function isSameOrAfter(input, units) {
-    return this.isSame(input, units) || this.isAfter(input, units);
-  }
-
-  function isSameOrBefore(input, units) {
-    return this.isSame(input, units) || this.isBefore(input, units);
-  }
-
-  function diff(input, units, asFloat) {
-    var that,
-    zoneDelta,
-    output;
-
-    if (!this.isValid()) {
-      return NaN;
-    }
-
-    that = cloneWithOffset(input, this);
-
-    if (!that.isValid()) {
-      return NaN;
-    }
-
-    zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
-
-    units = normalizeUnits(units);
-
-    switch (units) {
-      case 'year':output = monthDiff(this, that) / 12;break;
-      case 'month':output = monthDiff(this, that);break;
-      case 'quarter':output = monthDiff(this, that) / 3;break;
-      case 'second':output = (this - that) / 1e3;break; // 1000
-      case 'minute':output = (this - that) / 6e4;break; // 1000 * 60
-      case 'hour':output = (this - that) / 36e5;break; // 1000 * 60 * 60
-      case 'day':output = (this - that - zoneDelta) / 864e5;break; // 1000 * 60 * 60 * 24, negate dst
-      case 'week':output = (this - that - zoneDelta) / 6048e5;break; // 1000 * 60 * 60 * 24 * 7, negate dst
-      default:output = this - that;}
-
-
-    return asFloat ? output : absFloor(output);
-  }
-
-  function monthDiff(a, b) {
-    // difference in months
-    var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month()),
-    // b is in (anchor - 1 month, anchor + 1 month)
-    anchor = a.clone().add(wholeMonthDiff, 'months'),
-    anchor2,adjust;
-
-    if (b - anchor < 0) {
-      anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
-      // linear across the month
-      adjust = (b - anchor) / (anchor - anchor2);
-    } else {
-      anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
-      // linear across the month
-      adjust = (b - anchor) / (anchor2 - anchor);
-    }
-
-    //check for negative zero, return zero if negative zero
-    return -(wholeMonthDiff + adjust) || 0;
-  }
-
-  hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
-  hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
-
-  function toString() {
-    return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
-  }
-
-  function toISOString(keepOffset) {
-    if (!this.isValid()) {
-      return null;
-    }
-    var utc = keepOffset !== true;
-    var m = utc ? this.clone().utc() : this;
-    if (m.year() < 0 || m.year() > 9999) {
-      return formatMoment(m, utc ? 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYYYY-MM-DD[T]HH:mm:ss.SSSZ');
-    }
-    if (isFunction(Date.prototype.toISOString)) {
-      // native implementation is ~50x faster, use it when we can
-      if (utc) {
-        return this.toDate().toISOString();
-      } else {
-        return new Date(this.valueOf() + this.utcOffset() * 60 * 1000).toISOString().replace('Z', formatMoment(m, 'Z'));
-      }
-    }
-    return formatMoment(m, utc ? 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYY-MM-DD[T]HH:mm:ss.SSSZ');
-  }
-
-  /**
-     * Return a human readable representation of a moment that can
-     * also be evaluated to get a new moment which is the same
-     *
-     * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
-     */
-  function inspect() {
-    if (!this.isValid()) {
-      return 'moment.invalid(/* ' + this._i + ' */)';
-    }
-    var func = 'moment';
-    var zone = '';
-    if (!this.isLocal()) {
-      func = this.utcOffset() === 0 ? 'moment.utc' : 'moment.parseZone';
-      zone = 'Z';
-    }
-    var prefix = '[' + func + '("]';
-    var year = 0 <= this.year() && this.year() <= 9999 ? 'YYYY' : 'YYYYYY';
-    var datetime = '-MM-DD[T]HH:mm:ss.SSS';
-    var suffix = zone + '[")]';
-
-    return this.format(prefix + year + datetime + suffix);
-  }
-
-  function format(inputString) {
-    if (!inputString) {
-      inputString = this.isUtc() ? hooks.defaultFormatUtc : hooks.defaultFormat;
-    }
-    var output = formatMoment(this, inputString);
-    return this.localeData().postformat(output);
-  }
-
-  function from(time, withoutSuffix) {
-    if (this.isValid() && (
-    isMoment(time) && time.isValid() ||
-    createLocal(time).isValid())) {
-      return createDuration({ to: this, from: time }).locale(this.locale()).humanize(!withoutSuffix);
-    } else {
-      return this.localeData().invalidDate();
-    }
-  }
-
-  function fromNow(withoutSuffix) {
-    return this.from(createLocal(), withoutSuffix);
-  }
-
-  function to(time, withoutSuffix) {
-    if (this.isValid() && (
-    isMoment(time) && time.isValid() ||
-    createLocal(time).isValid())) {
-      return createDuration({ from: this, to: time }).locale(this.locale()).humanize(!withoutSuffix);
-    } else {
-      return this.localeData().invalidDate();
-    }
-  }
-
-  function toNow(withoutSuffix) {
-    return this.to(createLocal(), withoutSuffix);
-  }
-
-  // If passed a locale key, it will set the locale for this
-  // instance.  Otherwise, it will return the locale configuration
-  // variables for this instance.
-  function locale(key) {
-    var newLocaleData;
-
-    if (key === undefined) {
-      return this._locale._abbr;
-    } else {
-      newLocaleData = getLocale(key);
-      if (newLocaleData != null) {
-        this._locale = newLocaleData;
-      }
-      return this;
-    }
-  }
-
-  var lang = deprecate(
-  'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
-  function (key) {
-    if (key === undefined) {
-      return this.localeData();
-    } else {
-      return this.locale(key);
-    }
-  });
-
-
-  function localeData() {
-    return this._locale;
-  }
-
-  var MS_PER_SECOND = 1000;
-  var MS_PER_MINUTE = 60 * MS_PER_SECOND;
-  var MS_PER_HOUR = 60 * MS_PER_MINUTE;
-  var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
-
-  // actual modulo - handles negative numbers (for dates before 1970):
-  function mod$1(dividend, divisor) {
-    return (dividend % divisor + divisor) % divisor;
-  }
-
-  function localStartOfDate(y, m, d) {
-    // the date constructor remaps years 0-99 to 1900-1999
-    if (y < 100 && y >= 0) {
-      // preserve leap years using a full 400 year cycle, then reset
-      return new Date(y + 400, m, d) - MS_PER_400_YEARS;
-    } else {
-      return new Date(y, m, d).valueOf();
-    }
-  }
-
-  function utcStartOfDate(y, m, d) {
-    // Date.UTC remaps years 0-99 to 1900-1999
-    if (y < 100 && y >= 0) {
-      // preserve leap years using a full 400 year cycle, then reset
-      return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
-    } else {
-      return Date.UTC(y, m, d);
-    }
-  }
-
-  function startOf(units) {
-    var time;
-    units = normalizeUnits(units);
-    if (units === undefined || units === 'millisecond' || !this.isValid()) {
-      return this;
-    }
-
-    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
-
-    switch (units) {
-      case 'year':
-        time = startOfDate(this.year(), 0, 1);
-        break;
-      case 'quarter':
-        time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
-        break;
-      case 'month':
-        time = startOfDate(this.year(), this.month(), 1);
-        break;
-      case 'week':
-        time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
-        break;
-      case 'isoWeek':
-        time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
-        break;
-      case 'day':
-      case 'date':
-        time = startOfDate(this.year(), this.month(), this.date());
-        break;
-      case 'hour':
-        time = this._d.valueOf();
-        time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
-        break;
-      case 'minute':
-        time = this._d.valueOf();
-        time -= mod$1(time, MS_PER_MINUTE);
-        break;
-      case 'second':
-        time = this._d.valueOf();
-        time -= mod$1(time, MS_PER_SECOND);
-        break;}
-
-
-    this._d.setTime(time);
-    hooks.updateOffset(this, true);
-    return this;
-  }
-
-  function endOf(units) {
-    var time;
-    units = normalizeUnits(units);
-    if (units === undefined || units === 'millisecond' || !this.isValid()) {
-      return this;
-    }
-
-    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
-
-    switch (units) {
-      case 'year':
-        time = startOfDate(this.year() + 1, 0, 1) - 1;
-        break;
-      case 'quarter':
-        time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
-        break;
-      case 'month':
-        time = startOfDate(this.year(), this.month() + 1, 1) - 1;
-        break;
-      case 'week':
-        time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
-        break;
-      case 'isoWeek':
-        time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
-        break;
-      case 'day':
-      case 'date':
-        time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
-        break;
-      case 'hour':
-        time = this._d.valueOf();
-        time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
-        break;
-      case 'minute':
-        time = this._d.valueOf();
-        time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
-        break;
-      case 'second':
-        time = this._d.valueOf();
-        time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
-        break;}
-
-
-    this._d.setTime(time);
-    hooks.updateOffset(this, true);
-    return this;
-  }
-
-  function valueOf() {
-    return this._d.valueOf() - (this._offset || 0) * 60000;
-  }
-
-  function unix() {
-    return Math.floor(this.valueOf() / 1000);
-  }
-
-  function toDate() {
-    return new Date(this.valueOf());
-  }
-
-  function toArray() {
-    var m = this;
-    return [m.year(), m.month(), m.date(), m.hour(), m.minute(), m.second(), m.millisecond()];
-  }
-
-  function toObject() {
-    var m = this;
-    return {
-      years: m.year(),
-      months: m.month(),
-      date: m.date(),
-      hours: m.hours(),
-      minutes: m.minutes(),
-      seconds: m.seconds(),
-      milliseconds: m.milliseconds() };
-
-  }
-
-  function toJSON() {
-    // new Date(NaN).toJSON() === null
-    return this.isValid() ? this.toISOString() : null;
-  }
-
-  function isValid$2() {
-    return isValid(this);
-  }
-
-  function parsingFlags() {
-    return extend({}, getParsingFlags(this));
-  }
-
-  function invalidAt() {
-    return getParsingFlags(this).overflow;
-  }
-
-  function creationData() {
-    return {
-      input: this._i,
-      format: this._f,
-      locale: this._locale,
-      isUTC: this._isUTC,
-      strict: this._strict };
-
-  }
-
-  // FORMATTING
-
-  addFormatToken(0, ['gg', 2], 0, function () {
-    return this.weekYear() % 100;
-  });
-
-  addFormatToken(0, ['GG', 2], 0, function () {
-    return this.isoWeekYear() % 100;
-  });
-
-  function addWeekYearFormatToken(token, getter) {
-    addFormatToken(0, [token, token.length], 0, getter);
-  }
-
-  addWeekYearFormatToken('gggg', 'weekYear');
-  addWeekYearFormatToken('ggggg', 'weekYear');
-  addWeekYearFormatToken('GGGG', 'isoWeekYear');
-  addWeekYearFormatToken('GGGGG', 'isoWeekYear');
-
-  // ALIASES
-
-  addUnitAlias('weekYear', 'gg');
-  addUnitAlias('isoWeekYear', 'GG');
-
-  // PRIORITY
-
-  addUnitPriority('weekYear', 1);
-  addUnitPriority('isoWeekYear', 1);
-
-
-  // PARSING
-
-  addRegexToken('G', matchSigned);
-  addRegexToken('g', matchSigned);
-  addRegexToken('GG', match1to2, match2);
-  addRegexToken('gg', match1to2, match2);
-  addRegexToken('GGGG', match1to4, match4);
-  addRegexToken('gggg', match1to4, match4);
-  addRegexToken('GGGGG', match1to6, match6);
-  addRegexToken('ggggg', match1to6, match6);
-
-  addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
-    week[token.substr(0, 2)] = toInt(input);
-  });
-
-  addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
-    week[token] = hooks.parseTwoDigitYear(input);
-  });
-
-  // MOMENTS
-
-  function getSetWeekYear(input) {
-    return getSetWeekYearHelper.call(this,
-    input,
-    this.week(),
-    this.weekday(),
-    this.localeData()._week.dow,
-    this.localeData()._week.doy);
-  }
-
-  function getSetISOWeekYear(input) {
-    return getSetWeekYearHelper.call(this,
-    input, this.isoWeek(), this.isoWeekday(), 1, 4);
-  }
-
-  function getISOWeeksInYear() {
-    return weeksInYear(this.year(), 1, 4);
-  }
-
-  function getWeeksInYear() {
-    var weekInfo = this.localeData()._week;
-    return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
-  }
-
-  function getSetWeekYearHelper(input, week, weekday, dow, doy) {
-    var weeksTarget;
-    if (input == null) {
-      return weekOfYear(this, dow, doy).year;
-    } else {
-      weeksTarget = weeksInYear(input, dow, doy);
-      if (week > weeksTarget) {
-        week = weeksTarget;
-      }
-      return setWeekAll.call(this, input, week, weekday, dow, doy);
-    }
-  }
-
-  function setWeekAll(weekYear, week, weekday, dow, doy) {
-    var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
-    date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
-
-    this.year(date.getUTCFullYear());
-    this.month(date.getUTCMonth());
-    this.date(date.getUTCDate());
-    return this;
-  }
-
-  // FORMATTING
-
-  addFormatToken('Q', 0, 'Qo', 'quarter');
-
-  // ALIASES
-
-  addUnitAlias('quarter', 'Q');
-
-  // PRIORITY
-
-  addUnitPriority('quarter', 7);
-
-  // PARSING
-
-  addRegexToken('Q', match1);
-  addParseToken('Q', function (input, array) {
-    array[MONTH] = (toInt(input) - 1) * 3;
-  });
-
-  // MOMENTS
-
-  function getSetQuarter(input) {
-    return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
-  }
-
-  // FORMATTING
-
-  addFormatToken('D', ['DD', 2], 'Do', 'date');
-
-  // ALIASES
-
-  addUnitAlias('date', 'D');
-
-  // PRIORITY
-  addUnitPriority('date', 9);
-
-  // PARSING
-
-  addRegexToken('D', match1to2);
-  addRegexToken('DD', match1to2, match2);
-  addRegexToken('Do', function (isStrict, locale) {
-    // TODO: Remove "ordinalParse" fallback in next major release.
-    return isStrict ?
-    locale._dayOfMonthOrdinalParse || locale._ordinalParse :
-    locale._dayOfMonthOrdinalParseLenient;
-  });
-
-  addParseToken(['D', 'DD'], DATE);
-  addParseToken('Do', function (input, array) {
-    array[DATE] = toInt(input.match(match1to2)[0]);
-  });
-
-  // MOMENTS
-
-  var getSetDayOfMonth = makeGetSet('Date', true);
-
-  // FORMATTING
-
-  addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
-
-  // ALIASES
-
-  addUnitAlias('dayOfYear', 'DDD');
-
-  // PRIORITY
-  addUnitPriority('dayOfYear', 4);
-
-  // PARSING
-
-  addRegexToken('DDD', match1to3);
-  addRegexToken('DDDD', match3);
-  addParseToken(['DDD', 'DDDD'], function (input, array, config) {
-    config._dayOfYear = toInt(input);
-  });
-
-  // HELPERS
-
-  // MOMENTS
-
-  function getSetDayOfYear(input) {
-    var dayOfYear = Math.round((this.clone().startOf('day') - this.clone().startOf('year')) / 864e5) + 1;
-    return input == null ? dayOfYear : this.add(input - dayOfYear, 'd');
-  }
-
-  // FORMATTING
-
-  addFormatToken('m', ['mm', 2], 0, 'minute');
-
-  // ALIASES
-
-  addUnitAlias('minute', 'm');
-
-  // PRIORITY
-
-  addUnitPriority('minute', 14);
-
-  // PARSING
-
-  addRegexToken('m', match1to2);
-  addRegexToken('mm', match1to2, match2);
-  addParseToken(['m', 'mm'], MINUTE);
-
-  // MOMENTS
-
-  var getSetMinute = makeGetSet('Minutes', false);
-
-  // FORMATTING
-
-  addFormatToken('s', ['ss', 2], 0, 'second');
-
-  // ALIASES
-
-  addUnitAlias('second', 's');
-
-  // PRIORITY
-
-  addUnitPriority('second', 15);
-
-  // PARSING
-
-  addRegexToken('s', match1to2);
-  addRegexToken('ss', match1to2, match2);
-  addParseToken(['s', 'ss'], SECOND);
-
-  // MOMENTS
-
-  var getSetSecond = makeGetSet('Seconds', false);
-
-  // FORMATTING
-
-  addFormatToken('S', 0, 0, function () {
-    return ~~(this.millisecond() / 100);
-  });
-
-  addFormatToken(0, ['SS', 2], 0, function () {
-    return ~~(this.millisecond() / 10);
-  });
-
-  addFormatToken(0, ['SSS', 3], 0, 'millisecond');
-  addFormatToken(0, ['SSSS', 4], 0, function () {
-    return this.millisecond() * 10;
-  });
-  addFormatToken(0, ['SSSSS', 5], 0, function () {
-    return this.millisecond() * 100;
-  });
-  addFormatToken(0, ['SSSSSS', 6], 0, function () {
-    return this.millisecond() * 1000;
-  });
-  addFormatToken(0, ['SSSSSSS', 7], 0, function () {
-    return this.millisecond() * 10000;
-  });
-  addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
-    return this.millisecond() * 100000;
-  });
-  addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
-    return this.millisecond() * 1000000;
-  });
-
-
-  // ALIASES
-
-  addUnitAlias('millisecond', 'ms');
-
-  // PRIORITY
-
-  addUnitPriority('millisecond', 16);
-
-  // PARSING
-
-  addRegexToken('S', match1to3, match1);
-  addRegexToken('SS', match1to3, match2);
-  addRegexToken('SSS', match1to3, match3);
-
-  var token;
-  for (token = 'SSSS'; token.length <= 9; token += 'S') {
-    addRegexToken(token, matchUnsigned);
-  }
-
-  function parseMs(input, array) {
-    array[MILLISECOND] = toInt(('0.' + input) * 1000);
-  }
-
-  for (token = 'S'; token.length <= 9; token += 'S') {
-    addParseToken(token, parseMs);
-  }
-  // MOMENTS
-
-  var getSetMillisecond = makeGetSet('Milliseconds', false);
-
-  // FORMATTING
-
-  addFormatToken('z', 0, 0, 'zoneAbbr');
-  addFormatToken('zz', 0, 0, 'zoneName');
-
-  // MOMENTS
-
-  function getZoneAbbr() {
-    return this._isUTC ? 'UTC' : '';
-  }
-
-  function getZoneName() {
-    return this._isUTC ? 'Coordinated Universal Time' : '';
-  }
-
-  var proto = Moment.prototype;
-
-  proto.add = add;
-  proto.calendar = calendar$1;
-  proto.clone = clone;
-  proto.diff = diff;
-  proto.endOf = endOf;
-  proto.format = format;
-  proto.from = from;
-  proto.fromNow = fromNow;
-  proto.to = to;
-  proto.toNow = toNow;
-  proto.get = stringGet;
-  proto.invalidAt = invalidAt;
-  proto.isAfter = isAfter;
-  proto.isBefore = isBefore;
-  proto.isBetween = isBetween;
-  proto.isSame = isSame;
-  proto.isSameOrAfter = isSameOrAfter;
-  proto.isSameOrBefore = isSameOrBefore;
-  proto.isValid = isValid$2;
-  proto.lang = lang;
-  proto.locale = locale;
-  proto.localeData = localeData;
-  proto.max = prototypeMax;
-  proto.min = prototypeMin;
-  proto.parsingFlags = parsingFlags;
-  proto.set = stringSet;
-  proto.startOf = startOf;
-  proto.subtract = subtract;
-  proto.toArray = toArray;
-  proto.toObject = toObject;
-  proto.toDate = toDate;
-  proto.toISOString = toISOString;
-  proto.inspect = inspect;
-  proto.toJSON = toJSON;
-  proto.toString = toString;
-  proto.unix = unix;
-  proto.valueOf = valueOf;
-  proto.creationData = creationData;
-  proto.year = getSetYear;
-  proto.isLeapYear = getIsLeapYear;
-  proto.weekYear = getSetWeekYear;
-  proto.isoWeekYear = getSetISOWeekYear;
-  proto.quarter = proto.quarters = getSetQuarter;
-  proto.month = getSetMonth;
-  proto.daysInMonth = getDaysInMonth;
-  proto.week = proto.weeks = getSetWeek;
-  proto.isoWeek = proto.isoWeeks = getSetISOWeek;
-  proto.weeksInYear = getWeeksInYear;
-  proto.isoWeeksInYear = getISOWeeksInYear;
-  proto.date = getSetDayOfMonth;
-  proto.day = proto.days = getSetDayOfWeek;
-  proto.weekday = getSetLocaleDayOfWeek;
-  proto.isoWeekday = getSetISODayOfWeek;
-  proto.dayOfYear = getSetDayOfYear;
-  proto.hour = proto.hours = getSetHour;
-  proto.minute = proto.minutes = getSetMinute;
-  proto.second = proto.seconds = getSetSecond;
-  proto.millisecond = proto.milliseconds = getSetMillisecond;
-  proto.utcOffset = getSetOffset;
-  proto.utc = setOffsetToUTC;
-  proto.local = setOffsetToLocal;
-  proto.parseZone = setOffsetToParsedOffset;
-  proto.hasAlignedHourOffset = hasAlignedHourOffset;
-  proto.isDST = isDaylightSavingTime;
-  proto.isLocal = isLocal;
-  proto.isUtcOffset = isUtcOffset;
-  proto.isUtc = isUtc;
-  proto.isUTC = isUtc;
-  proto.zoneAbbr = getZoneAbbr;
-  proto.zoneName = getZoneName;
-  proto.dates = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
-  proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
-  proto.years = deprecate('years accessor is deprecated. Use year instead', getSetYear);
-  proto.zone = deprecate('moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/', getSetZone);
-  proto.isDSTShifted = deprecate('isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information', isDaylightSavingTimeShifted);
-
-  function createUnix(input) {
-    return createLocal(input * 1000);
-  }
-
-  function createInZone() {
-    return createLocal.apply(null, arguments).parseZone();
-  }
-
-  function preParsePostFormat(string) {
-    return string;
-  }
-
-  var proto$1 = Locale.prototype;
-
-  proto$1.calendar = calendar;
-  proto$1.longDateFormat = longDateFormat;
-  proto$1.invalidDate = invalidDate;
-  proto$1.ordinal = ordinal;
-  proto$1.preparse = preParsePostFormat;
-  proto$1.postformat = preParsePostFormat;
-  proto$1.relativeTime = relativeTime;
-  proto$1.pastFuture = pastFuture;
-  proto$1.set = set;
-
-  proto$1.months = localeMonths;
-  proto$1.monthsShort = localeMonthsShort;
-  proto$1.monthsParse = localeMonthsParse;
-  proto$1.monthsRegex = monthsRegex;
-  proto$1.monthsShortRegex = monthsShortRegex;
-  proto$1.week = localeWeek;
-  proto$1.firstDayOfYear = localeFirstDayOfYear;
-  proto$1.firstDayOfWeek = localeFirstDayOfWeek;
-
-  proto$1.weekdays = localeWeekdays;
-  proto$1.weekdaysMin = localeWeekdaysMin;
-  proto$1.weekdaysShort = localeWeekdaysShort;
-  proto$1.weekdaysParse = localeWeekdaysParse;
-
-  proto$1.weekdaysRegex = weekdaysRegex;
-  proto$1.weekdaysShortRegex = weekdaysShortRegex;
-  proto$1.weekdaysMinRegex = weekdaysMinRegex;
-
-  proto$1.isPM = localeIsPM;
-  proto$1.meridiem = localeMeridiem;
-
-  function get$1(format, index, field, setter) {
-    var locale = getLocale();
-    var utc = createUTC().set(setter, index);
-    return locale[field](utc, format);
-  }
-
-  function listMonthsImpl(format, index, field) {
-    if (isNumber(format)) {
-      index = format;
-      format = undefined;
-    }
-
-    format = format || '';
-
-    if (index != null) {
-      return get$1(format, index, field, 'month');
-    }
-
-    var i;
-    var out = [];
-    for (i = 0; i < 12; i++) {
-      out[i] = get$1(format, i, field, 'month');
-    }
-    return out;
-  }
-
-  // ()
-  // (5)
-  // (fmt, 5)
-  // (fmt)
-  // (true)
-  // (true, 5)
-  // (true, fmt, 5)
-  // (true, fmt)
-  function listWeekdaysImpl(localeSorted, format, index, field) {
-    if (typeof localeSorted === 'boolean') {
-      if (isNumber(format)) {
-        index = format;
-        format = undefined;
-      }
-
-      format = format || '';
-    } else {
-      format = localeSorted;
-      index = format;
-      localeSorted = false;
-
-      if (isNumber(format)) {
-        index = format;
-        format = undefined;
-      }
-
-      format = format || '';
-    }
-
-    var locale = getLocale(),
-    shift = localeSorted ? locale._week.dow : 0;
-
-    if (index != null) {
-      return get$1(format, (index + shift) % 7, field, 'day');
-    }
-
-    var i;
-    var out = [];
-    for (i = 0; i < 7; i++) {
-      out[i] = get$1(format, (i + shift) % 7, field, 'day');
-    }
-    return out;
-  }
-
-  function listMonths(format, index) {
-    return listMonthsImpl(format, index, 'months');
-  }
-
-  function listMonthsShort(format, index) {
-    return listMonthsImpl(format, index, 'monthsShort');
-  }
-
-  function listWeekdays(localeSorted, format, index) {
-    return listWeekdaysImpl(localeSorted, format, index, 'weekdays');
-  }
-
-  function listWeekdaysShort(localeSorted, format, index) {
-    return listWeekdaysImpl(localeSorted, format, index, 'weekdaysShort');
-  }
-
-  function listWeekdaysMin(localeSorted, format, index) {
-    return listWeekdaysImpl(localeSorted, format, index, 'weekdaysMin');
-  }
-
-  getSetGlobalLocale('en', {
-    dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
-    ordinal: function ordinal(number) {
-      var b = number % 10,
-      output = toInt(number % 100 / 10) === 1 ? 'th' :
-      b === 1 ? 'st' :
-      b === 2 ? 'nd' :
-      b === 3 ? 'rd' : 'th';
-      return number + output;
-    } });
-
-
-  // Side effect imports
-
-  hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', getSetGlobalLocale);
-  hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', getLocale);
-
-  var mathAbs = Math.abs;
-
-  function abs() {
-    var data = this._data;
-
-    this._milliseconds = mathAbs(this._milliseconds);
-    this._days = mathAbs(this._days);
-    this._months = mathAbs(this._months);
-
-    data.milliseconds = mathAbs(data.milliseconds);
-    data.seconds = mathAbs(data.seconds);
-    data.minutes = mathAbs(data.minutes);
-    data.hours = mathAbs(data.hours);
-    data.months = mathAbs(data.months);
-    data.years = mathAbs(data.years);
-
-    return this;
-  }
-
-  function addSubtract$1(duration, input, value, direction) {
-    var other = createDuration(input, value);
-
-    duration._milliseconds += direction * other._milliseconds;
-    duration._days += direction * other._days;
-    duration._months += direction * other._months;
-
-    return duration._bubble();
-  }
-
-  // supports only 2.0-style add(1, 's') or add(duration)
-  function add$1(input, value) {
-    return addSubtract$1(this, input, value, 1);
-  }
-
-  // supports only 2.0-style subtract(1, 's') or subtract(duration)
-  function subtract$1(input, value) {
-    return addSubtract$1(this, input, value, -1);
-  }
-
-  function absCeil(number) {
-    if (number < 0) {
-      return Math.floor(number);
-    } else {
-      return Math.ceil(number);
-    }
-  }
-
-  function bubble() {
-    var milliseconds = this._milliseconds;
-    var days = this._days;
-    var months = this._months;
-    var data = this._data;
-    var seconds, minutes, hours, years, monthsFromDays;
-
-    // if we have a mix of positive and negative values, bubble down first
-    // check: https://github.com/moment/moment/issues/2166
-    if (!(milliseconds >= 0 && days >= 0 && months >= 0 ||
-    milliseconds <= 0 && days <= 0 && months <= 0)) {
-      milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
-      days = 0;
-      months = 0;
-    }
-
-    // The following code bubbles up values, see the tests for
-    // examples of what that means.
-    data.milliseconds = milliseconds % 1000;
-
-    seconds = absFloor(milliseconds / 1000);
-    data.seconds = seconds % 60;
-
-    minutes = absFloor(seconds / 60);
-    data.minutes = minutes % 60;
-
-    hours = absFloor(minutes / 60);
-    data.hours = hours % 24;
-
-    days += absFloor(hours / 24);
-
-    // convert days to months
-    monthsFromDays = absFloor(daysToMonths(days));
-    months += monthsFromDays;
-    days -= absCeil(monthsToDays(monthsFromDays));
-
-    // 12 months -> 1 year
-    years = absFloor(months / 12);
-    months %= 12;
-
-    data.days = days;
-    data.months = months;
-    data.years = years;
-
-    return this;
-  }
-
-  function daysToMonths(days) {
-    // 400 years have 146097 days (taking into account leap year rules)
-    // 400 years have 12 months === 4800
-    return days * 4800 / 146097;
-  }
-
-  function monthsToDays(months) {
-    // the reverse of daysToMonths
-    return months * 146097 / 4800;
-  }
-
-  function as(units) {
-    if (!this.isValid()) {
-      return NaN;
-    }
-    var days;
-    var months;
-    var milliseconds = this._milliseconds;
-
-    units = normalizeUnits(units);
-
-    if (units === 'month' || units === 'quarter' || units === 'year') {
-      days = this._days + milliseconds / 864e5;
-      months = this._months + daysToMonths(days);
-      switch (units) {
-        case 'month':return months;
-        case 'quarter':return months / 3;
-        case 'year':return months / 12;}
-
-    } else {
-      // handle milliseconds separately because of floating point math errors (issue #1867)
-      days = this._days + Math.round(monthsToDays(this._months));
-      switch (units) {
-        case 'week':return days / 7 + milliseconds / 6048e5;
-        case 'day':return days + milliseconds / 864e5;
-        case 'hour':return days * 24 + milliseconds / 36e5;
-        case 'minute':return days * 1440 + milliseconds / 6e4;
-        case 'second':return days * 86400 + milliseconds / 1000;
-        // Math.floor prevents floating point math errors here
-        case 'millisecond':return Math.floor(days * 864e5) + milliseconds;
-        default:throw new Error('Unknown unit ' + units);}
-
-    }
-  }
-
-  // TODO: Use this.as('ms')?
-  function valueOf$1() {
-    if (!this.isValid()) {
-      return NaN;
-    }
-    return (
-      this._milliseconds +
-      this._days * 864e5 +
-      this._months % 12 * 2592e6 +
-      toInt(this._months / 12) * 31536e6);
-
-  }
-
-  function makeAs(alias) {
-    return function () {
-      return this.as(alias);
-    };
-  }
-
-  var asMilliseconds = makeAs('ms');
-  var asSeconds = makeAs('s');
-  var asMinutes = makeAs('m');
-  var asHours = makeAs('h');
-  var asDays = makeAs('d');
-  var asWeeks = makeAs('w');
-  var asMonths = makeAs('M');
-  var asQuarters = makeAs('Q');
-  var asYears = makeAs('y');
-
-  function clone$1() {
-    return createDuration(this);
-  }
-
-  function get$2(units) {
-    units = normalizeUnits(units);
-    return this.isValid() ? this[units + 's']() : NaN;
-  }
-
-  function makeGetter(name) {
-    return function () {
-      return this.isValid() ? this._data[name] : NaN;
-    };
-  }
-
-  var milliseconds = makeGetter('milliseconds');
-  var seconds = makeGetter('seconds');
-  var minutes = makeGetter('minutes');
-  var hours = makeGetter('hours');
-  var days = makeGetter('days');
-  var months = makeGetter('months');
-  var years = makeGetter('years');
-
-  function weeks() {
-    return absFloor(this.days() / 7);
-  }
-
-  var round = Math.round;
-  var thresholds = {
-    ss: 44, // a few seconds to seconds
-    s: 45, // seconds to minute
-    m: 45, // minutes to hour
-    h: 22, // hours to day
-    d: 26, // days to month
-    M: 11 // months to year
-  };
-
-  // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
-  function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
-    return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
-  }
-
-  function relativeTime$1(posNegDuration, withoutSuffix, locale) {
-    var duration = createDuration(posNegDuration).abs();
-    var seconds = round(duration.as('s'));
-    var minutes = round(duration.as('m'));
-    var hours = round(duration.as('h'));
-    var days = round(duration.as('d'));
-    var months = round(duration.as('M'));
-    var years = round(duration.as('y'));
-
-    var a = seconds <= thresholds.ss && ['s', seconds] ||
-    seconds < thresholds.s && ['ss', seconds] ||
-    minutes <= 1 && ['m'] ||
-    minutes < thresholds.m && ['mm', minutes] ||
-    hours <= 1 && ['h'] ||
-    hours < thresholds.h && ['hh', hours] ||
-    days <= 1 && ['d'] ||
-    days < thresholds.d && ['dd', days] ||
-    months <= 1 && ['M'] ||
-    months < thresholds.M && ['MM', months] ||
-    years <= 1 && ['y'] || ['yy', years];
-
-    a[2] = withoutSuffix;
-    a[3] = +posNegDuration > 0;
-    a[4] = locale;
-    return substituteTimeAgo.apply(null, a);
-  }
-
-  // This function allows you to set the rounding function for relative time strings
-  function getSetRelativeTimeRounding(roundingFunction) {
-    if (roundingFunction === undefined) {
-      return round;
-    }
-    if (typeof roundingFunction === 'function') {
-      round = roundingFunction;
-      return true;
-    }
-    return false;
-  }
-
-  // This function allows you to set a threshold for relative time strings
-  function getSetRelativeTimeThreshold(threshold, limit) {
-    if (thresholds[threshold] === undefined) {
-      return false;
-    }
-    if (limit === undefined) {
-      return thresholds[threshold];
-    }
-    thresholds[threshold] = limit;
-    if (threshold === 's') {
-      thresholds.ss = limit - 1;
-    }
-    return true;
-  }
-
-  function humanize(withSuffix) {
-    if (!this.isValid()) {
-      return this.localeData().invalidDate();
-    }
-
-    var locale = this.localeData();
-    var output = relativeTime$1(this, !withSuffix, locale);
-
-    if (withSuffix) {
-      output = locale.pastFuture(+this, output);
-    }
-
-    return locale.postformat(output);
-  }
-
-  var abs$1 = Math.abs;
-
-  function sign(x) {
-    return (x > 0) - (x < 0) || +x;
-  }
-
-  function toISOString$1() {
-    // for ISO strings we do not use the normal bubbling rules:
-    //  * milliseconds bubble up until they become hours
-    //  * days do not bubble at all
-    //  * months bubble up until they become years
-    // This is because there is no context-free conversion between hours and days
-    // (think of clock changes)
-    // and also not between days and months (28-31 days per month)
-    if (!this.isValid()) {
-      return this.localeData().invalidDate();
-    }
-
-    var seconds = abs$1(this._milliseconds) / 1000;
-    var days = abs$1(this._days);
-    var months = abs$1(this._months);
-    var minutes, hours, years;
-
-    // 3600 seconds -> 60 minutes -> 1 hour
-    minutes = absFloor(seconds / 60);
-    hours = absFloor(minutes / 60);
-    seconds %= 60;
-    minutes %= 60;
-
-    // 12 months -> 1 year
-    years = absFloor(months / 12);
-    months %= 12;
-
-
-    // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
-    var Y = years;
-    var M = months;
-    var D = days;
-    var h = hours;
-    var m = minutes;
-    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
-    var total = this.asSeconds();
-
-    if (!total) {
-      // this is the same as C#'s (Noda) and python (isodate)...
-      // but not other JS (goog.date)
-      return 'P0D';
-    }
-
-    var totalSign = total < 0 ? '-' : '';
-    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
-    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
-    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
-
-    return totalSign + 'P' + (
-    Y ? ymSign + Y + 'Y' : '') + (
-    M ? ymSign + M + 'M' : '') + (
-    D ? daysSign + D + 'D' : '') + (
-    h || m || s ? 'T' : '') + (
-    h ? hmsSign + h + 'H' : '') + (
-    m ? hmsSign + m + 'M' : '') + (
-    s ? hmsSign + s + 'S' : '');
-  }
-
-  var proto$2 = Duration.prototype;
-
-  proto$2.isValid = isValid$1;
-  proto$2.abs = abs;
-  proto$2.add = add$1;
-  proto$2.subtract = subtract$1;
-  proto$2.as = as;
-  proto$2.asMilliseconds = asMilliseconds;
-  proto$2.asSeconds = asSeconds;
-  proto$2.asMinutes = asMinutes;
-  proto$2.asHours = asHours;
-  proto$2.asDays = asDays;
-  proto$2.asWeeks = asWeeks;
-  proto$2.asMonths = asMonths;
-  proto$2.asQuarters = asQuarters;
-  proto$2.asYears = asYears;
-  proto$2.valueOf = valueOf$1;
-  proto$2._bubble = bubble;
-  proto$2.clone = clone$1;
-  proto$2.get = get$2;
-  proto$2.milliseconds = milliseconds;
-  proto$2.seconds = seconds;
-  proto$2.minutes = minutes;
-  proto$2.hours = hours;
-  proto$2.days = days;
-  proto$2.weeks = weeks;
-  proto$2.months = months;
-  proto$2.years = years;
-  proto$2.humanize = humanize;
-  proto$2.toISOString = toISOString$1;
-  proto$2.toString = toISOString$1;
-  proto$2.toJSON = toISOString$1;
-  proto$2.locale = locale;
-  proto$2.localeData = localeData;
-
-  proto$2.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString$1);
-  proto$2.lang = lang;
-
-  // Side effect imports
-
-  // FORMATTING
-
-  addFormatToken('X', 0, 0, 'unix');
-  addFormatToken('x', 0, 0, 'valueOf');
-
-  // PARSING
-
-  addRegexToken('x', matchSigned);
-  addRegexToken('X', matchTimestamp);
-  addParseToken('X', function (input, array, config) {
-    config._d = new Date(parseFloat(input, 10) * 1000);
-  });
-  addParseToken('x', function (input, array, config) {
-    config._d = new Date(toInt(input));
-  });
-
-  // Side effect imports
-
-
-  hooks.version = '2.24.0';
-
-  setHookCallback(createLocal);
-
-  hooks.fn = proto;
-  hooks.min = min;
-  hooks.max = max;
-  hooks.now = now;
-  hooks.utc = createUTC;
-  hooks.unix = createUnix;
-  hooks.months = listMonths;
-  hooks.isDate = isDate;
-  hooks.locale = getSetGlobalLocale;
-  hooks.invalid = createInvalid;
-  hooks.duration = createDuration;
-  hooks.isMoment = isMoment;
-  hooks.weekdays = listWeekdays;
-  hooks.parseZone = createInZone;
-  hooks.localeData = getLocale;
-  hooks.isDuration = isDuration;
-  hooks.monthsShort = listMonthsShort;
-  hooks.weekdaysMin = listWeekdaysMin;
-  hooks.defineLocale = defineLocale;
-  hooks.updateLocale = updateLocale;
-  hooks.locales = listLocales;
-  hooks.weekdaysShort = listWeekdaysShort;
-  hooks.normalizeUnits = normalizeUnits;
-  hooks.relativeTimeRounding = getSetRelativeTimeRounding;
-  hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
-  hooks.calendarFormat = getCalendarFormat;
-  hooks.prototype = proto;
-
-  // currently HTML5 input type only supports 24-hour formats
-  hooks.HTML5_FMT = {
-    DATETIME_LOCAL: 'YYYY-MM-DDTHH:mm', // <input type="datetime-local" />
-    DATETIME_LOCAL_SECONDS: 'YYYY-MM-DDTHH:mm:ss', // <input type="datetime-local" step="1" />
-    DATETIME_LOCAL_MS: 'YYYY-MM-DDTHH:mm:ss.SSS', // <input type="datetime-local" step="0.001" />
-    DATE: 'YYYY-MM-DD', // <input type="date" />
-    TIME: 'HH:mm', // <input type="time" />
-    TIME_SECONDS: 'HH:mm:ss', // <input type="time" step="1" />
-    TIME_MS: 'HH:mm:ss.SSS', // <input type="time" step="0.001" />
-    WEEK: 'GGGG-[W]WW', // <input type="week" />
-    MONTH: 'YYYY-MM' // <input type="month" />
-  };
-
-  return hooks;
-
-});
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/webpack/buildin/module.js */ 12)(module)))
-
-/***/ }),
-
-/***/ 12:
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-
-/***/ 13:
 /*!*************************************************!*\
   !*** D:/project/businessCard/uview-ui/index.js ***!
   \*************************************************/
@@ -6511,15 +1866,11 @@ module.exports = function(module) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-var _mixin = _interopRequireDefault(__webpack_require__(/*! ./libs/mixin/mixin.js */ 14));
+var _mixin = _interopRequireDefault(__webpack_require__(/*! ./libs/mixin/mixin.js */ 12));
 
 
 
-var _request = _interopRequireDefault(__webpack_require__(/*! ./libs/request */ 15));
-
-
-
-
+var _request = _interopRequireDefault(__webpack_require__(/*! ./libs/request */ 13));
 
 
 
@@ -6536,56 +1887,60 @@ var _request = _interopRequireDefault(__webpack_require__(/*! ./libs/request */ 
 
 
 
-var _queryParams = _interopRequireDefault(__webpack_require__(/*! ./libs/function/queryParams.js */ 19));
-
-var _route = _interopRequireDefault(__webpack_require__(/*! ./libs/function/route.js */ 20));
-
-var _timeFormat = _interopRequireDefault(__webpack_require__(/*! ./libs/function/timeFormat.js */ 24));
-
-var _timeFrom = _interopRequireDefault(__webpack_require__(/*! ./libs/function/timeFrom.js */ 25));
-
-var _colorGradient = _interopRequireDefault(__webpack_require__(/*! ./libs/function/colorGradient.js */ 26));
-
-var _guid = _interopRequireDefault(__webpack_require__(/*! ./libs/function/guid.js */ 27));
-
-var _color = _interopRequireDefault(__webpack_require__(/*! ./libs/function/color.js */ 28));
-
-var _type2icon = _interopRequireDefault(__webpack_require__(/*! ./libs/function/type2icon.js */ 29));
-
-var _randomArray = _interopRequireDefault(__webpack_require__(/*! ./libs/function/randomArray.js */ 30));
-
-var _deepClone = _interopRequireDefault(__webpack_require__(/*! ./libs/function/deepClone.js */ 17));
-
-var _deepMerge = _interopRequireDefault(__webpack_require__(/*! ./libs/function/deepMerge.js */ 16));
-
-var _addUnit = _interopRequireDefault(__webpack_require__(/*! ./libs/function/addUnit.js */ 31));
-
-
-var _test = _interopRequireDefault(__webpack_require__(/*! ./libs/function/test.js */ 18));
-
-var _random = _interopRequireDefault(__webpack_require__(/*! ./libs/function/random.js */ 32));
-
-var _trim = _interopRequireDefault(__webpack_require__(/*! ./libs/function/trim.js */ 33));
-
-var _toast = _interopRequireDefault(__webpack_require__(/*! ./libs/function/toast.js */ 34));
-
-var _getParent = _interopRequireDefault(__webpack_require__(/*! ./libs/function/getParent.js */ 35));
-
-var _$parent = _interopRequireDefault(__webpack_require__(/*! ./libs/function/$parent.js */ 36));
 
 
 
-var _sys = __webpack_require__(/*! ./libs/function/sys.js */ 37);
 
-var _debounce = _interopRequireDefault(__webpack_require__(/*! ./libs/function/debounce.js */ 38));
+var _queryParams = _interopRequireDefault(__webpack_require__(/*! ./libs/function/queryParams.js */ 17));
 
-var _throttle = _interopRequireDefault(__webpack_require__(/*! ./libs/function/throttle.js */ 39));
+var _route = _interopRequireDefault(__webpack_require__(/*! ./libs/function/route.js */ 18));
+
+var _timeFormat = _interopRequireDefault(__webpack_require__(/*! ./libs/function/timeFormat.js */ 22));
+
+var _timeFrom = _interopRequireDefault(__webpack_require__(/*! ./libs/function/timeFrom.js */ 23));
+
+var _colorGradient = _interopRequireDefault(__webpack_require__(/*! ./libs/function/colorGradient.js */ 24));
+
+var _guid = _interopRequireDefault(__webpack_require__(/*! ./libs/function/guid.js */ 25));
+
+var _color = _interopRequireDefault(__webpack_require__(/*! ./libs/function/color.js */ 26));
+
+var _type2icon = _interopRequireDefault(__webpack_require__(/*! ./libs/function/type2icon.js */ 27));
+
+var _randomArray = _interopRequireDefault(__webpack_require__(/*! ./libs/function/randomArray.js */ 28));
+
+var _deepClone = _interopRequireDefault(__webpack_require__(/*! ./libs/function/deepClone.js */ 15));
+
+var _deepMerge = _interopRequireDefault(__webpack_require__(/*! ./libs/function/deepMerge.js */ 14));
+
+var _addUnit = _interopRequireDefault(__webpack_require__(/*! ./libs/function/addUnit.js */ 29));
+
+
+var _test = _interopRequireDefault(__webpack_require__(/*! ./libs/function/test.js */ 16));
+
+var _random = _interopRequireDefault(__webpack_require__(/*! ./libs/function/random.js */ 30));
+
+var _trim = _interopRequireDefault(__webpack_require__(/*! ./libs/function/trim.js */ 31));
+
+var _toast = _interopRequireDefault(__webpack_require__(/*! ./libs/function/toast.js */ 32));
+
+var _getParent = _interopRequireDefault(__webpack_require__(/*! ./libs/function/getParent.js */ 33));
+
+var _$parent = _interopRequireDefault(__webpack_require__(/*! ./libs/function/$parent.js */ 34));
 
 
 
-var _config = _interopRequireDefault(__webpack_require__(/*! ./libs/config/config.js */ 40));
+var _sys = __webpack_require__(/*! ./libs/function/sys.js */ 35);
 
-var _zIndex = _interopRequireDefault(__webpack_require__(/*! ./libs/config/zIndex.js */ 41));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} // 引入全局mixin
+var _debounce = _interopRequireDefault(__webpack_require__(/*! ./libs/function/debounce.js */ 36));
+
+var _throttle = _interopRequireDefault(__webpack_require__(/*! ./libs/function/throttle.js */ 37));
+
+
+
+var _config = _interopRequireDefault(__webpack_require__(/*! ./libs/config/config.js */ 38));
+
+var _zIndex = _interopRequireDefault(__webpack_require__(/*! ./libs/config/zIndex.js */ 39));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} // 引入全局mixin
 // 引入关于是否mixin集成小程序分享的配置
 // import wxshare from './libs/mixin/mpShare.js'
 // 全局挂载引入http相关请求拦截插件
@@ -6654,7 +2009,7 @@ var install = function install(Vue) {
 
 /***/ }),
 
-/***/ 14:
+/***/ 12:
 /*!************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/mixin/mixin.js ***!
   \************************************************************/
@@ -6728,7 +2083,7 @@ var install = function install(Vue) {
 
 /***/ }),
 
-/***/ 15:
+/***/ 13:
 /*!**************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/request/index.js ***!
   \**************************************************************/
@@ -6736,8 +2091,8 @@ var install = function install(Vue) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _deepMerge = _interopRequireDefault(__webpack_require__(/*! ../function/deepMerge */ 16));
-var _test = _interopRequireDefault(__webpack_require__(/*! ../function/test */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _deepMerge = _interopRequireDefault(__webpack_require__(/*! ../function/deepMerge */ 14));
+var _test = _interopRequireDefault(__webpack_require__(/*! ../function/test */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
 Request = /*#__PURE__*/function () {_createClass(Request, [{ key: "setConfig",
     // 设置全局默认配置
     value: function setConfig(customConfig) {
@@ -6909,7 +2264,7 @@ new Request();exports.default = _default;
 
 /***/ }),
 
-/***/ 16:
+/***/ 14:
 /*!*******************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/deepMerge.js ***!
   \*******************************************************************/
@@ -6917,7 +2272,7 @@ new Request();exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _deepClone = _interopRequireDefault(__webpack_require__(/*! ./deepClone */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _deepClone = _interopRequireDefault(__webpack_require__(/*! ./deepClone */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 // JS对象深度合并
 function deepMerge() {var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};var source = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -6950,7 +2305,7 @@ deepMerge;exports.default = _default;
 
 /***/ }),
 
-/***/ 17:
+/***/ 15:
 /*!*******************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/deepClone.js ***!
   \*******************************************************************/
@@ -6984,7 +2339,67 @@ deepClone;exports.default = _default;
 
 /***/ }),
 
-/***/ 18:
+/***/ 159:
+/*!*************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/util/emitter.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /**
+                                                                                                      * 递归使用 call 方式this指向
+                                                                                                      * @param componentName // 需要找的组件的名称
+                                                                                                      * @param eventName // 事件名称
+                                                                                                      * @param params // 需要传递的参数
+                                                                                                      */
+function _broadcast(componentName, eventName, params) {
+  // 循环子节点找到名称一样的子节点 否则 递归 当前子节点
+  this.$children.map(function (child) {
+    if (componentName === child.$options.name) {
+      child.$emit.apply(child, [eventName].concat(params));
+    } else {
+      _broadcast.apply(child, [componentName, eventName].concat(params));
+    }
+  });
+}var _default =
+{
+  methods: {
+    /**
+              * 派发 (向上查找) (一个)
+              * @param componentName // 需要找的组件的名称
+              * @param eventName // 事件名称
+              * @param params // 需要传递的参数
+              */
+    dispatch: function dispatch(componentName, eventName, params) {
+      var parent = this.$parent || this.$root; //$parent 找到最近的父节点 $root 根节点
+      var name = parent.$options.name; // 获取当前组件实例的name
+      // 如果当前有节点 && 当前没名称 且 当前名称等于需要传进来的名称的时候就去查找当前的节点
+      // 循环出当前名称的一样的组件实例
+      while (parent && (!name || name !== componentName)) {
+        parent = parent.$parent;
+        if (parent) {
+          name = parent.$options.name;
+        }
+      }
+      // 有节点表示当前找到了name一样的实例
+      if (parent) {
+        parent.$emit.apply(parent, [eventName].concat(params));
+      }
+    },
+    /**
+        * 广播 (向下查找) (广播多个)
+        * @param componentName // 需要找的组件的名称
+        * @param eventName // 事件名称
+        * @param params // 需要传递的参数
+        */
+    broadcast: function broadcast(componentName, eventName, params) {
+      _broadcast.call(this, componentName, eventName, params);
+    } } };exports.default = _default;
+
+/***/ }),
+
+/***/ 16:
 /*!**************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/test.js ***!
   \**************************************************************/
@@ -7226,7 +2641,1733 @@ function code(value) {var len = arguments.length > 1 && arguments[1] !== undefin
 
 /***/ }),
 
-/***/ 19:
+/***/ 160:
+/*!*********************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/util/async-validator.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+/* eslint no-console:0 */
+var formatRegExp = /%[sdj%]/g;
+var warning = function warning() {}; // don't print warning message when in production env or node runtime
+
+if (typeof process !== 'undefined' && Object({"NODE_ENV":"development","VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}) && "development" !== 'production' && typeof window !==
+'undefined' && typeof document !== 'undefined') {
+  warning = function warning(type, errors) {
+    if (typeof console !== 'undefined' && console.warn) {
+      if (errors.every(function (e) {
+        return typeof e === 'string';
+      })) {
+        console.warn(type, errors);
+      }
+    }
+  };
+}
+
+function convertFieldsError(errors) {
+  if (!errors || !errors.length) return null;
+  var fields = {};
+  errors.forEach(function (error) {
+    var field = error.field;
+    fields[field] = fields[field] || [];
+    fields[field].push(error);
+  });
+  return fields;
+}
+
+function format() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  var i = 1;
+  var f = args[0];
+  var len = args.length;
+
+  if (typeof f === 'function') {
+    return f.apply(null, args.slice(1));
+  }
+
+  if (typeof f === 'string') {
+    var str = String(f).replace(formatRegExp, function (x) {
+      if (x === '%%') {
+        return '%';
+      }
+
+      if (i >= len) {
+        return x;
+      }
+
+      switch (x) {
+        case '%s':
+          return String(args[i++]);
+
+        case '%d':
+          return Number(args[i++]);
+
+        case '%j':
+          try {
+            return JSON.stringify(args[i++]);
+          } catch (_) {
+            return '[Circular]';
+          }
+
+          break;
+
+        default:
+          return x;}
+
+    });
+
+    for (var arg = args[i]; i < len; arg = args[++i]) {
+      str += " " + arg;
+    }
+
+    return str;
+  }
+
+  return f;
+}
+
+function isNativeStringType(type) {
+  return type === 'string' || type === 'url' || type === 'hex' || type === 'email' || type === 'pattern';
+}
+
+function isEmptyValue(value, type) {
+  if (value === undefined || value === null) {
+    return true;
+  }
+
+  if (type === 'array' && Array.isArray(value) && !value.length) {
+    return true;
+  }
+
+  if (isNativeStringType(type) && typeof value === 'string' && !value) {
+    return true;
+  }
+
+  return false;
+}
+
+function asyncParallelArray(arr, func, callback) {
+  var results = [];
+  var total = 0;
+  var arrLength = arr.length;
+
+  function count(errors) {
+    results.push.apply(results, errors);
+    total++;
+
+    if (total === arrLength) {
+      callback(results);
+    }
+  }
+
+  arr.forEach(function (a) {
+    func(a, count);
+  });
+}
+
+function asyncSerialArray(arr, func, callback) {
+  var index = 0;
+  var arrLength = arr.length;
+
+  function next(errors) {
+    if (errors && errors.length) {
+      callback(errors);
+      return;
+    }
+
+    var original = index;
+    index = index + 1;
+
+    if (original < arrLength) {
+      func(arr[original], next);
+    } else {
+      callback([]);
+    }
+  }
+
+  next([]);
+}
+
+function flattenObjArr(objArr) {
+  var ret = [];
+  Object.keys(objArr).forEach(function (k) {
+    ret.push.apply(ret, objArr[k]);
+  });
+  return ret;
+}
+
+function asyncMap(objArr, option, func, callback) {
+  if (option.first) {
+    var _pending = new Promise(function (resolve, reject) {
+      var next = function next(errors) {
+        callback(errors);
+        return errors.length ? reject({
+          errors: errors,
+          fields: convertFieldsError(errors) }) :
+        resolve();
+      };
+
+      var flattenArr = flattenObjArr(objArr);
+      asyncSerialArray(flattenArr, func, next);
+    });
+
+    _pending["catch"](function (e) {
+      return e;
+    });
+
+    return _pending;
+  }
+
+  var firstFields = option.firstFields || [];
+
+  if (firstFields === true) {
+    firstFields = Object.keys(objArr);
+  }
+
+  var objArrKeys = Object.keys(objArr);
+  var objArrLength = objArrKeys.length;
+  var total = 0;
+  var results = [];
+  var pending = new Promise(function (resolve, reject) {
+    var next = function next(errors) {
+      results.push.apply(results, errors);
+      total++;
+
+      if (total === objArrLength) {
+        callback(results);
+        return results.length ? reject({
+          errors: results,
+          fields: convertFieldsError(results) }) :
+        resolve();
+      }
+    };
+
+    if (!objArrKeys.length) {
+      callback(results);
+      resolve();
+    }
+
+    objArrKeys.forEach(function (key) {
+      var arr = objArr[key];
+
+      if (firstFields.indexOf(key) !== -1) {
+        asyncSerialArray(arr, func, next);
+      } else {
+        asyncParallelArray(arr, func, next);
+      }
+    });
+  });
+  pending["catch"](function (e) {
+    return e;
+  });
+  return pending;
+}
+
+function complementError(rule) {
+  return function (oe) {
+    if (oe && oe.message) {
+      oe.field = oe.field || rule.fullField;
+      return oe;
+    }
+
+    return {
+      message: typeof oe === 'function' ? oe() : oe,
+      field: oe.field || rule.fullField };
+
+  };
+}
+
+function deepMerge(target, source) {
+  if (source) {
+    for (var s in source) {
+      if (source.hasOwnProperty(s)) {
+        var value = source[s];
+
+        if (typeof value === 'object' && typeof target[s] === 'object') {
+          target[s] = _extends({}, target[s], {}, value);
+        } else {
+          target[s] = value;
+        }
+      }
+    }
+  }
+
+  return target;
+}
+
+/**
+   *  Rule for validating required fields.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function required(rule, value, source, errors, options, type) {
+  if (rule.required && (!source.hasOwnProperty(rule.field) || isEmptyValue(value, type || rule.type))) {
+    errors.push(format(options.messages.required, rule.fullField));
+  }
+}
+
+/**
+   *  Rule for validating whitespace.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function whitespace(rule, value, source, errors, options) {
+  if (/^\s+$/.test(value) || value === '') {
+    errors.push(format(options.messages.whitespace, rule.fullField));
+  }
+}
+
+/* eslint max-len:0 */
+
+var pattern = {
+  // http://emailregex.com/
+  email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  url: new RegExp(
+  "^(?!mailto:)(?:(?:http|https|ftp)://|//)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$",
+  'i'),
+  hex: /^#?([a-f0-9]{6}|[a-f0-9]{3})$/i };
+
+var types = {
+  integer: function integer(value) {
+    return types.number(value) && parseInt(value, 10) === value;
+  },
+  "float": function _float(value) {
+    return types.number(value) && !types.integer(value);
+  },
+  array: function array(value) {
+    return Array.isArray(value);
+  },
+  regexp: function regexp(value) {
+    if (value instanceof RegExp) {
+      return true;
+    }
+
+    try {
+      return !!new RegExp(value);
+    } catch (e) {
+      return false;
+    }
+  },
+  date: function date(value) {
+    return typeof value.getTime === 'function' && typeof value.getMonth === 'function' && typeof value.getYear ===
+    'function';
+  },
+  number: function number(value) {
+    if (isNaN(value)) {
+      return false;
+    }
+
+    // 修改源码，将字符串数值先转为数值
+    return typeof +value === 'number';
+  },
+  object: function object(value) {
+    return typeof value === 'object' && !types.array(value);
+  },
+  method: function method(value) {
+    return typeof value === 'function';
+  },
+  email: function email(value) {
+    return typeof value === 'string' && !!value.match(pattern.email) && value.length < 255;
+  },
+  url: function url(value) {
+    return typeof value === 'string' && !!value.match(pattern.url);
+  },
+  hex: function hex(value) {
+    return typeof value === 'string' && !!value.match(pattern.hex);
+  } };
+
+/**
+        *  Rule for validating the type of a value.
+        *
+        *  @param rule The validation rule.
+        *  @param value The value of the field on the source object.
+        *  @param source The source object being validated.
+        *  @param errors An array of errors that this rule may add
+        *  validation errors to.
+        *  @param options The validation options.
+        *  @param options.messages The validation messages.
+        */
+
+function type(rule, value, source, errors, options) {
+  if (rule.required && value === undefined) {
+    required(rule, value, source, errors, options);
+    return;
+  }
+
+  var custom = ['integer', 'float', 'array', 'regexp', 'object', 'method', 'email', 'number', 'date', 'url', 'hex'];
+  var ruleType = rule.type;
+
+  if (custom.indexOf(ruleType) > -1) {
+    if (!types[ruleType](value)) {
+      errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
+    } // straight typeof check
+
+  } else if (ruleType && typeof value !== rule.type) {
+    errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
+  }
+}
+
+/**
+   *  Rule for validating minimum and maximum allowed values.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function range(rule, value, source, errors, options) {
+  var len = typeof rule.len === 'number';
+  var min = typeof rule.min === 'number';
+  var max = typeof rule.max === 'number'; // 正则匹配码点范围从U+010000一直到U+10FFFF的文字（补充平面Supplementary Plane）
+
+  var spRegexp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+  var val = value;
+  var key = null;
+  var num = typeof value === 'number';
+  var str = typeof value === 'string';
+  var arr = Array.isArray(value);
+
+  if (num) {
+    key = 'number';
+  } else if (str) {
+    key = 'string';
+  } else if (arr) {
+    key = 'array';
+  } // if the value is not of a supported type for range validation
+  // the validation rule rule should use the
+  // type property to also test for a particular type
+
+
+  if (!key) {
+    return false;
+  }
+
+  if (arr) {
+    val = value.length;
+  }
+
+  if (str) {
+    // 处理码点大于U+010000的文字length属性不准确的bug，如"𠮷𠮷𠮷".lenght !== 3
+    val = value.replace(spRegexp, '_').length;
+  }
+
+  if (len) {
+    if (val !== rule.len) {
+      errors.push(format(options.messages[key].len, rule.fullField, rule.len));
+    }
+  } else if (min && !max && val < rule.min) {
+    errors.push(format(options.messages[key].min, rule.fullField, rule.min));
+  } else if (max && !min && val > rule.max) {
+    errors.push(format(options.messages[key].max, rule.fullField, rule.max));
+  } else if (min && max && (val < rule.min || val > rule.max)) {
+    errors.push(format(options.messages[key].range, rule.fullField, rule.min, rule.max));
+  }
+}
+
+var ENUM = 'enum';
+/**
+                    *  Rule for validating a value exists in an enumerable list.
+                    *
+                    *  @param rule The validation rule.
+                    *  @param value The value of the field on the source object.
+                    *  @param source The source object being validated.
+                    *  @param errors An array of errors that this rule may add
+                    *  validation errors to.
+                    *  @param options The validation options.
+                    *  @param options.messages The validation messages.
+                    */
+
+function enumerable(rule, value, source, errors, options) {
+  rule[ENUM] = Array.isArray(rule[ENUM]) ? rule[ENUM] : [];
+
+  if (rule[ENUM].indexOf(value) === -1) {
+    errors.push(format(options.messages[ENUM], rule.fullField, rule[ENUM].join(', ')));
+  }
+}
+
+/**
+   *  Rule for validating a regular expression pattern.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param source The source object being validated.
+   *  @param errors An array of errors that this rule may add
+   *  validation errors to.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function pattern$1(rule, value, source, errors, options) {
+  if (rule.pattern) {
+    if (rule.pattern instanceof RegExp) {
+      // if a RegExp instance is passed, reset `lastIndex` in case its `global`
+      // flag is accidentally set to `true`, which in a validation scenario
+      // is not necessary and the result might be misleading
+      rule.pattern.lastIndex = 0;
+
+      if (!rule.pattern.test(value)) {
+        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+      }
+    } else if (typeof rule.pattern === 'string') {
+      var _pattern = new RegExp(rule.pattern);
+
+      if (!_pattern.test(value)) {
+        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+      }
+    }
+  }
+}
+
+var rules = {
+  required: required,
+  whitespace: whitespace,
+  type: type,
+  range: range,
+  "enum": enumerable,
+  pattern: pattern$1 };
+
+
+/**
+                         *  Performs validation for string types.
+                         *
+                         *  @param rule The validation rule.
+                         *  @param value The value of the field on the source object.
+                         *  @param callback The callback function.
+                         *  @param source The source object being validated.
+                         *  @param options The validation options.
+                         *  @param options.messages The validation messages.
+                         */
+
+function string(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, 'string') && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options, 'string');
+
+    if (!isEmptyValue(value, 'string')) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+      rules.pattern(rule, value, source, errors, options);
+
+      if (rule.whitespace === true) {
+        rules.whitespace(rule, value, source, errors, options);
+      }
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a function.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function method(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a number.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function number(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (value === '') {
+      value = undefined;
+    }
+
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a boolean.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function _boolean(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates the regular expression type.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function regexp(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (!isEmptyValue(value)) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a number is an integer.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function integer(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a number is a floating point number.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function floatFn(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates an array.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function array(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, 'array') && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options, 'array');
+
+    if (!isEmptyValue(value, 'array')) {
+      rules.type(rule, value, source, errors, options);
+      rules.range(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates an object.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function object(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+var ENUM$1 = 'enum';
+/**
+                      *  Validates an enumerable list.
+                      *
+                      *  @param rule The validation rule.
+                      *  @param value The value of the field on the source object.
+                      *  @param callback The callback function.
+                      *  @param source The source object being validated.
+                      *  @param options The validation options.
+                      *  @param options.messages The validation messages.
+                      */
+
+function enumerable$1(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (value !== undefined) {
+      rules[ENUM$1](rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Validates a regular expression pattern.
+   *
+   *  Performs validation when a rule only contains
+   *  a pattern property but is not declared as a string type.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function pattern$2(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, 'string') && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (!isEmptyValue(value, 'string')) {
+      rules.pattern(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+function date(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+
+    if (!isEmptyValue(value)) {
+      var dateObject;
+
+      if (typeof value === 'number') {
+        dateObject = new Date(value);
+      } else {
+        dateObject = value;
+      }
+
+      rules.type(rule, dateObject, source, errors, options);
+
+      if (dateObject) {
+        rules.range(rule, dateObject.getTime(), source, errors, options);
+      }
+    }
+  }
+
+  callback(errors);
+}
+
+function required$1(rule, value, callback, source, options) {
+  var errors = [];
+  var type = Array.isArray(value) ? 'array' : typeof value;
+  rules.required(rule, value, source, errors, options, type);
+  callback(errors);
+}
+
+function type$1(rule, value, callback, source, options) {
+  var ruleType = rule.type;
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value, ruleType) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options, ruleType);
+
+    if (!isEmptyValue(value, ruleType)) {
+      rules.type(rule, value, source, errors, options);
+    }
+  }
+
+  callback(errors);
+}
+
+/**
+   *  Performs validation for any type.
+   *
+   *  @param rule The validation rule.
+   *  @param value The value of the field on the source object.
+   *  @param callback The callback function.
+   *  @param source The source object being validated.
+   *  @param options The validation options.
+   *  @param options.messages The validation messages.
+   */
+
+function any(rule, value, callback, source, options) {
+  var errors = [];
+  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+
+  if (validate) {
+    if (isEmptyValue(value) && !rule.required) {
+      return callback();
+    }
+
+    rules.required(rule, value, source, errors, options);
+  }
+
+  callback(errors);
+}
+
+var validators = {
+  string: string,
+  method: method,
+  number: number,
+  "boolean": _boolean,
+  regexp: regexp,
+  integer: integer,
+  "float": floatFn,
+  array: array,
+  object: object,
+  "enum": enumerable$1,
+  pattern: pattern$2,
+  date: date,
+  url: type$1,
+  hex: type$1,
+  email: type$1,
+  required: required$1,
+  any: any };
+
+
+function newMessages() {
+  return {
+    "default": 'Validation error on field %s',
+    required: '%s is required',
+    "enum": '%s must be one of %s',
+    whitespace: '%s cannot be empty',
+    date: {
+      format: '%s date %s is invalid for format %s',
+      parse: '%s date could not be parsed, %s is invalid ',
+      invalid: '%s date %s is invalid' },
+
+    types: {
+      string: '%s is not a %s',
+      method: '%s is not a %s (function)',
+      array: '%s is not an %s',
+      object: '%s is not an %s',
+      number: '%s is not a %s',
+      date: '%s is not a %s',
+      "boolean": '%s is not a %s',
+      integer: '%s is not an %s',
+      "float": '%s is not a %s',
+      regexp: '%s is not a valid %s',
+      email: '%s is not a valid %s',
+      url: '%s is not a valid %s',
+      hex: '%s is not a valid %s' },
+
+    string: {
+      len: '%s must be exactly %s characters',
+      min: '%s must be at least %s characters',
+      max: '%s cannot be longer than %s characters',
+      range: '%s must be between %s and %s characters' },
+
+    number: {
+      len: '%s must equal %s',
+      min: '%s cannot be less than %s',
+      max: '%s cannot be greater than %s',
+      range: '%s must be between %s and %s' },
+
+    array: {
+      len: '%s must be exactly %s in length',
+      min: '%s cannot be less than %s in length',
+      max: '%s cannot be greater than %s in length',
+      range: '%s must be between %s and %s in length' },
+
+    pattern: {
+      mismatch: '%s value %s does not match pattern %s' },
+
+    clone: function clone() {
+      var cloned = JSON.parse(JSON.stringify(this));
+      cloned.clone = this.clone;
+      return cloned;
+    } };
+
+}
+var messages = newMessages();
+
+/**
+                               *  Encapsulates a validation schema.
+                               *
+                               *  @param descriptor An object declaring validation rules
+                               *  for this schema.
+                               */
+
+function Schema(descriptor) {
+  this.rules = null;
+  this._messages = messages;
+  this.define(descriptor);
+}
+
+Schema.prototype = {
+  messages: function messages(_messages) {
+    if (_messages) {
+      this._messages = deepMerge(newMessages(), _messages);
+    }
+
+    return this._messages;
+  },
+  define: function define(rules) {
+    if (!rules) {
+      throw new Error('Cannot configure a schema with no rules');
+    }
+
+    if (typeof rules !== 'object' || Array.isArray(rules)) {
+      throw new Error('Rules must be an object');
+    }
+
+    this.rules = {};
+    var z;
+    var item;
+
+    for (z in rules) {
+      if (rules.hasOwnProperty(z)) {
+        item = rules[z];
+        this.rules[z] = Array.isArray(item) ? item : [item];
+      }
+    }
+  },
+  validate: function validate(source_, o, oc) {
+    var _this = this;
+
+    if (o === void 0) {
+      o = {};
+    }
+
+    if (oc === void 0) {
+      oc = function oc() {};
+    }
+
+    var source = source_;
+    var options = o;
+    var callback = oc;
+
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+
+    if (!this.rules || Object.keys(this.rules).length === 0) {
+      if (callback) {
+        callback();
+      }
+
+      return Promise.resolve();
+    }
+
+    function complete(results) {
+      var i;
+      var errors = [];
+      var fields = {};
+
+      function add(e) {
+        if (Array.isArray(e)) {
+          var _errors;
+
+          errors = (_errors = errors).concat.apply(_errors, e);
+        } else {
+          errors.push(e);
+        }
+      }
+
+      for (i = 0; i < results.length; i++) {
+        add(results[i]);
+      }
+
+      if (!errors.length) {
+        errors = null;
+        fields = null;
+      } else {
+        fields = convertFieldsError(errors);
+      }
+
+      callback(errors, fields);
+    }
+
+    if (options.messages) {
+      var messages$1 = this.messages();
+
+      if (messages$1 === messages) {
+        messages$1 = newMessages();
+      }
+
+      deepMerge(messages$1, options.messages);
+      options.messages = messages$1;
+    } else {
+      options.messages = this.messages();
+    }
+
+    var arr;
+    var value;
+    var series = {};
+    var keys = options.keys || Object.keys(this.rules);
+    keys.forEach(function (z) {
+      arr = _this.rules[z];
+      value = source[z];
+      arr.forEach(function (r) {
+        var rule = r;
+
+        if (typeof rule.transform === 'function') {
+          if (source === source_) {
+            source = _extends({}, source);
+          }
+
+          value = source[z] = rule.transform(value);
+        }
+
+        if (typeof rule === 'function') {
+          rule = {
+            validator: rule };
+
+        } else {
+          rule = _extends({}, rule);
+        }
+
+        rule.validator = _this.getValidationMethod(rule);
+        rule.field = z;
+        rule.fullField = rule.fullField || z;
+        rule.type = _this.getType(rule);
+
+        if (!rule.validator) {
+          return;
+        }
+
+        series[z] = series[z] || [];
+        series[z].push({
+          rule: rule,
+          value: value,
+          source: source,
+          field: z });
+
+      });
+    });
+    var errorFields = {};
+    return asyncMap(series, options, function (data, doIt) {
+      var rule = data.rule;
+      var deep = (rule.type === 'object' || rule.type === 'array') && (typeof rule.fields === 'object' || typeof rule.defaultField ===
+      'object');
+      deep = deep && (rule.required || !rule.required && data.value);
+      rule.field = data.field;
+
+      function addFullfield(key, schema) {
+        return _extends({}, schema, {
+          fullField: rule.fullField + "." + key });
+
+      }
+
+      function cb(e) {
+        if (e === void 0) {
+          e = [];
+        }
+
+        var errors = e;
+
+        if (!Array.isArray(errors)) {
+          errors = [errors];
+        }
+
+        if (!options.suppressWarning && errors.length) {
+          Schema.warning('async-validator:', errors);
+        }
+
+        if (errors.length && rule.message) {
+          errors = [].concat(rule.message);
+        }
+
+        errors = errors.map(complementError(rule));
+
+        if (options.first && errors.length) {
+          errorFields[rule.field] = 1;
+          return doIt(errors);
+        }
+
+        if (!deep) {
+          doIt(errors);
+        } else {
+          // if rule is required but the target object
+          // does not exist fail at the rule level and don't
+          // go deeper
+          if (rule.required && !data.value) {
+            if (rule.message) {
+              errors = [].concat(rule.message).map(complementError(rule));
+            } else if (options.error) {
+              errors = [options.error(rule, format(options.messages.required, rule.field))];
+            } else {
+              errors = [];
+            }
+
+            return doIt(errors);
+          }
+
+          var fieldsSchema = {};
+
+          if (rule.defaultField) {
+            for (var k in data.value) {
+              if (data.value.hasOwnProperty(k)) {
+                fieldsSchema[k] = rule.defaultField;
+              }
+            }
+          }
+
+          fieldsSchema = _extends({}, fieldsSchema, {}, data.rule.fields);
+
+          for (var f in fieldsSchema) {
+            if (fieldsSchema.hasOwnProperty(f)) {
+              var fieldSchema = Array.isArray(fieldsSchema[f]) ? fieldsSchema[f] : [fieldsSchema[f]];
+              fieldsSchema[f] = fieldSchema.map(addFullfield.bind(null, f));
+            }
+          }
+
+          var schema = new Schema(fieldsSchema);
+          schema.messages(options.messages);
+
+          if (data.rule.options) {
+            data.rule.options.messages = options.messages;
+            data.rule.options.error = options.error;
+          }
+
+          schema.validate(data.value, data.rule.options || options, function (errs) {
+            var finalErrors = [];
+
+            if (errors && errors.length) {
+              finalErrors.push.apply(finalErrors, errors);
+            }
+
+            if (errs && errs.length) {
+              finalErrors.push.apply(finalErrors, errs);
+            }
+
+            doIt(finalErrors.length ? finalErrors : null);
+          });
+        }
+      }
+
+      var res;
+
+      if (rule.asyncValidator) {
+        res = rule.asyncValidator(rule, data.value, cb, data.source, options);
+      } else if (rule.validator) {
+        res = rule.validator(rule, data.value, cb, data.source, options);
+
+        if (res === true) {
+          cb();
+        } else if (res === false) {
+          cb(rule.message || rule.field + " fails");
+        } else if (res instanceof Array) {
+          cb(res);
+        } else if (res instanceof Error) {
+          cb(res.message);
+        }
+      }
+
+      if (res && res.then) {
+        res.then(function () {
+          return cb();
+        }, function (e) {
+          return cb(e);
+        });
+      }
+    }, function (results) {
+      complete(results);
+    });
+  },
+  getType: function getType(rule) {
+    if (rule.type === undefined && rule.pattern instanceof RegExp) {
+      rule.type = 'pattern';
+    }
+
+    if (typeof rule.validator !== 'function' && rule.type && !validators.hasOwnProperty(rule.type)) {
+      throw new Error(format('Unknown rule type %s', rule.type));
+    }
+
+    return rule.type || 'string';
+  },
+  getValidationMethod: function getValidationMethod(rule) {
+    if (typeof rule.validator === 'function') {
+      return rule.validator;
+    }
+
+    var keys = Object.keys(rule);
+    var messageIndex = keys.indexOf('message');
+
+    if (messageIndex !== -1) {
+      keys.splice(messageIndex, 1);
+    }
+
+    if (keys.length === 1 && keys[0] === 'required') {
+      return validators.required;
+    }
+
+    return validators[this.getType(rule)] || false;
+  } };
+
+
+Schema.register = function register(type, validator) {
+  if (typeof validator !== 'function') {
+    throw new Error('Cannot register a validator by type, validator is not a function');
+  }
+
+  validators[type] = validator;
+};
+
+Schema.warning = warning;
+Schema.messages = messages;var _default =
+
+Schema;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/node-libs-browser/mock/process.js */ 161)))
+
+/***/ }),
+
+/***/ 161:
+/*!********************************************************!*\
+  !*** ./node_modules/node-libs-browser/mock/process.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports.nextTick = function nextTick(fn) {
+    var args = Array.prototype.slice.call(arguments);
+    args.shift();
+    setTimeout(function () {
+        fn.apply(null, args);
+    }, 0);
+};
+
+exports.platform = exports.arch = 
+exports.execPath = exports.title = 'browser';
+exports.pid = 1;
+exports.browser = true;
+exports.env = {};
+exports.argv = [];
+
+exports.binding = function (name) {
+	throw new Error('No such module. (Possibly not yet loaded)')
+};
+
+(function () {
+    var cwd = '/';
+    var path;
+    exports.cwd = function () { return cwd };
+    exports.chdir = function (dir) {
+        if (!path) path = __webpack_require__(/*! path */ 162);
+        cwd = path.resolve(dir, cwd);
+    };
+})();
+
+exports.exit = exports.kill = 
+exports.umask = exports.dlopen = 
+exports.uptime = exports.memoryUsage = 
+exports.uvCounters = function() {};
+exports.features = {};
+
+
+/***/ }),
+
+/***/ 162:
+/*!***********************************************!*\
+  !*** ./node_modules/path-browserify/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
+// backported and transplited with Babel, with backwards-compat fixes
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  if (path.length === 0) return '.';
+  var code = path.charCodeAt(0);
+  var hasRoot = code === 47 /*/*/;
+  var end = -1;
+  var matchedSlash = true;
+  for (var i = path.length - 1; i >= 1; --i) {
+    code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        if (!matchedSlash) {
+          end = i;
+          break;
+        }
+      } else {
+      // We saw the first non-path separator
+      matchedSlash = false;
+    }
+  }
+
+  if (end === -1) return hasRoot ? '/' : '.';
+  if (hasRoot && end === 1) {
+    // return '//';
+    // Backwards-compat fix:
+    return '/';
+  }
+  return path.slice(0, end);
+};
+
+function basename(path) {
+  if (typeof path !== 'string') path = path + '';
+
+  var start = 0;
+  var end = -1;
+  var matchedSlash = true;
+  var i;
+
+  for (i = path.length - 1; i >= 0; --i) {
+    if (path.charCodeAt(i) === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          start = i + 1;
+          break;
+        }
+      } else if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // path component
+      matchedSlash = false;
+      end = i + 1;
+    }
+  }
+
+  if (end === -1) return '';
+  return path.slice(start, end);
+}
+
+// Uses a mixed approach for backwards-compatibility, as ext behavior changed
+// in new Node.js versions, so only basename() above is backported here
+exports.basename = function (path, ext) {
+  var f = basename(path);
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+exports.extname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  var startDot = -1;
+  var startPart = 0;
+  var end = -1;
+  var matchedSlash = true;
+  // Track the state of characters (if any) we see before our first dot and
+  // after any path separator we find
+  var preDotState = 0;
+  for (var i = path.length - 1; i >= 0; --i) {
+    var code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          startPart = i + 1;
+          break;
+        }
+        continue;
+      }
+    if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // extension
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code === 46 /*.*/) {
+        // If this is our first dot, mark it as the start of our extension
+        if (startDot === -1)
+          startDot = i;
+        else if (preDotState !== 1)
+          preDotState = 1;
+    } else if (startDot !== -1) {
+      // We saw a non-dot and non-path separator before our dot, so we should
+      // have a good chance at having a non-empty extension
+      preDotState = -1;
+    }
+  }
+
+  if (startDot === -1 || end === -1 ||
+      // We saw a non-dot character immediately before the dot
+      preDotState === 0 ||
+      // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    return '';
+  }
+  return path.slice(startDot, end);
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 161)))
+
+/***/ }),
+
+/***/ 17:
 /*!*********************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/queryParams.js ***!
   \*********************************************************************/
@@ -7292,6 +4433,151 @@ function queryParams() {var data = arguments.length > 0 && arguments[0] !== unde
 }var _default =
 
 queryParams;exports.default = _default;
+
+/***/ }),
+
+/***/ 18:
+/*!***************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/function/route.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;} /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         * 路由跳转方法，该方法相对于直接使用uni.xxx的好处是使用更加简单快捷
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         * 并且带有路由拦截功能
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         */var
+
+Router = /*#__PURE__*/function () {
+  function Router() {_classCallCheck(this, Router);
+    // 原始属性定义
+    this.config = {
+      type: 'navigateTo',
+      url: '',
+      delta: 1, // navigateBack页面后退时,回退的层数
+      params: {}, // 传递的参数
+      animationType: 'pop-in', // 窗口动画,只在APP有效
+      animationDuration: 300, // 窗口动画持续时间,单位毫秒,只在APP有效
+      intercept: false // 是否需要拦截
+    };
+    // 因为route方法是需要对外赋值给另外的对象使用，同时route内部有使用this，会导致route失去上下文
+    // 这里在构造函数中进行this绑定
+    this.route = this.route.bind(this);
+  }
+
+  // 判断url前面是否有"/"，如果没有则加上，否则无法跳转
+  _createClass(Router, [{ key: "addRootPath", value: function addRootPath(url) {
+      return url[0] === '/' ? url : "/".concat(url);
+    }
+
+    // 整合路由参数
+  }, { key: "mixinParam", value: function mixinParam(url, params) {
+      url = url && this.addRootPath(url);
+
+      // 使用正则匹配，主要依据是判断是否有"/","?","="等，如“/page/index/index?name=mary"
+      // 如果有url中有get参数，转换后无需带上"?"
+      var query = '';
+      if (/.*\/.*\?.*=.*/.test(url)) {
+        // object对象转为get类型的参数
+        query = uni.$u.queryParams(params, false);
+        // 因为已有get参数,所以后面拼接的参数需要带上"&"隔开
+        return url += "&" + query;
+      } else {
+        // 直接拼接参数，因为此处url中没有后面的query参数，也就没有"?/&"之类的符号
+        query = uni.$u.queryParams(params);
+        return url += query;
+      }
+    }
+
+    // 对外的方法名称
+  }, { key: "route", value: function () {var _route = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var options,params,mergeConfig,isNext,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:options = _args.length > 0 && _args[0] !== undefined ? _args[0] : {};params = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+                // 合并用户的配置和内部的默认配置
+                mergeConfig = {};
+
+                if (typeof options === 'string') {
+                  // 如果options为字符串，则为route(url, params)的形式
+                  mergeConfig.url = this.mixinParam(options, params);
+                  mergeConfig.type = 'navigateTo';
+                } else {
+                  mergeConfig = uni.$u.deepClone(options, this.config);
+                  // 否则正常使用mergeConfig中的url和params进行拼接
+                  mergeConfig.url = this.mixinParam(options.url, options.params);
+                }
+
+                if (params.intercept) {
+                  this.config.intercept = params.intercept;
+                }
+                // params参数也带给拦截器
+                mergeConfig.params = params;
+                // 合并内外部参数
+                mergeConfig = uni.$u.deepMerge(this.config, mergeConfig);
+                // 判断用户是否定义了拦截器
+                if (!(typeof uni.$u.routeIntercept === 'function')) {_context.next = 14;break;}_context.next = 10;return (
+
+                  new Promise(function (resolve, reject) {
+                    uni.$u.routeIntercept(mergeConfig, resolve);
+                  }));case 10:isNext = _context.sent;
+                // 如果isNext为true，则执行路由跳转
+                isNext && this.openPage(mergeConfig);_context.next = 15;break;case 14:
+
+                this.openPage(mergeConfig);case 15:case "end":return _context.stop();}}}, _callee, this);}));function route() {return _route.apply(this, arguments);}return route;}()
+
+
+
+    // 执行路由跳转
+  }, { key: "openPage", value: function openPage(config) {
+      // 解构参数
+      var
+      url =
+
+
+
+
+      config.url,type = config.type,delta = config.delta,animationType = config.animationType,animationDuration = config.animationDuration;
+      if (config.type == 'navigateTo' || config.type == 'to') {
+        uni.navigateTo({
+          url: url,
+          animationType: animationType,
+          animationDuration: animationDuration });
+
+      }
+      if (config.type == 'redirectTo' || config.type == 'redirect') {
+        uni.redirectTo({
+          url: url });
+
+      }
+      if (config.type == 'switchTab' || config.type == 'tab') {
+        uni.switchTab({
+          url: url });
+
+      }
+      if (config.type == 'reLaunch' || config.type == 'launch') {
+        uni.reLaunch({
+          url: url });
+
+      }
+      if (config.type == 'navigateBack' || config.type == 'back') {
+        uni.navigateBack({
+          delta: delta });
+
+      }
+    } }]);return Router;}();var _default =
+
+
+new Router().route;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 19:
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ 20);
 
 /***/ }),
 
@@ -12821,7 +10107,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -12842,14 +10128,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -12935,7 +10221,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -13343,1937 +10629,6 @@ internalMixin(Vue);
 /***/ }),
 
 /***/ 20:
-/*!***************************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/function/route.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;} /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         * 路由跳转方法，该方法相对于直接使用uni.xxx的好处是使用更加简单快捷
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         * 并且带有路由拦截功能
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         */var
-
-Router = /*#__PURE__*/function () {
-  function Router() {_classCallCheck(this, Router);
-    // 原始属性定义
-    this.config = {
-      type: 'navigateTo',
-      url: '',
-      delta: 1, // navigateBack页面后退时,回退的层数
-      params: {}, // 传递的参数
-      animationType: 'pop-in', // 窗口动画,只在APP有效
-      animationDuration: 300, // 窗口动画持续时间,单位毫秒,只在APP有效
-      intercept: false // 是否需要拦截
-    };
-    // 因为route方法是需要对外赋值给另外的对象使用，同时route内部有使用this，会导致route失去上下文
-    // 这里在构造函数中进行this绑定
-    this.route = this.route.bind(this);
-  }
-
-  // 判断url前面是否有"/"，如果没有则加上，否则无法跳转
-  _createClass(Router, [{ key: "addRootPath", value: function addRootPath(url) {
-      return url[0] === '/' ? url : "/".concat(url);
-    }
-
-    // 整合路由参数
-  }, { key: "mixinParam", value: function mixinParam(url, params) {
-      url = url && this.addRootPath(url);
-
-      // 使用正则匹配，主要依据是判断是否有"/","?","="等，如“/page/index/index?name=mary"
-      // 如果有url中有get参数，转换后无需带上"?"
-      var query = '';
-      if (/.*\/.*\?.*=.*/.test(url)) {
-        // object对象转为get类型的参数
-        query = uni.$u.queryParams(params, false);
-        // 因为已有get参数,所以后面拼接的参数需要带上"&"隔开
-        return url += "&" + query;
-      } else {
-        // 直接拼接参数，因为此处url中没有后面的query参数，也就没有"?/&"之类的符号
-        query = uni.$u.queryParams(params);
-        return url += query;
-      }
-    }
-
-    // 对外的方法名称
-  }, { key: "route", value: function () {var _route = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var options,params,mergeConfig,isNext,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:options = _args.length > 0 && _args[0] !== undefined ? _args[0] : {};params = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-                // 合并用户的配置和内部的默认配置
-                mergeConfig = {};
-
-                if (typeof options === 'string') {
-                  // 如果options为字符串，则为route(url, params)的形式
-                  mergeConfig.url = this.mixinParam(options, params);
-                  mergeConfig.type = 'navigateTo';
-                } else {
-                  mergeConfig = uni.$u.deepClone(options, this.config);
-                  // 否则正常使用mergeConfig中的url和params进行拼接
-                  mergeConfig.url = this.mixinParam(options.url, options.params);
-                }
-
-                if (params.intercept) {
-                  this.config.intercept = params.intercept;
-                }
-                // params参数也带给拦截器
-                mergeConfig.params = params;
-                // 合并内外部参数
-                mergeConfig = uni.$u.deepMerge(this.config, mergeConfig);
-                // 判断用户是否定义了拦截器
-                if (!(typeof uni.$u.routeIntercept === 'function')) {_context.next = 14;break;}_context.next = 10;return (
-
-                  new Promise(function (resolve, reject) {
-                    uni.$u.routeIntercept(mergeConfig, resolve);
-                  }));case 10:isNext = _context.sent;
-                // 如果isNext为true，则执行路由跳转
-                isNext && this.openPage(mergeConfig);_context.next = 15;break;case 14:
-
-                this.openPage(mergeConfig);case 15:case "end":return _context.stop();}}}, _callee, this);}));function route() {return _route.apply(this, arguments);}return route;}()
-
-
-
-    // 执行路由跳转
-  }, { key: "openPage", value: function openPage(config) {
-      // 解构参数
-      var
-      url =
-
-
-
-
-      config.url,type = config.type,delta = config.delta,animationType = config.animationType,animationDuration = config.animationDuration;
-      if (config.type == 'navigateTo' || config.type == 'to') {
-        uni.navigateTo({
-          url: url,
-          animationType: animationType,
-          animationDuration: animationDuration });
-
-      }
-      if (config.type == 'redirectTo' || config.type == 'redirect') {
-        uni.redirectTo({
-          url: url });
-
-      }
-      if (config.type == 'switchTab' || config.type == 'tab') {
-        uni.switchTab({
-          url: url });
-
-      }
-      if (config.type == 'reLaunch' || config.type == 'launch') {
-        uni.reLaunch({
-          url: url });
-
-      }
-      if (config.type == 'navigateBack' || config.type == 'back') {
-        uni.navigateBack({
-          delta: delta });
-
-      }
-    } }]);return Router;}();var _default =
-
-
-new Router().route;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-
-/***/ 203:
-/*!*************************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/util/emitter.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /**
-                                                                                                      * 递归使用 call 方式this指向
-                                                                                                      * @param componentName // 需要找的组件的名称
-                                                                                                      * @param eventName // 事件名称
-                                                                                                      * @param params // 需要传递的参数
-                                                                                                      */
-function _broadcast(componentName, eventName, params) {
-  // 循环子节点找到名称一样的子节点 否则 递归 当前子节点
-  this.$children.map(function (child) {
-    if (componentName === child.$options.name) {
-      child.$emit.apply(child, [eventName].concat(params));
-    } else {
-      _broadcast.apply(child, [componentName, eventName].concat(params));
-    }
-  });
-}var _default =
-{
-  methods: {
-    /**
-              * 派发 (向上查找) (一个)
-              * @param componentName // 需要找的组件的名称
-              * @param eventName // 事件名称
-              * @param params // 需要传递的参数
-              */
-    dispatch: function dispatch(componentName, eventName, params) {
-      var parent = this.$parent || this.$root; //$parent 找到最近的父节点 $root 根节点
-      var name = parent.$options.name; // 获取当前组件实例的name
-      // 如果当前有节点 && 当前没名称 且 当前名称等于需要传进来的名称的时候就去查找当前的节点
-      // 循环出当前名称的一样的组件实例
-      while (parent && (!name || name !== componentName)) {
-        parent = parent.$parent;
-        if (parent) {
-          name = parent.$options.name;
-        }
-      }
-      // 有节点表示当前找到了name一样的实例
-      if (parent) {
-        parent.$emit.apply(parent, [eventName].concat(params));
-      }
-    },
-    /**
-        * 广播 (向下查找) (广播多个)
-        * @param componentName // 需要找的组件的名称
-        * @param eventName // 事件名称
-        * @param params // 需要传递的参数
-        */
-    broadcast: function broadcast(componentName, eventName, params) {
-      _broadcast.call(this, componentName, eventName, params);
-    } } };exports.default = _default;
-
-/***/ }),
-
-/***/ 204:
-/*!*********************************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/util/async-validator.js ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-/* eslint no-console:0 */
-var formatRegExp = /%[sdj%]/g;
-var warning = function warning() {}; // don't print warning message when in production env or node runtime
-
-if (typeof process !== 'undefined' && Object({"VUE_APP_NAME":"businessCard","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}) && "development" !== 'production' && typeof window !==
-'undefined' && typeof document !== 'undefined') {
-  warning = function warning(type, errors) {
-    if (typeof console !== 'undefined' && console.warn) {
-      if (errors.every(function (e) {
-        return typeof e === 'string';
-      })) {
-        console.warn(type, errors);
-      }
-    }
-  };
-}
-
-function convertFieldsError(errors) {
-  if (!errors || !errors.length) return null;
-  var fields = {};
-  errors.forEach(function (error) {
-    var field = error.field;
-    fields[field] = fields[field] || [];
-    fields[field].push(error);
-  });
-  return fields;
-}
-
-function format() {
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  var i = 1;
-  var f = args[0];
-  var len = args.length;
-
-  if (typeof f === 'function') {
-    return f.apply(null, args.slice(1));
-  }
-
-  if (typeof f === 'string') {
-    var str = String(f).replace(formatRegExp, function (x) {
-      if (x === '%%') {
-        return '%';
-      }
-
-      if (i >= len) {
-        return x;
-      }
-
-      switch (x) {
-        case '%s':
-          return String(args[i++]);
-
-        case '%d':
-          return Number(args[i++]);
-
-        case '%j':
-          try {
-            return JSON.stringify(args[i++]);
-          } catch (_) {
-            return '[Circular]';
-          }
-
-          break;
-
-        default:
-          return x;}
-
-    });
-
-    for (var arg = args[i]; i < len; arg = args[++i]) {
-      str += " " + arg;
-    }
-
-    return str;
-  }
-
-  return f;
-}
-
-function isNativeStringType(type) {
-  return type === 'string' || type === 'url' || type === 'hex' || type === 'email' || type === 'pattern';
-}
-
-function isEmptyValue(value, type) {
-  if (value === undefined || value === null) {
-    return true;
-  }
-
-  if (type === 'array' && Array.isArray(value) && !value.length) {
-    return true;
-  }
-
-  if (isNativeStringType(type) && typeof value === 'string' && !value) {
-    return true;
-  }
-
-  return false;
-}
-
-function asyncParallelArray(arr, func, callback) {
-  var results = [];
-  var total = 0;
-  var arrLength = arr.length;
-
-  function count(errors) {
-    results.push.apply(results, errors);
-    total++;
-
-    if (total === arrLength) {
-      callback(results);
-    }
-  }
-
-  arr.forEach(function (a) {
-    func(a, count);
-  });
-}
-
-function asyncSerialArray(arr, func, callback) {
-  var index = 0;
-  var arrLength = arr.length;
-
-  function next(errors) {
-    if (errors && errors.length) {
-      callback(errors);
-      return;
-    }
-
-    var original = index;
-    index = index + 1;
-
-    if (original < arrLength) {
-      func(arr[original], next);
-    } else {
-      callback([]);
-    }
-  }
-
-  next([]);
-}
-
-function flattenObjArr(objArr) {
-  var ret = [];
-  Object.keys(objArr).forEach(function (k) {
-    ret.push.apply(ret, objArr[k]);
-  });
-  return ret;
-}
-
-function asyncMap(objArr, option, func, callback) {
-  if (option.first) {
-    var _pending = new Promise(function (resolve, reject) {
-      var next = function next(errors) {
-        callback(errors);
-        return errors.length ? reject({
-          errors: errors,
-          fields: convertFieldsError(errors) }) :
-        resolve();
-      };
-
-      var flattenArr = flattenObjArr(objArr);
-      asyncSerialArray(flattenArr, func, next);
-    });
-
-    _pending["catch"](function (e) {
-      return e;
-    });
-
-    return _pending;
-  }
-
-  var firstFields = option.firstFields || [];
-
-  if (firstFields === true) {
-    firstFields = Object.keys(objArr);
-  }
-
-  var objArrKeys = Object.keys(objArr);
-  var objArrLength = objArrKeys.length;
-  var total = 0;
-  var results = [];
-  var pending = new Promise(function (resolve, reject) {
-    var next = function next(errors) {
-      results.push.apply(results, errors);
-      total++;
-
-      if (total === objArrLength) {
-        callback(results);
-        return results.length ? reject({
-          errors: results,
-          fields: convertFieldsError(results) }) :
-        resolve();
-      }
-    };
-
-    if (!objArrKeys.length) {
-      callback(results);
-      resolve();
-    }
-
-    objArrKeys.forEach(function (key) {
-      var arr = objArr[key];
-
-      if (firstFields.indexOf(key) !== -1) {
-        asyncSerialArray(arr, func, next);
-      } else {
-        asyncParallelArray(arr, func, next);
-      }
-    });
-  });
-  pending["catch"](function (e) {
-    return e;
-  });
-  return pending;
-}
-
-function complementError(rule) {
-  return function (oe) {
-    if (oe && oe.message) {
-      oe.field = oe.field || rule.fullField;
-      return oe;
-    }
-
-    return {
-      message: typeof oe === 'function' ? oe() : oe,
-      field: oe.field || rule.fullField };
-
-  };
-}
-
-function deepMerge(target, source) {
-  if (source) {
-    for (var s in source) {
-      if (source.hasOwnProperty(s)) {
-        var value = source[s];
-
-        if (typeof value === 'object' && typeof target[s] === 'object') {
-          target[s] = _extends({}, target[s], {}, value);
-        } else {
-          target[s] = value;
-        }
-      }
-    }
-  }
-
-  return target;
-}
-
-/**
-   *  Rule for validating required fields.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function required(rule, value, source, errors, options, type) {
-  if (rule.required && (!source.hasOwnProperty(rule.field) || isEmptyValue(value, type || rule.type))) {
-    errors.push(format(options.messages.required, rule.fullField));
-  }
-}
-
-/**
-   *  Rule for validating whitespace.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function whitespace(rule, value, source, errors, options) {
-  if (/^\s+$/.test(value) || value === '') {
-    errors.push(format(options.messages.whitespace, rule.fullField));
-  }
-}
-
-/* eslint max-len:0 */
-
-var pattern = {
-  // http://emailregex.com/
-  email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  url: new RegExp(
-  "^(?!mailto:)(?:(?:http|https|ftp)://|//)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$",
-  'i'),
-  hex: /^#?([a-f0-9]{6}|[a-f0-9]{3})$/i };
-
-var types = {
-  integer: function integer(value) {
-    return types.number(value) && parseInt(value, 10) === value;
-  },
-  "float": function _float(value) {
-    return types.number(value) && !types.integer(value);
-  },
-  array: function array(value) {
-    return Array.isArray(value);
-  },
-  regexp: function regexp(value) {
-    if (value instanceof RegExp) {
-      return true;
-    }
-
-    try {
-      return !!new RegExp(value);
-    } catch (e) {
-      return false;
-    }
-  },
-  date: function date(value) {
-    return typeof value.getTime === 'function' && typeof value.getMonth === 'function' && typeof value.getYear ===
-    'function';
-  },
-  number: function number(value) {
-    if (isNaN(value)) {
-      return false;
-    }
-
-    // 修改源码，将字符串数值先转为数值
-    return typeof +value === 'number';
-  },
-  object: function object(value) {
-    return typeof value === 'object' && !types.array(value);
-  },
-  method: function method(value) {
-    return typeof value === 'function';
-  },
-  email: function email(value) {
-    return typeof value === 'string' && !!value.match(pattern.email) && value.length < 255;
-  },
-  url: function url(value) {
-    return typeof value === 'string' && !!value.match(pattern.url);
-  },
-  hex: function hex(value) {
-    return typeof value === 'string' && !!value.match(pattern.hex);
-  } };
-
-/**
-        *  Rule for validating the type of a value.
-        *
-        *  @param rule The validation rule.
-        *  @param value The value of the field on the source object.
-        *  @param source The source object being validated.
-        *  @param errors An array of errors that this rule may add
-        *  validation errors to.
-        *  @param options The validation options.
-        *  @param options.messages The validation messages.
-        */
-
-function type(rule, value, source, errors, options) {
-  if (rule.required && value === undefined) {
-    required(rule, value, source, errors, options);
-    return;
-  }
-
-  var custom = ['integer', 'float', 'array', 'regexp', 'object', 'method', 'email', 'number', 'date', 'url', 'hex'];
-  var ruleType = rule.type;
-
-  if (custom.indexOf(ruleType) > -1) {
-    if (!types[ruleType](value)) {
-      errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
-    } // straight typeof check
-
-  } else if (ruleType && typeof value !== rule.type) {
-    errors.push(format(options.messages.types[ruleType], rule.fullField, rule.type));
-  }
-}
-
-/**
-   *  Rule for validating minimum and maximum allowed values.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function range(rule, value, source, errors, options) {
-  var len = typeof rule.len === 'number';
-  var min = typeof rule.min === 'number';
-  var max = typeof rule.max === 'number'; // 正则匹配码点范围从U+010000一直到U+10FFFF的文字（补充平面Supplementary Plane）
-
-  var spRegexp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
-  var val = value;
-  var key = null;
-  var num = typeof value === 'number';
-  var str = typeof value === 'string';
-  var arr = Array.isArray(value);
-
-  if (num) {
-    key = 'number';
-  } else if (str) {
-    key = 'string';
-  } else if (arr) {
-    key = 'array';
-  } // if the value is not of a supported type for range validation
-  // the validation rule rule should use the
-  // type property to also test for a particular type
-
-
-  if (!key) {
-    return false;
-  }
-
-  if (arr) {
-    val = value.length;
-  }
-
-  if (str) {
-    // 处理码点大于U+010000的文字length属性不准确的bug，如"𠮷𠮷𠮷".lenght !== 3
-    val = value.replace(spRegexp, '_').length;
-  }
-
-  if (len) {
-    if (val !== rule.len) {
-      errors.push(format(options.messages[key].len, rule.fullField, rule.len));
-    }
-  } else if (min && !max && val < rule.min) {
-    errors.push(format(options.messages[key].min, rule.fullField, rule.min));
-  } else if (max && !min && val > rule.max) {
-    errors.push(format(options.messages[key].max, rule.fullField, rule.max));
-  } else if (min && max && (val < rule.min || val > rule.max)) {
-    errors.push(format(options.messages[key].range, rule.fullField, rule.min, rule.max));
-  }
-}
-
-var ENUM = 'enum';
-/**
-                    *  Rule for validating a value exists in an enumerable list.
-                    *
-                    *  @param rule The validation rule.
-                    *  @param value The value of the field on the source object.
-                    *  @param source The source object being validated.
-                    *  @param errors An array of errors that this rule may add
-                    *  validation errors to.
-                    *  @param options The validation options.
-                    *  @param options.messages The validation messages.
-                    */
-
-function enumerable(rule, value, source, errors, options) {
-  rule[ENUM] = Array.isArray(rule[ENUM]) ? rule[ENUM] : [];
-
-  if (rule[ENUM].indexOf(value) === -1) {
-    errors.push(format(options.messages[ENUM], rule.fullField, rule[ENUM].join(', ')));
-  }
-}
-
-/**
-   *  Rule for validating a regular expression pattern.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param source The source object being validated.
-   *  @param errors An array of errors that this rule may add
-   *  validation errors to.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function pattern$1(rule, value, source, errors, options) {
-  if (rule.pattern) {
-    if (rule.pattern instanceof RegExp) {
-      // if a RegExp instance is passed, reset `lastIndex` in case its `global`
-      // flag is accidentally set to `true`, which in a validation scenario
-      // is not necessary and the result might be misleading
-      rule.pattern.lastIndex = 0;
-
-      if (!rule.pattern.test(value)) {
-        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
-      }
-    } else if (typeof rule.pattern === 'string') {
-      var _pattern = new RegExp(rule.pattern);
-
-      if (!_pattern.test(value)) {
-        errors.push(format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
-      }
-    }
-  }
-}
-
-var rules = {
-  required: required,
-  whitespace: whitespace,
-  type: type,
-  range: range,
-  "enum": enumerable,
-  pattern: pattern$1 };
-
-
-/**
-                         *  Performs validation for string types.
-                         *
-                         *  @param rule The validation rule.
-                         *  @param value The value of the field on the source object.
-                         *  @param callback The callback function.
-                         *  @param source The source object being validated.
-                         *  @param options The validation options.
-                         *  @param options.messages The validation messages.
-                         */
-
-function string(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, 'string') && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options, 'string');
-
-    if (!isEmptyValue(value, 'string')) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-      rules.pattern(rule, value, source, errors, options);
-
-      if (rule.whitespace === true) {
-        rules.whitespace(rule, value, source, errors, options);
-      }
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a function.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function method(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a number.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function number(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (value === '') {
-      value = undefined;
-    }
-
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a boolean.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function _boolean(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates the regular expression type.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function regexp(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (!isEmptyValue(value)) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a number is an integer.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function integer(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a number is a floating point number.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function floatFn(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates an array.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function array(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, 'array') && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options, 'array');
-
-    if (!isEmptyValue(value, 'array')) {
-      rules.type(rule, value, source, errors, options);
-      rules.range(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates an object.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function object(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-var ENUM$1 = 'enum';
-/**
-                      *  Validates an enumerable list.
-                      *
-                      *  @param rule The validation rule.
-                      *  @param value The value of the field on the source object.
-                      *  @param callback The callback function.
-                      *  @param source The source object being validated.
-                      *  @param options The validation options.
-                      *  @param options.messages The validation messages.
-                      */
-
-function enumerable$1(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (value !== undefined) {
-      rules[ENUM$1](rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Validates a regular expression pattern.
-   *
-   *  Performs validation when a rule only contains
-   *  a pattern property but is not declared as a string type.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function pattern$2(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, 'string') && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (!isEmptyValue(value, 'string')) {
-      rules.pattern(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-function date(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-
-    if (!isEmptyValue(value)) {
-      var dateObject;
-
-      if (typeof value === 'number') {
-        dateObject = new Date(value);
-      } else {
-        dateObject = value;
-      }
-
-      rules.type(rule, dateObject, source, errors, options);
-
-      if (dateObject) {
-        rules.range(rule, dateObject.getTime(), source, errors, options);
-      }
-    }
-  }
-
-  callback(errors);
-}
-
-function required$1(rule, value, callback, source, options) {
-  var errors = [];
-  var type = Array.isArray(value) ? 'array' : typeof value;
-  rules.required(rule, value, source, errors, options, type);
-  callback(errors);
-}
-
-function type$1(rule, value, callback, source, options) {
-  var ruleType = rule.type;
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value, ruleType) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options, ruleType);
-
-    if (!isEmptyValue(value, ruleType)) {
-      rules.type(rule, value, source, errors, options);
-    }
-  }
-
-  callback(errors);
-}
-
-/**
-   *  Performs validation for any type.
-   *
-   *  @param rule The validation rule.
-   *  @param value The value of the field on the source object.
-   *  @param callback The callback function.
-   *  @param source The source object being validated.
-   *  @param options The validation options.
-   *  @param options.messages The validation messages.
-   */
-
-function any(rule, value, callback, source, options) {
-  var errors = [];
-  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-
-  if (validate) {
-    if (isEmptyValue(value) && !rule.required) {
-      return callback();
-    }
-
-    rules.required(rule, value, source, errors, options);
-  }
-
-  callback(errors);
-}
-
-var validators = {
-  string: string,
-  method: method,
-  number: number,
-  "boolean": _boolean,
-  regexp: regexp,
-  integer: integer,
-  "float": floatFn,
-  array: array,
-  object: object,
-  "enum": enumerable$1,
-  pattern: pattern$2,
-  date: date,
-  url: type$1,
-  hex: type$1,
-  email: type$1,
-  required: required$1,
-  any: any };
-
-
-function newMessages() {
-  return {
-    "default": 'Validation error on field %s',
-    required: '%s is required',
-    "enum": '%s must be one of %s',
-    whitespace: '%s cannot be empty',
-    date: {
-      format: '%s date %s is invalid for format %s',
-      parse: '%s date could not be parsed, %s is invalid ',
-      invalid: '%s date %s is invalid' },
-
-    types: {
-      string: '%s is not a %s',
-      method: '%s is not a %s (function)',
-      array: '%s is not an %s',
-      object: '%s is not an %s',
-      number: '%s is not a %s',
-      date: '%s is not a %s',
-      "boolean": '%s is not a %s',
-      integer: '%s is not an %s',
-      "float": '%s is not a %s',
-      regexp: '%s is not a valid %s',
-      email: '%s is not a valid %s',
-      url: '%s is not a valid %s',
-      hex: '%s is not a valid %s' },
-
-    string: {
-      len: '%s must be exactly %s characters',
-      min: '%s must be at least %s characters',
-      max: '%s cannot be longer than %s characters',
-      range: '%s must be between %s and %s characters' },
-
-    number: {
-      len: '%s must equal %s',
-      min: '%s cannot be less than %s',
-      max: '%s cannot be greater than %s',
-      range: '%s must be between %s and %s' },
-
-    array: {
-      len: '%s must be exactly %s in length',
-      min: '%s cannot be less than %s in length',
-      max: '%s cannot be greater than %s in length',
-      range: '%s must be between %s and %s in length' },
-
-    pattern: {
-      mismatch: '%s value %s does not match pattern %s' },
-
-    clone: function clone() {
-      var cloned = JSON.parse(JSON.stringify(this));
-      cloned.clone = this.clone;
-      return cloned;
-    } };
-
-}
-var messages = newMessages();
-
-/**
-                               *  Encapsulates a validation schema.
-                               *
-                               *  @param descriptor An object declaring validation rules
-                               *  for this schema.
-                               */
-
-function Schema(descriptor) {
-  this.rules = null;
-  this._messages = messages;
-  this.define(descriptor);
-}
-
-Schema.prototype = {
-  messages: function messages(_messages) {
-    if (_messages) {
-      this._messages = deepMerge(newMessages(), _messages);
-    }
-
-    return this._messages;
-  },
-  define: function define(rules) {
-    if (!rules) {
-      throw new Error('Cannot configure a schema with no rules');
-    }
-
-    if (typeof rules !== 'object' || Array.isArray(rules)) {
-      throw new Error('Rules must be an object');
-    }
-
-    this.rules = {};
-    var z;
-    var item;
-
-    for (z in rules) {
-      if (rules.hasOwnProperty(z)) {
-        item = rules[z];
-        this.rules[z] = Array.isArray(item) ? item : [item];
-      }
-    }
-  },
-  validate: function validate(source_, o, oc) {
-    var _this = this;
-
-    if (o === void 0) {
-      o = {};
-    }
-
-    if (oc === void 0) {
-      oc = function oc() {};
-    }
-
-    var source = source_;
-    var options = o;
-    var callback = oc;
-
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-
-    if (!this.rules || Object.keys(this.rules).length === 0) {
-      if (callback) {
-        callback();
-      }
-
-      return Promise.resolve();
-    }
-
-    function complete(results) {
-      var i;
-      var errors = [];
-      var fields = {};
-
-      function add(e) {
-        if (Array.isArray(e)) {
-          var _errors;
-
-          errors = (_errors = errors).concat.apply(_errors, e);
-        } else {
-          errors.push(e);
-        }
-      }
-
-      for (i = 0; i < results.length; i++) {
-        add(results[i]);
-      }
-
-      if (!errors.length) {
-        errors = null;
-        fields = null;
-      } else {
-        fields = convertFieldsError(errors);
-      }
-
-      callback(errors, fields);
-    }
-
-    if (options.messages) {
-      var messages$1 = this.messages();
-
-      if (messages$1 === messages) {
-        messages$1 = newMessages();
-      }
-
-      deepMerge(messages$1, options.messages);
-      options.messages = messages$1;
-    } else {
-      options.messages = this.messages();
-    }
-
-    var arr;
-    var value;
-    var series = {};
-    var keys = options.keys || Object.keys(this.rules);
-    keys.forEach(function (z) {
-      arr = _this.rules[z];
-      value = source[z];
-      arr.forEach(function (r) {
-        var rule = r;
-
-        if (typeof rule.transform === 'function') {
-          if (source === source_) {
-            source = _extends({}, source);
-          }
-
-          value = source[z] = rule.transform(value);
-        }
-
-        if (typeof rule === 'function') {
-          rule = {
-            validator: rule };
-
-        } else {
-          rule = _extends({}, rule);
-        }
-
-        rule.validator = _this.getValidationMethod(rule);
-        rule.field = z;
-        rule.fullField = rule.fullField || z;
-        rule.type = _this.getType(rule);
-
-        if (!rule.validator) {
-          return;
-        }
-
-        series[z] = series[z] || [];
-        series[z].push({
-          rule: rule,
-          value: value,
-          source: source,
-          field: z });
-
-      });
-    });
-    var errorFields = {};
-    return asyncMap(series, options, function (data, doIt) {
-      var rule = data.rule;
-      var deep = (rule.type === 'object' || rule.type === 'array') && (typeof rule.fields === 'object' || typeof rule.defaultField ===
-      'object');
-      deep = deep && (rule.required || !rule.required && data.value);
-      rule.field = data.field;
-
-      function addFullfield(key, schema) {
-        return _extends({}, schema, {
-          fullField: rule.fullField + "." + key });
-
-      }
-
-      function cb(e) {
-        if (e === void 0) {
-          e = [];
-        }
-
-        var errors = e;
-
-        if (!Array.isArray(errors)) {
-          errors = [errors];
-        }
-
-        if (!options.suppressWarning && errors.length) {
-          Schema.warning('async-validator:', errors);
-        }
-
-        if (errors.length && rule.message) {
-          errors = [].concat(rule.message);
-        }
-
-        errors = errors.map(complementError(rule));
-
-        if (options.first && errors.length) {
-          errorFields[rule.field] = 1;
-          return doIt(errors);
-        }
-
-        if (!deep) {
-          doIt(errors);
-        } else {
-          // if rule is required but the target object
-          // does not exist fail at the rule level and don't
-          // go deeper
-          if (rule.required && !data.value) {
-            if (rule.message) {
-              errors = [].concat(rule.message).map(complementError(rule));
-            } else if (options.error) {
-              errors = [options.error(rule, format(options.messages.required, rule.field))];
-            } else {
-              errors = [];
-            }
-
-            return doIt(errors);
-          }
-
-          var fieldsSchema = {};
-
-          if (rule.defaultField) {
-            for (var k in data.value) {
-              if (data.value.hasOwnProperty(k)) {
-                fieldsSchema[k] = rule.defaultField;
-              }
-            }
-          }
-
-          fieldsSchema = _extends({}, fieldsSchema, {}, data.rule.fields);
-
-          for (var f in fieldsSchema) {
-            if (fieldsSchema.hasOwnProperty(f)) {
-              var fieldSchema = Array.isArray(fieldsSchema[f]) ? fieldsSchema[f] : [fieldsSchema[f]];
-              fieldsSchema[f] = fieldSchema.map(addFullfield.bind(null, f));
-            }
-          }
-
-          var schema = new Schema(fieldsSchema);
-          schema.messages(options.messages);
-
-          if (data.rule.options) {
-            data.rule.options.messages = options.messages;
-            data.rule.options.error = options.error;
-          }
-
-          schema.validate(data.value, data.rule.options || options, function (errs) {
-            var finalErrors = [];
-
-            if (errors && errors.length) {
-              finalErrors.push.apply(finalErrors, errors);
-            }
-
-            if (errs && errs.length) {
-              finalErrors.push.apply(finalErrors, errs);
-            }
-
-            doIt(finalErrors.length ? finalErrors : null);
-          });
-        }
-      }
-
-      var res;
-
-      if (rule.asyncValidator) {
-        res = rule.asyncValidator(rule, data.value, cb, data.source, options);
-      } else if (rule.validator) {
-        res = rule.validator(rule, data.value, cb, data.source, options);
-
-        if (res === true) {
-          cb();
-        } else if (res === false) {
-          cb(rule.message || rule.field + " fails");
-        } else if (res instanceof Array) {
-          cb(res);
-        } else if (res instanceof Error) {
-          cb(res.message);
-        }
-      }
-
-      if (res && res.then) {
-        res.then(function () {
-          return cb();
-        }, function (e) {
-          return cb(e);
-        });
-      }
-    }, function (results) {
-      complete(results);
-    });
-  },
-  getType: function getType(rule) {
-    if (rule.type === undefined && rule.pattern instanceof RegExp) {
-      rule.type = 'pattern';
-    }
-
-    if (typeof rule.validator !== 'function' && rule.type && !validators.hasOwnProperty(rule.type)) {
-      throw new Error(format('Unknown rule type %s', rule.type));
-    }
-
-    return rule.type || 'string';
-  },
-  getValidationMethod: function getValidationMethod(rule) {
-    if (typeof rule.validator === 'function') {
-      return rule.validator;
-    }
-
-    var keys = Object.keys(rule);
-    var messageIndex = keys.indexOf('message');
-
-    if (messageIndex !== -1) {
-      keys.splice(messageIndex, 1);
-    }
-
-    if (keys.length === 1 && keys[0] === 'required') {
-      return validators.required;
-    }
-
-    return validators[this.getType(rule)] || false;
-  } };
-
-
-Schema.register = function register(type, validator) {
-  if (typeof validator !== 'function') {
-    throw new Error('Cannot register a validator by type, validator is not a function');
-  }
-
-  validators[type] = validator;
-};
-
-Schema.warning = warning;
-Schema.messages = messages;var _default =
-
-Schema;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/node-libs-browser/mock/process.js */ 205)))
-
-/***/ }),
-
-/***/ 205:
-/*!********************************************************!*\
-  !*** ./node_modules/node-libs-browser/mock/process.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports.nextTick = function nextTick(fn) {
-    var args = Array.prototype.slice.call(arguments);
-    args.shift();
-    setTimeout(function () {
-        fn.apply(null, args);
-    }, 0);
-};
-
-exports.platform = exports.arch = 
-exports.execPath = exports.title = 'browser';
-exports.pid = 1;
-exports.browser = true;
-exports.env = {};
-exports.argv = [];
-
-exports.binding = function (name) {
-	throw new Error('No such module. (Possibly not yet loaded)')
-};
-
-(function () {
-    var cwd = '/';
-    var path;
-    exports.cwd = function () { return cwd };
-    exports.chdir = function (dir) {
-        if (!path) path = __webpack_require__(/*! path */ 206);
-        cwd = path.resolve(dir, cwd);
-    };
-})();
-
-exports.exit = exports.kill = 
-exports.umask = exports.dlopen = 
-exports.uptime = exports.memoryUsage = 
-exports.uvCounters = function() {};
-exports.features = {};
-
-
-/***/ }),
-
-/***/ 206:
-/*!***********************************************!*\
-  !*** ./node_modules/path-browserify/index.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
-// backported and transplited with Babel, with backwards-compat fixes
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  if (path.length === 0) return '.';
-  var code = path.charCodeAt(0);
-  var hasRoot = code === 47 /*/*/;
-  var end = -1;
-  var matchedSlash = true;
-  for (var i = path.length - 1; i >= 1; --i) {
-    code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        if (!matchedSlash) {
-          end = i;
-          break;
-        }
-      } else {
-      // We saw the first non-path separator
-      matchedSlash = false;
-    }
-  }
-
-  if (end === -1) return hasRoot ? '/' : '.';
-  if (hasRoot && end === 1) {
-    // return '//';
-    // Backwards-compat fix:
-    return '/';
-  }
-  return path.slice(0, end);
-};
-
-function basename(path) {
-  if (typeof path !== 'string') path = path + '';
-
-  var start = 0;
-  var end = -1;
-  var matchedSlash = true;
-  var i;
-
-  for (i = path.length - 1; i >= 0; --i) {
-    if (path.charCodeAt(i) === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          start = i + 1;
-          break;
-        }
-      } else if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // path component
-      matchedSlash = false;
-      end = i + 1;
-    }
-  }
-
-  if (end === -1) return '';
-  return path.slice(start, end);
-}
-
-// Uses a mixed approach for backwards-compatibility, as ext behavior changed
-// in new Node.js versions, so only basename() above is backported here
-exports.basename = function (path, ext) {
-  var f = basename(path);
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-exports.extname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  var startDot = -1;
-  var startPart = 0;
-  var end = -1;
-  var matchedSlash = true;
-  // Track the state of characters (if any) we see before our first dot and
-  // after any path separator we find
-  var preDotState = 0;
-  for (var i = path.length - 1; i >= 0; --i) {
-    var code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          startPart = i + 1;
-          break;
-        }
-        continue;
-      }
-    if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // extension
-      matchedSlash = false;
-      end = i + 1;
-    }
-    if (code === 46 /*.*/) {
-        // If this is our first dot, mark it as the start of our extension
-        if (startDot === -1)
-          startDot = i;
-        else if (preDotState !== 1)
-          preDotState = 1;
-    } else if (startDot !== -1) {
-      // We saw a non-dot and non-path separator before our dot, so we should
-      // have a good chance at having a non-empty extension
-      preDotState = -1;
-    }
-  }
-
-  if (startDot === -1 || end === -1 ||
-      // We saw a non-dot character immediately before the dot
-      preDotState === 0 ||
-      // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-    return '';
-  }
-  return path.slice(startDot, end);
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 205)))
-
-/***/ }),
-
-/***/ 21:
-/*!**********************************************************!*\
-  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! regenerator-runtime */ 22);
-
-/***/ }),
-
-/***/ 22:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -15304,7 +10659,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 23);
+module.exports = __webpack_require__(/*! ./runtime */ 21);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -15321,7 +10676,73 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 23:
+/***/ 205:
+/*!*************************************************************!*\
+  !*** D:/project/businessCard/components/uni-popup/popup.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 206));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+// 定义 type 类型:弹出类型：top/bottom/center
+var config = {
+  // 顶部弹出
+  top: 'top',
+  // 底部弹出
+  bottom: 'bottom',
+  // 居中弹出
+  center: 'center',
+  // 消息提示
+  message: 'top',
+  // 对话框
+  dialog: 'center',
+  // 分享
+  share: 'bottom' };var _default =
+
+
+{
+  data: function data() {
+    return {
+      config: config };
+
+  },
+  mixins: [_message.default] };exports.default = _default;
+
+/***/ }),
+
+/***/ 206:
+/*!***************************************************************!*\
+  !*** D:/project/businessCard/components/uni-popup/message.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  created: function created() {
+    if (this.type === 'message') {
+      // 不显示遮罩
+      this.maskShow = false;
+      // 获取子组件对象
+      this.childrenMsg = null;
+    }
+  },
+  methods: {
+    customOpen: function customOpen() {
+      if (this.childrenMsg) {
+        this.childrenMsg.open();
+      }
+    },
+    customClose: function customClose() {
+      if (this.childrenMsg) {
+        this.childrenMsg.close();
+      }
+    } } };exports.default = _default;
+
+/***/ }),
+
+/***/ 21:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -16053,73 +11474,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 235:
-/*!*************************************************************!*\
-  !*** D:/project/businessCard/components/uni-popup/popup.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 236));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-// 定义 type 类型:弹出类型：top/bottom/center
-var config = {
-  // 顶部弹出
-  top: 'top',
-  // 底部弹出
-  bottom: 'bottom',
-  // 居中弹出
-  center: 'center',
-  // 消息提示
-  message: 'top',
-  // 对话框
-  dialog: 'center',
-  // 分享
-  share: 'bottom' };var _default =
-
-
-{
-  data: function data() {
-    return {
-      config: config };
-
-  },
-  mixins: [_message.default] };exports.default = _default;
-
-/***/ }),
-
-/***/ 236:
-/*!***************************************************************!*\
-  !*** D:/project/businessCard/components/uni-popup/message.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  created: function created() {
-    if (this.type === 'message') {
-      // 不显示遮罩
-      this.maskShow = false;
-      // 获取子组件对象
-      this.childrenMsg = null;
-    }
-  },
-  methods: {
-    customOpen: function customOpen() {
-      if (this.childrenMsg) {
-        this.childrenMsg.open();
-      }
-    },
-    customClose: function customClose() {
-      if (this.childrenMsg) {
-        this.childrenMsg.close();
-      }
-    } } };exports.default = _default;
-
-/***/ }),
-
-/***/ 24:
+/***/ 22:
 /*!********************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/timeFormat.js ***!
   \********************************************************************/
@@ -16181,7 +11536,7 @@ timeFormat;exports.default = _default;
 
 /***/ }),
 
-/***/ 25:
+/***/ 23:
 /*!******************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/timeFrom.js ***!
   \******************************************************************/
@@ -16189,7 +11544,7 @@ timeFormat;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _timeFormat = _interopRequireDefault(__webpack_require__(/*! ../../libs/function/timeFormat.js */ 24));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _timeFormat = _interopRequireDefault(__webpack_require__(/*! ../../libs/function/timeFormat.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /**
                                                                                                                                                                                                                                                                                           * 时间戳转为多久之前
@@ -16239,7 +11594,7 @@ timeFrom;exports.default = _default;
 
 /***/ }),
 
-/***/ 26:
+/***/ 24:
 /*!***********************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/colorGradient.js ***!
   \***********************************************************************/
@@ -16383,7 +11738,7 @@ function colorToRgba(color) {var alpha = arguments.length > 1 && arguments[1] !=
 
 /***/ }),
 
-/***/ 27:
+/***/ 25:
 /*!**************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/guid.js ***!
   \**************************************************************/
@@ -16435,7 +11790,7 @@ guid;exports.default = _default;
 
 /***/ }),
 
-/***/ 28:
+/***/ 26:
 /*!***************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/color.js ***!
   \***************************************************************/
@@ -16483,43 +11838,7 @@ color;exports.default = _default;
 
 /***/ }),
 
-/***/ 286:
-/*!**************************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/util/province.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var provinceData = [{ "label": "北京市", "value": "11" }, { "label": "天津市", "value": "12" }, { "label": "河北省", "value": "13" }, { "label": "山西省", "value": "14" }, { "label": "内蒙古自治区", "value": "15" }, { "label": "辽宁省", "value": "21" }, { "label": "吉林省", "value": "22" }, { "label": "黑龙江省", "value": "23" }, { "label": "上海市", "value": "31" }, { "label": "江苏省", "value": "32" }, { "label": "浙江省", "value": "33" }, { "label": "安徽省", "value": "34" }, { "label": "福建省", "value": "35" }, { "label": "江西省", "value": "36" }, { "label": "山东省", "value": "37" }, { "label": "河南省", "value": "41" }, { "label": "湖北省", "value": "42" }, { "label": "湖南省", "value": "43" }, { "label": "广东省", "value": "44" }, { "label": "广西壮族自治区", "value": "45" }, { "label": "海南省", "value": "46" }, { "label": "重庆市", "value": "50" }, { "label": "四川省", "value": "51" }, { "label": "贵州省", "value": "52" }, { "label": "云南省", "value": "53" }, { "label": "西藏自治区", "value": "54" }, { "label": "陕西省", "value": "61" }, { "label": "甘肃省", "value": "62" }, { "label": "青海省", "value": "63" }, { "label": "宁夏回族自治区", "value": "64" }, { "label": "新疆维吾尔自治区", "value": "65" }, { "label": "台湾", "value": "66" }, { "label": "香港", "value": "67" }, { "label": "澳门", "value": "68" }];var _default = provinceData;exports.default = _default;
-
-/***/ }),
-
-/***/ 287:
-/*!**********************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/util/city.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var cityData = [[{ "label": "市辖区", "value": "1101" }], [{ "label": "市辖区", "value": "1201" }], [{ "label": "石家庄市", "value": "1301" }, { "label": "唐山市", "value": "1302" }, { "label": "秦皇岛市", "value": "1303" }, { "label": "邯郸市", "value": "1304" }, { "label": "邢台市", "value": "1305" }, { "label": "保定市", "value": "1306" }, { "label": "张家口市", "value": "1307" }, { "label": "承德市", "value": "1308" }, { "label": "沧州市", "value": "1309" }, { "label": "廊坊市", "value": "1310" }, { "label": "衡水市", "value": "1311" }], [{ "label": "太原市", "value": "1401" }, { "label": "大同市", "value": "1402" }, { "label": "阳泉市", "value": "1403" }, { "label": "长治市", "value": "1404" }, { "label": "晋城市", "value": "1405" }, { "label": "朔州市", "value": "1406" }, { "label": "晋中市", "value": "1407" }, { "label": "运城市", "value": "1408" }, { "label": "忻州市", "value": "1409" }, { "label": "临汾市", "value": "1410" }, { "label": "吕梁市", "value": "1411" }], [{ "label": "呼和浩特市", "value": "1501" }, { "label": "包头市", "value": "1502" }, { "label": "乌海市", "value": "1503" }, { "label": "赤峰市", "value": "1504" }, { "label": "通辽市", "value": "1505" }, { "label": "鄂尔多斯市", "value": "1506" }, { "label": "呼伦贝尔市", "value": "1507" }, { "label": "巴彦淖尔市", "value": "1508" }, { "label": "乌兰察布市", "value": "1509" }, { "label": "兴安盟", "value": "1522" }, { "label": "锡林郭勒盟", "value": "1525" }, { "label": "阿拉善盟", "value": "1529" }], [{ "label": "沈阳市", "value": "2101" }, { "label": "大连市", "value": "2102" }, { "label": "鞍山市", "value": "2103" }, { "label": "抚顺市", "value": "2104" }, { "label": "本溪市", "value": "2105" }, { "label": "丹东市", "value": "2106" }, { "label": "锦州市", "value": "2107" }, { "label": "营口市", "value": "2108" }, { "label": "阜新市", "value": "2109" }, { "label": "辽阳市", "value": "2110" }, { "label": "盘锦市", "value": "2111" }, { "label": "铁岭市", "value": "2112" }, { "label": "朝阳市", "value": "2113" }, { "label": "葫芦岛市", "value": "2114" }], [{ "label": "长春市", "value": "2201" }, { "label": "吉林市", "value": "2202" }, { "label": "四平市", "value": "2203" }, { "label": "辽源市", "value": "2204" }, { "label": "通化市", "value": "2205" }, { "label": "白山市", "value": "2206" }, { "label": "松原市", "value": "2207" }, { "label": "白城市", "value": "2208" }, { "label": "延边朝鲜族自治州", "value": "2224" }], [{ "label": "哈尔滨市", "value": "2301" }, { "label": "齐齐哈尔市", "value": "2302" }, { "label": "鸡西市", "value": "2303" }, { "label": "鹤岗市", "value": "2304" }, { "label": "双鸭山市", "value": "2305" }, { "label": "大庆市", "value": "2306" }, { "label": "伊春市", "value": "2307" }, { "label": "佳木斯市", "value": "2308" }, { "label": "七台河市", "value": "2309" }, { "label": "牡丹江市", "value": "2310" }, { "label": "黑河市", "value": "2311" }, { "label": "绥化市", "value": "2312" }, { "label": "大兴安岭地区", "value": "2327" }], [{ "label": "市辖区", "value": "3101" }], [{ "label": "南京市", "value": "3201" }, { "label": "无锡市", "value": "3202" }, { "label": "徐州市", "value": "3203" }, { "label": "常州市", "value": "3204" }, { "label": "苏州市", "value": "3205" }, { "label": "南通市", "value": "3206" }, { "label": "连云港市", "value": "3207" }, { "label": "淮安市", "value": "3208" }, { "label": "盐城市", "value": "3209" }, { "label": "扬州市", "value": "3210" }, { "label": "镇江市", "value": "3211" }, { "label": "泰州市", "value": "3212" }, { "label": "宿迁市", "value": "3213" }], [{ "label": "杭州市", "value": "3301" }, { "label": "宁波市", "value": "3302" }, { "label": "温州市", "value": "3303" }, { "label": "嘉兴市", "value": "3304" }, { "label": "湖州市", "value": "3305" }, { "label": "绍兴市", "value": "3306" }, { "label": "金华市", "value": "3307" }, { "label": "衢州市", "value": "3308" }, { "label": "舟山市", "value": "3309" }, { "label": "台州市", "value": "3310" }, { "label": "丽水市", "value": "3311" }], [{ "label": "合肥市", "value": "3401" }, { "label": "芜湖市", "value": "3402" }, { "label": "蚌埠市", "value": "3403" }, { "label": "淮南市", "value": "3404" }, { "label": "马鞍山市", "value": "3405" }, { "label": "淮北市", "value": "3406" }, { "label": "铜陵市", "value": "3407" }, { "label": "安庆市", "value": "3408" }, { "label": "黄山市", "value": "3410" }, { "label": "滁州市", "value": "3411" }, { "label": "阜阳市", "value": "3412" }, { "label": "宿州市", "value": "3413" }, { "label": "六安市", "value": "3415" }, { "label": "亳州市", "value": "3416" }, { "label": "池州市", "value": "3417" }, { "label": "宣城市", "value": "3418" }], [{ "label": "福州市", "value": "3501" }, { "label": "厦门市", "value": "3502" }, { "label": "莆田市", "value": "3503" }, { "label": "三明市", "value": "3504" }, { "label": "泉州市", "value": "3505" }, { "label": "漳州市", "value": "3506" }, { "label": "南平市", "value": "3507" }, { "label": "龙岩市", "value": "3508" }, { "label": "宁德市", "value": "3509" }], [{ "label": "南昌市", "value": "3601" }, { "label": "景德镇市", "value": "3602" }, { "label": "萍乡市", "value": "3603" }, { "label": "九江市", "value": "3604" }, { "label": "新余市", "value": "3605" }, { "label": "鹰潭市", "value": "3606" }, { "label": "赣州市", "value": "3607" }, { "label": "吉安市", "value": "3608" }, { "label": "宜春市", "value": "3609" }, { "label": "抚州市", "value": "3610" }, { "label": "上饶市", "value": "3611" }], [{ "label": "济南市", "value": "3701" }, { "label": "青岛市", "value": "3702" }, { "label": "淄博市", "value": "3703" }, { "label": "枣庄市", "value": "3704" }, { "label": "东营市", "value": "3705" }, { "label": "烟台市", "value": "3706" }, { "label": "潍坊市", "value": "3707" }, { "label": "济宁市", "value": "3708" }, { "label": "泰安市", "value": "3709" }, { "label": "威海市", "value": "3710" }, { "label": "日照市", "value": "3711" }, { "label": "莱芜市", "value": "3712" }, { "label": "临沂市", "value": "3713" }, { "label": "德州市", "value": "3714" }, { "label": "聊城市", "value": "3715" }, { "label": "滨州市", "value": "3716" }, { "label": "菏泽市", "value": "3717" }], [{ "label": "郑州市", "value": "4101" }, { "label": "开封市", "value": "4102" }, { "label": "洛阳市", "value": "4103" }, { "label": "平顶山市", "value": "4104" }, { "label": "安阳市", "value": "4105" }, { "label": "鹤壁市", "value": "4106" }, { "label": "新乡市", "value": "4107" }, { "label": "焦作市", "value": "4108" }, { "label": "濮阳市", "value": "4109" }, { "label": "许昌市", "value": "4110" }, { "label": "漯河市", "value": "4111" }, { "label": "三门峡市", "value": "4112" }, { "label": "南阳市", "value": "4113" }, { "label": "商丘市", "value": "4114" }, { "label": "信阳市", "value": "4115" }, { "label": "周口市", "value": "4116" }, { "label": "驻马店市", "value": "4117" }, { "label": "省直辖县级行政区划", "value": "4190" }], [{ "label": "武汉市", "value": "4201" }, { "label": "黄石市", "value": "4202" }, { "label": "十堰市", "value": "4203" }, { "label": "宜昌市", "value": "4205" }, { "label": "襄阳市", "value": "4206" }, { "label": "鄂州市", "value": "4207" }, { "label": "荆门市", "value": "4208" }, { "label": "孝感市", "value": "4209" }, { "label": "荆州市", "value": "4210" }, { "label": "黄冈市", "value": "4211" }, { "label": "咸宁市", "value": "4212" }, { "label": "随州市", "value": "4213" }, { "label": "恩施土家族苗族自治州", "value": "4228" }, { "label": "省直辖县级行政区划", "value": "4290" }], [{ "label": "长沙市", "value": "4301" }, { "label": "株洲市", "value": "4302" }, { "label": "湘潭市", "value": "4303" }, { "label": "衡阳市", "value": "4304" }, { "label": "邵阳市", "value": "4305" }, { "label": "岳阳市", "value": "4306" }, { "label": "常德市", "value": "4307" }, { "label": "张家界市", "value": "4308" }, { "label": "益阳市", "value": "4309" }, { "label": "郴州市", "value": "4310" }, { "label": "永州市", "value": "4311" }, { "label": "怀化市", "value": "4312" }, { "label": "娄底市", "value": "4313" }, { "label": "湘西土家族苗族自治州", "value": "4331" }], [{ "label": "广州市", "value": "4401" }, { "label": "韶关市", "value": "4402" }, { "label": "深圳市", "value": "4403" }, { "label": "珠海市", "value": "4404" }, { "label": "汕头市", "value": "4405" }, { "label": "佛山市", "value": "4406" }, { "label": "江门市", "value": "4407" }, { "label": "湛江市", "value": "4408" }, { "label": "茂名市", "value": "4409" }, { "label": "肇庆市", "value": "4412" }, { "label": "惠州市", "value": "4413" }, { "label": "梅州市", "value": "4414" }, { "label": "汕尾市", "value": "4415" }, { "label": "河源市", "value": "4416" }, { "label": "阳江市", "value": "4417" }, { "label": "清远市", "value": "4418" }, { "label": "东莞市", "value": "4419" }, { "label": "中山市", "value": "4420" }, { "label": "潮州市", "value": "4451" }, { "label": "揭阳市", "value": "4452" }, { "label": "云浮市", "value": "4453" }], [{ "label": "南宁市", "value": "4501" }, { "label": "柳州市", "value": "4502" }, { "label": "桂林市", "value": "4503" }, { "label": "梧州市", "value": "4504" }, { "label": "北海市", "value": "4505" }, { "label": "防城港市", "value": "4506" }, { "label": "钦州市", "value": "4507" }, { "label": "贵港市", "value": "4508" }, { "label": "玉林市", "value": "4509" }, { "label": "百色市", "value": "4510" }, { "label": "贺州市", "value": "4511" }, { "label": "河池市", "value": "4512" }, { "label": "来宾市", "value": "4513" }, { "label": "崇左市", "value": "4514" }], [{ "label": "海口市", "value": "4601" }, { "label": "三亚市", "value": "4602" }, { "label": "三沙市", "value": "4603" }, { "label": "儋州市", "value": "4604" }, { "label": "省直辖县级行政区划", "value": "4690" }], [{ "label": "市辖区", "value": "5001" }, { "label": "县", "value": "5002" }], [{ "label": "成都市", "value": "5101" }, { "label": "自贡市", "value": "5103" }, { "label": "攀枝花市", "value": "5104" }, { "label": "泸州市", "value": "5105" }, { "label": "德阳市", "value": "5106" }, { "label": "绵阳市", "value": "5107" }, { "label": "广元市", "value": "5108" }, { "label": "遂宁市", "value": "5109" }, { "label": "内江市", "value": "5110" }, { "label": "乐山市", "value": "5111" }, { "label": "南充市", "value": "5113" }, { "label": "眉山市", "value": "5114" }, { "label": "宜宾市", "value": "5115" }, { "label": "广安市", "value": "5116" }, { "label": "达州市", "value": "5117" }, { "label": "雅安市", "value": "5118" }, { "label": "巴中市", "value": "5119" }, { "label": "资阳市", "value": "5120" }, { "label": "阿坝藏族羌族自治州", "value": "5132" }, { "label": "甘孜藏族自治州", "value": "5133" }, { "label": "凉山彝族自治州", "value": "5134" }], [{ "label": "贵阳市", "value": "5201" }, { "label": "六盘水市", "value": "5202" }, { "label": "遵义市", "value": "5203" }, { "label": "安顺市", "value": "5204" }, { "label": "毕节市", "value": "5205" }, { "label": "铜仁市", "value": "5206" }, { "label": "黔西南布依族苗族自治州", "value": "5223" }, { "label": "黔东南苗族侗族自治州", "value": "5226" }, { "label": "黔南布依族苗族自治州", "value": "5227" }], [{ "label": "昆明市", "value": "5301" }, { "label": "曲靖市", "value": "5303" }, { "label": "玉溪市", "value": "5304" }, { "label": "保山市", "value": "5305" }, { "label": "昭通市", "value": "5306" }, { "label": "丽江市", "value": "5307" }, { "label": "普洱市", "value": "5308" }, { "label": "临沧市", "value": "5309" }, { "label": "楚雄彝族自治州", "value": "5323" }, { "label": "红河哈尼族彝族自治州", "value": "5325" }, { "label": "文山壮族苗族自治州", "value": "5326" }, { "label": "西双版纳傣族自治州", "value": "5328" }, { "label": "大理白族自治州", "value": "5329" }, { "label": "德宏傣族景颇族自治州", "value": "5331" }, { "label": "怒江傈僳族自治州", "value": "5333" }, { "label": "迪庆藏族自治州", "value": "5334" }], [{ "label": "拉萨市", "value": "5401" }, { "label": "日喀则市", "value": "5402" }, { "label": "昌都市", "value": "5403" }, { "label": "林芝市", "value": "5404" }, { "label": "山南市", "value": "5405" }, { "label": "那曲地区", "value": "5424" }, { "label": "阿里地区", "value": "5425" }], [{ "label": "西安市", "value": "6101" }, { "label": "铜川市", "value": "6102" }, { "label": "宝鸡市", "value": "6103" }, { "label": "咸阳市", "value": "6104" }, { "label": "渭南市", "value": "6105" }, { "label": "延安市", "value": "6106" }, { "label": "汉中市", "value": "6107" }, { "label": "榆林市", "value": "6108" }, { "label": "安康市", "value": "6109" }, { "label": "商洛市", "value": "6110" }], [{ "label": "兰州市", "value": "6201" }, { "label": "嘉峪关市", "value": "6202" }, { "label": "金昌市", "value": "6203" }, { "label": "白银市", "value": "6204" }, { "label": "天水市", "value": "6205" }, { "label": "武威市", "value": "6206" }, { "label": "张掖市", "value": "6207" }, { "label": "平凉市", "value": "6208" }, { "label": "酒泉市", "value": "6209" }, { "label": "庆阳市", "value": "6210" }, { "label": "定西市", "value": "6211" }, { "label": "陇南市", "value": "6212" }, { "label": "临夏回族自治州", "value": "6229" }, { "label": "甘南藏族自治州", "value": "6230" }], [{ "label": "西宁市", "value": "6301" }, { "label": "海东市", "value": "6302" }, { "label": "海北藏族自治州", "value": "6322" }, { "label": "黄南藏族自治州", "value": "6323" }, { "label": "海南藏族自治州", "value": "6325" }, { "label": "果洛藏族自治州", "value": "6326" }, { "label": "玉树藏族自治州", "value": "6327" }, { "label": "海西蒙古族藏族自治州", "value": "6328" }], [{ "label": "银川市", "value": "6401" }, { "label": "石嘴山市", "value": "6402" }, { "label": "吴忠市", "value": "6403" }, { "label": "固原市", "value": "6404" }, { "label": "中卫市", "value": "6405" }], [{ "label": "乌鲁木齐市", "value": "6501" }, { "label": "克拉玛依市", "value": "6502" }, { "label": "吐鲁番市", "value": "6504" }, { "label": "哈密市", "value": "6505" }, { "label": "昌吉回族自治州", "value": "6523" }, { "label": "博尔塔拉蒙古自治州", "value": "6527" }, { "label": "巴音郭楞蒙古自治州", "value": "6528" }, { "label": "阿克苏地区", "value": "6529" }, { "label": "克孜勒苏柯尔克孜自治州", "value": "6530" }, { "label": "喀什地区", "value": "6531" }, { "label": "和田地区", "value": "6532" }, { "label": "伊犁哈萨克自治州", "value": "6540" }, { "label": "塔城地区", "value": "6542" }, { "label": "阿勒泰地区", "value": "6543" }, { "label": "自治区直辖县级行政区划", "value": "6590" }], [{ "label": "台北", "value": "6601" }, { "label": "高雄", "value": "6602" }, { "label": "基隆", "value": "6603" }, { "label": "台中", "value": "6604" }, { "label": "台南", "value": "6605" }, { "label": "新竹", "value": "6606" }, { "label": "嘉义", "value": "6607" }, { "label": "宜兰", "value": "6608" }, { "label": "桃园", "value": "6609" }, { "label": "苗栗", "value": "6610" }, { "label": "彰化", "value": "6611" }, { "label": "南投", "value": "6612" }, { "label": "云林", "value": "6613" }, { "label": "屏东", "value": "6614" }, { "label": "台东", "value": "6615" }, { "label": "花莲", "value": "6616" }, { "label": "澎湖", "value": "6617" }], [{ "label": "香港岛", "value": "6701" }, { "label": "九龙", "value": "6702" }, { "label": "新界", "value": "6703" }], [{ "label": "澳门半岛", "value": "6801" }, { "label": "氹仔岛", "value": "6802" }, { "label": "路环岛", "value": "6803" }, { "label": "路氹城", "value": "6804" }]];var _default = cityData;exports.default = _default;
-
-/***/ }),
-
-/***/ 288:
-/*!**********************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/util/area.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var areaData = [[[{ "label": "东城区", "value": "110101" }, { "label": "西城区", "value": "110102" }, { "label": "朝阳区", "value": "110105" }, { "label": "丰台区", "value": "110106" }, { "label": "石景山区", "value": "110107" }, { "label": "海淀区", "value": "110108" }, { "label": "门头沟区", "value": "110109" }, { "label": "房山区", "value": "110111" }, { "label": "通州区", "value": "110112" }, { "label": "顺义区", "value": "110113" }, { "label": "昌平区", "value": "110114" }, { "label": "大兴区", "value": "110115" }, { "label": "怀柔区", "value": "110116" }, { "label": "平谷区", "value": "110117" }, { "label": "密云区", "value": "110118" }, { "label": "延庆区", "value": "110119" }]], [[{ "label": "和平区", "value": "120101" }, { "label": "河东区", "value": "120102" }, { "label": "河西区", "value": "120103" }, { "label": "南开区", "value": "120104" }, { "label": "河北区", "value": "120105" }, { "label": "红桥区", "value": "120106" }, { "label": "东丽区", "value": "120110" }, { "label": "西青区", "value": "120111" }, { "label": "津南区", "value": "120112" }, { "label": "北辰区", "value": "120113" }, { "label": "武清区", "value": "120114" }, { "label": "宝坻区", "value": "120115" }, { "label": "滨海新区", "value": "120116" }, { "label": "宁河区", "value": "120117" }, { "label": "静海区", "value": "120118" }, { "label": "蓟州区", "value": "120119" }]], [[{ "label": "长安区", "value": "130102" }, { "label": "桥西区", "value": "130104" }, { "label": "新华区", "value": "130105" }, { "label": "井陉矿区", "value": "130107" }, { "label": "裕华区", "value": "130108" }, { "label": "藁城区", "value": "130109" }, { "label": "鹿泉区", "value": "130110" }, { "label": "栾城区", "value": "130111" }, { "label": "井陉县", "value": "130121" }, { "label": "正定县", "value": "130123" }, { "label": "行唐县", "value": "130125" }, { "label": "灵寿县", "value": "130126" }, { "label": "高邑县", "value": "130127" }, { "label": "深泽县", "value": "130128" }, { "label": "赞皇县", "value": "130129" }, { "label": "无极县", "value": "130130" }, { "label": "平山县", "value": "130131" }, { "label": "元氏县", "value": "130132" }, { "label": "赵县", "value": "130133" }, { "label": "石家庄高新技术产业开发区", "value": "130171" }, { "label": "石家庄循环化工园区", "value": "130172" }, { "label": "辛集市", "value": "130181" }, { "label": "晋州市", "value": "130183" }, { "label": "新乐市", "value": "130184" }], [{ "label": "路南区", "value": "130202" }, { "label": "路北区", "value": "130203" }, { "label": "古冶区", "value": "130204" }, { "label": "开平区", "value": "130205" }, { "label": "丰南区", "value": "130207" }, { "label": "丰润区", "value": "130208" }, { "label": "曹妃甸区", "value": "130209" }, { "label": "滦县", "value": "130223" }, { "label": "滦南县", "value": "130224" }, { "label": "乐亭县", "value": "130225" }, { "label": "迁西县", "value": "130227" }, { "label": "玉田县", "value": "130229" }, { "label": "唐山市芦台经济技术开发区", "value": "130271" }, { "label": "唐山市汉沽管理区", "value": "130272" }, { "label": "唐山高新技术产业开发区", "value": "130273" }, { "label": "河北唐山海港经济开发区", "value": "130274" }, { "label": "遵化市", "value": "130281" }, { "label": "迁安市", "value": "130283" }], [{ "label": "海港区", "value": "130302" }, { "label": "山海关区", "value": "130303" }, { "label": "北戴河区", "value": "130304" }, { "label": "抚宁区", "value": "130306" }, { "label": "青龙满族自治县", "value": "130321" }, { "label": "昌黎县", "value": "130322" }, { "label": "卢龙县", "value": "130324" }, { "label": "秦皇岛市经济技术开发区", "value": "130371" }, { "label": "北戴河新区", "value": "130372" }], [{ "label": "邯山区", "value": "130402" }, { "label": "丛台区", "value": "130403" }, { "label": "复兴区", "value": "130404" }, { "label": "峰峰矿区", "value": "130406" }, { "label": "肥乡区", "value": "130407" }, { "label": "永年区", "value": "130408" }, { "label": "临漳县", "value": "130423" }, { "label": "成安县", "value": "130424" }, { "label": "大名县", "value": "130425" }, { "label": "涉县", "value": "130426" }, { "label": "磁县", "value": "130427" }, { "label": "邱县", "value": "130430" }, { "label": "鸡泽县", "value": "130431" }, { "label": "广平县", "value": "130432" }, { "label": "馆陶县", "value": "130433" }, { "label": "魏县", "value": "130434" }, { "label": "曲周县", "value": "130435" }, { "label": "邯郸经济技术开发区", "value": "130471" }, { "label": "邯郸冀南新区", "value": "130473" }, { "label": "武安市", "value": "130481" }], [{ "label": "桥东区", "value": "130502" }, { "label": "桥西区", "value": "130503" }, { "label": "邢台县", "value": "130521" }, { "label": "临城县", "value": "130522" }, { "label": "内丘县", "value": "130523" }, { "label": "柏乡县", "value": "130524" }, { "label": "隆尧县", "value": "130525" }, { "label": "任县", "value": "130526" }, { "label": "南和县", "value": "130527" }, { "label": "宁晋县", "value": "130528" }, { "label": "巨鹿县", "value": "130529" }, { "label": "新河县", "value": "130530" }, { "label": "广宗县", "value": "130531" }, { "label": "平乡县", "value": "130532" }, { "label": "威县", "value": "130533" }, { "label": "清河县", "value": "130534" }, { "label": "临西县", "value": "130535" }, { "label": "河北邢台经济开发区", "value": "130571" }, { "label": "南宫市", "value": "130581" }, { "label": "沙河市", "value": "130582" }], [{ "label": "竞秀区", "value": "130602" }, { "label": "莲池区", "value": "130606" }, { "label": "满城区", "value": "130607" }, { "label": "清苑区", "value": "130608" }, { "label": "徐水区", "value": "130609" }, { "label": "涞水县", "value": "130623" }, { "label": "阜平县", "value": "130624" }, { "label": "定兴县", "value": "130626" }, { "label": "唐县", "value": "130627" }, { "label": "高阳县", "value": "130628" }, { "label": "容城县", "value": "130629" }, { "label": "涞源县", "value": "130630" }, { "label": "望都县", "value": "130631" }, { "label": "安新县", "value": "130632" }, { "label": "易县", "value": "130633" }, { "label": "曲阳县", "value": "130634" }, { "label": "蠡县", "value": "130635" }, { "label": "顺平县", "value": "130636" }, { "label": "博野县", "value": "130637" }, { "label": "雄县", "value": "130638" }, { "label": "保定高新技术产业开发区", "value": "130671" }, { "label": "保定白沟新城", "value": "130672" }, { "label": "涿州市", "value": "130681" }, { "label": "定州市", "value": "130682" }, { "label": "安国市", "value": "130683" }, { "label": "高碑店市", "value": "130684" }], [{ "label": "桥东区", "value": "130702" }, { "label": "桥西区", "value": "130703" }, { "label": "宣化区", "value": "130705" }, { "label": "下花园区", "value": "130706" }, { "label": "万全区", "value": "130708" }, { "label": "崇礼区", "value": "130709" }, { "label": "张北县", "value": "130722" }, { "label": "康保县", "value": "130723" }, { "label": "沽源县", "value": "130724" }, { "label": "尚义县", "value": "130725" }, { "label": "蔚县", "value": "130726" }, { "label": "阳原县", "value": "130727" }, { "label": "怀安县", "value": "130728" }, { "label": "怀来县", "value": "130730" }, { "label": "涿鹿县", "value": "130731" }, { "label": "赤城县", "value": "130732" }, { "label": "张家口市高新技术产业开发区", "value": "130771" }, { "label": "张家口市察北管理区", "value": "130772" }, { "label": "张家口市塞北管理区", "value": "130773" }], [{ "label": "双桥区", "value": "130802" }, { "label": "双滦区", "value": "130803" }, { "label": "鹰手营子矿区", "value": "130804" }, { "label": "承德县", "value": "130821" }, { "label": "兴隆县", "value": "130822" }, { "label": "滦平县", "value": "130824" }, { "label": "隆化县", "value": "130825" }, { "label": "丰宁满族自治县", "value": "130826" }, { "label": "宽城满族自治县", "value": "130827" }, { "label": "围场满族蒙古族自治县", "value": "130828" }, { "label": "承德高新技术产业开发区", "value": "130871" }, { "label": "平泉市", "value": "130881" }], [{ "label": "新华区", "value": "130902" }, { "label": "运河区", "value": "130903" }, { "label": "沧县", "value": "130921" }, { "label": "青县", "value": "130922" }, { "label": "东光县", "value": "130923" }, { "label": "海兴县", "value": "130924" }, { "label": "盐山县", "value": "130925" }, { "label": "肃宁县", "value": "130926" }, { "label": "南皮县", "value": "130927" }, { "label": "吴桥县", "value": "130928" }, { "label": "献县", "value": "130929" }, { "label": "孟村回族自治县", "value": "130930" }, { "label": "河北沧州经济开发区", "value": "130971" }, { "label": "沧州高新技术产业开发区", "value": "130972" }, { "label": "沧州渤海新区", "value": "130973" }, { "label": "泊头市", "value": "130981" }, { "label": "任丘市", "value": "130982" }, { "label": "黄骅市", "value": "130983" }, { "label": "河间市", "value": "130984" }], [{ "label": "安次区", "value": "131002" }, { "label": "广阳区", "value": "131003" }, { "label": "固安县", "value": "131022" }, { "label": "永清县", "value": "131023" }, { "label": "香河县", "value": "131024" }, { "label": "大城县", "value": "131025" }, { "label": "文安县", "value": "131026" }, { "label": "大厂回族自治县", "value": "131028" }, { "label": "廊坊经济技术开发区", "value": "131071" }, { "label": "霸州市", "value": "131081" }, { "label": "三河市", "value": "131082" }], [{ "label": "桃城区", "value": "131102" }, { "label": "冀州区", "value": "131103" }, { "label": "枣强县", "value": "131121" }, { "label": "武邑县", "value": "131122" }, { "label": "武强县", "value": "131123" }, { "label": "饶阳县", "value": "131124" }, { "label": "安平县", "value": "131125" }, { "label": "故城县", "value": "131126" }, { "label": "景县", "value": "131127" }, { "label": "阜城县", "value": "131128" }, { "label": "河北衡水经济开发区", "value": "131171" }, { "label": "衡水滨湖新区", "value": "131172" }, { "label": "深州市", "value": "131182" }]], [[{ "label": "小店区", "value": "140105" }, { "label": "迎泽区", "value": "140106" }, { "label": "杏花岭区", "value": "140107" }, { "label": "尖草坪区", "value": "140108" }, { "label": "万柏林区", "value": "140109" }, { "label": "晋源区", "value": "140110" }, { "label": "清徐县", "value": "140121" }, { "label": "阳曲县", "value": "140122" }, { "label": "娄烦县", "value": "140123" }, { "label": "山西转型综合改革示范区", "value": "140171" }, { "label": "古交市", "value": "140181" }], [{ "label": "城区", "value": "140202" }, { "label": "矿区", "value": "140203" }, { "label": "南郊区", "value": "140211" }, { "label": "新荣区", "value": "140212" }, { "label": "阳高县", "value": "140221" }, { "label": "天镇县", "value": "140222" }, { "label": "广灵县", "value": "140223" }, { "label": "灵丘县", "value": "140224" }, { "label": "浑源县", "value": "140225" }, { "label": "左云县", "value": "140226" }, { "label": "大同县", "value": "140227" }, { "label": "山西大同经济开发区", "value": "140271" }], [{ "label": "城区", "value": "140302" }, { "label": "矿区", "value": "140303" }, { "label": "郊区", "value": "140311" }, { "label": "平定县", "value": "140321" }, { "label": "盂县", "value": "140322" }, { "label": "山西阳泉经济开发区", "value": "140371" }], [{ "label": "城区", "value": "140402" }, { "label": "郊区", "value": "140411" }, { "label": "长治县", "value": "140421" }, { "label": "襄垣县", "value": "140423" }, { "label": "屯留县", "value": "140424" }, { "label": "平顺县", "value": "140425" }, { "label": "黎城县", "value": "140426" }, { "label": "壶关县", "value": "140427" }, { "label": "长子县", "value": "140428" }, { "label": "武乡县", "value": "140429" }, { "label": "沁县", "value": "140430" }, { "label": "沁源县", "value": "140431" }, { "label": "山西长治高新技术产业园区", "value": "140471" }, { "label": "潞城市", "value": "140481" }], [{ "label": "城区", "value": "140502" }, { "label": "沁水县", "value": "140521" }, { "label": "阳城县", "value": "140522" }, { "label": "陵川县", "value": "140524" }, { "label": "泽州县", "value": "140525" }, { "label": "高平市", "value": "140581" }], [{ "label": "朔城区", "value": "140602" }, { "label": "平鲁区", "value": "140603" }, { "label": "山阴县", "value": "140621" }, { "label": "应县", "value": "140622" }, { "label": "右玉县", "value": "140623" }, { "label": "怀仁县", "value": "140624" }, { "label": "山西朔州经济开发区", "value": "140671" }], [{ "label": "榆次区", "value": "140702" }, { "label": "榆社县", "value": "140721" }, { "label": "左权县", "value": "140722" }, { "label": "和顺县", "value": "140723" }, { "label": "昔阳县", "value": "140724" }, { "label": "寿阳县", "value": "140725" }, { "label": "太谷县", "value": "140726" }, { "label": "祁县", "value": "140727" }, { "label": "平遥县", "value": "140728" }, { "label": "灵石县", "value": "140729" }, { "label": "介休市", "value": "140781" }], [{ "label": "盐湖区", "value": "140802" }, { "label": "临猗县", "value": "140821" }, { "label": "万荣县", "value": "140822" }, { "label": "闻喜县", "value": "140823" }, { "label": "稷山县", "value": "140824" }, { "label": "新绛县", "value": "140825" }, { "label": "绛县", "value": "140826" }, { "label": "垣曲县", "value": "140827" }, { "label": "夏县", "value": "140828" }, { "label": "平陆县", "value": "140829" }, { "label": "芮城县", "value": "140830" }, { "label": "永济市", "value": "140881" }, { "label": "河津市", "value": "140882" }], [{ "label": "忻府区", "value": "140902" }, { "label": "定襄县", "value": "140921" }, { "label": "五台县", "value": "140922" }, { "label": "代县", "value": "140923" }, { "label": "繁峙县", "value": "140924" }, { "label": "宁武县", "value": "140925" }, { "label": "静乐县", "value": "140926" }, { "label": "神池县", "value": "140927" }, { "label": "五寨县", "value": "140928" }, { "label": "岢岚县", "value": "140929" }, { "label": "河曲县", "value": "140930" }, { "label": "保德县", "value": "140931" }, { "label": "偏关县", "value": "140932" }, { "label": "五台山风景名胜区", "value": "140971" }, { "label": "原平市", "value": "140981" }], [{ "label": "尧都区", "value": "141002" }, { "label": "曲沃县", "value": "141021" }, { "label": "翼城县", "value": "141022" }, { "label": "襄汾县", "value": "141023" }, { "label": "洪洞县", "value": "141024" }, { "label": "古县", "value": "141025" }, { "label": "安泽县", "value": "141026" }, { "label": "浮山县", "value": "141027" }, { "label": "吉县", "value": "141028" }, { "label": "乡宁县", "value": "141029" }, { "label": "大宁县", "value": "141030" }, { "label": "隰县", "value": "141031" }, { "label": "永和县", "value": "141032" }, { "label": "蒲县", "value": "141033" }, { "label": "汾西县", "value": "141034" }, { "label": "侯马市", "value": "141081" }, { "label": "霍州市", "value": "141082" }], [{ "label": "离石区", "value": "141102" }, { "label": "文水县", "value": "141121" }, { "label": "交城县", "value": "141122" }, { "label": "兴县", "value": "141123" }, { "label": "临县", "value": "141124" }, { "label": "柳林县", "value": "141125" }, { "label": "石楼县", "value": "141126" }, { "label": "岚县", "value": "141127" }, { "label": "方山县", "value": "141128" }, { "label": "中阳县", "value": "141129" }, { "label": "交口县", "value": "141130" }, { "label": "孝义市", "value": "141181" }, { "label": "汾阳市", "value": "141182" }]], [[{ "label": "新城区", "value": "150102" }, { "label": "回民区", "value": "150103" }, { "label": "玉泉区", "value": "150104" }, { "label": "赛罕区", "value": "150105" }, { "label": "土默特左旗", "value": "150121" }, { "label": "托克托县", "value": "150122" }, { "label": "和林格尔县", "value": "150123" }, { "label": "清水河县", "value": "150124" }, { "label": "武川县", "value": "150125" }, { "label": "呼和浩特金海工业园区", "value": "150171" }, { "label": "呼和浩特经济技术开发区", "value": "150172" }], [{ "label": "东河区", "value": "150202" }, { "label": "昆都仑区", "value": "150203" }, { "label": "青山区", "value": "150204" }, { "label": "石拐区", "value": "150205" }, { "label": "白云鄂博矿区", "value": "150206" }, { "label": "九原区", "value": "150207" }, { "label": "土默特右旗", "value": "150221" }, { "label": "固阳县", "value": "150222" }, { "label": "达尔罕茂明安联合旗", "value": "150223" }, { "label": "包头稀土高新技术产业开发区", "value": "150271" }], [{ "label": "海勃湾区", "value": "150302" }, { "label": "海南区", "value": "150303" }, { "label": "乌达区", "value": "150304" }], [{ "label": "红山区", "value": "150402" }, { "label": "元宝山区", "value": "150403" }, { "label": "松山区", "value": "150404" }, { "label": "阿鲁科尔沁旗", "value": "150421" }, { "label": "巴林左旗", "value": "150422" }, { "label": "巴林右旗", "value": "150423" }, { "label": "林西县", "value": "150424" }, { "label": "克什克腾旗", "value": "150425" }, { "label": "翁牛特旗", "value": "150426" }, { "label": "喀喇沁旗", "value": "150428" }, { "label": "宁城县", "value": "150429" }, { "label": "敖汉旗", "value": "150430" }], [{ "label": "科尔沁区", "value": "150502" }, { "label": "科尔沁左翼中旗", "value": "150521" }, { "label": "科尔沁左翼后旗", "value": "150522" }, { "label": "开鲁县", "value": "150523" }, { "label": "库伦旗", "value": "150524" }, { "label": "奈曼旗", "value": "150525" }, { "label": "扎鲁特旗", "value": "150526" }, { "label": "通辽经济技术开发区", "value": "150571" }, { "label": "霍林郭勒市", "value": "150581" }], [{ "label": "东胜区", "value": "150602" }, { "label": "康巴什区", "value": "150603" }, { "label": "达拉特旗", "value": "150621" }, { "label": "准格尔旗", "value": "150622" }, { "label": "鄂托克前旗", "value": "150623" }, { "label": "鄂托克旗", "value": "150624" }, { "label": "杭锦旗", "value": "150625" }, { "label": "乌审旗", "value": "150626" }, { "label": "伊金霍洛旗", "value": "150627" }], [{ "label": "海拉尔区", "value": "150702" }, { "label": "扎赉诺尔区", "value": "150703" }, { "label": "阿荣旗", "value": "150721" }, { "label": "莫力达瓦达斡尔族自治旗", "value": "150722" }, { "label": "鄂伦春自治旗", "value": "150723" }, { "label": "鄂温克族自治旗", "value": "150724" }, { "label": "陈巴尔虎旗", "value": "150725" }, { "label": "新巴尔虎左旗", "value": "150726" }, { "label": "新巴尔虎右旗", "value": "150727" }, { "label": "满洲里市", "value": "150781" }, { "label": "牙克石市", "value": "150782" }, { "label": "扎兰屯市", "value": "150783" }, { "label": "额尔古纳市", "value": "150784" }, { "label": "根河市", "value": "150785" }], [{ "label": "临河区", "value": "150802" }, { "label": "五原县", "value": "150821" }, { "label": "磴口县", "value": "150822" }, { "label": "乌拉特前旗", "value": "150823" }, { "label": "乌拉特中旗", "value": "150824" }, { "label": "乌拉特后旗", "value": "150825" }, { "label": "杭锦后旗", "value": "150826" }], [{ "label": "集宁区", "value": "150902" }, { "label": "卓资县", "value": "150921" }, { "label": "化德县", "value": "150922" }, { "label": "商都县", "value": "150923" }, { "label": "兴和县", "value": "150924" }, { "label": "凉城县", "value": "150925" }, { "label": "察哈尔右翼前旗", "value": "150926" }, { "label": "察哈尔右翼中旗", "value": "150927" }, { "label": "察哈尔右翼后旗", "value": "150928" }, { "label": "四子王旗", "value": "150929" }, { "label": "丰镇市", "value": "150981" }], [{ "label": "乌兰浩特市", "value": "152201" }, { "label": "阿尔山市", "value": "152202" }, { "label": "科尔沁右翼前旗", "value": "152221" }, { "label": "科尔沁右翼中旗", "value": "152222" }, { "label": "扎赉特旗", "value": "152223" }, { "label": "突泉县", "value": "152224" }], [{ "label": "二连浩特市", "value": "152501" }, { "label": "锡林浩特市", "value": "152502" }, { "label": "阿巴嘎旗", "value": "152522" }, { "label": "苏尼特左旗", "value": "152523" }, { "label": "苏尼特右旗", "value": "152524" }, { "label": "东乌珠穆沁旗", "value": "152525" }, { "label": "西乌珠穆沁旗", "value": "152526" }, { "label": "太仆寺旗", "value": "152527" }, { "label": "镶黄旗", "value": "152528" }, { "label": "正镶白旗", "value": "152529" }, { "label": "正蓝旗", "value": "152530" }, { "label": "多伦县", "value": "152531" }, { "label": "乌拉盖管委会", "value": "152571" }], [{ "label": "阿拉善左旗", "value": "152921" }, { "label": "阿拉善右旗", "value": "152922" }, { "label": "额济纳旗", "value": "152923" }, { "label": "内蒙古阿拉善经济开发区", "value": "152971" }]], [[{ "label": "和平区", "value": "210102" }, { "label": "沈河区", "value": "210103" }, { "label": "大东区", "value": "210104" }, { "label": "皇姑区", "value": "210105" }, { "label": "铁西区", "value": "210106" }, { "label": "苏家屯区", "value": "210111" }, { "label": "浑南区", "value": "210112" }, { "label": "沈北新区", "value": "210113" }, { "label": "于洪区", "value": "210114" }, { "label": "辽中区", "value": "210115" }, { "label": "康平县", "value": "210123" }, { "label": "法库县", "value": "210124" }, { "label": "新民市", "value": "210181" }], [{ "label": "中山区", "value": "210202" }, { "label": "西岗区", "value": "210203" }, { "label": "沙河口区", "value": "210204" }, { "label": "甘井子区", "value": "210211" }, { "label": "旅顺口区", "value": "210212" }, { "label": "金州区", "value": "210213" }, { "label": "普兰店区", "value": "210214" }, { "label": "长海县", "value": "210224" }, { "label": "瓦房店市", "value": "210281" }, { "label": "庄河市", "value": "210283" }], [{ "label": "铁东区", "value": "210302" }, { "label": "铁西区", "value": "210303" }, { "label": "立山区", "value": "210304" }, { "label": "千山区", "value": "210311" }, { "label": "台安县", "value": "210321" }, { "label": "岫岩满族自治县", "value": "210323" }, { "label": "海城市", "value": "210381" }], [{ "label": "新抚区", "value": "210402" }, { "label": "东洲区", "value": "210403" }, { "label": "望花区", "value": "210404" }, { "label": "顺城区", "value": "210411" }, { "label": "抚顺县", "value": "210421" }, { "label": "新宾满族自治县", "value": "210422" }, { "label": "清原满族自治县", "value": "210423" }], [{ "label": "平山区", "value": "210502" }, { "label": "溪湖区", "value": "210503" }, { "label": "明山区", "value": "210504" }, { "label": "南芬区", "value": "210505" }, { "label": "本溪满族自治县", "value": "210521" }, { "label": "桓仁满族自治县", "value": "210522" }], [{ "label": "元宝区", "value": "210602" }, { "label": "振兴区", "value": "210603" }, { "label": "振安区", "value": "210604" }, { "label": "宽甸满族自治县", "value": "210624" }, { "label": "东港市", "value": "210681" }, { "label": "凤城市", "value": "210682" }], [{ "label": "古塔区", "value": "210702" }, { "label": "凌河区", "value": "210703" }, { "label": "太和区", "value": "210711" }, { "label": "黑山县", "value": "210726" }, { "label": "义县", "value": "210727" }, { "label": "凌海市", "value": "210781" }, { "label": "北镇市", "value": "210782" }], [{ "label": "站前区", "value": "210802" }, { "label": "西市区", "value": "210803" }, { "label": "鲅鱼圈区", "value": "210804" }, { "label": "老边区", "value": "210811" }, { "label": "盖州市", "value": "210881" }, { "label": "大石桥市", "value": "210882" }], [{ "label": "海州区", "value": "210902" }, { "label": "新邱区", "value": "210903" }, { "label": "太平区", "value": "210904" }, { "label": "清河门区", "value": "210905" }, { "label": "细河区", "value": "210911" }, { "label": "阜新蒙古族自治县", "value": "210921" }, { "label": "彰武县", "value": "210922" }], [{ "label": "白塔区", "value": "211002" }, { "label": "文圣区", "value": "211003" }, { "label": "宏伟区", "value": "211004" }, { "label": "弓长岭区", "value": "211005" }, { "label": "太子河区", "value": "211011" }, { "label": "辽阳县", "value": "211021" }, { "label": "灯塔市", "value": "211081" }], [{ "label": "双台子区", "value": "211102" }, { "label": "兴隆台区", "value": "211103" }, { "label": "大洼区", "value": "211104" }, { "label": "盘山县", "value": "211122" }], [{ "label": "银州区", "value": "211202" }, { "label": "清河区", "value": "211204" }, { "label": "铁岭县", "value": "211221" }, { "label": "西丰县", "value": "211223" }, { "label": "昌图县", "value": "211224" }, { "label": "调兵山市", "value": "211281" }, { "label": "开原市", "value": "211282" }], [{ "label": "双塔区", "value": "211302" }, { "label": "龙城区", "value": "211303" }, { "label": "朝阳县", "value": "211321" }, { "label": "建平县", "value": "211322" }, { "label": "喀喇沁左翼蒙古族自治县", "value": "211324" }, { "label": "北票市", "value": "211381" }, { "label": "凌源市", "value": "211382" }], [{ "label": "连山区", "value": "211402" }, { "label": "龙港区", "value": "211403" }, { "label": "南票区", "value": "211404" }, { "label": "绥中县", "value": "211421" }, { "label": "建昌县", "value": "211422" }, { "label": "兴城市", "value": "211481" }]], [[{ "label": "南关区", "value": "220102" }, { "label": "宽城区", "value": "220103" }, { "label": "朝阳区", "value": "220104" }, { "label": "二道区", "value": "220105" }, { "label": "绿园区", "value": "220106" }, { "label": "双阳区", "value": "220112" }, { "label": "九台区", "value": "220113" }, { "label": "农安县", "value": "220122" }, { "label": "长春经济技术开发区", "value": "220171" }, { "label": "长春净月高新技术产业开发区", "value": "220172" }, { "label": "长春高新技术产业开发区", "value": "220173" }, { "label": "长春汽车经济技术开发区", "value": "220174" }, { "label": "榆树市", "value": "220182" }, { "label": "德惠市", "value": "220183" }], [{ "label": "昌邑区", "value": "220202" }, { "label": "龙潭区", "value": "220203" }, { "label": "船营区", "value": "220204" }, { "label": "丰满区", "value": "220211" }, { "label": "永吉县", "value": "220221" }, { "label": "吉林经济开发区", "value": "220271" }, { "label": "吉林高新技术产业开发区", "value": "220272" }, { "label": "吉林中国新加坡食品区", "value": "220273" }, { "label": "蛟河市", "value": "220281" }, { "label": "桦甸市", "value": "220282" }, { "label": "舒兰市", "value": "220283" }, { "label": "磐石市", "value": "220284" }], [{ "label": "铁西区", "value": "220302" }, { "label": "铁东区", "value": "220303" }, { "label": "梨树县", "value": "220322" }, { "label": "伊通满族自治县", "value": "220323" }, { "label": "公主岭市", "value": "220381" }, { "label": "双辽市", "value": "220382" }], [{ "label": "龙山区", "value": "220402" }, { "label": "西安区", "value": "220403" }, { "label": "东丰县", "value": "220421" }, { "label": "东辽县", "value": "220422" }], [{ "label": "东昌区", "value": "220502" }, { "label": "二道江区", "value": "220503" }, { "label": "通化县", "value": "220521" }, { "label": "辉南县", "value": "220523" }, { "label": "柳河县", "value": "220524" }, { "label": "梅河口市", "value": "220581" }, { "label": "集安市", "value": "220582" }], [{ "label": "浑江区", "value": "220602" }, { "label": "江源区", "value": "220605" }, { "label": "抚松县", "value": "220621" }, { "label": "靖宇县", "value": "220622" }, { "label": "长白朝鲜族自治县", "value": "220623" }, { "label": "临江市", "value": "220681" }], [{ "label": "宁江区", "value": "220702" }, { "label": "前郭尔罗斯蒙古族自治县", "value": "220721" }, { "label": "长岭县", "value": "220722" }, { "label": "乾安县", "value": "220723" }, { "label": "吉林松原经济开发区", "value": "220771" }, { "label": "扶余市", "value": "220781" }], [{ "label": "洮北区", "value": "220802" }, { "label": "镇赉县", "value": "220821" }, { "label": "通榆县", "value": "220822" }, { "label": "吉林白城经济开发区", "value": "220871" }, { "label": "洮南市", "value": "220881" }, { "label": "大安市", "value": "220882" }], [{ "label": "延吉市", "value": "222401" }, { "label": "图们市", "value": "222402" }, { "label": "敦化市", "value": "222403" }, { "label": "珲春市", "value": "222404" }, { "label": "龙井市", "value": "222405" }, { "label": "和龙市", "value": "222406" }, { "label": "汪清县", "value": "222424" }, { "label": "安图县", "value": "222426" }]], [[{ "label": "道里区", "value": "230102" }, { "label": "南岗区", "value": "230103" }, { "label": "道外区", "value": "230104" }, { "label": "平房区", "value": "230108" }, { "label": "松北区", "value": "230109" }, { "label": "香坊区", "value": "230110" }, { "label": "呼兰区", "value": "230111" }, { "label": "阿城区", "value": "230112" }, { "label": "双城区", "value": "230113" }, { "label": "依兰县", "value": "230123" }, { "label": "方正县", "value": "230124" }, { "label": "宾县", "value": "230125" }, { "label": "巴彦县", "value": "230126" }, { "label": "木兰县", "value": "230127" }, { "label": "通河县", "value": "230128" }, { "label": "延寿县", "value": "230129" }, { "label": "尚志市", "value": "230183" }, { "label": "五常市", "value": "230184" }], [{ "label": "龙沙区", "value": "230202" }, { "label": "建华区", "value": "230203" }, { "label": "铁锋区", "value": "230204" }, { "label": "昂昂溪区", "value": "230205" }, { "label": "富拉尔基区", "value": "230206" }, { "label": "碾子山区", "value": "230207" }, { "label": "梅里斯达斡尔族区", "value": "230208" }, { "label": "龙江县", "value": "230221" }, { "label": "依安县", "value": "230223" }, { "label": "泰来县", "value": "230224" }, { "label": "甘南县", "value": "230225" }, { "label": "富裕县", "value": "230227" }, { "label": "克山县", "value": "230229" }, { "label": "克东县", "value": "230230" }, { "label": "拜泉县", "value": "230231" }, { "label": "讷河市", "value": "230281" }], [{ "label": "鸡冠区", "value": "230302" }, { "label": "恒山区", "value": "230303" }, { "label": "滴道区", "value": "230304" }, { "label": "梨树区", "value": "230305" }, { "label": "城子河区", "value": "230306" }, { "label": "麻山区", "value": "230307" }, { "label": "鸡东县", "value": "230321" }, { "label": "虎林市", "value": "230381" }, { "label": "密山市", "value": "230382" }], [{ "label": "向阳区", "value": "230402" }, { "label": "工农区", "value": "230403" }, { "label": "南山区", "value": "230404" }, { "label": "兴安区", "value": "230405" }, { "label": "东山区", "value": "230406" }, { "label": "兴山区", "value": "230407" }, { "label": "萝北县", "value": "230421" }, { "label": "绥滨县", "value": "230422" }], [{ "label": "尖山区", "value": "230502" }, { "label": "岭东区", "value": "230503" }, { "label": "四方台区", "value": "230505" }, { "label": "宝山区", "value": "230506" }, { "label": "集贤县", "value": "230521" }, { "label": "友谊县", "value": "230522" }, { "label": "宝清县", "value": "230523" }, { "label": "饶河县", "value": "230524" }], [{ "label": "萨尔图区", "value": "230602" }, { "label": "龙凤区", "value": "230603" }, { "label": "让胡路区", "value": "230604" }, { "label": "红岗区", "value": "230605" }, { "label": "大同区", "value": "230606" }, { "label": "肇州县", "value": "230621" }, { "label": "肇源县", "value": "230622" }, { "label": "林甸县", "value": "230623" }, { "label": "杜尔伯特蒙古族自治县", "value": "230624" }, { "label": "大庆高新技术产业开发区", "value": "230671" }], [{ "label": "伊春区", "value": "230702" }, { "label": "南岔区", "value": "230703" }, { "label": "友好区", "value": "230704" }, { "label": "西林区", "value": "230705" }, { "label": "翠峦区", "value": "230706" }, { "label": "新青区", "value": "230707" }, { "label": "美溪区", "value": "230708" }, { "label": "金山屯区", "value": "230709" }, { "label": "五营区", "value": "230710" }, { "label": "乌马河区", "value": "230711" }, { "label": "汤旺河区", "value": "230712" }, { "label": "带岭区", "value": "230713" }, { "label": "乌伊岭区", "value": "230714" }, { "label": "红星区", "value": "230715" }, { "label": "上甘岭区", "value": "230716" }, { "label": "嘉荫县", "value": "230722" }, { "label": "铁力市", "value": "230781" }], [{ "label": "向阳区", "value": "230803" }, { "label": "前进区", "value": "230804" }, { "label": "东风区", "value": "230805" }, { "label": "郊区", "value": "230811" }, { "label": "桦南县", "value": "230822" }, { "label": "桦川县", "value": "230826" }, { "label": "汤原县", "value": "230828" }, { "label": "同江市", "value": "230881" }, { "label": "富锦市", "value": "230882" }, { "label": "抚远市", "value": "230883" }], [{ "label": "新兴区", "value": "230902" }, { "label": "桃山区", "value": "230903" }, { "label": "茄子河区", "value": "230904" }, { "label": "勃利县", "value": "230921" }], [{ "label": "东安区", "value": "231002" }, { "label": "阳明区", "value": "231003" }, { "label": "爱民区", "value": "231004" }, { "label": "西安区", "value": "231005" }, { "label": "林口县", "value": "231025" }, { "label": "牡丹江经济技术开发区", "value": "231071" }, { "label": "绥芬河市", "value": "231081" }, { "label": "海林市", "value": "231083" }, { "label": "宁安市", "value": "231084" }, { "label": "穆棱市", "value": "231085" }, { "label": "东宁市", "value": "231086" }], [{ "label": "爱辉区", "value": "231102" }, { "label": "嫩江县", "value": "231121" }, { "label": "逊克县", "value": "231123" }, { "label": "孙吴县", "value": "231124" }, { "label": "北安市", "value": "231181" }, { "label": "五大连池市", "value": "231182" }], [{ "label": "北林区", "value": "231202" }, { "label": "望奎县", "value": "231221" }, { "label": "兰西县", "value": "231222" }, { "label": "青冈县", "value": "231223" }, { "label": "庆安县", "value": "231224" }, { "label": "明水县", "value": "231225" }, { "label": "绥棱县", "value": "231226" }, { "label": "安达市", "value": "231281" }, { "label": "肇东市", "value": "231282" }, { "label": "海伦市", "value": "231283" }], [{ "label": "加格达奇区", "value": "232701" }, { "label": "松岭区", "value": "232702" }, { "label": "新林区", "value": "232703" }, { "label": "呼中区", "value": "232704" }, { "label": "呼玛县", "value": "232721" }, { "label": "塔河县", "value": "232722" }, { "label": "漠河县", "value": "232723" }]], [[{ "label": "黄浦区", "value": "310101" }, { "label": "徐汇区", "value": "310104" }, { "label": "长宁区", "value": "310105" }, { "label": "静安区", "value": "310106" }, { "label": "普陀区", "value": "310107" }, { "label": "虹口区", "value": "310109" }, { "label": "杨浦区", "value": "310110" }, { "label": "闵行区", "value": "310112" }, { "label": "宝山区", "value": "310113" }, { "label": "嘉定区", "value": "310114" }, { "label": "浦东新区", "value": "310115" }, { "label": "金山区", "value": "310116" }, { "label": "松江区", "value": "310117" }, { "label": "青浦区", "value": "310118" }, { "label": "奉贤区", "value": "310120" }, { "label": "崇明区", "value": "310151" }]], [[{ "label": "玄武区", "value": "320102" }, { "label": "秦淮区", "value": "320104" }, { "label": "建邺区", "value": "320105" }, { "label": "鼓楼区", "value": "320106" }, { "label": "浦口区", "value": "320111" }, { "label": "栖霞区", "value": "320113" }, { "label": "雨花台区", "value": "320114" }, { "label": "江宁区", "value": "320115" }, { "label": "六合区", "value": "320116" }, { "label": "溧水区", "value": "320117" }, { "label": "高淳区", "value": "320118" }], [{ "label": "锡山区", "value": "320205" }, { "label": "惠山区", "value": "320206" }, { "label": "滨湖区", "value": "320211" }, { "label": "梁溪区", "value": "320213" }, { "label": "新吴区", "value": "320214" }, { "label": "江阴市", "value": "320281" }, { "label": "宜兴市", "value": "320282" }], [{ "label": "鼓楼区", "value": "320302" }, { "label": "云龙区", "value": "320303" }, { "label": "贾汪区", "value": "320305" }, { "label": "泉山区", "value": "320311" }, { "label": "铜山区", "value": "320312" }, { "label": "丰县", "value": "320321" }, { "label": "沛县", "value": "320322" }, { "label": "睢宁县", "value": "320324" }, { "label": "徐州经济技术开发区", "value": "320371" }, { "label": "新沂市", "value": "320381" }, { "label": "邳州市", "value": "320382" }], [{ "label": "天宁区", "value": "320402" }, { "label": "钟楼区", "value": "320404" }, { "label": "新北区", "value": "320411" }, { "label": "武进区", "value": "320412" }, { "label": "金坛区", "value": "320413" }, { "label": "溧阳市", "value": "320481" }], [{ "label": "虎丘区", "value": "320505" }, { "label": "吴中区", "value": "320506" }, { "label": "相城区", "value": "320507" }, { "label": "姑苏区", "value": "320508" }, { "label": "吴江区", "value": "320509" }, { "label": "苏州工业园区", "value": "320571" }, { "label": "常熟市", "value": "320581" }, { "label": "张家港市", "value": "320582" }, { "label": "昆山市", "value": "320583" }, { "label": "太仓市", "value": "320585" }], [{ "label": "崇川区", "value": "320602" }, { "label": "港闸区", "value": "320611" }, { "label": "通州区", "value": "320612" }, { "label": "海安县", "value": "320621" }, { "label": "如东县", "value": "320623" }, { "label": "南通经济技术开发区", "value": "320671" }, { "label": "启东市", "value": "320681" }, { "label": "如皋市", "value": "320682" }, { "label": "海门市", "value": "320684" }], [{ "label": "连云区", "value": "320703" }, { "label": "海州区", "value": "320706" }, { "label": "赣榆区", "value": "320707" }, { "label": "东海县", "value": "320722" }, { "label": "灌云县", "value": "320723" }, { "label": "灌南县", "value": "320724" }, { "label": "连云港经济技术开发区", "value": "320771" }, { "label": "连云港高新技术产业开发区", "value": "320772" }], [{ "label": "淮安区", "value": "320803" }, { "label": "淮阴区", "value": "320804" }, { "label": "清江浦区", "value": "320812" }, { "label": "洪泽区", "value": "320813" }, { "label": "涟水县", "value": "320826" }, { "label": "盱眙县", "value": "320830" }, { "label": "金湖县", "value": "320831" }, { "label": "淮安经济技术开发区", "value": "320871" }], [{ "label": "亭湖区", "value": "320902" }, { "label": "盐都区", "value": "320903" }, { "label": "大丰区", "value": "320904" }, { "label": "响水县", "value": "320921" }, { "label": "滨海县", "value": "320922" }, { "label": "阜宁县", "value": "320923" }, { "label": "射阳县", "value": "320924" }, { "label": "建湖县", "value": "320925" }, { "label": "盐城经济技术开发区", "value": "320971" }, { "label": "东台市", "value": "320981" }], [{ "label": "广陵区", "value": "321002" }, { "label": "邗江区", "value": "321003" }, { "label": "江都区", "value": "321012" }, { "label": "宝应县", "value": "321023" }, { "label": "扬州经济技术开发区", "value": "321071" }, { "label": "仪征市", "value": "321081" }, { "label": "高邮市", "value": "321084" }], [{ "label": "京口区", "value": "321102" }, { "label": "润州区", "value": "321111" }, { "label": "丹徒区", "value": "321112" }, { "label": "镇江新区", "value": "321171" }, { "label": "丹阳市", "value": "321181" }, { "label": "扬中市", "value": "321182" }, { "label": "句容市", "value": "321183" }], [{ "label": "海陵区", "value": "321202" }, { "label": "高港区", "value": "321203" }, { "label": "姜堰区", "value": "321204" }, { "label": "泰州医药高新技术产业开发区", "value": "321271" }, { "label": "兴化市", "value": "321281" }, { "label": "靖江市", "value": "321282" }, { "label": "泰兴市", "value": "321283" }], [{ "label": "宿城区", "value": "321302" }, { "label": "宿豫区", "value": "321311" }, { "label": "沭阳县", "value": "321322" }, { "label": "泗阳县", "value": "321323" }, { "label": "泗洪县", "value": "321324" }, { "label": "宿迁经济技术开发区", "value": "321371" }]], [[{ "label": "上城区", "value": "330102" }, { "label": "下城区", "value": "330103" }, { "label": "江干区", "value": "330104" }, { "label": "拱墅区", "value": "330105" }, { "label": "西湖区", "value": "330106" }, { "label": "滨江区", "value": "330108" }, { "label": "萧山区", "value": "330109" }, { "label": "余杭区", "value": "330110" }, { "label": "富阳区", "value": "330111" }, { "label": "临安区", "value": "330112" }, { "label": "桐庐县", "value": "330122" }, { "label": "淳安县", "value": "330127" }, { "label": "建德市", "value": "330182" }], [{ "label": "海曙区", "value": "330203" }, { "label": "江北区", "value": "330205" }, { "label": "北仑区", "value": "330206" }, { "label": "镇海区", "value": "330211" }, { "label": "鄞州区", "value": "330212" }, { "label": "奉化区", "value": "330213" }, { "label": "象山县", "value": "330225" }, { "label": "宁海县", "value": "330226" }, { "label": "余姚市", "value": "330281" }, { "label": "慈溪市", "value": "330282" }], [{ "label": "鹿城区", "value": "330302" }, { "label": "龙湾区", "value": "330303" }, { "label": "瓯海区", "value": "330304" }, { "label": "洞头区", "value": "330305" }, { "label": "永嘉县", "value": "330324" }, { "label": "平阳县", "value": "330326" }, { "label": "苍南县", "value": "330327" }, { "label": "文成县", "value": "330328" }, { "label": "泰顺县", "value": "330329" }, { "label": "温州经济技术开发区", "value": "330371" }, { "label": "瑞安市", "value": "330381" }, { "label": "乐清市", "value": "330382" }], [{ "label": "南湖区", "value": "330402" }, { "label": "秀洲区", "value": "330411" }, { "label": "嘉善县", "value": "330421" }, { "label": "海盐县", "value": "330424" }, { "label": "海宁市", "value": "330481" }, { "label": "平湖市", "value": "330482" }, { "label": "桐乡市", "value": "330483" }], [{ "label": "吴兴区", "value": "330502" }, { "label": "南浔区", "value": "330503" }, { "label": "德清县", "value": "330521" }, { "label": "长兴县", "value": "330522" }, { "label": "安吉县", "value": "330523" }], [{ "label": "越城区", "value": "330602" }, { "label": "柯桥区", "value": "330603" }, { "label": "上虞区", "value": "330604" }, { "label": "新昌县", "value": "330624" }, { "label": "诸暨市", "value": "330681" }, { "label": "嵊州市", "value": "330683" }], [{ "label": "婺城区", "value": "330702" }, { "label": "金东区", "value": "330703" }, { "label": "武义县", "value": "330723" }, { "label": "浦江县", "value": "330726" }, { "label": "磐安县", "value": "330727" }, { "label": "兰溪市", "value": "330781" }, { "label": "义乌市", "value": "330782" }, { "label": "东阳市", "value": "330783" }, { "label": "永康市", "value": "330784" }], [{ "label": "柯城区", "value": "330802" }, { "label": "衢江区", "value": "330803" }, { "label": "常山县", "value": "330822" }, { "label": "开化县", "value": "330824" }, { "label": "龙游县", "value": "330825" }, { "label": "江山市", "value": "330881" }], [{ "label": "定海区", "value": "330902" }, { "label": "普陀区", "value": "330903" }, { "label": "岱山县", "value": "330921" }, { "label": "嵊泗县", "value": "330922" }], [{ "label": "椒江区", "value": "331002" }, { "label": "黄岩区", "value": "331003" }, { "label": "路桥区", "value": "331004" }, { "label": "三门县", "value": "331022" }, { "label": "天台县", "value": "331023" }, { "label": "仙居县", "value": "331024" }, { "label": "温岭市", "value": "331081" }, { "label": "临海市", "value": "331082" }, { "label": "玉环市", "value": "331083" }], [{ "label": "莲都区", "value": "331102" }, { "label": "青田县", "value": "331121" }, { "label": "缙云县", "value": "331122" }, { "label": "遂昌县", "value": "331123" }, { "label": "松阳县", "value": "331124" }, { "label": "云和县", "value": "331125" }, { "label": "庆元县", "value": "331126" }, { "label": "景宁畲族自治县", "value": "331127" }, { "label": "龙泉市", "value": "331181" }]], [[{ "label": "瑶海区", "value": "340102" }, { "label": "庐阳区", "value": "340103" }, { "label": "蜀山区", "value": "340104" }, { "label": "包河区", "value": "340111" }, { "label": "长丰县", "value": "340121" }, { "label": "肥东县", "value": "340122" }, { "label": "肥西县", "value": "340123" }, { "label": "庐江县", "value": "340124" }, { "label": "合肥高新技术产业开发区", "value": "340171" }, { "label": "合肥经济技术开发区", "value": "340172" }, { "label": "合肥新站高新技术产业开发区", "value": "340173" }, { "label": "巢湖市", "value": "340181" }], [{ "label": "镜湖区", "value": "340202" }, { "label": "弋江区", "value": "340203" }, { "label": "鸠江区", "value": "340207" }, { "label": "三山区", "value": "340208" }, { "label": "芜湖县", "value": "340221" }, { "label": "繁昌县", "value": "340222" }, { "label": "南陵县", "value": "340223" }, { "label": "无为县", "value": "340225" }, { "label": "芜湖经济技术开发区", "value": "340271" }, { "label": "安徽芜湖长江大桥经济开发区", "value": "340272" }], [{ "label": "龙子湖区", "value": "340302" }, { "label": "蚌山区", "value": "340303" }, { "label": "禹会区", "value": "340304" }, { "label": "淮上区", "value": "340311" }, { "label": "怀远县", "value": "340321" }, { "label": "五河县", "value": "340322" }, { "label": "固镇县", "value": "340323" }, { "label": "蚌埠市高新技术开发区", "value": "340371" }, { "label": "蚌埠市经济开发区", "value": "340372" }], [{ "label": "大通区", "value": "340402" }, { "label": "田家庵区", "value": "340403" }, { "label": "谢家集区", "value": "340404" }, { "label": "八公山区", "value": "340405" }, { "label": "潘集区", "value": "340406" }, { "label": "凤台县", "value": "340421" }, { "label": "寿县", "value": "340422" }], [{ "label": "花山区", "value": "340503" }, { "label": "雨山区", "value": "340504" }, { "label": "博望区", "value": "340506" }, { "label": "当涂县", "value": "340521" }, { "label": "含山县", "value": "340522" }, { "label": "和县", "value": "340523" }], [{ "label": "杜集区", "value": "340602" }, { "label": "相山区", "value": "340603" }, { "label": "烈山区", "value": "340604" }, { "label": "濉溪县", "value": "340621" }], [{ "label": "铜官区", "value": "340705" }, { "label": "义安区", "value": "340706" }, { "label": "郊区", "value": "340711" }, { "label": "枞阳县", "value": "340722" }], [{ "label": "迎江区", "value": "340802" }, { "label": "大观区", "value": "340803" }, { "label": "宜秀区", "value": "340811" }, { "label": "怀宁县", "value": "340822" }, { "label": "潜山县", "value": "340824" }, { "label": "太湖县", "value": "340825" }, { "label": "宿松县", "value": "340826" }, { "label": "望江县", "value": "340827" }, { "label": "岳西县", "value": "340828" }, { "label": "安徽安庆经济开发区", "value": "340871" }, { "label": "桐城市", "value": "340881" }], [{ "label": "屯溪区", "value": "341002" }, { "label": "黄山区", "value": "341003" }, { "label": "徽州区", "value": "341004" }, { "label": "歙县", "value": "341021" }, { "label": "休宁县", "value": "341022" }, { "label": "黟县", "value": "341023" }, { "label": "祁门县", "value": "341024" }], [{ "label": "琅琊区", "value": "341102" }, { "label": "南谯区", "value": "341103" }, { "label": "来安县", "value": "341122" }, { "label": "全椒县", "value": "341124" }, { "label": "定远县", "value": "341125" }, { "label": "凤阳县", "value": "341126" }, { "label": "苏滁现代产业园", "value": "341171" }, { "label": "滁州经济技术开发区", "value": "341172" }, { "label": "天长市", "value": "341181" }, { "label": "明光市", "value": "341182" }], [{ "label": "颍州区", "value": "341202" }, { "label": "颍东区", "value": "341203" }, { "label": "颍泉区", "value": "341204" }, { "label": "临泉县", "value": "341221" }, { "label": "太和县", "value": "341222" }, { "label": "阜南县", "value": "341225" }, { "label": "颍上县", "value": "341226" }, { "label": "阜阳合肥现代产业园区", "value": "341271" }, { "label": "阜阳经济技术开发区", "value": "341272" }, { "label": "界首市", "value": "341282" }], [{ "label": "埇桥区", "value": "341302" }, { "label": "砀山县", "value": "341321" }, { "label": "萧县", "value": "341322" }, { "label": "灵璧县", "value": "341323" }, { "label": "泗县", "value": "341324" }, { "label": "宿州马鞍山现代产业园区", "value": "341371" }, { "label": "宿州经济技术开发区", "value": "341372" }], [{ "label": "金安区", "value": "341502" }, { "label": "裕安区", "value": "341503" }, { "label": "叶集区", "value": "341504" }, { "label": "霍邱县", "value": "341522" }, { "label": "舒城县", "value": "341523" }, { "label": "金寨县", "value": "341524" }, { "label": "霍山县", "value": "341525" }], [{ "label": "谯城区", "value": "341602" }, { "label": "涡阳县", "value": "341621" }, { "label": "蒙城县", "value": "341622" }, { "label": "利辛县", "value": "341623" }], [{ "label": "贵池区", "value": "341702" }, { "label": "东至县", "value": "341721" }, { "label": "石台县", "value": "341722" }, { "label": "青阳县", "value": "341723" }], [{ "label": "宣州区", "value": "341802" }, { "label": "郎溪县", "value": "341821" }, { "label": "广德县", "value": "341822" }, { "label": "泾县", "value": "341823" }, { "label": "绩溪县", "value": "341824" }, { "label": "旌德县", "value": "341825" }, { "label": "宣城市经济开发区", "value": "341871" }, { "label": "宁国市", "value": "341881" }]], [[{ "label": "鼓楼区", "value": "350102" }, { "label": "台江区", "value": "350103" }, { "label": "仓山区", "value": "350104" }, { "label": "马尾区", "value": "350105" }, { "label": "晋安区", "value": "350111" }, { "label": "闽侯县", "value": "350121" }, { "label": "连江县", "value": "350122" }, { "label": "罗源县", "value": "350123" }, { "label": "闽清县", "value": "350124" }, { "label": "永泰县", "value": "350125" }, { "label": "平潭县", "value": "350128" }, { "label": "福清市", "value": "350181" }, { "label": "长乐市", "value": "350182" }], [{ "label": "思明区", "value": "350203" }, { "label": "海沧区", "value": "350205" }, { "label": "湖里区", "value": "350206" }, { "label": "集美区", "value": "350211" }, { "label": "同安区", "value": "350212" }, { "label": "翔安区", "value": "350213" }], [{ "label": "城厢区", "value": "350302" }, { "label": "涵江区", "value": "350303" }, { "label": "荔城区", "value": "350304" }, { "label": "秀屿区", "value": "350305" }, { "label": "仙游县", "value": "350322" }], [{ "label": "梅列区", "value": "350402" }, { "label": "三元区", "value": "350403" }, { "label": "明溪县", "value": "350421" }, { "label": "清流县", "value": "350423" }, { "label": "宁化县", "value": "350424" }, { "label": "大田县", "value": "350425" }, { "label": "尤溪县", "value": "350426" }, { "label": "沙县", "value": "350427" }, { "label": "将乐县", "value": "350428" }, { "label": "泰宁县", "value": "350429" }, { "label": "建宁县", "value": "350430" }, { "label": "永安市", "value": "350481" }], [{ "label": "鲤城区", "value": "350502" }, { "label": "丰泽区", "value": "350503" }, { "label": "洛江区", "value": "350504" }, { "label": "泉港区", "value": "350505" }, { "label": "惠安县", "value": "350521" }, { "label": "安溪县", "value": "350524" }, { "label": "永春县", "value": "350525" }, { "label": "德化县", "value": "350526" }, { "label": "金门县", "value": "350527" }, { "label": "石狮市", "value": "350581" }, { "label": "晋江市", "value": "350582" }, { "label": "南安市", "value": "350583" }], [{ "label": "芗城区", "value": "350602" }, { "label": "龙文区", "value": "350603" }, { "label": "云霄县", "value": "350622" }, { "label": "漳浦县", "value": "350623" }, { "label": "诏安县", "value": "350624" }, { "label": "长泰县", "value": "350625" }, { "label": "东山县", "value": "350626" }, { "label": "南靖县", "value": "350627" }, { "label": "平和县", "value": "350628" }, { "label": "华安县", "value": "350629" }, { "label": "龙海市", "value": "350681" }], [{ "label": "延平区", "value": "350702" }, { "label": "建阳区", "value": "350703" }, { "label": "顺昌县", "value": "350721" }, { "label": "浦城县", "value": "350722" }, { "label": "光泽县", "value": "350723" }, { "label": "松溪县", "value": "350724" }, { "label": "政和县", "value": "350725" }, { "label": "邵武市", "value": "350781" }, { "label": "武夷山市", "value": "350782" }, { "label": "建瓯市", "value": "350783" }], [{ "label": "新罗区", "value": "350802" }, { "label": "永定区", "value": "350803" }, { "label": "长汀县", "value": "350821" }, { "label": "上杭县", "value": "350823" }, { "label": "武平县", "value": "350824" }, { "label": "连城县", "value": "350825" }, { "label": "漳平市", "value": "350881" }], [{ "label": "蕉城区", "value": "350902" }, { "label": "霞浦县", "value": "350921" }, { "label": "古田县", "value": "350922" }, { "label": "屏南县", "value": "350923" }, { "label": "寿宁县", "value": "350924" }, { "label": "周宁县", "value": "350925" }, { "label": "柘荣县", "value": "350926" }, { "label": "福安市", "value": "350981" }, { "label": "福鼎市", "value": "350982" }]], [[{ "label": "东湖区", "value": "360102" }, { "label": "西湖区", "value": "360103" }, { "label": "青云谱区", "value": "360104" }, { "label": "湾里区", "value": "360105" }, { "label": "青山湖区", "value": "360111" }, { "label": "新建区", "value": "360112" }, { "label": "南昌县", "value": "360121" }, { "label": "安义县", "value": "360123" }, { "label": "进贤县", "value": "360124" }], [{ "label": "昌江区", "value": "360202" }, { "label": "珠山区", "value": "360203" }, { "label": "浮梁县", "value": "360222" }, { "label": "乐平市", "value": "360281" }], [{ "label": "安源区", "value": "360302" }, { "label": "湘东区", "value": "360313" }, { "label": "莲花县", "value": "360321" }, { "label": "上栗县", "value": "360322" }, { "label": "芦溪县", "value": "360323" }], [{ "label": "濂溪区", "value": "360402" }, { "label": "浔阳区", "value": "360403" }, { "label": "柴桑区", "value": "360404" }, { "label": "武宁县", "value": "360423" }, { "label": "修水县", "value": "360424" }, { "label": "永修县", "value": "360425" }, { "label": "德安县", "value": "360426" }, { "label": "都昌县", "value": "360428" }, { "label": "湖口县", "value": "360429" }, { "label": "彭泽县", "value": "360430" }, { "label": "瑞昌市", "value": "360481" }, { "label": "共青城市", "value": "360482" }, { "label": "庐山市", "value": "360483" }], [{ "label": "渝水区", "value": "360502" }, { "label": "分宜县", "value": "360521" }], [{ "label": "月湖区", "value": "360602" }, { "label": "余江县", "value": "360622" }, { "label": "贵溪市", "value": "360681" }], [{ "label": "章贡区", "value": "360702" }, { "label": "南康区", "value": "360703" }, { "label": "赣县区", "value": "360704" }, { "label": "信丰县", "value": "360722" }, { "label": "大余县", "value": "360723" }, { "label": "上犹县", "value": "360724" }, { "label": "崇义县", "value": "360725" }, { "label": "安远县", "value": "360726" }, { "label": "龙南县", "value": "360727" }, { "label": "定南县", "value": "360728" }, { "label": "全南县", "value": "360729" }, { "label": "宁都县", "value": "360730" }, { "label": "于都县", "value": "360731" }, { "label": "兴国县", "value": "360732" }, { "label": "会昌县", "value": "360733" }, { "label": "寻乌县", "value": "360734" }, { "label": "石城县", "value": "360735" }, { "label": "瑞金市", "value": "360781" }], [{ "label": "吉州区", "value": "360802" }, { "label": "青原区", "value": "360803" }, { "label": "吉安县", "value": "360821" }, { "label": "吉水县", "value": "360822" }, { "label": "峡江县", "value": "360823" }, { "label": "新干县", "value": "360824" }, { "label": "永丰县", "value": "360825" }, { "label": "泰和县", "value": "360826" }, { "label": "遂川县", "value": "360827" }, { "label": "万安县", "value": "360828" }, { "label": "安福县", "value": "360829" }, { "label": "永新县", "value": "360830" }, { "label": "井冈山市", "value": "360881" }], [{ "label": "袁州区", "value": "360902" }, { "label": "奉新县", "value": "360921" }, { "label": "万载县", "value": "360922" }, { "label": "上高县", "value": "360923" }, { "label": "宜丰县", "value": "360924" }, { "label": "靖安县", "value": "360925" }, { "label": "铜鼓县", "value": "360926" }, { "label": "丰城市", "value": "360981" }, { "label": "樟树市", "value": "360982" }, { "label": "高安市", "value": "360983" }], [{ "label": "临川区", "value": "361002" }, { "label": "东乡区", "value": "361003" }, { "label": "南城县", "value": "361021" }, { "label": "黎川县", "value": "361022" }, { "label": "南丰县", "value": "361023" }, { "label": "崇仁县", "value": "361024" }, { "label": "乐安县", "value": "361025" }, { "label": "宜黄县", "value": "361026" }, { "label": "金溪县", "value": "361027" }, { "label": "资溪县", "value": "361028" }, { "label": "广昌县", "value": "361030" }], [{ "label": "信州区", "value": "361102" }, { "label": "广丰区", "value": "361103" }, { "label": "上饶县", "value": "361121" }, { "label": "玉山县", "value": "361123" }, { "label": "铅山县", "value": "361124" }, { "label": "横峰县", "value": "361125" }, { "label": "弋阳县", "value": "361126" }, { "label": "余干县", "value": "361127" }, { "label": "鄱阳县", "value": "361128" }, { "label": "万年县", "value": "361129" }, { "label": "婺源县", "value": "361130" }, { "label": "德兴市", "value": "361181" }]], [[{ "label": "历下区", "value": "370102" }, { "label": "市中区", "value": "370103" }, { "label": "槐荫区", "value": "370104" }, { "label": "天桥区", "value": "370105" }, { "label": "历城区", "value": "370112" }, { "label": "长清区", "value": "370113" }, { "label": "章丘区", "value": "370114" }, { "label": "平阴县", "value": "370124" }, { "label": "济阳县", "value": "370125" }, { "label": "商河县", "value": "370126" }, { "label": "济南高新技术产业开发区", "value": "370171" }], [{ "label": "市南区", "value": "370202" }, { "label": "市北区", "value": "370203" }, { "label": "黄岛区", "value": "370211" }, { "label": "崂山区", "value": "370212" }, { "label": "李沧区", "value": "370213" }, { "label": "城阳区", "value": "370214" }, { "label": "即墨区", "value": "370215" }, { "label": "青岛高新技术产业开发区", "value": "370271" }, { "label": "胶州市", "value": "370281" }, { "label": "平度市", "value": "370283" }, { "label": "莱西市", "value": "370285" }], [{ "label": "淄川区", "value": "370302" }, { "label": "张店区", "value": "370303" }, { "label": "博山区", "value": "370304" }, { "label": "临淄区", "value": "370305" }, { "label": "周村区", "value": "370306" }, { "label": "桓台县", "value": "370321" }, { "label": "高青县", "value": "370322" }, { "label": "沂源县", "value": "370323" }], [{ "label": "市中区", "value": "370402" }, { "label": "薛城区", "value": "370403" }, { "label": "峄城区", "value": "370404" }, { "label": "台儿庄区", "value": "370405" }, { "label": "山亭区", "value": "370406" }, { "label": "滕州市", "value": "370481" }], [{ "label": "东营区", "value": "370502" }, { "label": "河口区", "value": "370503" }, { "label": "垦利区", "value": "370505" }, { "label": "利津县", "value": "370522" }, { "label": "广饶县", "value": "370523" }, { "label": "东营经济技术开发区", "value": "370571" }, { "label": "东营港经济开发区", "value": "370572" }], [{ "label": "芝罘区", "value": "370602" }, { "label": "福山区", "value": "370611" }, { "label": "牟平区", "value": "370612" }, { "label": "莱山区", "value": "370613" }, { "label": "长岛县", "value": "370634" }, { "label": "烟台高新技术产业开发区", "value": "370671" }, { "label": "烟台经济技术开发区", "value": "370672" }, { "label": "龙口市", "value": "370681" }, { "label": "莱阳市", "value": "370682" }, { "label": "莱州市", "value": "370683" }, { "label": "蓬莱市", "value": "370684" }, { "label": "招远市", "value": "370685" }, { "label": "栖霞市", "value": "370686" }, { "label": "海阳市", "value": "370687" }], [{ "label": "潍城区", "value": "370702" }, { "label": "寒亭区", "value": "370703" }, { "label": "坊子区", "value": "370704" }, { "label": "奎文区", "value": "370705" }, { "label": "临朐县", "value": "370724" }, { "label": "昌乐县", "value": "370725" }, { "label": "潍坊滨海经济技术开发区", "value": "370772" }, { "label": "青州市", "value": "370781" }, { "label": "诸城市", "value": "370782" }, { "label": "寿光市", "value": "370783" }, { "label": "安丘市", "value": "370784" }, { "label": "高密市", "value": "370785" }, { "label": "昌邑市", "value": "370786" }], [{ "label": "任城区", "value": "370811" }, { "label": "兖州区", "value": "370812" }, { "label": "微山县", "value": "370826" }, { "label": "鱼台县", "value": "370827" }, { "label": "金乡县", "value": "370828" }, { "label": "嘉祥县", "value": "370829" }, { "label": "汶上县", "value": "370830" }, { "label": "泗水县", "value": "370831" }, { "label": "梁山县", "value": "370832" }, { "label": "济宁高新技术产业开发区", "value": "370871" }, { "label": "曲阜市", "value": "370881" }, { "label": "邹城市", "value": "370883" }], [{ "label": "泰山区", "value": "370902" }, { "label": "岱岳区", "value": "370911" }, { "label": "宁阳县", "value": "370921" }, { "label": "东平县", "value": "370923" }, { "label": "新泰市", "value": "370982" }, { "label": "肥城市", "value": "370983" }], [{ "label": "环翠区", "value": "371002" }, { "label": "文登区", "value": "371003" }, { "label": "威海火炬高技术产业开发区", "value": "371071" }, { "label": "威海经济技术开发区", "value": "371072" }, { "label": "威海临港经济技术开发区", "value": "371073" }, { "label": "荣成市", "value": "371082" }, { "label": "乳山市", "value": "371083" }], [{ "label": "东港区", "value": "371102" }, { "label": "岚山区", "value": "371103" }, { "label": "五莲县", "value": "371121" }, { "label": "莒县", "value": "371122" }, { "label": "日照经济技术开发区", "value": "371171" }, { "label": "日照国际海洋城", "value": "371172" }], [{ "label": "莱城区", "value": "371202" }, { "label": "钢城区", "value": "371203" }], [{ "label": "兰山区", "value": "371302" }, { "label": "罗庄区", "value": "371311" }, { "label": "河东区", "value": "371312" }, { "label": "沂南县", "value": "371321" }, { "label": "郯城县", "value": "371322" }, { "label": "沂水县", "value": "371323" }, { "label": "兰陵县", "value": "371324" }, { "label": "费县", "value": "371325" }, { "label": "平邑县", "value": "371326" }, { "label": "莒南县", "value": "371327" }, { "label": "蒙阴县", "value": "371328" }, { "label": "临沭县", "value": "371329" }, { "label": "临沂高新技术产业开发区", "value": "371371" }, { "label": "临沂经济技术开发区", "value": "371372" }, { "label": "临沂临港经济开发区", "value": "371373" }], [{ "label": "德城区", "value": "371402" }, { "label": "陵城区", "value": "371403" }, { "label": "宁津县", "value": "371422" }, { "label": "庆云县", "value": "371423" }, { "label": "临邑县", "value": "371424" }, { "label": "齐河县", "value": "371425" }, { "label": "平原县", "value": "371426" }, { "label": "夏津县", "value": "371427" }, { "label": "武城县", "value": "371428" }, { "label": "德州经济技术开发区", "value": "371471" }, { "label": "德州运河经济开发区", "value": "371472" }, { "label": "乐陵市", "value": "371481" }, { "label": "禹城市", "value": "371482" }], [{ "label": "东昌府区", "value": "371502" }, { "label": "阳谷县", "value": "371521" }, { "label": "莘县", "value": "371522" }, { "label": "茌平县", "value": "371523" }, { "label": "东阿县", "value": "371524" }, { "label": "冠县", "value": "371525" }, { "label": "高唐县", "value": "371526" }, { "label": "临清市", "value": "371581" }], [{ "label": "滨城区", "value": "371602" }, { "label": "沾化区", "value": "371603" }, { "label": "惠民县", "value": "371621" }, { "label": "阳信县", "value": "371622" }, { "label": "无棣县", "value": "371623" }, { "label": "博兴县", "value": "371625" }, { "label": "邹平县", "value": "371626" }], [{ "label": "牡丹区", "value": "371702" }, { "label": "定陶区", "value": "371703" }, { "label": "曹县", "value": "371721" }, { "label": "单县", "value": "371722" }, { "label": "成武县", "value": "371723" }, { "label": "巨野县", "value": "371724" }, { "label": "郓城县", "value": "371725" }, { "label": "鄄城县", "value": "371726" }, { "label": "东明县", "value": "371728" }, { "label": "菏泽经济技术开发区", "value": "371771" }, { "label": "菏泽高新技术开发区", "value": "371772" }]], [[{ "label": "中原区", "value": "410102" }, { "label": "二七区", "value": "410103" }, { "label": "管城回族区", "value": "410104" }, { "label": "金水区", "value": "410105" }, { "label": "上街区", "value": "410106" }, { "label": "惠济区", "value": "410108" }, { "label": "中牟县", "value": "410122" }, { "label": "郑州经济技术开发区", "value": "410171" }, { "label": "郑州高新技术产业开发区", "value": "410172" }, { "label": "郑州航空港经济综合实验区", "value": "410173" }, { "label": "巩义市", "value": "410181" }, { "label": "荥阳市", "value": "410182" }, { "label": "新密市", "value": "410183" }, { "label": "新郑市", "value": "410184" }, { "label": "登封市", "value": "410185" }], [{ "label": "龙亭区", "value": "410202" }, { "label": "顺河回族区", "value": "410203" }, { "label": "鼓楼区", "value": "410204" }, { "label": "禹王台区", "value": "410205" }, { "label": "祥符区", "value": "410212" }, { "label": "杞县", "value": "410221" }, { "label": "通许县", "value": "410222" }, { "label": "尉氏县", "value": "410223" }, { "label": "兰考县", "value": "410225" }], [{ "label": "老城区", "value": "410302" }, { "label": "西工区", "value": "410303" }, { "label": "瀍河回族区", "value": "410304" }, { "label": "涧西区", "value": "410305" }, { "label": "吉利区", "value": "410306" }, { "label": "洛龙区", "value": "410311" }, { "label": "孟津县", "value": "410322" }, { "label": "新安县", "value": "410323" }, { "label": "栾川县", "value": "410324" }, { "label": "嵩县", "value": "410325" }, { "label": "汝阳县", "value": "410326" }, { "label": "宜阳县", "value": "410327" }, { "label": "洛宁县", "value": "410328" }, { "label": "伊川县", "value": "410329" }, { "label": "洛阳高新技术产业开发区", "value": "410371" }, { "label": "偃师市", "value": "410381" }], [{ "label": "新华区", "value": "410402" }, { "label": "卫东区", "value": "410403" }, { "label": "石龙区", "value": "410404" }, { "label": "湛河区", "value": "410411" }, { "label": "宝丰县", "value": "410421" }, { "label": "叶县", "value": "410422" }, { "label": "鲁山县", "value": "410423" }, { "label": "郏县", "value": "410425" }, { "label": "平顶山高新技术产业开发区", "value": "410471" }, { "label": "平顶山市新城区", "value": "410472" }, { "label": "舞钢市", "value": "410481" }, { "label": "汝州市", "value": "410482" }], [{ "label": "文峰区", "value": "410502" }, { "label": "北关区", "value": "410503" }, { "label": "殷都区", "value": "410505" }, { "label": "龙安区", "value": "410506" }, { "label": "安阳县", "value": "410522" }, { "label": "汤阴县", "value": "410523" }, { "label": "滑县", "value": "410526" }, { "label": "内黄县", "value": "410527" }, { "label": "安阳高新技术产业开发区", "value": "410571" }, { "label": "林州市", "value": "410581" }], [{ "label": "鹤山区", "value": "410602" }, { "label": "山城区", "value": "410603" }, { "label": "淇滨区", "value": "410611" }, { "label": "浚县", "value": "410621" }, { "label": "淇县", "value": "410622" }, { "label": "鹤壁经济技术开发区", "value": "410671" }], [{ "label": "红旗区", "value": "410702" }, { "label": "卫滨区", "value": "410703" }, { "label": "凤泉区", "value": "410704" }, { "label": "牧野区", "value": "410711" }, { "label": "新乡县", "value": "410721" }, { "label": "获嘉县", "value": "410724" }, { "label": "原阳县", "value": "410725" }, { "label": "延津县", "value": "410726" }, { "label": "封丘县", "value": "410727" }, { "label": "长垣县", "value": "410728" }, { "label": "新乡高新技术产业开发区", "value": "410771" }, { "label": "新乡经济技术开发区", "value": "410772" }, { "label": "新乡市平原城乡一体化示范区", "value": "410773" }, { "label": "卫辉市", "value": "410781" }, { "label": "辉县市", "value": "410782" }], [{ "label": "解放区", "value": "410802" }, { "label": "中站区", "value": "410803" }, { "label": "马村区", "value": "410804" }, { "label": "山阳区", "value": "410811" }, { "label": "修武县", "value": "410821" }, { "label": "博爱县", "value": "410822" }, { "label": "武陟县", "value": "410823" }, { "label": "温县", "value": "410825" }, { "label": "焦作城乡一体化示范区", "value": "410871" }, { "label": "沁阳市", "value": "410882" }, { "label": "孟州市", "value": "410883" }], [{ "label": "华龙区", "value": "410902" }, { "label": "清丰县", "value": "410922" }, { "label": "南乐县", "value": "410923" }, { "label": "范县", "value": "410926" }, { "label": "台前县", "value": "410927" }, { "label": "濮阳县", "value": "410928" }, { "label": "河南濮阳工业园区", "value": "410971" }, { "label": "濮阳经济技术开发区", "value": "410972" }], [{ "label": "魏都区", "value": "411002" }, { "label": "建安区", "value": "411003" }, { "label": "鄢陵县", "value": "411024" }, { "label": "襄城县", "value": "411025" }, { "label": "许昌经济技术开发区", "value": "411071" }, { "label": "禹州市", "value": "411081" }, { "label": "长葛市", "value": "411082" }], [{ "label": "源汇区", "value": "411102" }, { "label": "郾城区", "value": "411103" }, { "label": "召陵区", "value": "411104" }, { "label": "舞阳县", "value": "411121" }, { "label": "临颍县", "value": "411122" }, { "label": "漯河经济技术开发区", "value": "411171" }], [{ "label": "湖滨区", "value": "411202" }, { "label": "陕州区", "value": "411203" }, { "label": "渑池县", "value": "411221" }, { "label": "卢氏县", "value": "411224" }, { "label": "河南三门峡经济开发区", "value": "411271" }, { "label": "义马市", "value": "411281" }, { "label": "灵宝市", "value": "411282" }], [{ "label": "宛城区", "value": "411302" }, { "label": "卧龙区", "value": "411303" }, { "label": "南召县", "value": "411321" }, { "label": "方城县", "value": "411322" }, { "label": "西峡县", "value": "411323" }, { "label": "镇平县", "value": "411324" }, { "label": "内乡县", "value": "411325" }, { "label": "淅川县", "value": "411326" }, { "label": "社旗县", "value": "411327" }, { "label": "唐河县", "value": "411328" }, { "label": "新野县", "value": "411329" }, { "label": "桐柏县", "value": "411330" }, { "label": "南阳高新技术产业开发区", "value": "411371" }, { "label": "南阳市城乡一体化示范区", "value": "411372" }, { "label": "邓州市", "value": "411381" }], [{ "label": "梁园区", "value": "411402" }, { "label": "睢阳区", "value": "411403" }, { "label": "民权县", "value": "411421" }, { "label": "睢县", "value": "411422" }, { "label": "宁陵县", "value": "411423" }, { "label": "柘城县", "value": "411424" }, { "label": "虞城县", "value": "411425" }, { "label": "夏邑县", "value": "411426" }, { "label": "豫东综合物流产业聚集区", "value": "411471" }, { "label": "河南商丘经济开发区", "value": "411472" }, { "label": "永城市", "value": "411481" }], [{ "label": "浉河区", "value": "411502" }, { "label": "平桥区", "value": "411503" }, { "label": "罗山县", "value": "411521" }, { "label": "光山县", "value": "411522" }, { "label": "新县", "value": "411523" }, { "label": "商城县", "value": "411524" }, { "label": "固始县", "value": "411525" }, { "label": "潢川县", "value": "411526" }, { "label": "淮滨县", "value": "411527" }, { "label": "息县", "value": "411528" }, { "label": "信阳高新技术产业开发区", "value": "411571" }], [{ "label": "川汇区", "value": "411602" }, { "label": "扶沟县", "value": "411621" }, { "label": "西华县", "value": "411622" }, { "label": "商水县", "value": "411623" }, { "label": "沈丘县", "value": "411624" }, { "label": "郸城县", "value": "411625" }, { "label": "淮阳县", "value": "411626" }, { "label": "太康县", "value": "411627" }, { "label": "鹿邑县", "value": "411628" }, { "label": "河南周口经济开发区", "value": "411671" }, { "label": "项城市", "value": "411681" }], [{ "label": "驿城区", "value": "411702" }, { "label": "西平县", "value": "411721" }, { "label": "上蔡县", "value": "411722" }, { "label": "平舆县", "value": "411723" }, { "label": "正阳县", "value": "411724" }, { "label": "确山县", "value": "411725" }, { "label": "泌阳县", "value": "411726" }, { "label": "汝南县", "value": "411727" }, { "label": "遂平县", "value": "411728" }, { "label": "新蔡县", "value": "411729" }, { "label": "河南驻马店经济开发区", "value": "411771" }], [{ "label": "济源市", "value": "419001" }]], [[{ "label": "江岸区", "value": "420102" }, { "label": "江汉区", "value": "420103" }, { "label": "硚口区", "value": "420104" }, { "label": "汉阳区", "value": "420105" }, { "label": "武昌区", "value": "420106" }, { "label": "青山区", "value": "420107" }, { "label": "洪山区", "value": "420111" }, { "label": "东西湖区", "value": "420112" }, { "label": "汉南区", "value": "420113" }, { "label": "蔡甸区", "value": "420114" }, { "label": "江夏区", "value": "420115" }, { "label": "黄陂区", "value": "420116" }, { "label": "新洲区", "value": "420117" }], [{ "label": "黄石港区", "value": "420202" }, { "label": "西塞山区", "value": "420203" }, { "label": "下陆区", "value": "420204" }, { "label": "铁山区", "value": "420205" }, { "label": "阳新县", "value": "420222" }, { "label": "大冶市", "value": "420281" }], [{ "label": "茅箭区", "value": "420302" }, { "label": "张湾区", "value": "420303" }, { "label": "郧阳区", "value": "420304" }, { "label": "郧西县", "value": "420322" }, { "label": "竹山县", "value": "420323" }, { "label": "竹溪县", "value": "420324" }, { "label": "房县", "value": "420325" }, { "label": "丹江口市", "value": "420381" }], [{ "label": "西陵区", "value": "420502" }, { "label": "伍家岗区", "value": "420503" }, { "label": "点军区", "value": "420504" }, { "label": "猇亭区", "value": "420505" }, { "label": "夷陵区", "value": "420506" }, { "label": "远安县", "value": "420525" }, { "label": "兴山县", "value": "420526" }, { "label": "秭归县", "value": "420527" }, { "label": "长阳土家族自治县", "value": "420528" }, { "label": "五峰土家族自治县", "value": "420529" }, { "label": "宜都市", "value": "420581" }, { "label": "当阳市", "value": "420582" }, { "label": "枝江市", "value": "420583" }], [{ "label": "襄城区", "value": "420602" }, { "label": "樊城区", "value": "420606" }, { "label": "襄州区", "value": "420607" }, { "label": "南漳县", "value": "420624" }, { "label": "谷城县", "value": "420625" }, { "label": "保康县", "value": "420626" }, { "label": "老河口市", "value": "420682" }, { "label": "枣阳市", "value": "420683" }, { "label": "宜城市", "value": "420684" }], [{ "label": "梁子湖区", "value": "420702" }, { "label": "华容区", "value": "420703" }, { "label": "鄂城区", "value": "420704" }], [{ "label": "东宝区", "value": "420802" }, { "label": "掇刀区", "value": "420804" }, { "label": "京山县", "value": "420821" }, { "label": "沙洋县", "value": "420822" }, { "label": "钟祥市", "value": "420881" }], [{ "label": "孝南区", "value": "420902" }, { "label": "孝昌县", "value": "420921" }, { "label": "大悟县", "value": "420922" }, { "label": "云梦县", "value": "420923" }, { "label": "应城市", "value": "420981" }, { "label": "安陆市", "value": "420982" }, { "label": "汉川市", "value": "420984" }], [{ "label": "沙市区", "value": "421002" }, { "label": "荆州区", "value": "421003" }, { "label": "公安县", "value": "421022" }, { "label": "监利县", "value": "421023" }, { "label": "江陵县", "value": "421024" }, { "label": "荆州经济技术开发区", "value": "421071" }, { "label": "石首市", "value": "421081" }, { "label": "洪湖市", "value": "421083" }, { "label": "松滋市", "value": "421087" }], [{ "label": "黄州区", "value": "421102" }, { "label": "团风县", "value": "421121" }, { "label": "红安县", "value": "421122" }, { "label": "罗田县", "value": "421123" }, { "label": "英山县", "value": "421124" }, { "label": "浠水县", "value": "421125" }, { "label": "蕲春县", "value": "421126" }, { "label": "黄梅县", "value": "421127" }, { "label": "龙感湖管理区", "value": "421171" }, { "label": "麻城市", "value": "421181" }, { "label": "武穴市", "value": "421182" }], [{ "label": "咸安区", "value": "421202" }, { "label": "嘉鱼县", "value": "421221" }, { "label": "通城县", "value": "421222" }, { "label": "崇阳县", "value": "421223" }, { "label": "通山县", "value": "421224" }, { "label": "赤壁市", "value": "421281" }], [{ "label": "曾都区", "value": "421303" }, { "label": "随县", "value": "421321" }, { "label": "广水市", "value": "421381" }], [{ "label": "恩施市", "value": "422801" }, { "label": "利川市", "value": "422802" }, { "label": "建始县", "value": "422822" }, { "label": "巴东县", "value": "422823" }, { "label": "宣恩县", "value": "422825" }, { "label": "咸丰县", "value": "422826" }, { "label": "来凤县", "value": "422827" }, { "label": "鹤峰县", "value": "422828" }], [{ "label": "仙桃市", "value": "429004" }, { "label": "潜江市", "value": "429005" }, { "label": "天门市", "value": "429006" }, { "label": "神农架林区", "value": "429021" }]], [[{ "label": "芙蓉区", "value": "430102" }, { "label": "天心区", "value": "430103" }, { "label": "岳麓区", "value": "430104" }, { "label": "开福区", "value": "430105" }, { "label": "雨花区", "value": "430111" }, { "label": "望城区", "value": "430112" }, { "label": "长沙县", "value": "430121" }, { "label": "浏阳市", "value": "430181" }, { "label": "宁乡市", "value": "430182" }], [{ "label": "荷塘区", "value": "430202" }, { "label": "芦淞区", "value": "430203" }, { "label": "石峰区", "value": "430204" }, { "label": "天元区", "value": "430211" }, { "label": "株洲县", "value": "430221" }, { "label": "攸县", "value": "430223" }, { "label": "茶陵县", "value": "430224" }, { "label": "炎陵县", "value": "430225" }, { "label": "云龙示范区", "value": "430271" }, { "label": "醴陵市", "value": "430281" }], [{ "label": "雨湖区", "value": "430302" }, { "label": "岳塘区", "value": "430304" }, { "label": "湘潭县", "value": "430321" }, { "label": "湖南湘潭高新技术产业园区", "value": "430371" }, { "label": "湘潭昭山示范区", "value": "430372" }, { "label": "湘潭九华示范区", "value": "430373" }, { "label": "湘乡市", "value": "430381" }, { "label": "韶山市", "value": "430382" }], [{ "label": "珠晖区", "value": "430405" }, { "label": "雁峰区", "value": "430406" }, { "label": "石鼓区", "value": "430407" }, { "label": "蒸湘区", "value": "430408" }, { "label": "南岳区", "value": "430412" }, { "label": "衡阳县", "value": "430421" }, { "label": "衡南县", "value": "430422" }, { "label": "衡山县", "value": "430423" }, { "label": "衡东县", "value": "430424" }, { "label": "祁东县", "value": "430426" }, { "label": "衡阳综合保税区", "value": "430471" }, { "label": "湖南衡阳高新技术产业园区", "value": "430472" }, { "label": "湖南衡阳松木经济开发区", "value": "430473" }, { "label": "耒阳市", "value": "430481" }, { "label": "常宁市", "value": "430482" }], [{ "label": "双清区", "value": "430502" }, { "label": "大祥区", "value": "430503" }, { "label": "北塔区", "value": "430511" }, { "label": "邵东县", "value": "430521" }, { "label": "新邵县", "value": "430522" }, { "label": "邵阳县", "value": "430523" }, { "label": "隆回县", "value": "430524" }, { "label": "洞口县", "value": "430525" }, { "label": "绥宁县", "value": "430527" }, { "label": "新宁县", "value": "430528" }, { "label": "城步苗族自治县", "value": "430529" }, { "label": "武冈市", "value": "430581" }], [{ "label": "岳阳楼区", "value": "430602" }, { "label": "云溪区", "value": "430603" }, { "label": "君山区", "value": "430611" }, { "label": "岳阳县", "value": "430621" }, { "label": "华容县", "value": "430623" }, { "label": "湘阴县", "value": "430624" }, { "label": "平江县", "value": "430626" }, { "label": "岳阳市屈原管理区", "value": "430671" }, { "label": "汨罗市", "value": "430681" }, { "label": "临湘市", "value": "430682" }], [{ "label": "武陵区", "value": "430702" }, { "label": "鼎城区", "value": "430703" }, { "label": "安乡县", "value": "430721" }, { "label": "汉寿县", "value": "430722" }, { "label": "澧县", "value": "430723" }, { "label": "临澧县", "value": "430724" }, { "label": "桃源县", "value": "430725" }, { "label": "石门县", "value": "430726" }, { "label": "常德市西洞庭管理区", "value": "430771" }, { "label": "津市市", "value": "430781" }], [{ "label": "永定区", "value": "430802" }, { "label": "武陵源区", "value": "430811" }, { "label": "慈利县", "value": "430821" }, { "label": "桑植县", "value": "430822" }], [{ "label": "资阳区", "value": "430902" }, { "label": "赫山区", "value": "430903" }, { "label": "南县", "value": "430921" }, { "label": "桃江县", "value": "430922" }, { "label": "安化县", "value": "430923" }, { "label": "益阳市大通湖管理区", "value": "430971" }, { "label": "湖南益阳高新技术产业园区", "value": "430972" }, { "label": "沅江市", "value": "430981" }], [{ "label": "北湖区", "value": "431002" }, { "label": "苏仙区", "value": "431003" }, { "label": "桂阳县", "value": "431021" }, { "label": "宜章县", "value": "431022" }, { "label": "永兴县", "value": "431023" }, { "label": "嘉禾县", "value": "431024" }, { "label": "临武县", "value": "431025" }, { "label": "汝城县", "value": "431026" }, { "label": "桂东县", "value": "431027" }, { "label": "安仁县", "value": "431028" }, { "label": "资兴市", "value": "431081" }], [{ "label": "零陵区", "value": "431102" }, { "label": "冷水滩区", "value": "431103" }, { "label": "祁阳县", "value": "431121" }, { "label": "东安县", "value": "431122" }, { "label": "双牌县", "value": "431123" }, { "label": "道县", "value": "431124" }, { "label": "江永县", "value": "431125" }, { "label": "宁远县", "value": "431126" }, { "label": "蓝山县", "value": "431127" }, { "label": "新田县", "value": "431128" }, { "label": "江华瑶族自治县", "value": "431129" }, { "label": "永州经济技术开发区", "value": "431171" }, { "label": "永州市金洞管理区", "value": "431172" }, { "label": "永州市回龙圩管理区", "value": "431173" }], [{ "label": "鹤城区", "value": "431202" }, { "label": "中方县", "value": "431221" }, { "label": "沅陵县", "value": "431222" }, { "label": "辰溪县", "value": "431223" }, { "label": "溆浦县", "value": "431224" }, { "label": "会同县", "value": "431225" }, { "label": "麻阳苗族自治县", "value": "431226" }, { "label": "新晃侗族自治县", "value": "431227" }, { "label": "芷江侗族自治县", "value": "431228" }, { "label": "靖州苗族侗族自治县", "value": "431229" }, { "label": "通道侗族自治县", "value": "431230" }, { "label": "怀化市洪江管理区", "value": "431271" }, { "label": "洪江市", "value": "431281" }], [{ "label": "娄星区", "value": "431302" }, { "label": "双峰县", "value": "431321" }, { "label": "新化县", "value": "431322" }, { "label": "冷水江市", "value": "431381" }, { "label": "涟源市", "value": "431382" }], [{ "label": "吉首市", "value": "433101" }, { "label": "泸溪县", "value": "433122" }, { "label": "凤凰县", "value": "433123" }, { "label": "花垣县", "value": "433124" }, { "label": "保靖县", "value": "433125" }, { "label": "古丈县", "value": "433126" }, { "label": "永顺县", "value": "433127" }, { "label": "龙山县", "value": "433130" }, { "label": "湖南吉首经济开发区", "value": "433172" }, { "label": "湖南永顺经济开发区", "value": "433173" }]], [[{ "label": "荔湾区", "value": "440103" }, { "label": "越秀区", "value": "440104" }, { "label": "海珠区", "value": "440105" }, { "label": "天河区", "value": "440106" }, { "label": "白云区", "value": "440111" }, { "label": "黄埔区", "value": "440112" }, { "label": "番禺区", "value": "440113" }, { "label": "花都区", "value": "440114" }, { "label": "南沙区", "value": "440115" }, { "label": "从化区", "value": "440117" }, { "label": "增城区", "value": "440118" }], [{ "label": "武江区", "value": "440203" }, { "label": "浈江区", "value": "440204" }, { "label": "曲江区", "value": "440205" }, { "label": "始兴县", "value": "440222" }, { "label": "仁化县", "value": "440224" }, { "label": "翁源县", "value": "440229" }, { "label": "乳源瑶族自治县", "value": "440232" }, { "label": "新丰县", "value": "440233" }, { "label": "乐昌市", "value": "440281" }, { "label": "南雄市", "value": "440282" }], [{ "label": "罗湖区", "value": "440303" }, { "label": "福田区", "value": "440304" }, { "label": "南山区", "value": "440305" }, { "label": "宝安区", "value": "440306" }, { "label": "龙岗区", "value": "440307" }, { "label": "盐田区", "value": "440308" }, { "label": "龙华区", "value": "440309" }, { "label": "坪山区", "value": "440310" }], [{ "label": "香洲区", "value": "440402" }, { "label": "斗门区", "value": "440403" }, { "label": "金湾区", "value": "440404" }], [{ "label": "龙湖区", "value": "440507" }, { "label": "金平区", "value": "440511" }, { "label": "濠江区", "value": "440512" }, { "label": "潮阳区", "value": "440513" }, { "label": "潮南区", "value": "440514" }, { "label": "澄海区", "value": "440515" }, { "label": "南澳县", "value": "440523" }], [{ "label": "禅城区", "value": "440604" }, { "label": "南海区", "value": "440605" }, { "label": "顺德区", "value": "440606" }, { "label": "三水区", "value": "440607" }, { "label": "高明区", "value": "440608" }], [{ "label": "蓬江区", "value": "440703" }, { "label": "江海区", "value": "440704" }, { "label": "新会区", "value": "440705" }, { "label": "台山市", "value": "440781" }, { "label": "开平市", "value": "440783" }, { "label": "鹤山市", "value": "440784" }, { "label": "恩平市", "value": "440785" }], [{ "label": "赤坎区", "value": "440802" }, { "label": "霞山区", "value": "440803" }, { "label": "坡头区", "value": "440804" }, { "label": "麻章区", "value": "440811" }, { "label": "遂溪县", "value": "440823" }, { "label": "徐闻县", "value": "440825" }, { "label": "廉江市", "value": "440881" }, { "label": "雷州市", "value": "440882" }, { "label": "吴川市", "value": "440883" }], [{ "label": "茂南区", "value": "440902" }, { "label": "电白区", "value": "440904" }, { "label": "高州市", "value": "440981" }, { "label": "化州市", "value": "440982" }, { "label": "信宜市", "value": "440983" }], [{ "label": "端州区", "value": "441202" }, { "label": "鼎湖区", "value": "441203" }, { "label": "高要区", "value": "441204" }, { "label": "广宁县", "value": "441223" }, { "label": "怀集县", "value": "441224" }, { "label": "封开县", "value": "441225" }, { "label": "德庆县", "value": "441226" }, { "label": "四会市", "value": "441284" }], [{ "label": "惠城区", "value": "441302" }, { "label": "惠阳区", "value": "441303" }, { "label": "博罗县", "value": "441322" }, { "label": "惠东县", "value": "441323" }, { "label": "龙门县", "value": "441324" }], [{ "label": "梅江区", "value": "441402" }, { "label": "梅县区", "value": "441403" }, { "label": "大埔县", "value": "441422" }, { "label": "丰顺县", "value": "441423" }, { "label": "五华县", "value": "441424" }, { "label": "平远县", "value": "441426" }, { "label": "蕉岭县", "value": "441427" }, { "label": "兴宁市", "value": "441481" }], [{ "label": "城区", "value": "441502" }, { "label": "海丰县", "value": "441521" }, { "label": "陆河县", "value": "441523" }, { "label": "陆丰市", "value": "441581" }], [{ "label": "源城区", "value": "441602" }, { "label": "紫金县", "value": "441621" }, { "label": "龙川县", "value": "441622" }, { "label": "连平县", "value": "441623" }, { "label": "和平县", "value": "441624" }, { "label": "东源县", "value": "441625" }], [{ "label": "江城区", "value": "441702" }, { "label": "阳东区", "value": "441704" }, { "label": "阳西县", "value": "441721" }, { "label": "阳春市", "value": "441781" }], [{ "label": "清城区", "value": "441802" }, { "label": "清新区", "value": "441803" }, { "label": "佛冈县", "value": "441821" }, { "label": "阳山县", "value": "441823" }, { "label": "连山壮族瑶族自治县", "value": "441825" }, { "label": "连南瑶族自治县", "value": "441826" }, { "label": "英德市", "value": "441881" }, { "label": "连州市", "value": "441882" }], [{ "label": "东莞市", "value": "441900" }], [{ "label": "中山市", "value": "442000" }], [{ "label": "湘桥区", "value": "445102" }, { "label": "潮安区", "value": "445103" }, { "label": "饶平县", "value": "445122" }], [{ "label": "榕城区", "value": "445202" }, { "label": "揭东区", "value": "445203" }, { "label": "揭西县", "value": "445222" }, { "label": "惠来县", "value": "445224" }, { "label": "普宁市", "value": "445281" }], [{ "label": "云城区", "value": "445302" }, { "label": "云安区", "value": "445303" }, { "label": "新兴县", "value": "445321" }, { "label": "郁南县", "value": "445322" }, { "label": "罗定市", "value": "445381" }]], [[{ "label": "兴宁区", "value": "450102" }, { "label": "青秀区", "value": "450103" }, { "label": "江南区", "value": "450105" }, { "label": "西乡塘区", "value": "450107" }, { "label": "良庆区", "value": "450108" }, { "label": "邕宁区", "value": "450109" }, { "label": "武鸣区", "value": "450110" }, { "label": "隆安县", "value": "450123" }, { "label": "马山县", "value": "450124" }, { "label": "上林县", "value": "450125" }, { "label": "宾阳县", "value": "450126" }, { "label": "横县", "value": "450127" }], [{ "label": "城中区", "value": "450202" }, { "label": "鱼峰区", "value": "450203" }, { "label": "柳南区", "value": "450204" }, { "label": "柳北区", "value": "450205" }, { "label": "柳江区", "value": "450206" }, { "label": "柳城县", "value": "450222" }, { "label": "鹿寨县", "value": "450223" }, { "label": "融安县", "value": "450224" }, { "label": "融水苗族自治县", "value": "450225" }, { "label": "三江侗族自治县", "value": "450226" }], [{ "label": "秀峰区", "value": "450302" }, { "label": "叠彩区", "value": "450303" }, { "label": "象山区", "value": "450304" }, { "label": "七星区", "value": "450305" }, { "label": "雁山区", "value": "450311" }, { "label": "临桂区", "value": "450312" }, { "label": "阳朔县", "value": "450321" }, { "label": "灵川县", "value": "450323" }, { "label": "全州县", "value": "450324" }, { "label": "兴安县", "value": "450325" }, { "label": "永福县", "value": "450326" }, { "label": "灌阳县", "value": "450327" }, { "label": "龙胜各族自治县", "value": "450328" }, { "label": "资源县", "value": "450329" }, { "label": "平乐县", "value": "450330" }, { "label": "荔浦县", "value": "450331" }, { "label": "恭城瑶族自治县", "value": "450332" }], [{ "label": "万秀区", "value": "450403" }, { "label": "长洲区", "value": "450405" }, { "label": "龙圩区", "value": "450406" }, { "label": "苍梧县", "value": "450421" }, { "label": "藤县", "value": "450422" }, { "label": "蒙山县", "value": "450423" }, { "label": "岑溪市", "value": "450481" }], [{ "label": "海城区", "value": "450502" }, { "label": "银海区", "value": "450503" }, { "label": "铁山港区", "value": "450512" }, { "label": "合浦县", "value": "450521" }], [{ "label": "港口区", "value": "450602" }, { "label": "防城区", "value": "450603" }, { "label": "上思县", "value": "450621" }, { "label": "东兴市", "value": "450681" }], [{ "label": "钦南区", "value": "450702" }, { "label": "钦北区", "value": "450703" }, { "label": "灵山县", "value": "450721" }, { "label": "浦北县", "value": "450722" }], [{ "label": "港北区", "value": "450802" }, { "label": "港南区", "value": "450803" }, { "label": "覃塘区", "value": "450804" }, { "label": "平南县", "value": "450821" }, { "label": "桂平市", "value": "450881" }], [{ "label": "玉州区", "value": "450902" }, { "label": "福绵区", "value": "450903" }, { "label": "容县", "value": "450921" }, { "label": "陆川县", "value": "450922" }, { "label": "博白县", "value": "450923" }, { "label": "兴业县", "value": "450924" }, { "label": "北流市", "value": "450981" }], [{ "label": "右江区", "value": "451002" }, { "label": "田阳县", "value": "451021" }, { "label": "田东县", "value": "451022" }, { "label": "平果县", "value": "451023" }, { "label": "德保县", "value": "451024" }, { "label": "那坡县", "value": "451026" }, { "label": "凌云县", "value": "451027" }, { "label": "乐业县", "value": "451028" }, { "label": "田林县", "value": "451029" }, { "label": "西林县", "value": "451030" }, { "label": "隆林各族自治县", "value": "451031" }, { "label": "靖西市", "value": "451081" }], [{ "label": "八步区", "value": "451102" }, { "label": "平桂区", "value": "451103" }, { "label": "昭平县", "value": "451121" }, { "label": "钟山县", "value": "451122" }, { "label": "富川瑶族自治县", "value": "451123" }], [{ "label": "金城江区", "value": "451202" }, { "label": "宜州区", "value": "451203" }, { "label": "南丹县", "value": "451221" }, { "label": "天峨县", "value": "451222" }, { "label": "凤山县", "value": "451223" }, { "label": "东兰县", "value": "451224" }, { "label": "罗城仫佬族自治县", "value": "451225" }, { "label": "环江毛南族自治县", "value": "451226" }, { "label": "巴马瑶族自治县", "value": "451227" }, { "label": "都安瑶族自治县", "value": "451228" }, { "label": "大化瑶族自治县", "value": "451229" }], [{ "label": "兴宾区", "value": "451302" }, { "label": "忻城县", "value": "451321" }, { "label": "象州县", "value": "451322" }, { "label": "武宣县", "value": "451323" }, { "label": "金秀瑶族自治县", "value": "451324" }, { "label": "合山市", "value": "451381" }], [{ "label": "江州区", "value": "451402" }, { "label": "扶绥县", "value": "451421" }, { "label": "宁明县", "value": "451422" }, { "label": "龙州县", "value": "451423" }, { "label": "大新县", "value": "451424" }, { "label": "天等县", "value": "451425" }, { "label": "凭祥市", "value": "451481" }]], [[{ "label": "秀英区", "value": "460105" }, { "label": "龙华区", "value": "460106" }, { "label": "琼山区", "value": "460107" }, { "label": "美兰区", "value": "460108" }], [{ "label": "海棠区", "value": "460202" }, { "label": "吉阳区", "value": "460203" }, { "label": "天涯区", "value": "460204" }, { "label": "崖州区", "value": "460205" }], [{ "label": "西沙群岛", "value": "460321" }, { "label": "南沙群岛", "value": "460322" }, { "label": "中沙群岛的岛礁及其海域", "value": "460323" }], [{ "label": "儋州市", "value": "460400" }], [{ "label": "五指山市", "value": "469001" }, { "label": "琼海市", "value": "469002" }, { "label": "文昌市", "value": "469005" }, { "label": "万宁市", "value": "469006" }, { "label": "东方市", "value": "469007" }, { "label": "定安县", "value": "469021" }, { "label": "屯昌县", "value": "469022" }, { "label": "澄迈县", "value": "469023" }, { "label": "临高县", "value": "469024" }, { "label": "白沙黎族自治县", "value": "469025" }, { "label": "昌江黎族自治县", "value": "469026" }, { "label": "乐东黎族自治县", "value": "469027" }, { "label": "陵水黎族自治县", "value": "469028" }, { "label": "保亭黎族苗族自治县", "value": "469029" }, { "label": "琼中黎族苗族自治县", "value": "469030" }]], [[{ "label": "万州区", "value": "500101" }, { "label": "涪陵区", "value": "500102" }, { "label": "渝中区", "value": "500103" }, { "label": "大渡口区", "value": "500104" }, { "label": "江北区", "value": "500105" }, { "label": "沙坪坝区", "value": "500106" }, { "label": "九龙坡区", "value": "500107" }, { "label": "南岸区", "value": "500108" }, { "label": "北碚区", "value": "500109" }, { "label": "綦江区", "value": "500110" }, { "label": "大足区", "value": "500111" }, { "label": "渝北区", "value": "500112" }, { "label": "巴南区", "value": "500113" }, { "label": "黔江区", "value": "500114" }, { "label": "长寿区", "value": "500115" }, { "label": "江津区", "value": "500116" }, { "label": "合川区", "value": "500117" }, { "label": "永川区", "value": "500118" }, { "label": "南川区", "value": "500119" }, { "label": "璧山区", "value": "500120" }, { "label": "铜梁区", "value": "500151" }, { "label": "潼南区", "value": "500152" }, { "label": "荣昌区", "value": "500153" }, { "label": "开州区", "value": "500154" }, { "label": "梁平区", "value": "500155" }, { "label": "武隆区", "value": "500156" }], [{ "label": "城口县", "value": "500229" }, { "label": "丰都县", "value": "500230" }, { "label": "垫江县", "value": "500231" }, { "label": "忠县", "value": "500233" }, { "label": "云阳县", "value": "500235" }, { "label": "奉节县", "value": "500236" }, { "label": "巫山县", "value": "500237" }, { "label": "巫溪县", "value": "500238" }, { "label": "石柱土家族自治县", "value": "500240" }, { "label": "秀山土家族苗族自治县", "value": "500241" }, { "label": "酉阳土家族苗族自治县", "value": "500242" }, { "label": "彭水苗族土家族自治县", "value": "500243" }]], [[{ "label": "锦江区", "value": "510104" }, { "label": "青羊区", "value": "510105" }, { "label": "金牛区", "value": "510106" }, { "label": "武侯区", "value": "510107" }, { "label": "成华区", "value": "510108" }, { "label": "龙泉驿区", "value": "510112" }, { "label": "青白江区", "value": "510113" }, { "label": "新都区", "value": "510114" }, { "label": "温江区", "value": "510115" }, { "label": "双流区", "value": "510116" }, { "label": "郫都区", "value": "510117" }, { "label": "金堂县", "value": "510121" }, { "label": "大邑县", "value": "510129" }, { "label": "蒲江县", "value": "510131" }, { "label": "新津县", "value": "510132" }, { "label": "都江堰市", "value": "510181" }, { "label": "彭州市", "value": "510182" }, { "label": "邛崃市", "value": "510183" }, { "label": "崇州市", "value": "510184" }, { "label": "简阳市", "value": "510185" }], [{ "label": "自流井区", "value": "510302" }, { "label": "贡井区", "value": "510303" }, { "label": "大安区", "value": "510304" }, { "label": "沿滩区", "value": "510311" }, { "label": "荣县", "value": "510321" }, { "label": "富顺县", "value": "510322" }], [{ "label": "东区", "value": "510402" }, { "label": "西区", "value": "510403" }, { "label": "仁和区", "value": "510411" }, { "label": "米易县", "value": "510421" }, { "label": "盐边县", "value": "510422" }], [{ "label": "江阳区", "value": "510502" }, { "label": "纳溪区", "value": "510503" }, { "label": "龙马潭区", "value": "510504" }, { "label": "泸县", "value": "510521" }, { "label": "合江县", "value": "510522" }, { "label": "叙永县", "value": "510524" }, { "label": "古蔺县", "value": "510525" }], [{ "label": "旌阳区", "value": "510603" }, { "label": "罗江区", "value": "510604" }, { "label": "中江县", "value": "510623" }, { "label": "广汉市", "value": "510681" }, { "label": "什邡市", "value": "510682" }, { "label": "绵竹市", "value": "510683" }], [{ "label": "涪城区", "value": "510703" }, { "label": "游仙区", "value": "510704" }, { "label": "安州区", "value": "510705" }, { "label": "三台县", "value": "510722" }, { "label": "盐亭县", "value": "510723" }, { "label": "梓潼县", "value": "510725" }, { "label": "北川羌族自治县", "value": "510726" }, { "label": "平武县", "value": "510727" }, { "label": "江油市", "value": "510781" }], [{ "label": "利州区", "value": "510802" }, { "label": "昭化区", "value": "510811" }, { "label": "朝天区", "value": "510812" }, { "label": "旺苍县", "value": "510821" }, { "label": "青川县", "value": "510822" }, { "label": "剑阁县", "value": "510823" }, { "label": "苍溪县", "value": "510824" }], [{ "label": "船山区", "value": "510903" }, { "label": "安居区", "value": "510904" }, { "label": "蓬溪县", "value": "510921" }, { "label": "射洪县", "value": "510922" }, { "label": "大英县", "value": "510923" }], [{ "label": "市中区", "value": "511002" }, { "label": "东兴区", "value": "511011" }, { "label": "威远县", "value": "511024" }, { "label": "资中县", "value": "511025" }, { "label": "内江经济开发区", "value": "511071" }, { "label": "隆昌市", "value": "511083" }], [{ "label": "市中区", "value": "511102" }, { "label": "沙湾区", "value": "511111" }, { "label": "五通桥区", "value": "511112" }, { "label": "金口河区", "value": "511113" }, { "label": "犍为县", "value": "511123" }, { "label": "井研县", "value": "511124" }, { "label": "夹江县", "value": "511126" }, { "label": "沐川县", "value": "511129" }, { "label": "峨边彝族自治县", "value": "511132" }, { "label": "马边彝族自治县", "value": "511133" }, { "label": "峨眉山市", "value": "511181" }], [{ "label": "顺庆区", "value": "511302" }, { "label": "高坪区", "value": "511303" }, { "label": "嘉陵区", "value": "511304" }, { "label": "南部县", "value": "511321" }, { "label": "营山县", "value": "511322" }, { "label": "蓬安县", "value": "511323" }, { "label": "仪陇县", "value": "511324" }, { "label": "西充县", "value": "511325" }, { "label": "阆中市", "value": "511381" }], [{ "label": "东坡区", "value": "511402" }, { "label": "彭山区", "value": "511403" }, { "label": "仁寿县", "value": "511421" }, { "label": "洪雅县", "value": "511423" }, { "label": "丹棱县", "value": "511424" }, { "label": "青神县", "value": "511425" }], [{ "label": "翠屏区", "value": "511502" }, { "label": "南溪区", "value": "511503" }, { "label": "宜宾县", "value": "511521" }, { "label": "江安县", "value": "511523" }, { "label": "长宁县", "value": "511524" }, { "label": "高县", "value": "511525" }, { "label": "珙县", "value": "511526" }, { "label": "筠连县", "value": "511527" }, { "label": "兴文县", "value": "511528" }, { "label": "屏山县", "value": "511529" }], [{ "label": "广安区", "value": "511602" }, { "label": "前锋区", "value": "511603" }, { "label": "岳池县", "value": "511621" }, { "label": "武胜县", "value": "511622" }, { "label": "邻水县", "value": "511623" }, { "label": "华蓥市", "value": "511681" }], [{ "label": "通川区", "value": "511702" }, { "label": "达川区", "value": "511703" }, { "label": "宣汉县", "value": "511722" }, { "label": "开江县", "value": "511723" }, { "label": "大竹县", "value": "511724" }, { "label": "渠县", "value": "511725" }, { "label": "达州经济开发区", "value": "511771" }, { "label": "万源市", "value": "511781" }], [{ "label": "雨城区", "value": "511802" }, { "label": "名山区", "value": "511803" }, { "label": "荥经县", "value": "511822" }, { "label": "汉源县", "value": "511823" }, { "label": "石棉县", "value": "511824" }, { "label": "天全县", "value": "511825" }, { "label": "芦山县", "value": "511826" }, { "label": "宝兴县", "value": "511827" }], [{ "label": "巴州区", "value": "511902" }, { "label": "恩阳区", "value": "511903" }, { "label": "通江县", "value": "511921" }, { "label": "南江县", "value": "511922" }, { "label": "平昌县", "value": "511923" }, { "label": "巴中经济开发区", "value": "511971" }], [{ "label": "雁江区", "value": "512002" }, { "label": "安岳县", "value": "512021" }, { "label": "乐至县", "value": "512022" }], [{ "label": "马尔康市", "value": "513201" }, { "label": "汶川县", "value": "513221" }, { "label": "理县", "value": "513222" }, { "label": "茂县", "value": "513223" }, { "label": "松潘县", "value": "513224" }, { "label": "九寨沟县", "value": "513225" }, { "label": "金川县", "value": "513226" }, { "label": "小金县", "value": "513227" }, { "label": "黑水县", "value": "513228" }, { "label": "壤塘县", "value": "513230" }, { "label": "阿坝县", "value": "513231" }, { "label": "若尔盖县", "value": "513232" }, { "label": "红原县", "value": "513233" }], [{ "label": "康定市", "value": "513301" }, { "label": "泸定县", "value": "513322" }, { "label": "丹巴县", "value": "513323" }, { "label": "九龙县", "value": "513324" }, { "label": "雅江县", "value": "513325" }, { "label": "道孚县", "value": "513326" }, { "label": "炉霍县", "value": "513327" }, { "label": "甘孜县", "value": "513328" }, { "label": "新龙县", "value": "513329" }, { "label": "德格县", "value": "513330" }, { "label": "白玉县", "value": "513331" }, { "label": "石渠县", "value": "513332" }, { "label": "色达县", "value": "513333" }, { "label": "理塘县", "value": "513334" }, { "label": "巴塘县", "value": "513335" }, { "label": "乡城县", "value": "513336" }, { "label": "稻城县", "value": "513337" }, { "label": "得荣县", "value": "513338" }], [{ "label": "西昌市", "value": "513401" }, { "label": "木里藏族自治县", "value": "513422" }, { "label": "盐源县", "value": "513423" }, { "label": "德昌县", "value": "513424" }, { "label": "会理县", "value": "513425" }, { "label": "会东县", "value": "513426" }, { "label": "宁南县", "value": "513427" }, { "label": "普格县", "value": "513428" }, { "label": "布拖县", "value": "513429" }, { "label": "金阳县", "value": "513430" }, { "label": "昭觉县", "value": "513431" }, { "label": "喜德县", "value": "513432" }, { "label": "冕宁县", "value": "513433" }, { "label": "越西县", "value": "513434" }, { "label": "甘洛县", "value": "513435" }, { "label": "美姑县", "value": "513436" }, { "label": "雷波县", "value": "513437" }]], [[{ "label": "南明区", "value": "520102" }, { "label": "云岩区", "value": "520103" }, { "label": "花溪区", "value": "520111" }, { "label": "乌当区", "value": "520112" }, { "label": "白云区", "value": "520113" }, { "label": "观山湖区", "value": "520115" }, { "label": "开阳县", "value": "520121" }, { "label": "息烽县", "value": "520122" }, { "label": "修文县", "value": "520123" }, { "label": "清镇市", "value": "520181" }], [{ "label": "钟山区", "value": "520201" }, { "label": "六枝特区", "value": "520203" }, { "label": "水城县", "value": "520221" }, { "label": "盘州市", "value": "520281" }], [{ "label": "红花岗区", "value": "520302" }, { "label": "汇川区", "value": "520303" }, { "label": "播州区", "value": "520304" }, { "label": "桐梓县", "value": "520322" }, { "label": "绥阳县", "value": "520323" }, { "label": "正安县", "value": "520324" }, { "label": "道真仡佬族苗族自治县", "value": "520325" }, { "label": "务川仡佬族苗族自治县", "value": "520326" }, { "label": "凤冈县", "value": "520327" }, { "label": "湄潭县", "value": "520328" }, { "label": "余庆县", "value": "520329" }, { "label": "习水县", "value": "520330" }, { "label": "赤水市", "value": "520381" }, { "label": "仁怀市", "value": "520382" }], [{ "label": "西秀区", "value": "520402" }, { "label": "平坝区", "value": "520403" }, { "label": "普定县", "value": "520422" }, { "label": "镇宁布依族苗族自治县", "value": "520423" }, { "label": "关岭布依族苗族自治县", "value": "520424" }, { "label": "紫云苗族布依族自治县", "value": "520425" }], [{ "label": "七星关区", "value": "520502" }, { "label": "大方县", "value": "520521" }, { "label": "黔西县", "value": "520522" }, { "label": "金沙县", "value": "520523" }, { "label": "织金县", "value": "520524" }, { "label": "纳雍县", "value": "520525" }, { "label": "威宁彝族回族苗族自治县", "value": "520526" }, { "label": "赫章县", "value": "520527" }], [{ "label": "碧江区", "value": "520602" }, { "label": "万山区", "value": "520603" }, { "label": "江口县", "value": "520621" }, { "label": "玉屏侗族自治县", "value": "520622" }, { "label": "石阡县", "value": "520623" }, { "label": "思南县", "value": "520624" }, { "label": "印江土家族苗族自治县", "value": "520625" }, { "label": "德江县", "value": "520626" }, { "label": "沿河土家族自治县", "value": "520627" }, { "label": "松桃苗族自治县", "value": "520628" }], [{ "label": "兴义市", "value": "522301" }, { "label": "兴仁县", "value": "522322" }, { "label": "普安县", "value": "522323" }, { "label": "晴隆县", "value": "522324" }, { "label": "贞丰县", "value": "522325" }, { "label": "望谟县", "value": "522326" }, { "label": "册亨县", "value": "522327" }, { "label": "安龙县", "value": "522328" }], [{ "label": "凯里市", "value": "522601" }, { "label": "黄平县", "value": "522622" }, { "label": "施秉县", "value": "522623" }, { "label": "三穗县", "value": "522624" }, { "label": "镇远县", "value": "522625" }, { "label": "岑巩县", "value": "522626" }, { "label": "天柱县", "value": "522627" }, { "label": "锦屏县", "value": "522628" }, { "label": "剑河县", "value": "522629" }, { "label": "台江县", "value": "522630" }, { "label": "黎平县", "value": "522631" }, { "label": "榕江县", "value": "522632" }, { "label": "从江县", "value": "522633" }, { "label": "雷山县", "value": "522634" }, { "label": "麻江县", "value": "522635" }, { "label": "丹寨县", "value": "522636" }], [{ "label": "都匀市", "value": "522701" }, { "label": "福泉市", "value": "522702" }, { "label": "荔波县", "value": "522722" }, { "label": "贵定县", "value": "522723" }, { "label": "瓮安县", "value": "522725" }, { "label": "独山县", "value": "522726" }, { "label": "平塘县", "value": "522727" }, { "label": "罗甸县", "value": "522728" }, { "label": "长顺县", "value": "522729" }, { "label": "龙里县", "value": "522730" }, { "label": "惠水县", "value": "522731" }, { "label": "三都水族自治县", "value": "522732" }]], [[{ "label": "五华区", "value": "530102" }, { "label": "盘龙区", "value": "530103" }, { "label": "官渡区", "value": "530111" }, { "label": "西山区", "value": "530112" }, { "label": "东川区", "value": "530113" }, { "label": "呈贡区", "value": "530114" }, { "label": "晋宁区", "value": "530115" }, { "label": "富民县", "value": "530124" }, { "label": "宜良县", "value": "530125" }, { "label": "石林彝族自治县", "value": "530126" }, { "label": "嵩明县", "value": "530127" }, { "label": "禄劝彝族苗族自治县", "value": "530128" }, { "label": "寻甸回族彝族自治县", "value": "530129" }, { "label": "安宁市", "value": "530181" }], [{ "label": "麒麟区", "value": "530302" }, { "label": "沾益区", "value": "530303" }, { "label": "马龙县", "value": "530321" }, { "label": "陆良县", "value": "530322" }, { "label": "师宗县", "value": "530323" }, { "label": "罗平县", "value": "530324" }, { "label": "富源县", "value": "530325" }, { "label": "会泽县", "value": "530326" }, { "label": "宣威市", "value": "530381" }], [{ "label": "红塔区", "value": "530402" }, { "label": "江川区", "value": "530403" }, { "label": "澄江县", "value": "530422" }, { "label": "通海县", "value": "530423" }, { "label": "华宁县", "value": "530424" }, { "label": "易门县", "value": "530425" }, { "label": "峨山彝族自治县", "value": "530426" }, { "label": "新平彝族傣族自治县", "value": "530427" }, { "label": "元江哈尼族彝族傣族自治县", "value": "530428" }], [{ "label": "隆阳区", "value": "530502" }, { "label": "施甸县", "value": "530521" }, { "label": "龙陵县", "value": "530523" }, { "label": "昌宁县", "value": "530524" }, { "label": "腾冲市", "value": "530581" }], [{ "label": "昭阳区", "value": "530602" }, { "label": "鲁甸县", "value": "530621" }, { "label": "巧家县", "value": "530622" }, { "label": "盐津县", "value": "530623" }, { "label": "大关县", "value": "530624" }, { "label": "永善县", "value": "530625" }, { "label": "绥江县", "value": "530626" }, { "label": "镇雄县", "value": "530627" }, { "label": "彝良县", "value": "530628" }, { "label": "威信县", "value": "530629" }, { "label": "水富县", "value": "530630" }], [{ "label": "古城区", "value": "530702" }, { "label": "玉龙纳西族自治县", "value": "530721" }, { "label": "永胜县", "value": "530722" }, { "label": "华坪县", "value": "530723" }, { "label": "宁蒗彝族自治县", "value": "530724" }], [{ "label": "思茅区", "value": "530802" }, { "label": "宁洱哈尼族彝族自治县", "value": "530821" }, { "label": "墨江哈尼族自治县", "value": "530822" }, { "label": "景东彝族自治县", "value": "530823" }, { "label": "景谷傣族彝族自治县", "value": "530824" }, { "label": "镇沅彝族哈尼族拉祜族自治县", "value": "530825" }, { "label": "江城哈尼族彝族自治县", "value": "530826" }, { "label": "孟连傣族拉祜族佤族自治县", "value": "530827" }, { "label": "澜沧拉祜族自治县", "value": "530828" }, { "label": "西盟佤族自治县", "value": "530829" }], [{ "label": "临翔区", "value": "530902" }, { "label": "凤庆县", "value": "530921" }, { "label": "云县", "value": "530922" }, { "label": "永德县", "value": "530923" }, { "label": "镇康县", "value": "530924" }, { "label": "双江拉祜族佤族布朗族傣族自治县", "value": "530925" }, { "label": "耿马傣族佤族自治县", "value": "530926" }, { "label": "沧源佤族自治县", "value": "530927" }], [{ "label": "楚雄市", "value": "532301" }, { "label": "双柏县", "value": "532322" }, { "label": "牟定县", "value": "532323" }, { "label": "南华县", "value": "532324" }, { "label": "姚安县", "value": "532325" }, { "label": "大姚县", "value": "532326" }, { "label": "永仁县", "value": "532327" }, { "label": "元谋县", "value": "532328" }, { "label": "武定县", "value": "532329" }, { "label": "禄丰县", "value": "532331" }], [{ "label": "个旧市", "value": "532501" }, { "label": "开远市", "value": "532502" }, { "label": "蒙自市", "value": "532503" }, { "label": "弥勒市", "value": "532504" }, { "label": "屏边苗族自治县", "value": "532523" }, { "label": "建水县", "value": "532524" }, { "label": "石屏县", "value": "532525" }, { "label": "泸西县", "value": "532527" }, { "label": "元阳县", "value": "532528" }, { "label": "红河县", "value": "532529" }, { "label": "金平苗族瑶族傣族自治县", "value": "532530" }, { "label": "绿春县", "value": "532531" }, { "label": "河口瑶族自治县", "value": "532532" }], [{ "label": "文山市", "value": "532601" }, { "label": "砚山县", "value": "532622" }, { "label": "西畴县", "value": "532623" }, { "label": "麻栗坡县", "value": "532624" }, { "label": "马关县", "value": "532625" }, { "label": "丘北县", "value": "532626" }, { "label": "广南县", "value": "532627" }, { "label": "富宁县", "value": "532628" }], [{ "label": "景洪市", "value": "532801" }, { "label": "勐海县", "value": "532822" }, { "label": "勐腊县", "value": "532823" }], [{ "label": "大理市", "value": "532901" }, { "label": "漾濞彝族自治县", "value": "532922" }, { "label": "祥云县", "value": "532923" }, { "label": "宾川县", "value": "532924" }, { "label": "弥渡县", "value": "532925" }, { "label": "南涧彝族自治县", "value": "532926" }, { "label": "巍山彝族回族自治县", "value": "532927" }, { "label": "永平县", "value": "532928" }, { "label": "云龙县", "value": "532929" }, { "label": "洱源县", "value": "532930" }, { "label": "剑川县", "value": "532931" }, { "label": "鹤庆县", "value": "532932" }], [{ "label": "瑞丽市", "value": "533102" }, { "label": "芒市", "value": "533103" }, { "label": "梁河县", "value": "533122" }, { "label": "盈江县", "value": "533123" }, { "label": "陇川县", "value": "533124" }], [{ "label": "泸水市", "value": "533301" }, { "label": "福贡县", "value": "533323" }, { "label": "贡山独龙族怒族自治县", "value": "533324" }, { "label": "兰坪白族普米族自治县", "value": "533325" }], [{ "label": "香格里拉市", "value": "533401" }, { "label": "德钦县", "value": "533422" }, { "label": "维西傈僳族自治县", "value": "533423" }]], [[{ "label": "城关区", "value": "540102" }, { "label": "堆龙德庆区", "value": "540103" }, { "label": "林周县", "value": "540121" }, { "label": "当雄县", "value": "540122" }, { "label": "尼木县", "value": "540123" }, { "label": "曲水县", "value": "540124" }, { "label": "达孜县", "value": "540126" }, { "label": "墨竹工卡县", "value": "540127" }, { "label": "格尔木藏青工业园区", "value": "540171" }, { "label": "拉萨经济技术开发区", "value": "540172" }, { "label": "西藏文化旅游创意园区", "value": "540173" }, { "label": "达孜工业园区", "value": "540174" }], [{ "label": "桑珠孜区", "value": "540202" }, { "label": "南木林县", "value": "540221" }, { "label": "江孜县", "value": "540222" }, { "label": "定日县", "value": "540223" }, { "label": "萨迦县", "value": "540224" }, { "label": "拉孜县", "value": "540225" }, { "label": "昂仁县", "value": "540226" }, { "label": "谢通门县", "value": "540227" }, { "label": "白朗县", "value": "540228" }, { "label": "仁布县", "value": "540229" }, { "label": "康马县", "value": "540230" }, { "label": "定结县", "value": "540231" }, { "label": "仲巴县", "value": "540232" }, { "label": "亚东县", "value": "540233" }, { "label": "吉隆县", "value": "540234" }, { "label": "聂拉木县", "value": "540235" }, { "label": "萨嘎县", "value": "540236" }, { "label": "岗巴县", "value": "540237" }], [{ "label": "卡若区", "value": "540302" }, { "label": "江达县", "value": "540321" }, { "label": "贡觉县", "value": "540322" }, { "label": "类乌齐县", "value": "540323" }, { "label": "丁青县", "value": "540324" }, { "label": "察雅县", "value": "540325" }, { "label": "八宿县", "value": "540326" }, { "label": "左贡县", "value": "540327" }, { "label": "芒康县", "value": "540328" }, { "label": "洛隆县", "value": "540329" }, { "label": "边坝县", "value": "540330" }], [{ "label": "巴宜区", "value": "540402" }, { "label": "工布江达县", "value": "540421" }, { "label": "米林县", "value": "540422" }, { "label": "墨脱县", "value": "540423" }, { "label": "波密县", "value": "540424" }, { "label": "察隅县", "value": "540425" }, { "label": "朗县", "value": "540426" }], [{ "label": "乃东区", "value": "540502" }, { "label": "扎囊县", "value": "540521" }, { "label": "贡嘎县", "value": "540522" }, { "label": "桑日县", "value": "540523" }, { "label": "琼结县", "value": "540524" }, { "label": "曲松县", "value": "540525" }, { "label": "措美县", "value": "540526" }, { "label": "洛扎县", "value": "540527" }, { "label": "加查县", "value": "540528" }, { "label": "隆子县", "value": "540529" }, { "label": "错那县", "value": "540530" }, { "label": "浪卡子县", "value": "540531" }], [{ "label": "那曲县", "value": "542421" }, { "label": "嘉黎县", "value": "542422" }, { "label": "比如县", "value": "542423" }, { "label": "聂荣县", "value": "542424" }, { "label": "安多县", "value": "542425" }, { "label": "申扎县", "value": "542426" }, { "label": "索县", "value": "542427" }, { "label": "班戈县", "value": "542428" }, { "label": "巴青县", "value": "542429" }, { "label": "尼玛县", "value": "542430" }, { "label": "双湖县", "value": "542431" }], [{ "label": "普兰县", "value": "542521" }, { "label": "札达县", "value": "542522" }, { "label": "噶尔县", "value": "542523" }, { "label": "日土县", "value": "542524" }, { "label": "革吉县", "value": "542525" }, { "label": "改则县", "value": "542526" }, { "label": "措勤县", "value": "542527" }]], [[{ "label": "新城区", "value": "610102" }, { "label": "碑林区", "value": "610103" }, { "label": "莲湖区", "value": "610104" }, { "label": "灞桥区", "value": "610111" }, { "label": "未央区", "value": "610112" }, { "label": "雁塔区", "value": "610113" }, { "label": "阎良区", "value": "610114" }, { "label": "临潼区", "value": "610115" }, { "label": "长安区", "value": "610116" }, { "label": "高陵区", "value": "610117" }, { "label": "鄠邑区", "value": "610118" }, { "label": "蓝田县", "value": "610122" }, { "label": "周至县", "value": "610124" }], [{ "label": "王益区", "value": "610202" }, { "label": "印台区", "value": "610203" }, { "label": "耀州区", "value": "610204" }, { "label": "宜君县", "value": "610222" }], [{ "label": "渭滨区", "value": "610302" }, { "label": "金台区", "value": "610303" }, { "label": "陈仓区", "value": "610304" }, { "label": "凤翔县", "value": "610322" }, { "label": "岐山县", "value": "610323" }, { "label": "扶风县", "value": "610324" }, { "label": "眉县", "value": "610326" }, { "label": "陇县", "value": "610327" }, { "label": "千阳县", "value": "610328" }, { "label": "麟游县", "value": "610329" }, { "label": "凤县", "value": "610330" }, { "label": "太白县", "value": "610331" }], [{ "label": "秦都区", "value": "610402" }, { "label": "杨陵区", "value": "610403" }, { "label": "渭城区", "value": "610404" }, { "label": "三原县", "value": "610422" }, { "label": "泾阳县", "value": "610423" }, { "label": "乾县", "value": "610424" }, { "label": "礼泉县", "value": "610425" }, { "label": "永寿县", "value": "610426" }, { "label": "彬县", "value": "610427" }, { "label": "长武县", "value": "610428" }, { "label": "旬邑县", "value": "610429" }, { "label": "淳化县", "value": "610430" }, { "label": "武功县", "value": "610431" }, { "label": "兴平市", "value": "610481" }], [{ "label": "临渭区", "value": "610502" }, { "label": "华州区", "value": "610503" }, { "label": "潼关县", "value": "610522" }, { "label": "大荔县", "value": "610523" }, { "label": "合阳县", "value": "610524" }, { "label": "澄城县", "value": "610525" }, { "label": "蒲城县", "value": "610526" }, { "label": "白水县", "value": "610527" }, { "label": "富平县", "value": "610528" }, { "label": "韩城市", "value": "610581" }, { "label": "华阴市", "value": "610582" }], [{ "label": "宝塔区", "value": "610602" }, { "label": "安塞区", "value": "610603" }, { "label": "延长县", "value": "610621" }, { "label": "延川县", "value": "610622" }, { "label": "子长县", "value": "610623" }, { "label": "志丹县", "value": "610625" }, { "label": "吴起县", "value": "610626" }, { "label": "甘泉县", "value": "610627" }, { "label": "富县", "value": "610628" }, { "label": "洛川县", "value": "610629" }, { "label": "宜川县", "value": "610630" }, { "label": "黄龙县", "value": "610631" }, { "label": "黄陵县", "value": "610632" }], [{ "label": "汉台区", "value": "610702" }, { "label": "南郑区", "value": "610703" }, { "label": "城固县", "value": "610722" }, { "label": "洋县", "value": "610723" }, { "label": "西乡县", "value": "610724" }, { "label": "勉县", "value": "610725" }, { "label": "宁强县", "value": "610726" }, { "label": "略阳县", "value": "610727" }, { "label": "镇巴县", "value": "610728" }, { "label": "留坝县", "value": "610729" }, { "label": "佛坪县", "value": "610730" }], [{ "label": "榆阳区", "value": "610802" }, { "label": "横山区", "value": "610803" }, { "label": "府谷县", "value": "610822" }, { "label": "靖边县", "value": "610824" }, { "label": "定边县", "value": "610825" }, { "label": "绥德县", "value": "610826" }, { "label": "米脂县", "value": "610827" }, { "label": "佳县", "value": "610828" }, { "label": "吴堡县", "value": "610829" }, { "label": "清涧县", "value": "610830" }, { "label": "子洲县", "value": "610831" }, { "label": "神木市", "value": "610881" }], [{ "label": "汉滨区", "value": "610902" }, { "label": "汉阴县", "value": "610921" }, { "label": "石泉县", "value": "610922" }, { "label": "宁陕县", "value": "610923" }, { "label": "紫阳县", "value": "610924" }, { "label": "岚皋县", "value": "610925" }, { "label": "平利县", "value": "610926" }, { "label": "镇坪县", "value": "610927" }, { "label": "旬阳县", "value": "610928" }, { "label": "白河县", "value": "610929" }], [{ "label": "商州区", "value": "611002" }, { "label": "洛南县", "value": "611021" }, { "label": "丹凤县", "value": "611022" }, { "label": "商南县", "value": "611023" }, { "label": "山阳县", "value": "611024" }, { "label": "镇安县", "value": "611025" }, { "label": "柞水县", "value": "611026" }]], [[{ "label": "城关区", "value": "620102" }, { "label": "七里河区", "value": "620103" }, { "label": "西固区", "value": "620104" }, { "label": "安宁区", "value": "620105" }, { "label": "红古区", "value": "620111" }, { "label": "永登县", "value": "620121" }, { "label": "皋兰县", "value": "620122" }, { "label": "榆中县", "value": "620123" }, { "label": "兰州新区", "value": "620171" }], [{ "label": "嘉峪关市", "value": "620201" }], [{ "label": "金川区", "value": "620302" }, { "label": "永昌县", "value": "620321" }], [{ "label": "白银区", "value": "620402" }, { "label": "平川区", "value": "620403" }, { "label": "靖远县", "value": "620421" }, { "label": "会宁县", "value": "620422" }, { "label": "景泰县", "value": "620423" }], [{ "label": "秦州区", "value": "620502" }, { "label": "麦积区", "value": "620503" }, { "label": "清水县", "value": "620521" }, { "label": "秦安县", "value": "620522" }, { "label": "甘谷县", "value": "620523" }, { "label": "武山县", "value": "620524" }, { "label": "张家川回族自治县", "value": "620525" }], [{ "label": "凉州区", "value": "620602" }, { "label": "民勤县", "value": "620621" }, { "label": "古浪县", "value": "620622" }, { "label": "天祝藏族自治县", "value": "620623" }], [{ "label": "甘州区", "value": "620702" }, { "label": "肃南裕固族自治县", "value": "620721" }, { "label": "民乐县", "value": "620722" }, { "label": "临泽县", "value": "620723" }, { "label": "高台县", "value": "620724" }, { "label": "山丹县", "value": "620725" }], [{ "label": "崆峒区", "value": "620802" }, { "label": "泾川县", "value": "620821" }, { "label": "灵台县", "value": "620822" }, { "label": "崇信县", "value": "620823" }, { "label": "华亭县", "value": "620824" }, { "label": "庄浪县", "value": "620825" }, { "label": "静宁县", "value": "620826" }, { "label": "平凉工业园区", "value": "620871" }], [{ "label": "肃州区", "value": "620902" }, { "label": "金塔县", "value": "620921" }, { "label": "瓜州县", "value": "620922" }, { "label": "肃北蒙古族自治县", "value": "620923" }, { "label": "阿克塞哈萨克族自治县", "value": "620924" }, { "label": "玉门市", "value": "620981" }, { "label": "敦煌市", "value": "620982" }], [{ "label": "西峰区", "value": "621002" }, { "label": "庆城县", "value": "621021" }, { "label": "环县", "value": "621022" }, { "label": "华池县", "value": "621023" }, { "label": "合水县", "value": "621024" }, { "label": "正宁县", "value": "621025" }, { "label": "宁县", "value": "621026" }, { "label": "镇原县", "value": "621027" }], [{ "label": "安定区", "value": "621102" }, { "label": "通渭县", "value": "621121" }, { "label": "陇西县", "value": "621122" }, { "label": "渭源县", "value": "621123" }, { "label": "临洮县", "value": "621124" }, { "label": "漳县", "value": "621125" }, { "label": "岷县", "value": "621126" }], [{ "label": "武都区", "value": "621202" }, { "label": "成县", "value": "621221" }, { "label": "文县", "value": "621222" }, { "label": "宕昌县", "value": "621223" }, { "label": "康县", "value": "621224" }, { "label": "西和县", "value": "621225" }, { "label": "礼县", "value": "621226" }, { "label": "徽县", "value": "621227" }, { "label": "两当县", "value": "621228" }], [{ "label": "临夏市", "value": "622901" }, { "label": "临夏县", "value": "622921" }, { "label": "康乐县", "value": "622922" }, { "label": "永靖县", "value": "622923" }, { "label": "广河县", "value": "622924" }, { "label": "和政县", "value": "622925" }, { "label": "东乡族自治县", "value": "622926" }, { "label": "积石山保安族东乡族撒拉族自治县", "value": "622927" }], [{ "label": "合作市", "value": "623001" }, { "label": "临潭县", "value": "623021" }, { "label": "卓尼县", "value": "623022" }, { "label": "舟曲县", "value": "623023" }, { "label": "迭部县", "value": "623024" }, { "label": "玛曲县", "value": "623025" }, { "label": "碌曲县", "value": "623026" }, { "label": "夏河县", "value": "623027" }]], [[{ "label": "城东区", "value": "630102" }, { "label": "城中区", "value": "630103" }, { "label": "城西区", "value": "630104" }, { "label": "城北区", "value": "630105" }, { "label": "大通回族土族自治县", "value": "630121" }, { "label": "湟中县", "value": "630122" }, { "label": "湟源县", "value": "630123" }], [{ "label": "乐都区", "value": "630202" }, { "label": "平安区", "value": "630203" }, { "label": "民和回族土族自治县", "value": "630222" }, { "label": "互助土族自治县", "value": "630223" }, { "label": "化隆回族自治县", "value": "630224" }, { "label": "循化撒拉族自治县", "value": "630225" }], [{ "label": "门源回族自治县", "value": "632221" }, { "label": "祁连县", "value": "632222" }, { "label": "海晏县", "value": "632223" }, { "label": "刚察县", "value": "632224" }], [{ "label": "同仁县", "value": "632321" }, { "label": "尖扎县", "value": "632322" }, { "label": "泽库县", "value": "632323" }, { "label": "河南蒙古族自治县", "value": "632324" }], [{ "label": "共和县", "value": "632521" }, { "label": "同德县", "value": "632522" }, { "label": "贵德县", "value": "632523" }, { "label": "兴海县", "value": "632524" }, { "label": "贵南县", "value": "632525" }], [{ "label": "玛沁县", "value": "632621" }, { "label": "班玛县", "value": "632622" }, { "label": "甘德县", "value": "632623" }, { "label": "达日县", "value": "632624" }, { "label": "久治县", "value": "632625" }, { "label": "玛多县", "value": "632626" }], [{ "label": "玉树市", "value": "632701" }, { "label": "杂多县", "value": "632722" }, { "label": "称多县", "value": "632723" }, { "label": "治多县", "value": "632724" }, { "label": "囊谦县", "value": "632725" }, { "label": "曲麻莱县", "value": "632726" }], [{ "label": "格尔木市", "value": "632801" }, { "label": "德令哈市", "value": "632802" }, { "label": "乌兰县", "value": "632821" }, { "label": "都兰县", "value": "632822" }, { "label": "天峻县", "value": "632823" }, { "label": "大柴旦行政委员会", "value": "632857" }, { "label": "冷湖行政委员会", "value": "632858" }, { "label": "茫崖行政委员会", "value": "632859" }]], [[{ "label": "兴庆区", "value": "640104" }, { "label": "西夏区", "value": "640105" }, { "label": "金凤区", "value": "640106" }, { "label": "永宁县", "value": "640121" }, { "label": "贺兰县", "value": "640122" }, { "label": "灵武市", "value": "640181" }], [{ "label": "大武口区", "value": "640202" }, { "label": "惠农区", "value": "640205" }, { "label": "平罗县", "value": "640221" }], [{ "label": "利通区", "value": "640302" }, { "label": "红寺堡区", "value": "640303" }, { "label": "盐池县", "value": "640323" }, { "label": "同心县", "value": "640324" }, { "label": "青铜峡市", "value": "640381" }], [{ "label": "原州区", "value": "640402" }, { "label": "西吉县", "value": "640422" }, { "label": "隆德县", "value": "640423" }, { "label": "泾源县", "value": "640424" }, { "label": "彭阳县", "value": "640425" }], [{ "label": "沙坡头区", "value": "640502" }, { "label": "中宁县", "value": "640521" }, { "label": "海原县", "value": "640522" }]], [[{ "label": "天山区", "value": "650102" }, { "label": "沙依巴克区", "value": "650103" }, { "label": "新市区", "value": "650104" }, { "label": "水磨沟区", "value": "650105" }, { "label": "头屯河区", "value": "650106" }, { "label": "达坂城区", "value": "650107" }, { "label": "米东区", "value": "650109" }, { "label": "乌鲁木齐县", "value": "650121" }, { "label": "乌鲁木齐经济技术开发区", "value": "650171" }, { "label": "乌鲁木齐高新技术产业开发区", "value": "650172" }], [{ "label": "独山子区", "value": "650202" }, { "label": "克拉玛依区", "value": "650203" }, { "label": "白碱滩区", "value": "650204" }, { "label": "乌尔禾区", "value": "650205" }], [{ "label": "高昌区", "value": "650402" }, { "label": "鄯善县", "value": "650421" }, { "label": "托克逊县", "value": "650422" }], [{ "label": "伊州区", "value": "650502" }, { "label": "巴里坤哈萨克自治县", "value": "650521" }, { "label": "伊吾县", "value": "650522" }], [{ "label": "昌吉市", "value": "652301" }, { "label": "阜康市", "value": "652302" }, { "label": "呼图壁县", "value": "652323" }, { "label": "玛纳斯县", "value": "652324" }, { "label": "奇台县", "value": "652325" }, { "label": "吉木萨尔县", "value": "652327" }, { "label": "木垒哈萨克自治县", "value": "652328" }], [{ "label": "博乐市", "value": "652701" }, { "label": "阿拉山口市", "value": "652702" }, { "label": "精河县", "value": "652722" }, { "label": "温泉县", "value": "652723" }], [{ "label": "库尔勒市", "value": "652801" }, { "label": "轮台县", "value": "652822" }, { "label": "尉犁县", "value": "652823" }, { "label": "若羌县", "value": "652824" }, { "label": "且末县", "value": "652825" }, { "label": "焉耆回族自治县", "value": "652826" }, { "label": "和静县", "value": "652827" }, { "label": "和硕县", "value": "652828" }, { "label": "博湖县", "value": "652829" }, { "label": "库尔勒经济技术开发区", "value": "652871" }], [{ "label": "阿克苏市", "value": "652901" }, { "label": "温宿县", "value": "652922" }, { "label": "库车县", "value": "652923" }, { "label": "沙雅县", "value": "652924" }, { "label": "新和县", "value": "652925" }, { "label": "拜城县", "value": "652926" }, { "label": "乌什县", "value": "652927" }, { "label": "阿瓦提县", "value": "652928" }, { "label": "柯坪县", "value": "652929" }], [{ "label": "阿图什市", "value": "653001" }, { "label": "阿克陶县", "value": "653022" }, { "label": "阿合奇县", "value": "653023" }, { "label": "乌恰县", "value": "653024" }], [{ "label": "喀什市", "value": "653101" }, { "label": "疏附县", "value": "653121" }, { "label": "疏勒县", "value": "653122" }, { "label": "英吉沙县", "value": "653123" }, { "label": "泽普县", "value": "653124" }, { "label": "莎车县", "value": "653125" }, { "label": "叶城县", "value": "653126" }, { "label": "麦盖提县", "value": "653127" }, { "label": "岳普湖县", "value": "653128" }, { "label": "伽师县", "value": "653129" }, { "label": "巴楚县", "value": "653130" }, { "label": "塔什库尔干塔吉克自治县", "value": "653131" }], [{ "label": "和田市", "value": "653201" }, { "label": "和田县", "value": "653221" }, { "label": "墨玉县", "value": "653222" }, { "label": "皮山县", "value": "653223" }, { "label": "洛浦县", "value": "653224" }, { "label": "策勒县", "value": "653225" }, { "label": "于田县", "value": "653226" }, { "label": "民丰县", "value": "653227" }], [{ "label": "伊宁市", "value": "654002" }, { "label": "奎屯市", "value": "654003" }, { "label": "霍尔果斯市", "value": "654004" }, { "label": "伊宁县", "value": "654021" }, { "label": "察布查尔锡伯自治县", "value": "654022" }, { "label": "霍城县", "value": "654023" }, { "label": "巩留县", "value": "654024" }, { "label": "新源县", "value": "654025" }, { "label": "昭苏县", "value": "654026" }, { "label": "特克斯县", "value": "654027" }, { "label": "尼勒克县", "value": "654028" }], [{ "label": "塔城市", "value": "654201" }, { "label": "乌苏市", "value": "654202" }, { "label": "额敏县", "value": "654221" }, { "label": "沙湾县", "value": "654223" }, { "label": "托里县", "value": "654224" }, { "label": "裕民县", "value": "654225" }, { "label": "和布克赛尔蒙古自治县", "value": "654226" }], [{ "label": "阿勒泰市", "value": "654301" }, { "label": "布尔津县", "value": "654321" }, { "label": "富蕴县", "value": "654322" }, { "label": "福海县", "value": "654323" }, { "label": "哈巴河县", "value": "654324" }, { "label": "青河县", "value": "654325" }, { "label": "吉木乃县", "value": "654326" }], [{ "label": "石河子市", "value": "659001" }, { "label": "阿拉尔市", "value": "659002" }, { "label": "图木舒克市", "value": "659003" }, { "label": "五家渠市", "value": "659004" }, { "label": "铁门关市", "value": "659006" }]], [[{ "label": "台北", "value": "660101" }], [{ "label": "高雄", "value": "660201" }], [{ "label": "基隆", "value": "660301" }], [{ "label": "台中", "value": "660401" }], [{ "label": "台南", "value": "660501" }], [{ "label": "新竹", "value": "660601" }], [{ "label": "嘉义", "value": "660701" }], [{ "label": "宜兰", "value": "660801" }], [{ "label": "桃园", "value": "660901" }], [{ "label": "苗栗", "value": "661001" }], [{ "label": "彰化", "value": "661101" }], [{ "label": "南投", "value": "661201" }], [{ "label": "云林", "value": "661301" }], [{ "label": "屏东", "value": "661401" }], [{ "label": "台东", "value": "661501" }], [{ "label": "花莲", "value": "661601" }], [{ "label": "澎湖", "value": "661701" }]], [[{ "label": "香港岛", "value": "670101" }], [{ "label": "九龙", "value": "670201" }], [{ "label": "新界", "value": "670301" }]], [[{ "label": "澳门半岛", "value": "680101" }], [{ "label": "氹仔岛", "value": "680201" }], [{ "label": "路环岛", "value": "680301" }], [{ "label": "路氹城", "value": "680401" }]]];var _default = areaData;exports.default = _default;
-
-/***/ }),
-
-/***/ 29:
+/***/ 27:
 /*!*******************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/type2icon.js ***!
   \*******************************************************************/
@@ -16565,6 +11884,79 @@ type2icon;exports.default = _default;
 
 /***/ }),
 
+/***/ 270:
+/*!**************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/util/province.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var provinceData = [{ "label": "北京市", "value": "11" }, { "label": "天津市", "value": "12" }, { "label": "河北省", "value": "13" }, { "label": "山西省", "value": "14" }, { "label": "内蒙古自治区", "value": "15" }, { "label": "辽宁省", "value": "21" }, { "label": "吉林省", "value": "22" }, { "label": "黑龙江省", "value": "23" }, { "label": "上海市", "value": "31" }, { "label": "江苏省", "value": "32" }, { "label": "浙江省", "value": "33" }, { "label": "安徽省", "value": "34" }, { "label": "福建省", "value": "35" }, { "label": "江西省", "value": "36" }, { "label": "山东省", "value": "37" }, { "label": "河南省", "value": "41" }, { "label": "湖北省", "value": "42" }, { "label": "湖南省", "value": "43" }, { "label": "广东省", "value": "44" }, { "label": "广西壮族自治区", "value": "45" }, { "label": "海南省", "value": "46" }, { "label": "重庆市", "value": "50" }, { "label": "四川省", "value": "51" }, { "label": "贵州省", "value": "52" }, { "label": "云南省", "value": "53" }, { "label": "西藏自治区", "value": "54" }, { "label": "陕西省", "value": "61" }, { "label": "甘肃省", "value": "62" }, { "label": "青海省", "value": "63" }, { "label": "宁夏回族自治区", "value": "64" }, { "label": "新疆维吾尔自治区", "value": "65" }, { "label": "台湾", "value": "66" }, { "label": "香港", "value": "67" }, { "label": "澳门", "value": "68" }];var _default = provinceData;exports.default = _default;
+
+/***/ }),
+
+/***/ 271:
+/*!**********************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/util/city.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var cityData = [[{ "label": "市辖区", "value": "1101" }], [{ "label": "市辖区", "value": "1201" }], [{ "label": "石家庄市", "value": "1301" }, { "label": "唐山市", "value": "1302" }, { "label": "秦皇岛市", "value": "1303" }, { "label": "邯郸市", "value": "1304" }, { "label": "邢台市", "value": "1305" }, { "label": "保定市", "value": "1306" }, { "label": "张家口市", "value": "1307" }, { "label": "承德市", "value": "1308" }, { "label": "沧州市", "value": "1309" }, { "label": "廊坊市", "value": "1310" }, { "label": "衡水市", "value": "1311" }], [{ "label": "太原市", "value": "1401" }, { "label": "大同市", "value": "1402" }, { "label": "阳泉市", "value": "1403" }, { "label": "长治市", "value": "1404" }, { "label": "晋城市", "value": "1405" }, { "label": "朔州市", "value": "1406" }, { "label": "晋中市", "value": "1407" }, { "label": "运城市", "value": "1408" }, { "label": "忻州市", "value": "1409" }, { "label": "临汾市", "value": "1410" }, { "label": "吕梁市", "value": "1411" }], [{ "label": "呼和浩特市", "value": "1501" }, { "label": "包头市", "value": "1502" }, { "label": "乌海市", "value": "1503" }, { "label": "赤峰市", "value": "1504" }, { "label": "通辽市", "value": "1505" }, { "label": "鄂尔多斯市", "value": "1506" }, { "label": "呼伦贝尔市", "value": "1507" }, { "label": "巴彦淖尔市", "value": "1508" }, { "label": "乌兰察布市", "value": "1509" }, { "label": "兴安盟", "value": "1522" }, { "label": "锡林郭勒盟", "value": "1525" }, { "label": "阿拉善盟", "value": "1529" }], [{ "label": "沈阳市", "value": "2101" }, { "label": "大连市", "value": "2102" }, { "label": "鞍山市", "value": "2103" }, { "label": "抚顺市", "value": "2104" }, { "label": "本溪市", "value": "2105" }, { "label": "丹东市", "value": "2106" }, { "label": "锦州市", "value": "2107" }, { "label": "营口市", "value": "2108" }, { "label": "阜新市", "value": "2109" }, { "label": "辽阳市", "value": "2110" }, { "label": "盘锦市", "value": "2111" }, { "label": "铁岭市", "value": "2112" }, { "label": "朝阳市", "value": "2113" }, { "label": "葫芦岛市", "value": "2114" }], [{ "label": "长春市", "value": "2201" }, { "label": "吉林市", "value": "2202" }, { "label": "四平市", "value": "2203" }, { "label": "辽源市", "value": "2204" }, { "label": "通化市", "value": "2205" }, { "label": "白山市", "value": "2206" }, { "label": "松原市", "value": "2207" }, { "label": "白城市", "value": "2208" }, { "label": "延边朝鲜族自治州", "value": "2224" }], [{ "label": "哈尔滨市", "value": "2301" }, { "label": "齐齐哈尔市", "value": "2302" }, { "label": "鸡西市", "value": "2303" }, { "label": "鹤岗市", "value": "2304" }, { "label": "双鸭山市", "value": "2305" }, { "label": "大庆市", "value": "2306" }, { "label": "伊春市", "value": "2307" }, { "label": "佳木斯市", "value": "2308" }, { "label": "七台河市", "value": "2309" }, { "label": "牡丹江市", "value": "2310" }, { "label": "黑河市", "value": "2311" }, { "label": "绥化市", "value": "2312" }, { "label": "大兴安岭地区", "value": "2327" }], [{ "label": "市辖区", "value": "3101" }], [{ "label": "南京市", "value": "3201" }, { "label": "无锡市", "value": "3202" }, { "label": "徐州市", "value": "3203" }, { "label": "常州市", "value": "3204" }, { "label": "苏州市", "value": "3205" }, { "label": "南通市", "value": "3206" }, { "label": "连云港市", "value": "3207" }, { "label": "淮安市", "value": "3208" }, { "label": "盐城市", "value": "3209" }, { "label": "扬州市", "value": "3210" }, { "label": "镇江市", "value": "3211" }, { "label": "泰州市", "value": "3212" }, { "label": "宿迁市", "value": "3213" }], [{ "label": "杭州市", "value": "3301" }, { "label": "宁波市", "value": "3302" }, { "label": "温州市", "value": "3303" }, { "label": "嘉兴市", "value": "3304" }, { "label": "湖州市", "value": "3305" }, { "label": "绍兴市", "value": "3306" }, { "label": "金华市", "value": "3307" }, { "label": "衢州市", "value": "3308" }, { "label": "舟山市", "value": "3309" }, { "label": "台州市", "value": "3310" }, { "label": "丽水市", "value": "3311" }], [{ "label": "合肥市", "value": "3401" }, { "label": "芜湖市", "value": "3402" }, { "label": "蚌埠市", "value": "3403" }, { "label": "淮南市", "value": "3404" }, { "label": "马鞍山市", "value": "3405" }, { "label": "淮北市", "value": "3406" }, { "label": "铜陵市", "value": "3407" }, { "label": "安庆市", "value": "3408" }, { "label": "黄山市", "value": "3410" }, { "label": "滁州市", "value": "3411" }, { "label": "阜阳市", "value": "3412" }, { "label": "宿州市", "value": "3413" }, { "label": "六安市", "value": "3415" }, { "label": "亳州市", "value": "3416" }, { "label": "池州市", "value": "3417" }, { "label": "宣城市", "value": "3418" }], [{ "label": "福州市", "value": "3501" }, { "label": "厦门市", "value": "3502" }, { "label": "莆田市", "value": "3503" }, { "label": "三明市", "value": "3504" }, { "label": "泉州市", "value": "3505" }, { "label": "漳州市", "value": "3506" }, { "label": "南平市", "value": "3507" }, { "label": "龙岩市", "value": "3508" }, { "label": "宁德市", "value": "3509" }], [{ "label": "南昌市", "value": "3601" }, { "label": "景德镇市", "value": "3602" }, { "label": "萍乡市", "value": "3603" }, { "label": "九江市", "value": "3604" }, { "label": "新余市", "value": "3605" }, { "label": "鹰潭市", "value": "3606" }, { "label": "赣州市", "value": "3607" }, { "label": "吉安市", "value": "3608" }, { "label": "宜春市", "value": "3609" }, { "label": "抚州市", "value": "3610" }, { "label": "上饶市", "value": "3611" }], [{ "label": "济南市", "value": "3701" }, { "label": "青岛市", "value": "3702" }, { "label": "淄博市", "value": "3703" }, { "label": "枣庄市", "value": "3704" }, { "label": "东营市", "value": "3705" }, { "label": "烟台市", "value": "3706" }, { "label": "潍坊市", "value": "3707" }, { "label": "济宁市", "value": "3708" }, { "label": "泰安市", "value": "3709" }, { "label": "威海市", "value": "3710" }, { "label": "日照市", "value": "3711" }, { "label": "莱芜市", "value": "3712" }, { "label": "临沂市", "value": "3713" }, { "label": "德州市", "value": "3714" }, { "label": "聊城市", "value": "3715" }, { "label": "滨州市", "value": "3716" }, { "label": "菏泽市", "value": "3717" }], [{ "label": "郑州市", "value": "4101" }, { "label": "开封市", "value": "4102" }, { "label": "洛阳市", "value": "4103" }, { "label": "平顶山市", "value": "4104" }, { "label": "安阳市", "value": "4105" }, { "label": "鹤壁市", "value": "4106" }, { "label": "新乡市", "value": "4107" }, { "label": "焦作市", "value": "4108" }, { "label": "濮阳市", "value": "4109" }, { "label": "许昌市", "value": "4110" }, { "label": "漯河市", "value": "4111" }, { "label": "三门峡市", "value": "4112" }, { "label": "南阳市", "value": "4113" }, { "label": "商丘市", "value": "4114" }, { "label": "信阳市", "value": "4115" }, { "label": "周口市", "value": "4116" }, { "label": "驻马店市", "value": "4117" }, { "label": "省直辖县级行政区划", "value": "4190" }], [{ "label": "武汉市", "value": "4201" }, { "label": "黄石市", "value": "4202" }, { "label": "十堰市", "value": "4203" }, { "label": "宜昌市", "value": "4205" }, { "label": "襄阳市", "value": "4206" }, { "label": "鄂州市", "value": "4207" }, { "label": "荆门市", "value": "4208" }, { "label": "孝感市", "value": "4209" }, { "label": "荆州市", "value": "4210" }, { "label": "黄冈市", "value": "4211" }, { "label": "咸宁市", "value": "4212" }, { "label": "随州市", "value": "4213" }, { "label": "恩施土家族苗族自治州", "value": "4228" }, { "label": "省直辖县级行政区划", "value": "4290" }], [{ "label": "长沙市", "value": "4301" }, { "label": "株洲市", "value": "4302" }, { "label": "湘潭市", "value": "4303" }, { "label": "衡阳市", "value": "4304" }, { "label": "邵阳市", "value": "4305" }, { "label": "岳阳市", "value": "4306" }, { "label": "常德市", "value": "4307" }, { "label": "张家界市", "value": "4308" }, { "label": "益阳市", "value": "4309" }, { "label": "郴州市", "value": "4310" }, { "label": "永州市", "value": "4311" }, { "label": "怀化市", "value": "4312" }, { "label": "娄底市", "value": "4313" }, { "label": "湘西土家族苗族自治州", "value": "4331" }], [{ "label": "广州市", "value": "4401" }, { "label": "韶关市", "value": "4402" }, { "label": "深圳市", "value": "4403" }, { "label": "珠海市", "value": "4404" }, { "label": "汕头市", "value": "4405" }, { "label": "佛山市", "value": "4406" }, { "label": "江门市", "value": "4407" }, { "label": "湛江市", "value": "4408" }, { "label": "茂名市", "value": "4409" }, { "label": "肇庆市", "value": "4412" }, { "label": "惠州市", "value": "4413" }, { "label": "梅州市", "value": "4414" }, { "label": "汕尾市", "value": "4415" }, { "label": "河源市", "value": "4416" }, { "label": "阳江市", "value": "4417" }, { "label": "清远市", "value": "4418" }, { "label": "东莞市", "value": "4419" }, { "label": "中山市", "value": "4420" }, { "label": "潮州市", "value": "4451" }, { "label": "揭阳市", "value": "4452" }, { "label": "云浮市", "value": "4453" }], [{ "label": "南宁市", "value": "4501" }, { "label": "柳州市", "value": "4502" }, { "label": "桂林市", "value": "4503" }, { "label": "梧州市", "value": "4504" }, { "label": "北海市", "value": "4505" }, { "label": "防城港市", "value": "4506" }, { "label": "钦州市", "value": "4507" }, { "label": "贵港市", "value": "4508" }, { "label": "玉林市", "value": "4509" }, { "label": "百色市", "value": "4510" }, { "label": "贺州市", "value": "4511" }, { "label": "河池市", "value": "4512" }, { "label": "来宾市", "value": "4513" }, { "label": "崇左市", "value": "4514" }], [{ "label": "海口市", "value": "4601" }, { "label": "三亚市", "value": "4602" }, { "label": "三沙市", "value": "4603" }, { "label": "儋州市", "value": "4604" }, { "label": "省直辖县级行政区划", "value": "4690" }], [{ "label": "市辖区", "value": "5001" }, { "label": "县", "value": "5002" }], [{ "label": "成都市", "value": "5101" }, { "label": "自贡市", "value": "5103" }, { "label": "攀枝花市", "value": "5104" }, { "label": "泸州市", "value": "5105" }, { "label": "德阳市", "value": "5106" }, { "label": "绵阳市", "value": "5107" }, { "label": "广元市", "value": "5108" }, { "label": "遂宁市", "value": "5109" }, { "label": "内江市", "value": "5110" }, { "label": "乐山市", "value": "5111" }, { "label": "南充市", "value": "5113" }, { "label": "眉山市", "value": "5114" }, { "label": "宜宾市", "value": "5115" }, { "label": "广安市", "value": "5116" }, { "label": "达州市", "value": "5117" }, { "label": "雅安市", "value": "5118" }, { "label": "巴中市", "value": "5119" }, { "label": "资阳市", "value": "5120" }, { "label": "阿坝藏族羌族自治州", "value": "5132" }, { "label": "甘孜藏族自治州", "value": "5133" }, { "label": "凉山彝族自治州", "value": "5134" }], [{ "label": "贵阳市", "value": "5201" }, { "label": "六盘水市", "value": "5202" }, { "label": "遵义市", "value": "5203" }, { "label": "安顺市", "value": "5204" }, { "label": "毕节市", "value": "5205" }, { "label": "铜仁市", "value": "5206" }, { "label": "黔西南布依族苗族自治州", "value": "5223" }, { "label": "黔东南苗族侗族自治州", "value": "5226" }, { "label": "黔南布依族苗族自治州", "value": "5227" }], [{ "label": "昆明市", "value": "5301" }, { "label": "曲靖市", "value": "5303" }, { "label": "玉溪市", "value": "5304" }, { "label": "保山市", "value": "5305" }, { "label": "昭通市", "value": "5306" }, { "label": "丽江市", "value": "5307" }, { "label": "普洱市", "value": "5308" }, { "label": "临沧市", "value": "5309" }, { "label": "楚雄彝族自治州", "value": "5323" }, { "label": "红河哈尼族彝族自治州", "value": "5325" }, { "label": "文山壮族苗族自治州", "value": "5326" }, { "label": "西双版纳傣族自治州", "value": "5328" }, { "label": "大理白族自治州", "value": "5329" }, { "label": "德宏傣族景颇族自治州", "value": "5331" }, { "label": "怒江傈僳族自治州", "value": "5333" }, { "label": "迪庆藏族自治州", "value": "5334" }], [{ "label": "拉萨市", "value": "5401" }, { "label": "日喀则市", "value": "5402" }, { "label": "昌都市", "value": "5403" }, { "label": "林芝市", "value": "5404" }, { "label": "山南市", "value": "5405" }, { "label": "那曲地区", "value": "5424" }, { "label": "阿里地区", "value": "5425" }], [{ "label": "西安市", "value": "6101" }, { "label": "铜川市", "value": "6102" }, { "label": "宝鸡市", "value": "6103" }, { "label": "咸阳市", "value": "6104" }, { "label": "渭南市", "value": "6105" }, { "label": "延安市", "value": "6106" }, { "label": "汉中市", "value": "6107" }, { "label": "榆林市", "value": "6108" }, { "label": "安康市", "value": "6109" }, { "label": "商洛市", "value": "6110" }], [{ "label": "兰州市", "value": "6201" }, { "label": "嘉峪关市", "value": "6202" }, { "label": "金昌市", "value": "6203" }, { "label": "白银市", "value": "6204" }, { "label": "天水市", "value": "6205" }, { "label": "武威市", "value": "6206" }, { "label": "张掖市", "value": "6207" }, { "label": "平凉市", "value": "6208" }, { "label": "酒泉市", "value": "6209" }, { "label": "庆阳市", "value": "6210" }, { "label": "定西市", "value": "6211" }, { "label": "陇南市", "value": "6212" }, { "label": "临夏回族自治州", "value": "6229" }, { "label": "甘南藏族自治州", "value": "6230" }], [{ "label": "西宁市", "value": "6301" }, { "label": "海东市", "value": "6302" }, { "label": "海北藏族自治州", "value": "6322" }, { "label": "黄南藏族自治州", "value": "6323" }, { "label": "海南藏族自治州", "value": "6325" }, { "label": "果洛藏族自治州", "value": "6326" }, { "label": "玉树藏族自治州", "value": "6327" }, { "label": "海西蒙古族藏族自治州", "value": "6328" }], [{ "label": "银川市", "value": "6401" }, { "label": "石嘴山市", "value": "6402" }, { "label": "吴忠市", "value": "6403" }, { "label": "固原市", "value": "6404" }, { "label": "中卫市", "value": "6405" }], [{ "label": "乌鲁木齐市", "value": "6501" }, { "label": "克拉玛依市", "value": "6502" }, { "label": "吐鲁番市", "value": "6504" }, { "label": "哈密市", "value": "6505" }, { "label": "昌吉回族自治州", "value": "6523" }, { "label": "博尔塔拉蒙古自治州", "value": "6527" }, { "label": "巴音郭楞蒙古自治州", "value": "6528" }, { "label": "阿克苏地区", "value": "6529" }, { "label": "克孜勒苏柯尔克孜自治州", "value": "6530" }, { "label": "喀什地区", "value": "6531" }, { "label": "和田地区", "value": "6532" }, { "label": "伊犁哈萨克自治州", "value": "6540" }, { "label": "塔城地区", "value": "6542" }, { "label": "阿勒泰地区", "value": "6543" }, { "label": "自治区直辖县级行政区划", "value": "6590" }], [{ "label": "台北", "value": "6601" }, { "label": "高雄", "value": "6602" }, { "label": "基隆", "value": "6603" }, { "label": "台中", "value": "6604" }, { "label": "台南", "value": "6605" }, { "label": "新竹", "value": "6606" }, { "label": "嘉义", "value": "6607" }, { "label": "宜兰", "value": "6608" }, { "label": "桃园", "value": "6609" }, { "label": "苗栗", "value": "6610" }, { "label": "彰化", "value": "6611" }, { "label": "南投", "value": "6612" }, { "label": "云林", "value": "6613" }, { "label": "屏东", "value": "6614" }, { "label": "台东", "value": "6615" }, { "label": "花莲", "value": "6616" }, { "label": "澎湖", "value": "6617" }], [{ "label": "香港岛", "value": "6701" }, { "label": "九龙", "value": "6702" }, { "label": "新界", "value": "6703" }], [{ "label": "澳门半岛", "value": "6801" }, { "label": "氹仔岛", "value": "6802" }, { "label": "路环岛", "value": "6803" }, { "label": "路氹城", "value": "6804" }]];var _default = cityData;exports.default = _default;
+
+/***/ }),
+
+/***/ 272:
+/*!**********************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/util/area.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var areaData = [[[{ "label": "东城区", "value": "110101" }, { "label": "西城区", "value": "110102" }, { "label": "朝阳区", "value": "110105" }, { "label": "丰台区", "value": "110106" }, { "label": "石景山区", "value": "110107" }, { "label": "海淀区", "value": "110108" }, { "label": "门头沟区", "value": "110109" }, { "label": "房山区", "value": "110111" }, { "label": "通州区", "value": "110112" }, { "label": "顺义区", "value": "110113" }, { "label": "昌平区", "value": "110114" }, { "label": "大兴区", "value": "110115" }, { "label": "怀柔区", "value": "110116" }, { "label": "平谷区", "value": "110117" }, { "label": "密云区", "value": "110118" }, { "label": "延庆区", "value": "110119" }]], [[{ "label": "和平区", "value": "120101" }, { "label": "河东区", "value": "120102" }, { "label": "河西区", "value": "120103" }, { "label": "南开区", "value": "120104" }, { "label": "河北区", "value": "120105" }, { "label": "红桥区", "value": "120106" }, { "label": "东丽区", "value": "120110" }, { "label": "西青区", "value": "120111" }, { "label": "津南区", "value": "120112" }, { "label": "北辰区", "value": "120113" }, { "label": "武清区", "value": "120114" }, { "label": "宝坻区", "value": "120115" }, { "label": "滨海新区", "value": "120116" }, { "label": "宁河区", "value": "120117" }, { "label": "静海区", "value": "120118" }, { "label": "蓟州区", "value": "120119" }]], [[{ "label": "长安区", "value": "130102" }, { "label": "桥西区", "value": "130104" }, { "label": "新华区", "value": "130105" }, { "label": "井陉矿区", "value": "130107" }, { "label": "裕华区", "value": "130108" }, { "label": "藁城区", "value": "130109" }, { "label": "鹿泉区", "value": "130110" }, { "label": "栾城区", "value": "130111" }, { "label": "井陉县", "value": "130121" }, { "label": "正定县", "value": "130123" }, { "label": "行唐县", "value": "130125" }, { "label": "灵寿县", "value": "130126" }, { "label": "高邑县", "value": "130127" }, { "label": "深泽县", "value": "130128" }, { "label": "赞皇县", "value": "130129" }, { "label": "无极县", "value": "130130" }, { "label": "平山县", "value": "130131" }, { "label": "元氏县", "value": "130132" }, { "label": "赵县", "value": "130133" }, { "label": "石家庄高新技术产业开发区", "value": "130171" }, { "label": "石家庄循环化工园区", "value": "130172" }, { "label": "辛集市", "value": "130181" }, { "label": "晋州市", "value": "130183" }, { "label": "新乐市", "value": "130184" }], [{ "label": "路南区", "value": "130202" }, { "label": "路北区", "value": "130203" }, { "label": "古冶区", "value": "130204" }, { "label": "开平区", "value": "130205" }, { "label": "丰南区", "value": "130207" }, { "label": "丰润区", "value": "130208" }, { "label": "曹妃甸区", "value": "130209" }, { "label": "滦县", "value": "130223" }, { "label": "滦南县", "value": "130224" }, { "label": "乐亭县", "value": "130225" }, { "label": "迁西县", "value": "130227" }, { "label": "玉田县", "value": "130229" }, { "label": "唐山市芦台经济技术开发区", "value": "130271" }, { "label": "唐山市汉沽管理区", "value": "130272" }, { "label": "唐山高新技术产业开发区", "value": "130273" }, { "label": "河北唐山海港经济开发区", "value": "130274" }, { "label": "遵化市", "value": "130281" }, { "label": "迁安市", "value": "130283" }], [{ "label": "海港区", "value": "130302" }, { "label": "山海关区", "value": "130303" }, { "label": "北戴河区", "value": "130304" }, { "label": "抚宁区", "value": "130306" }, { "label": "青龙满族自治县", "value": "130321" }, { "label": "昌黎县", "value": "130322" }, { "label": "卢龙县", "value": "130324" }, { "label": "秦皇岛市经济技术开发区", "value": "130371" }, { "label": "北戴河新区", "value": "130372" }], [{ "label": "邯山区", "value": "130402" }, { "label": "丛台区", "value": "130403" }, { "label": "复兴区", "value": "130404" }, { "label": "峰峰矿区", "value": "130406" }, { "label": "肥乡区", "value": "130407" }, { "label": "永年区", "value": "130408" }, { "label": "临漳县", "value": "130423" }, { "label": "成安县", "value": "130424" }, { "label": "大名县", "value": "130425" }, { "label": "涉县", "value": "130426" }, { "label": "磁县", "value": "130427" }, { "label": "邱县", "value": "130430" }, { "label": "鸡泽县", "value": "130431" }, { "label": "广平县", "value": "130432" }, { "label": "馆陶县", "value": "130433" }, { "label": "魏县", "value": "130434" }, { "label": "曲周县", "value": "130435" }, { "label": "邯郸经济技术开发区", "value": "130471" }, { "label": "邯郸冀南新区", "value": "130473" }, { "label": "武安市", "value": "130481" }], [{ "label": "桥东区", "value": "130502" }, { "label": "桥西区", "value": "130503" }, { "label": "邢台县", "value": "130521" }, { "label": "临城县", "value": "130522" }, { "label": "内丘县", "value": "130523" }, { "label": "柏乡县", "value": "130524" }, { "label": "隆尧县", "value": "130525" }, { "label": "任县", "value": "130526" }, { "label": "南和县", "value": "130527" }, { "label": "宁晋县", "value": "130528" }, { "label": "巨鹿县", "value": "130529" }, { "label": "新河县", "value": "130530" }, { "label": "广宗县", "value": "130531" }, { "label": "平乡县", "value": "130532" }, { "label": "威县", "value": "130533" }, { "label": "清河县", "value": "130534" }, { "label": "临西县", "value": "130535" }, { "label": "河北邢台经济开发区", "value": "130571" }, { "label": "南宫市", "value": "130581" }, { "label": "沙河市", "value": "130582" }], [{ "label": "竞秀区", "value": "130602" }, { "label": "莲池区", "value": "130606" }, { "label": "满城区", "value": "130607" }, { "label": "清苑区", "value": "130608" }, { "label": "徐水区", "value": "130609" }, { "label": "涞水县", "value": "130623" }, { "label": "阜平县", "value": "130624" }, { "label": "定兴县", "value": "130626" }, { "label": "唐县", "value": "130627" }, { "label": "高阳县", "value": "130628" }, { "label": "容城县", "value": "130629" }, { "label": "涞源县", "value": "130630" }, { "label": "望都县", "value": "130631" }, { "label": "安新县", "value": "130632" }, { "label": "易县", "value": "130633" }, { "label": "曲阳县", "value": "130634" }, { "label": "蠡县", "value": "130635" }, { "label": "顺平县", "value": "130636" }, { "label": "博野县", "value": "130637" }, { "label": "雄县", "value": "130638" }, { "label": "保定高新技术产业开发区", "value": "130671" }, { "label": "保定白沟新城", "value": "130672" }, { "label": "涿州市", "value": "130681" }, { "label": "定州市", "value": "130682" }, { "label": "安国市", "value": "130683" }, { "label": "高碑店市", "value": "130684" }], [{ "label": "桥东区", "value": "130702" }, { "label": "桥西区", "value": "130703" }, { "label": "宣化区", "value": "130705" }, { "label": "下花园区", "value": "130706" }, { "label": "万全区", "value": "130708" }, { "label": "崇礼区", "value": "130709" }, { "label": "张北县", "value": "130722" }, { "label": "康保县", "value": "130723" }, { "label": "沽源县", "value": "130724" }, { "label": "尚义县", "value": "130725" }, { "label": "蔚县", "value": "130726" }, { "label": "阳原县", "value": "130727" }, { "label": "怀安县", "value": "130728" }, { "label": "怀来县", "value": "130730" }, { "label": "涿鹿县", "value": "130731" }, { "label": "赤城县", "value": "130732" }, { "label": "张家口市高新技术产业开发区", "value": "130771" }, { "label": "张家口市察北管理区", "value": "130772" }, { "label": "张家口市塞北管理区", "value": "130773" }], [{ "label": "双桥区", "value": "130802" }, { "label": "双滦区", "value": "130803" }, { "label": "鹰手营子矿区", "value": "130804" }, { "label": "承德县", "value": "130821" }, { "label": "兴隆县", "value": "130822" }, { "label": "滦平县", "value": "130824" }, { "label": "隆化县", "value": "130825" }, { "label": "丰宁满族自治县", "value": "130826" }, { "label": "宽城满族自治县", "value": "130827" }, { "label": "围场满族蒙古族自治县", "value": "130828" }, { "label": "承德高新技术产业开发区", "value": "130871" }, { "label": "平泉市", "value": "130881" }], [{ "label": "新华区", "value": "130902" }, { "label": "运河区", "value": "130903" }, { "label": "沧县", "value": "130921" }, { "label": "青县", "value": "130922" }, { "label": "东光县", "value": "130923" }, { "label": "海兴县", "value": "130924" }, { "label": "盐山县", "value": "130925" }, { "label": "肃宁县", "value": "130926" }, { "label": "南皮县", "value": "130927" }, { "label": "吴桥县", "value": "130928" }, { "label": "献县", "value": "130929" }, { "label": "孟村回族自治县", "value": "130930" }, { "label": "河北沧州经济开发区", "value": "130971" }, { "label": "沧州高新技术产业开发区", "value": "130972" }, { "label": "沧州渤海新区", "value": "130973" }, { "label": "泊头市", "value": "130981" }, { "label": "任丘市", "value": "130982" }, { "label": "黄骅市", "value": "130983" }, { "label": "河间市", "value": "130984" }], [{ "label": "安次区", "value": "131002" }, { "label": "广阳区", "value": "131003" }, { "label": "固安县", "value": "131022" }, { "label": "永清县", "value": "131023" }, { "label": "香河县", "value": "131024" }, { "label": "大城县", "value": "131025" }, { "label": "文安县", "value": "131026" }, { "label": "大厂回族自治县", "value": "131028" }, { "label": "廊坊经济技术开发区", "value": "131071" }, { "label": "霸州市", "value": "131081" }, { "label": "三河市", "value": "131082" }], [{ "label": "桃城区", "value": "131102" }, { "label": "冀州区", "value": "131103" }, { "label": "枣强县", "value": "131121" }, { "label": "武邑县", "value": "131122" }, { "label": "武强县", "value": "131123" }, { "label": "饶阳县", "value": "131124" }, { "label": "安平县", "value": "131125" }, { "label": "故城县", "value": "131126" }, { "label": "景县", "value": "131127" }, { "label": "阜城县", "value": "131128" }, { "label": "河北衡水经济开发区", "value": "131171" }, { "label": "衡水滨湖新区", "value": "131172" }, { "label": "深州市", "value": "131182" }]], [[{ "label": "小店区", "value": "140105" }, { "label": "迎泽区", "value": "140106" }, { "label": "杏花岭区", "value": "140107" }, { "label": "尖草坪区", "value": "140108" }, { "label": "万柏林区", "value": "140109" }, { "label": "晋源区", "value": "140110" }, { "label": "清徐县", "value": "140121" }, { "label": "阳曲县", "value": "140122" }, { "label": "娄烦县", "value": "140123" }, { "label": "山西转型综合改革示范区", "value": "140171" }, { "label": "古交市", "value": "140181" }], [{ "label": "城区", "value": "140202" }, { "label": "矿区", "value": "140203" }, { "label": "南郊区", "value": "140211" }, { "label": "新荣区", "value": "140212" }, { "label": "阳高县", "value": "140221" }, { "label": "天镇县", "value": "140222" }, { "label": "广灵县", "value": "140223" }, { "label": "灵丘县", "value": "140224" }, { "label": "浑源县", "value": "140225" }, { "label": "左云县", "value": "140226" }, { "label": "大同县", "value": "140227" }, { "label": "山西大同经济开发区", "value": "140271" }], [{ "label": "城区", "value": "140302" }, { "label": "矿区", "value": "140303" }, { "label": "郊区", "value": "140311" }, { "label": "平定县", "value": "140321" }, { "label": "盂县", "value": "140322" }, { "label": "山西阳泉经济开发区", "value": "140371" }], [{ "label": "城区", "value": "140402" }, { "label": "郊区", "value": "140411" }, { "label": "长治县", "value": "140421" }, { "label": "襄垣县", "value": "140423" }, { "label": "屯留县", "value": "140424" }, { "label": "平顺县", "value": "140425" }, { "label": "黎城县", "value": "140426" }, { "label": "壶关县", "value": "140427" }, { "label": "长子县", "value": "140428" }, { "label": "武乡县", "value": "140429" }, { "label": "沁县", "value": "140430" }, { "label": "沁源县", "value": "140431" }, { "label": "山西长治高新技术产业园区", "value": "140471" }, { "label": "潞城市", "value": "140481" }], [{ "label": "城区", "value": "140502" }, { "label": "沁水县", "value": "140521" }, { "label": "阳城县", "value": "140522" }, { "label": "陵川县", "value": "140524" }, { "label": "泽州县", "value": "140525" }, { "label": "高平市", "value": "140581" }], [{ "label": "朔城区", "value": "140602" }, { "label": "平鲁区", "value": "140603" }, { "label": "山阴县", "value": "140621" }, { "label": "应县", "value": "140622" }, { "label": "右玉县", "value": "140623" }, { "label": "怀仁县", "value": "140624" }, { "label": "山西朔州经济开发区", "value": "140671" }], [{ "label": "榆次区", "value": "140702" }, { "label": "榆社县", "value": "140721" }, { "label": "左权县", "value": "140722" }, { "label": "和顺县", "value": "140723" }, { "label": "昔阳县", "value": "140724" }, { "label": "寿阳县", "value": "140725" }, { "label": "太谷县", "value": "140726" }, { "label": "祁县", "value": "140727" }, { "label": "平遥县", "value": "140728" }, { "label": "灵石县", "value": "140729" }, { "label": "介休市", "value": "140781" }], [{ "label": "盐湖区", "value": "140802" }, { "label": "临猗县", "value": "140821" }, { "label": "万荣县", "value": "140822" }, { "label": "闻喜县", "value": "140823" }, { "label": "稷山县", "value": "140824" }, { "label": "新绛县", "value": "140825" }, { "label": "绛县", "value": "140826" }, { "label": "垣曲县", "value": "140827" }, { "label": "夏县", "value": "140828" }, { "label": "平陆县", "value": "140829" }, { "label": "芮城县", "value": "140830" }, { "label": "永济市", "value": "140881" }, { "label": "河津市", "value": "140882" }], [{ "label": "忻府区", "value": "140902" }, { "label": "定襄县", "value": "140921" }, { "label": "五台县", "value": "140922" }, { "label": "代县", "value": "140923" }, { "label": "繁峙县", "value": "140924" }, { "label": "宁武县", "value": "140925" }, { "label": "静乐县", "value": "140926" }, { "label": "神池县", "value": "140927" }, { "label": "五寨县", "value": "140928" }, { "label": "岢岚县", "value": "140929" }, { "label": "河曲县", "value": "140930" }, { "label": "保德县", "value": "140931" }, { "label": "偏关县", "value": "140932" }, { "label": "五台山风景名胜区", "value": "140971" }, { "label": "原平市", "value": "140981" }], [{ "label": "尧都区", "value": "141002" }, { "label": "曲沃县", "value": "141021" }, { "label": "翼城县", "value": "141022" }, { "label": "襄汾县", "value": "141023" }, { "label": "洪洞县", "value": "141024" }, { "label": "古县", "value": "141025" }, { "label": "安泽县", "value": "141026" }, { "label": "浮山县", "value": "141027" }, { "label": "吉县", "value": "141028" }, { "label": "乡宁县", "value": "141029" }, { "label": "大宁县", "value": "141030" }, { "label": "隰县", "value": "141031" }, { "label": "永和县", "value": "141032" }, { "label": "蒲县", "value": "141033" }, { "label": "汾西县", "value": "141034" }, { "label": "侯马市", "value": "141081" }, { "label": "霍州市", "value": "141082" }], [{ "label": "离石区", "value": "141102" }, { "label": "文水县", "value": "141121" }, { "label": "交城县", "value": "141122" }, { "label": "兴县", "value": "141123" }, { "label": "临县", "value": "141124" }, { "label": "柳林县", "value": "141125" }, { "label": "石楼县", "value": "141126" }, { "label": "岚县", "value": "141127" }, { "label": "方山县", "value": "141128" }, { "label": "中阳县", "value": "141129" }, { "label": "交口县", "value": "141130" }, { "label": "孝义市", "value": "141181" }, { "label": "汾阳市", "value": "141182" }]], [[{ "label": "新城区", "value": "150102" }, { "label": "回民区", "value": "150103" }, { "label": "玉泉区", "value": "150104" }, { "label": "赛罕区", "value": "150105" }, { "label": "土默特左旗", "value": "150121" }, { "label": "托克托县", "value": "150122" }, { "label": "和林格尔县", "value": "150123" }, { "label": "清水河县", "value": "150124" }, { "label": "武川县", "value": "150125" }, { "label": "呼和浩特金海工业园区", "value": "150171" }, { "label": "呼和浩特经济技术开发区", "value": "150172" }], [{ "label": "东河区", "value": "150202" }, { "label": "昆都仑区", "value": "150203" }, { "label": "青山区", "value": "150204" }, { "label": "石拐区", "value": "150205" }, { "label": "白云鄂博矿区", "value": "150206" }, { "label": "九原区", "value": "150207" }, { "label": "土默特右旗", "value": "150221" }, { "label": "固阳县", "value": "150222" }, { "label": "达尔罕茂明安联合旗", "value": "150223" }, { "label": "包头稀土高新技术产业开发区", "value": "150271" }], [{ "label": "海勃湾区", "value": "150302" }, { "label": "海南区", "value": "150303" }, { "label": "乌达区", "value": "150304" }], [{ "label": "红山区", "value": "150402" }, { "label": "元宝山区", "value": "150403" }, { "label": "松山区", "value": "150404" }, { "label": "阿鲁科尔沁旗", "value": "150421" }, { "label": "巴林左旗", "value": "150422" }, { "label": "巴林右旗", "value": "150423" }, { "label": "林西县", "value": "150424" }, { "label": "克什克腾旗", "value": "150425" }, { "label": "翁牛特旗", "value": "150426" }, { "label": "喀喇沁旗", "value": "150428" }, { "label": "宁城县", "value": "150429" }, { "label": "敖汉旗", "value": "150430" }], [{ "label": "科尔沁区", "value": "150502" }, { "label": "科尔沁左翼中旗", "value": "150521" }, { "label": "科尔沁左翼后旗", "value": "150522" }, { "label": "开鲁县", "value": "150523" }, { "label": "库伦旗", "value": "150524" }, { "label": "奈曼旗", "value": "150525" }, { "label": "扎鲁特旗", "value": "150526" }, { "label": "通辽经济技术开发区", "value": "150571" }, { "label": "霍林郭勒市", "value": "150581" }], [{ "label": "东胜区", "value": "150602" }, { "label": "康巴什区", "value": "150603" }, { "label": "达拉特旗", "value": "150621" }, { "label": "准格尔旗", "value": "150622" }, { "label": "鄂托克前旗", "value": "150623" }, { "label": "鄂托克旗", "value": "150624" }, { "label": "杭锦旗", "value": "150625" }, { "label": "乌审旗", "value": "150626" }, { "label": "伊金霍洛旗", "value": "150627" }], [{ "label": "海拉尔区", "value": "150702" }, { "label": "扎赉诺尔区", "value": "150703" }, { "label": "阿荣旗", "value": "150721" }, { "label": "莫力达瓦达斡尔族自治旗", "value": "150722" }, { "label": "鄂伦春自治旗", "value": "150723" }, { "label": "鄂温克族自治旗", "value": "150724" }, { "label": "陈巴尔虎旗", "value": "150725" }, { "label": "新巴尔虎左旗", "value": "150726" }, { "label": "新巴尔虎右旗", "value": "150727" }, { "label": "满洲里市", "value": "150781" }, { "label": "牙克石市", "value": "150782" }, { "label": "扎兰屯市", "value": "150783" }, { "label": "额尔古纳市", "value": "150784" }, { "label": "根河市", "value": "150785" }], [{ "label": "临河区", "value": "150802" }, { "label": "五原县", "value": "150821" }, { "label": "磴口县", "value": "150822" }, { "label": "乌拉特前旗", "value": "150823" }, { "label": "乌拉特中旗", "value": "150824" }, { "label": "乌拉特后旗", "value": "150825" }, { "label": "杭锦后旗", "value": "150826" }], [{ "label": "集宁区", "value": "150902" }, { "label": "卓资县", "value": "150921" }, { "label": "化德县", "value": "150922" }, { "label": "商都县", "value": "150923" }, { "label": "兴和县", "value": "150924" }, { "label": "凉城县", "value": "150925" }, { "label": "察哈尔右翼前旗", "value": "150926" }, { "label": "察哈尔右翼中旗", "value": "150927" }, { "label": "察哈尔右翼后旗", "value": "150928" }, { "label": "四子王旗", "value": "150929" }, { "label": "丰镇市", "value": "150981" }], [{ "label": "乌兰浩特市", "value": "152201" }, { "label": "阿尔山市", "value": "152202" }, { "label": "科尔沁右翼前旗", "value": "152221" }, { "label": "科尔沁右翼中旗", "value": "152222" }, { "label": "扎赉特旗", "value": "152223" }, { "label": "突泉县", "value": "152224" }], [{ "label": "二连浩特市", "value": "152501" }, { "label": "锡林浩特市", "value": "152502" }, { "label": "阿巴嘎旗", "value": "152522" }, { "label": "苏尼特左旗", "value": "152523" }, { "label": "苏尼特右旗", "value": "152524" }, { "label": "东乌珠穆沁旗", "value": "152525" }, { "label": "西乌珠穆沁旗", "value": "152526" }, { "label": "太仆寺旗", "value": "152527" }, { "label": "镶黄旗", "value": "152528" }, { "label": "正镶白旗", "value": "152529" }, { "label": "正蓝旗", "value": "152530" }, { "label": "多伦县", "value": "152531" }, { "label": "乌拉盖管委会", "value": "152571" }], [{ "label": "阿拉善左旗", "value": "152921" }, { "label": "阿拉善右旗", "value": "152922" }, { "label": "额济纳旗", "value": "152923" }, { "label": "内蒙古阿拉善经济开发区", "value": "152971" }]], [[{ "label": "和平区", "value": "210102" }, { "label": "沈河区", "value": "210103" }, { "label": "大东区", "value": "210104" }, { "label": "皇姑区", "value": "210105" }, { "label": "铁西区", "value": "210106" }, { "label": "苏家屯区", "value": "210111" }, { "label": "浑南区", "value": "210112" }, { "label": "沈北新区", "value": "210113" }, { "label": "于洪区", "value": "210114" }, { "label": "辽中区", "value": "210115" }, { "label": "康平县", "value": "210123" }, { "label": "法库县", "value": "210124" }, { "label": "新民市", "value": "210181" }], [{ "label": "中山区", "value": "210202" }, { "label": "西岗区", "value": "210203" }, { "label": "沙河口区", "value": "210204" }, { "label": "甘井子区", "value": "210211" }, { "label": "旅顺口区", "value": "210212" }, { "label": "金州区", "value": "210213" }, { "label": "普兰店区", "value": "210214" }, { "label": "长海县", "value": "210224" }, { "label": "瓦房店市", "value": "210281" }, { "label": "庄河市", "value": "210283" }], [{ "label": "铁东区", "value": "210302" }, { "label": "铁西区", "value": "210303" }, { "label": "立山区", "value": "210304" }, { "label": "千山区", "value": "210311" }, { "label": "台安县", "value": "210321" }, { "label": "岫岩满族自治县", "value": "210323" }, { "label": "海城市", "value": "210381" }], [{ "label": "新抚区", "value": "210402" }, { "label": "东洲区", "value": "210403" }, { "label": "望花区", "value": "210404" }, { "label": "顺城区", "value": "210411" }, { "label": "抚顺县", "value": "210421" }, { "label": "新宾满族自治县", "value": "210422" }, { "label": "清原满族自治县", "value": "210423" }], [{ "label": "平山区", "value": "210502" }, { "label": "溪湖区", "value": "210503" }, { "label": "明山区", "value": "210504" }, { "label": "南芬区", "value": "210505" }, { "label": "本溪满族自治县", "value": "210521" }, { "label": "桓仁满族自治县", "value": "210522" }], [{ "label": "元宝区", "value": "210602" }, { "label": "振兴区", "value": "210603" }, { "label": "振安区", "value": "210604" }, { "label": "宽甸满族自治县", "value": "210624" }, { "label": "东港市", "value": "210681" }, { "label": "凤城市", "value": "210682" }], [{ "label": "古塔区", "value": "210702" }, { "label": "凌河区", "value": "210703" }, { "label": "太和区", "value": "210711" }, { "label": "黑山县", "value": "210726" }, { "label": "义县", "value": "210727" }, { "label": "凌海市", "value": "210781" }, { "label": "北镇市", "value": "210782" }], [{ "label": "站前区", "value": "210802" }, { "label": "西市区", "value": "210803" }, { "label": "鲅鱼圈区", "value": "210804" }, { "label": "老边区", "value": "210811" }, { "label": "盖州市", "value": "210881" }, { "label": "大石桥市", "value": "210882" }], [{ "label": "海州区", "value": "210902" }, { "label": "新邱区", "value": "210903" }, { "label": "太平区", "value": "210904" }, { "label": "清河门区", "value": "210905" }, { "label": "细河区", "value": "210911" }, { "label": "阜新蒙古族自治县", "value": "210921" }, { "label": "彰武县", "value": "210922" }], [{ "label": "白塔区", "value": "211002" }, { "label": "文圣区", "value": "211003" }, { "label": "宏伟区", "value": "211004" }, { "label": "弓长岭区", "value": "211005" }, { "label": "太子河区", "value": "211011" }, { "label": "辽阳县", "value": "211021" }, { "label": "灯塔市", "value": "211081" }], [{ "label": "双台子区", "value": "211102" }, { "label": "兴隆台区", "value": "211103" }, { "label": "大洼区", "value": "211104" }, { "label": "盘山县", "value": "211122" }], [{ "label": "银州区", "value": "211202" }, { "label": "清河区", "value": "211204" }, { "label": "铁岭县", "value": "211221" }, { "label": "西丰县", "value": "211223" }, { "label": "昌图县", "value": "211224" }, { "label": "调兵山市", "value": "211281" }, { "label": "开原市", "value": "211282" }], [{ "label": "双塔区", "value": "211302" }, { "label": "龙城区", "value": "211303" }, { "label": "朝阳县", "value": "211321" }, { "label": "建平县", "value": "211322" }, { "label": "喀喇沁左翼蒙古族自治县", "value": "211324" }, { "label": "北票市", "value": "211381" }, { "label": "凌源市", "value": "211382" }], [{ "label": "连山区", "value": "211402" }, { "label": "龙港区", "value": "211403" }, { "label": "南票区", "value": "211404" }, { "label": "绥中县", "value": "211421" }, { "label": "建昌县", "value": "211422" }, { "label": "兴城市", "value": "211481" }]], [[{ "label": "南关区", "value": "220102" }, { "label": "宽城区", "value": "220103" }, { "label": "朝阳区", "value": "220104" }, { "label": "二道区", "value": "220105" }, { "label": "绿园区", "value": "220106" }, { "label": "双阳区", "value": "220112" }, { "label": "九台区", "value": "220113" }, { "label": "农安县", "value": "220122" }, { "label": "长春经济技术开发区", "value": "220171" }, { "label": "长春净月高新技术产业开发区", "value": "220172" }, { "label": "长春高新技术产业开发区", "value": "220173" }, { "label": "长春汽车经济技术开发区", "value": "220174" }, { "label": "榆树市", "value": "220182" }, { "label": "德惠市", "value": "220183" }], [{ "label": "昌邑区", "value": "220202" }, { "label": "龙潭区", "value": "220203" }, { "label": "船营区", "value": "220204" }, { "label": "丰满区", "value": "220211" }, { "label": "永吉县", "value": "220221" }, { "label": "吉林经济开发区", "value": "220271" }, { "label": "吉林高新技术产业开发区", "value": "220272" }, { "label": "吉林中国新加坡食品区", "value": "220273" }, { "label": "蛟河市", "value": "220281" }, { "label": "桦甸市", "value": "220282" }, { "label": "舒兰市", "value": "220283" }, { "label": "磐石市", "value": "220284" }], [{ "label": "铁西区", "value": "220302" }, { "label": "铁东区", "value": "220303" }, { "label": "梨树县", "value": "220322" }, { "label": "伊通满族自治县", "value": "220323" }, { "label": "公主岭市", "value": "220381" }, { "label": "双辽市", "value": "220382" }], [{ "label": "龙山区", "value": "220402" }, { "label": "西安区", "value": "220403" }, { "label": "东丰县", "value": "220421" }, { "label": "东辽县", "value": "220422" }], [{ "label": "东昌区", "value": "220502" }, { "label": "二道江区", "value": "220503" }, { "label": "通化县", "value": "220521" }, { "label": "辉南县", "value": "220523" }, { "label": "柳河县", "value": "220524" }, { "label": "梅河口市", "value": "220581" }, { "label": "集安市", "value": "220582" }], [{ "label": "浑江区", "value": "220602" }, { "label": "江源区", "value": "220605" }, { "label": "抚松县", "value": "220621" }, { "label": "靖宇县", "value": "220622" }, { "label": "长白朝鲜族自治县", "value": "220623" }, { "label": "临江市", "value": "220681" }], [{ "label": "宁江区", "value": "220702" }, { "label": "前郭尔罗斯蒙古族自治县", "value": "220721" }, { "label": "长岭县", "value": "220722" }, { "label": "乾安县", "value": "220723" }, { "label": "吉林松原经济开发区", "value": "220771" }, { "label": "扶余市", "value": "220781" }], [{ "label": "洮北区", "value": "220802" }, { "label": "镇赉县", "value": "220821" }, { "label": "通榆县", "value": "220822" }, { "label": "吉林白城经济开发区", "value": "220871" }, { "label": "洮南市", "value": "220881" }, { "label": "大安市", "value": "220882" }], [{ "label": "延吉市", "value": "222401" }, { "label": "图们市", "value": "222402" }, { "label": "敦化市", "value": "222403" }, { "label": "珲春市", "value": "222404" }, { "label": "龙井市", "value": "222405" }, { "label": "和龙市", "value": "222406" }, { "label": "汪清县", "value": "222424" }, { "label": "安图县", "value": "222426" }]], [[{ "label": "道里区", "value": "230102" }, { "label": "南岗区", "value": "230103" }, { "label": "道外区", "value": "230104" }, { "label": "平房区", "value": "230108" }, { "label": "松北区", "value": "230109" }, { "label": "香坊区", "value": "230110" }, { "label": "呼兰区", "value": "230111" }, { "label": "阿城区", "value": "230112" }, { "label": "双城区", "value": "230113" }, { "label": "依兰县", "value": "230123" }, { "label": "方正县", "value": "230124" }, { "label": "宾县", "value": "230125" }, { "label": "巴彦县", "value": "230126" }, { "label": "木兰县", "value": "230127" }, { "label": "通河县", "value": "230128" }, { "label": "延寿县", "value": "230129" }, { "label": "尚志市", "value": "230183" }, { "label": "五常市", "value": "230184" }], [{ "label": "龙沙区", "value": "230202" }, { "label": "建华区", "value": "230203" }, { "label": "铁锋区", "value": "230204" }, { "label": "昂昂溪区", "value": "230205" }, { "label": "富拉尔基区", "value": "230206" }, { "label": "碾子山区", "value": "230207" }, { "label": "梅里斯达斡尔族区", "value": "230208" }, { "label": "龙江县", "value": "230221" }, { "label": "依安县", "value": "230223" }, { "label": "泰来县", "value": "230224" }, { "label": "甘南县", "value": "230225" }, { "label": "富裕县", "value": "230227" }, { "label": "克山县", "value": "230229" }, { "label": "克东县", "value": "230230" }, { "label": "拜泉县", "value": "230231" }, { "label": "讷河市", "value": "230281" }], [{ "label": "鸡冠区", "value": "230302" }, { "label": "恒山区", "value": "230303" }, { "label": "滴道区", "value": "230304" }, { "label": "梨树区", "value": "230305" }, { "label": "城子河区", "value": "230306" }, { "label": "麻山区", "value": "230307" }, { "label": "鸡东县", "value": "230321" }, { "label": "虎林市", "value": "230381" }, { "label": "密山市", "value": "230382" }], [{ "label": "向阳区", "value": "230402" }, { "label": "工农区", "value": "230403" }, { "label": "南山区", "value": "230404" }, { "label": "兴安区", "value": "230405" }, { "label": "东山区", "value": "230406" }, { "label": "兴山区", "value": "230407" }, { "label": "萝北县", "value": "230421" }, { "label": "绥滨县", "value": "230422" }], [{ "label": "尖山区", "value": "230502" }, { "label": "岭东区", "value": "230503" }, { "label": "四方台区", "value": "230505" }, { "label": "宝山区", "value": "230506" }, { "label": "集贤县", "value": "230521" }, { "label": "友谊县", "value": "230522" }, { "label": "宝清县", "value": "230523" }, { "label": "饶河县", "value": "230524" }], [{ "label": "萨尔图区", "value": "230602" }, { "label": "龙凤区", "value": "230603" }, { "label": "让胡路区", "value": "230604" }, { "label": "红岗区", "value": "230605" }, { "label": "大同区", "value": "230606" }, { "label": "肇州县", "value": "230621" }, { "label": "肇源县", "value": "230622" }, { "label": "林甸县", "value": "230623" }, { "label": "杜尔伯特蒙古族自治县", "value": "230624" }, { "label": "大庆高新技术产业开发区", "value": "230671" }], [{ "label": "伊春区", "value": "230702" }, { "label": "南岔区", "value": "230703" }, { "label": "友好区", "value": "230704" }, { "label": "西林区", "value": "230705" }, { "label": "翠峦区", "value": "230706" }, { "label": "新青区", "value": "230707" }, { "label": "美溪区", "value": "230708" }, { "label": "金山屯区", "value": "230709" }, { "label": "五营区", "value": "230710" }, { "label": "乌马河区", "value": "230711" }, { "label": "汤旺河区", "value": "230712" }, { "label": "带岭区", "value": "230713" }, { "label": "乌伊岭区", "value": "230714" }, { "label": "红星区", "value": "230715" }, { "label": "上甘岭区", "value": "230716" }, { "label": "嘉荫县", "value": "230722" }, { "label": "铁力市", "value": "230781" }], [{ "label": "向阳区", "value": "230803" }, { "label": "前进区", "value": "230804" }, { "label": "东风区", "value": "230805" }, { "label": "郊区", "value": "230811" }, { "label": "桦南县", "value": "230822" }, { "label": "桦川县", "value": "230826" }, { "label": "汤原县", "value": "230828" }, { "label": "同江市", "value": "230881" }, { "label": "富锦市", "value": "230882" }, { "label": "抚远市", "value": "230883" }], [{ "label": "新兴区", "value": "230902" }, { "label": "桃山区", "value": "230903" }, { "label": "茄子河区", "value": "230904" }, { "label": "勃利县", "value": "230921" }], [{ "label": "东安区", "value": "231002" }, { "label": "阳明区", "value": "231003" }, { "label": "爱民区", "value": "231004" }, { "label": "西安区", "value": "231005" }, { "label": "林口县", "value": "231025" }, { "label": "牡丹江经济技术开发区", "value": "231071" }, { "label": "绥芬河市", "value": "231081" }, { "label": "海林市", "value": "231083" }, { "label": "宁安市", "value": "231084" }, { "label": "穆棱市", "value": "231085" }, { "label": "东宁市", "value": "231086" }], [{ "label": "爱辉区", "value": "231102" }, { "label": "嫩江县", "value": "231121" }, { "label": "逊克县", "value": "231123" }, { "label": "孙吴县", "value": "231124" }, { "label": "北安市", "value": "231181" }, { "label": "五大连池市", "value": "231182" }], [{ "label": "北林区", "value": "231202" }, { "label": "望奎县", "value": "231221" }, { "label": "兰西县", "value": "231222" }, { "label": "青冈县", "value": "231223" }, { "label": "庆安县", "value": "231224" }, { "label": "明水县", "value": "231225" }, { "label": "绥棱县", "value": "231226" }, { "label": "安达市", "value": "231281" }, { "label": "肇东市", "value": "231282" }, { "label": "海伦市", "value": "231283" }], [{ "label": "加格达奇区", "value": "232701" }, { "label": "松岭区", "value": "232702" }, { "label": "新林区", "value": "232703" }, { "label": "呼中区", "value": "232704" }, { "label": "呼玛县", "value": "232721" }, { "label": "塔河县", "value": "232722" }, { "label": "漠河县", "value": "232723" }]], [[{ "label": "黄浦区", "value": "310101" }, { "label": "徐汇区", "value": "310104" }, { "label": "长宁区", "value": "310105" }, { "label": "静安区", "value": "310106" }, { "label": "普陀区", "value": "310107" }, { "label": "虹口区", "value": "310109" }, { "label": "杨浦区", "value": "310110" }, { "label": "闵行区", "value": "310112" }, { "label": "宝山区", "value": "310113" }, { "label": "嘉定区", "value": "310114" }, { "label": "浦东新区", "value": "310115" }, { "label": "金山区", "value": "310116" }, { "label": "松江区", "value": "310117" }, { "label": "青浦区", "value": "310118" }, { "label": "奉贤区", "value": "310120" }, { "label": "崇明区", "value": "310151" }]], [[{ "label": "玄武区", "value": "320102" }, { "label": "秦淮区", "value": "320104" }, { "label": "建邺区", "value": "320105" }, { "label": "鼓楼区", "value": "320106" }, { "label": "浦口区", "value": "320111" }, { "label": "栖霞区", "value": "320113" }, { "label": "雨花台区", "value": "320114" }, { "label": "江宁区", "value": "320115" }, { "label": "六合区", "value": "320116" }, { "label": "溧水区", "value": "320117" }, { "label": "高淳区", "value": "320118" }], [{ "label": "锡山区", "value": "320205" }, { "label": "惠山区", "value": "320206" }, { "label": "滨湖区", "value": "320211" }, { "label": "梁溪区", "value": "320213" }, { "label": "新吴区", "value": "320214" }, { "label": "江阴市", "value": "320281" }, { "label": "宜兴市", "value": "320282" }], [{ "label": "鼓楼区", "value": "320302" }, { "label": "云龙区", "value": "320303" }, { "label": "贾汪区", "value": "320305" }, { "label": "泉山区", "value": "320311" }, { "label": "铜山区", "value": "320312" }, { "label": "丰县", "value": "320321" }, { "label": "沛县", "value": "320322" }, { "label": "睢宁县", "value": "320324" }, { "label": "徐州经济技术开发区", "value": "320371" }, { "label": "新沂市", "value": "320381" }, { "label": "邳州市", "value": "320382" }], [{ "label": "天宁区", "value": "320402" }, { "label": "钟楼区", "value": "320404" }, { "label": "新北区", "value": "320411" }, { "label": "武进区", "value": "320412" }, { "label": "金坛区", "value": "320413" }, { "label": "溧阳市", "value": "320481" }], [{ "label": "虎丘区", "value": "320505" }, { "label": "吴中区", "value": "320506" }, { "label": "相城区", "value": "320507" }, { "label": "姑苏区", "value": "320508" }, { "label": "吴江区", "value": "320509" }, { "label": "苏州工业园区", "value": "320571" }, { "label": "常熟市", "value": "320581" }, { "label": "张家港市", "value": "320582" }, { "label": "昆山市", "value": "320583" }, { "label": "太仓市", "value": "320585" }], [{ "label": "崇川区", "value": "320602" }, { "label": "港闸区", "value": "320611" }, { "label": "通州区", "value": "320612" }, { "label": "海安县", "value": "320621" }, { "label": "如东县", "value": "320623" }, { "label": "南通经济技术开发区", "value": "320671" }, { "label": "启东市", "value": "320681" }, { "label": "如皋市", "value": "320682" }, { "label": "海门市", "value": "320684" }], [{ "label": "连云区", "value": "320703" }, { "label": "海州区", "value": "320706" }, { "label": "赣榆区", "value": "320707" }, { "label": "东海县", "value": "320722" }, { "label": "灌云县", "value": "320723" }, { "label": "灌南县", "value": "320724" }, { "label": "连云港经济技术开发区", "value": "320771" }, { "label": "连云港高新技术产业开发区", "value": "320772" }], [{ "label": "淮安区", "value": "320803" }, { "label": "淮阴区", "value": "320804" }, { "label": "清江浦区", "value": "320812" }, { "label": "洪泽区", "value": "320813" }, { "label": "涟水县", "value": "320826" }, { "label": "盱眙县", "value": "320830" }, { "label": "金湖县", "value": "320831" }, { "label": "淮安经济技术开发区", "value": "320871" }], [{ "label": "亭湖区", "value": "320902" }, { "label": "盐都区", "value": "320903" }, { "label": "大丰区", "value": "320904" }, { "label": "响水县", "value": "320921" }, { "label": "滨海县", "value": "320922" }, { "label": "阜宁县", "value": "320923" }, { "label": "射阳县", "value": "320924" }, { "label": "建湖县", "value": "320925" }, { "label": "盐城经济技术开发区", "value": "320971" }, { "label": "东台市", "value": "320981" }], [{ "label": "广陵区", "value": "321002" }, { "label": "邗江区", "value": "321003" }, { "label": "江都区", "value": "321012" }, { "label": "宝应县", "value": "321023" }, { "label": "扬州经济技术开发区", "value": "321071" }, { "label": "仪征市", "value": "321081" }, { "label": "高邮市", "value": "321084" }], [{ "label": "京口区", "value": "321102" }, { "label": "润州区", "value": "321111" }, { "label": "丹徒区", "value": "321112" }, { "label": "镇江新区", "value": "321171" }, { "label": "丹阳市", "value": "321181" }, { "label": "扬中市", "value": "321182" }, { "label": "句容市", "value": "321183" }], [{ "label": "海陵区", "value": "321202" }, { "label": "高港区", "value": "321203" }, { "label": "姜堰区", "value": "321204" }, { "label": "泰州医药高新技术产业开发区", "value": "321271" }, { "label": "兴化市", "value": "321281" }, { "label": "靖江市", "value": "321282" }, { "label": "泰兴市", "value": "321283" }], [{ "label": "宿城区", "value": "321302" }, { "label": "宿豫区", "value": "321311" }, { "label": "沭阳县", "value": "321322" }, { "label": "泗阳县", "value": "321323" }, { "label": "泗洪县", "value": "321324" }, { "label": "宿迁经济技术开发区", "value": "321371" }]], [[{ "label": "上城区", "value": "330102" }, { "label": "下城区", "value": "330103" }, { "label": "江干区", "value": "330104" }, { "label": "拱墅区", "value": "330105" }, { "label": "西湖区", "value": "330106" }, { "label": "滨江区", "value": "330108" }, { "label": "萧山区", "value": "330109" }, { "label": "余杭区", "value": "330110" }, { "label": "富阳区", "value": "330111" }, { "label": "临安区", "value": "330112" }, { "label": "桐庐县", "value": "330122" }, { "label": "淳安县", "value": "330127" }, { "label": "建德市", "value": "330182" }], [{ "label": "海曙区", "value": "330203" }, { "label": "江北区", "value": "330205" }, { "label": "北仑区", "value": "330206" }, { "label": "镇海区", "value": "330211" }, { "label": "鄞州区", "value": "330212" }, { "label": "奉化区", "value": "330213" }, { "label": "象山县", "value": "330225" }, { "label": "宁海县", "value": "330226" }, { "label": "余姚市", "value": "330281" }, { "label": "慈溪市", "value": "330282" }], [{ "label": "鹿城区", "value": "330302" }, { "label": "龙湾区", "value": "330303" }, { "label": "瓯海区", "value": "330304" }, { "label": "洞头区", "value": "330305" }, { "label": "永嘉县", "value": "330324" }, { "label": "平阳县", "value": "330326" }, { "label": "苍南县", "value": "330327" }, { "label": "文成县", "value": "330328" }, { "label": "泰顺县", "value": "330329" }, { "label": "温州经济技术开发区", "value": "330371" }, { "label": "瑞安市", "value": "330381" }, { "label": "乐清市", "value": "330382" }], [{ "label": "南湖区", "value": "330402" }, { "label": "秀洲区", "value": "330411" }, { "label": "嘉善县", "value": "330421" }, { "label": "海盐县", "value": "330424" }, { "label": "海宁市", "value": "330481" }, { "label": "平湖市", "value": "330482" }, { "label": "桐乡市", "value": "330483" }], [{ "label": "吴兴区", "value": "330502" }, { "label": "南浔区", "value": "330503" }, { "label": "德清县", "value": "330521" }, { "label": "长兴县", "value": "330522" }, { "label": "安吉县", "value": "330523" }], [{ "label": "越城区", "value": "330602" }, { "label": "柯桥区", "value": "330603" }, { "label": "上虞区", "value": "330604" }, { "label": "新昌县", "value": "330624" }, { "label": "诸暨市", "value": "330681" }, { "label": "嵊州市", "value": "330683" }], [{ "label": "婺城区", "value": "330702" }, { "label": "金东区", "value": "330703" }, { "label": "武义县", "value": "330723" }, { "label": "浦江县", "value": "330726" }, { "label": "磐安县", "value": "330727" }, { "label": "兰溪市", "value": "330781" }, { "label": "义乌市", "value": "330782" }, { "label": "东阳市", "value": "330783" }, { "label": "永康市", "value": "330784" }], [{ "label": "柯城区", "value": "330802" }, { "label": "衢江区", "value": "330803" }, { "label": "常山县", "value": "330822" }, { "label": "开化县", "value": "330824" }, { "label": "龙游县", "value": "330825" }, { "label": "江山市", "value": "330881" }], [{ "label": "定海区", "value": "330902" }, { "label": "普陀区", "value": "330903" }, { "label": "岱山县", "value": "330921" }, { "label": "嵊泗县", "value": "330922" }], [{ "label": "椒江区", "value": "331002" }, { "label": "黄岩区", "value": "331003" }, { "label": "路桥区", "value": "331004" }, { "label": "三门县", "value": "331022" }, { "label": "天台县", "value": "331023" }, { "label": "仙居县", "value": "331024" }, { "label": "温岭市", "value": "331081" }, { "label": "临海市", "value": "331082" }, { "label": "玉环市", "value": "331083" }], [{ "label": "莲都区", "value": "331102" }, { "label": "青田县", "value": "331121" }, { "label": "缙云县", "value": "331122" }, { "label": "遂昌县", "value": "331123" }, { "label": "松阳县", "value": "331124" }, { "label": "云和县", "value": "331125" }, { "label": "庆元县", "value": "331126" }, { "label": "景宁畲族自治县", "value": "331127" }, { "label": "龙泉市", "value": "331181" }]], [[{ "label": "瑶海区", "value": "340102" }, { "label": "庐阳区", "value": "340103" }, { "label": "蜀山区", "value": "340104" }, { "label": "包河区", "value": "340111" }, { "label": "长丰县", "value": "340121" }, { "label": "肥东县", "value": "340122" }, { "label": "肥西县", "value": "340123" }, { "label": "庐江县", "value": "340124" }, { "label": "合肥高新技术产业开发区", "value": "340171" }, { "label": "合肥经济技术开发区", "value": "340172" }, { "label": "合肥新站高新技术产业开发区", "value": "340173" }, { "label": "巢湖市", "value": "340181" }], [{ "label": "镜湖区", "value": "340202" }, { "label": "弋江区", "value": "340203" }, { "label": "鸠江区", "value": "340207" }, { "label": "三山区", "value": "340208" }, { "label": "芜湖县", "value": "340221" }, { "label": "繁昌县", "value": "340222" }, { "label": "南陵县", "value": "340223" }, { "label": "无为县", "value": "340225" }, { "label": "芜湖经济技术开发区", "value": "340271" }, { "label": "安徽芜湖长江大桥经济开发区", "value": "340272" }], [{ "label": "龙子湖区", "value": "340302" }, { "label": "蚌山区", "value": "340303" }, { "label": "禹会区", "value": "340304" }, { "label": "淮上区", "value": "340311" }, { "label": "怀远县", "value": "340321" }, { "label": "五河县", "value": "340322" }, { "label": "固镇县", "value": "340323" }, { "label": "蚌埠市高新技术开发区", "value": "340371" }, { "label": "蚌埠市经济开发区", "value": "340372" }], [{ "label": "大通区", "value": "340402" }, { "label": "田家庵区", "value": "340403" }, { "label": "谢家集区", "value": "340404" }, { "label": "八公山区", "value": "340405" }, { "label": "潘集区", "value": "340406" }, { "label": "凤台县", "value": "340421" }, { "label": "寿县", "value": "340422" }], [{ "label": "花山区", "value": "340503" }, { "label": "雨山区", "value": "340504" }, { "label": "博望区", "value": "340506" }, { "label": "当涂县", "value": "340521" }, { "label": "含山县", "value": "340522" }, { "label": "和县", "value": "340523" }], [{ "label": "杜集区", "value": "340602" }, { "label": "相山区", "value": "340603" }, { "label": "烈山区", "value": "340604" }, { "label": "濉溪县", "value": "340621" }], [{ "label": "铜官区", "value": "340705" }, { "label": "义安区", "value": "340706" }, { "label": "郊区", "value": "340711" }, { "label": "枞阳县", "value": "340722" }], [{ "label": "迎江区", "value": "340802" }, { "label": "大观区", "value": "340803" }, { "label": "宜秀区", "value": "340811" }, { "label": "怀宁县", "value": "340822" }, { "label": "潜山县", "value": "340824" }, { "label": "太湖县", "value": "340825" }, { "label": "宿松县", "value": "340826" }, { "label": "望江县", "value": "340827" }, { "label": "岳西县", "value": "340828" }, { "label": "安徽安庆经济开发区", "value": "340871" }, { "label": "桐城市", "value": "340881" }], [{ "label": "屯溪区", "value": "341002" }, { "label": "黄山区", "value": "341003" }, { "label": "徽州区", "value": "341004" }, { "label": "歙县", "value": "341021" }, { "label": "休宁县", "value": "341022" }, { "label": "黟县", "value": "341023" }, { "label": "祁门县", "value": "341024" }], [{ "label": "琅琊区", "value": "341102" }, { "label": "南谯区", "value": "341103" }, { "label": "来安县", "value": "341122" }, { "label": "全椒县", "value": "341124" }, { "label": "定远县", "value": "341125" }, { "label": "凤阳县", "value": "341126" }, { "label": "苏滁现代产业园", "value": "341171" }, { "label": "滁州经济技术开发区", "value": "341172" }, { "label": "天长市", "value": "341181" }, { "label": "明光市", "value": "341182" }], [{ "label": "颍州区", "value": "341202" }, { "label": "颍东区", "value": "341203" }, { "label": "颍泉区", "value": "341204" }, { "label": "临泉县", "value": "341221" }, { "label": "太和县", "value": "341222" }, { "label": "阜南县", "value": "341225" }, { "label": "颍上县", "value": "341226" }, { "label": "阜阳合肥现代产业园区", "value": "341271" }, { "label": "阜阳经济技术开发区", "value": "341272" }, { "label": "界首市", "value": "341282" }], [{ "label": "埇桥区", "value": "341302" }, { "label": "砀山县", "value": "341321" }, { "label": "萧县", "value": "341322" }, { "label": "灵璧县", "value": "341323" }, { "label": "泗县", "value": "341324" }, { "label": "宿州马鞍山现代产业园区", "value": "341371" }, { "label": "宿州经济技术开发区", "value": "341372" }], [{ "label": "金安区", "value": "341502" }, { "label": "裕安区", "value": "341503" }, { "label": "叶集区", "value": "341504" }, { "label": "霍邱县", "value": "341522" }, { "label": "舒城县", "value": "341523" }, { "label": "金寨县", "value": "341524" }, { "label": "霍山县", "value": "341525" }], [{ "label": "谯城区", "value": "341602" }, { "label": "涡阳县", "value": "341621" }, { "label": "蒙城县", "value": "341622" }, { "label": "利辛县", "value": "341623" }], [{ "label": "贵池区", "value": "341702" }, { "label": "东至县", "value": "341721" }, { "label": "石台县", "value": "341722" }, { "label": "青阳县", "value": "341723" }], [{ "label": "宣州区", "value": "341802" }, { "label": "郎溪县", "value": "341821" }, { "label": "广德县", "value": "341822" }, { "label": "泾县", "value": "341823" }, { "label": "绩溪县", "value": "341824" }, { "label": "旌德县", "value": "341825" }, { "label": "宣城市经济开发区", "value": "341871" }, { "label": "宁国市", "value": "341881" }]], [[{ "label": "鼓楼区", "value": "350102" }, { "label": "台江区", "value": "350103" }, { "label": "仓山区", "value": "350104" }, { "label": "马尾区", "value": "350105" }, { "label": "晋安区", "value": "350111" }, { "label": "闽侯县", "value": "350121" }, { "label": "连江县", "value": "350122" }, { "label": "罗源县", "value": "350123" }, { "label": "闽清县", "value": "350124" }, { "label": "永泰县", "value": "350125" }, { "label": "平潭县", "value": "350128" }, { "label": "福清市", "value": "350181" }, { "label": "长乐市", "value": "350182" }], [{ "label": "思明区", "value": "350203" }, { "label": "海沧区", "value": "350205" }, { "label": "湖里区", "value": "350206" }, { "label": "集美区", "value": "350211" }, { "label": "同安区", "value": "350212" }, { "label": "翔安区", "value": "350213" }], [{ "label": "城厢区", "value": "350302" }, { "label": "涵江区", "value": "350303" }, { "label": "荔城区", "value": "350304" }, { "label": "秀屿区", "value": "350305" }, { "label": "仙游县", "value": "350322" }], [{ "label": "梅列区", "value": "350402" }, { "label": "三元区", "value": "350403" }, { "label": "明溪县", "value": "350421" }, { "label": "清流县", "value": "350423" }, { "label": "宁化县", "value": "350424" }, { "label": "大田县", "value": "350425" }, { "label": "尤溪县", "value": "350426" }, { "label": "沙县", "value": "350427" }, { "label": "将乐县", "value": "350428" }, { "label": "泰宁县", "value": "350429" }, { "label": "建宁县", "value": "350430" }, { "label": "永安市", "value": "350481" }], [{ "label": "鲤城区", "value": "350502" }, { "label": "丰泽区", "value": "350503" }, { "label": "洛江区", "value": "350504" }, { "label": "泉港区", "value": "350505" }, { "label": "惠安县", "value": "350521" }, { "label": "安溪县", "value": "350524" }, { "label": "永春县", "value": "350525" }, { "label": "德化县", "value": "350526" }, { "label": "金门县", "value": "350527" }, { "label": "石狮市", "value": "350581" }, { "label": "晋江市", "value": "350582" }, { "label": "南安市", "value": "350583" }], [{ "label": "芗城区", "value": "350602" }, { "label": "龙文区", "value": "350603" }, { "label": "云霄县", "value": "350622" }, { "label": "漳浦县", "value": "350623" }, { "label": "诏安县", "value": "350624" }, { "label": "长泰县", "value": "350625" }, { "label": "东山县", "value": "350626" }, { "label": "南靖县", "value": "350627" }, { "label": "平和县", "value": "350628" }, { "label": "华安县", "value": "350629" }, { "label": "龙海市", "value": "350681" }], [{ "label": "延平区", "value": "350702" }, { "label": "建阳区", "value": "350703" }, { "label": "顺昌县", "value": "350721" }, { "label": "浦城县", "value": "350722" }, { "label": "光泽县", "value": "350723" }, { "label": "松溪县", "value": "350724" }, { "label": "政和县", "value": "350725" }, { "label": "邵武市", "value": "350781" }, { "label": "武夷山市", "value": "350782" }, { "label": "建瓯市", "value": "350783" }], [{ "label": "新罗区", "value": "350802" }, { "label": "永定区", "value": "350803" }, { "label": "长汀县", "value": "350821" }, { "label": "上杭县", "value": "350823" }, { "label": "武平县", "value": "350824" }, { "label": "连城县", "value": "350825" }, { "label": "漳平市", "value": "350881" }], [{ "label": "蕉城区", "value": "350902" }, { "label": "霞浦县", "value": "350921" }, { "label": "古田县", "value": "350922" }, { "label": "屏南县", "value": "350923" }, { "label": "寿宁县", "value": "350924" }, { "label": "周宁县", "value": "350925" }, { "label": "柘荣县", "value": "350926" }, { "label": "福安市", "value": "350981" }, { "label": "福鼎市", "value": "350982" }]], [[{ "label": "东湖区", "value": "360102" }, { "label": "西湖区", "value": "360103" }, { "label": "青云谱区", "value": "360104" }, { "label": "湾里区", "value": "360105" }, { "label": "青山湖区", "value": "360111" }, { "label": "新建区", "value": "360112" }, { "label": "南昌县", "value": "360121" }, { "label": "安义县", "value": "360123" }, { "label": "进贤县", "value": "360124" }], [{ "label": "昌江区", "value": "360202" }, { "label": "珠山区", "value": "360203" }, { "label": "浮梁县", "value": "360222" }, { "label": "乐平市", "value": "360281" }], [{ "label": "安源区", "value": "360302" }, { "label": "湘东区", "value": "360313" }, { "label": "莲花县", "value": "360321" }, { "label": "上栗县", "value": "360322" }, { "label": "芦溪县", "value": "360323" }], [{ "label": "濂溪区", "value": "360402" }, { "label": "浔阳区", "value": "360403" }, { "label": "柴桑区", "value": "360404" }, { "label": "武宁县", "value": "360423" }, { "label": "修水县", "value": "360424" }, { "label": "永修县", "value": "360425" }, { "label": "德安县", "value": "360426" }, { "label": "都昌县", "value": "360428" }, { "label": "湖口县", "value": "360429" }, { "label": "彭泽县", "value": "360430" }, { "label": "瑞昌市", "value": "360481" }, { "label": "共青城市", "value": "360482" }, { "label": "庐山市", "value": "360483" }], [{ "label": "渝水区", "value": "360502" }, { "label": "分宜县", "value": "360521" }], [{ "label": "月湖区", "value": "360602" }, { "label": "余江县", "value": "360622" }, { "label": "贵溪市", "value": "360681" }], [{ "label": "章贡区", "value": "360702" }, { "label": "南康区", "value": "360703" }, { "label": "赣县区", "value": "360704" }, { "label": "信丰县", "value": "360722" }, { "label": "大余县", "value": "360723" }, { "label": "上犹县", "value": "360724" }, { "label": "崇义县", "value": "360725" }, { "label": "安远县", "value": "360726" }, { "label": "龙南县", "value": "360727" }, { "label": "定南县", "value": "360728" }, { "label": "全南县", "value": "360729" }, { "label": "宁都县", "value": "360730" }, { "label": "于都县", "value": "360731" }, { "label": "兴国县", "value": "360732" }, { "label": "会昌县", "value": "360733" }, { "label": "寻乌县", "value": "360734" }, { "label": "石城县", "value": "360735" }, { "label": "瑞金市", "value": "360781" }], [{ "label": "吉州区", "value": "360802" }, { "label": "青原区", "value": "360803" }, { "label": "吉安县", "value": "360821" }, { "label": "吉水县", "value": "360822" }, { "label": "峡江县", "value": "360823" }, { "label": "新干县", "value": "360824" }, { "label": "永丰县", "value": "360825" }, { "label": "泰和县", "value": "360826" }, { "label": "遂川县", "value": "360827" }, { "label": "万安县", "value": "360828" }, { "label": "安福县", "value": "360829" }, { "label": "永新县", "value": "360830" }, { "label": "井冈山市", "value": "360881" }], [{ "label": "袁州区", "value": "360902" }, { "label": "奉新县", "value": "360921" }, { "label": "万载县", "value": "360922" }, { "label": "上高县", "value": "360923" }, { "label": "宜丰县", "value": "360924" }, { "label": "靖安县", "value": "360925" }, { "label": "铜鼓县", "value": "360926" }, { "label": "丰城市", "value": "360981" }, { "label": "樟树市", "value": "360982" }, { "label": "高安市", "value": "360983" }], [{ "label": "临川区", "value": "361002" }, { "label": "东乡区", "value": "361003" }, { "label": "南城县", "value": "361021" }, { "label": "黎川县", "value": "361022" }, { "label": "南丰县", "value": "361023" }, { "label": "崇仁县", "value": "361024" }, { "label": "乐安县", "value": "361025" }, { "label": "宜黄县", "value": "361026" }, { "label": "金溪县", "value": "361027" }, { "label": "资溪县", "value": "361028" }, { "label": "广昌县", "value": "361030" }], [{ "label": "信州区", "value": "361102" }, { "label": "广丰区", "value": "361103" }, { "label": "上饶县", "value": "361121" }, { "label": "玉山县", "value": "361123" }, { "label": "铅山县", "value": "361124" }, { "label": "横峰县", "value": "361125" }, { "label": "弋阳县", "value": "361126" }, { "label": "余干县", "value": "361127" }, { "label": "鄱阳县", "value": "361128" }, { "label": "万年县", "value": "361129" }, { "label": "婺源县", "value": "361130" }, { "label": "德兴市", "value": "361181" }]], [[{ "label": "历下区", "value": "370102" }, { "label": "市中区", "value": "370103" }, { "label": "槐荫区", "value": "370104" }, { "label": "天桥区", "value": "370105" }, { "label": "历城区", "value": "370112" }, { "label": "长清区", "value": "370113" }, { "label": "章丘区", "value": "370114" }, { "label": "平阴县", "value": "370124" }, { "label": "济阳县", "value": "370125" }, { "label": "商河县", "value": "370126" }, { "label": "济南高新技术产业开发区", "value": "370171" }], [{ "label": "市南区", "value": "370202" }, { "label": "市北区", "value": "370203" }, { "label": "黄岛区", "value": "370211" }, { "label": "崂山区", "value": "370212" }, { "label": "李沧区", "value": "370213" }, { "label": "城阳区", "value": "370214" }, { "label": "即墨区", "value": "370215" }, { "label": "青岛高新技术产业开发区", "value": "370271" }, { "label": "胶州市", "value": "370281" }, { "label": "平度市", "value": "370283" }, { "label": "莱西市", "value": "370285" }], [{ "label": "淄川区", "value": "370302" }, { "label": "张店区", "value": "370303" }, { "label": "博山区", "value": "370304" }, { "label": "临淄区", "value": "370305" }, { "label": "周村区", "value": "370306" }, { "label": "桓台县", "value": "370321" }, { "label": "高青县", "value": "370322" }, { "label": "沂源县", "value": "370323" }], [{ "label": "市中区", "value": "370402" }, { "label": "薛城区", "value": "370403" }, { "label": "峄城区", "value": "370404" }, { "label": "台儿庄区", "value": "370405" }, { "label": "山亭区", "value": "370406" }, { "label": "滕州市", "value": "370481" }], [{ "label": "东营区", "value": "370502" }, { "label": "河口区", "value": "370503" }, { "label": "垦利区", "value": "370505" }, { "label": "利津县", "value": "370522" }, { "label": "广饶县", "value": "370523" }, { "label": "东营经济技术开发区", "value": "370571" }, { "label": "东营港经济开发区", "value": "370572" }], [{ "label": "芝罘区", "value": "370602" }, { "label": "福山区", "value": "370611" }, { "label": "牟平区", "value": "370612" }, { "label": "莱山区", "value": "370613" }, { "label": "长岛县", "value": "370634" }, { "label": "烟台高新技术产业开发区", "value": "370671" }, { "label": "烟台经济技术开发区", "value": "370672" }, { "label": "龙口市", "value": "370681" }, { "label": "莱阳市", "value": "370682" }, { "label": "莱州市", "value": "370683" }, { "label": "蓬莱市", "value": "370684" }, { "label": "招远市", "value": "370685" }, { "label": "栖霞市", "value": "370686" }, { "label": "海阳市", "value": "370687" }], [{ "label": "潍城区", "value": "370702" }, { "label": "寒亭区", "value": "370703" }, { "label": "坊子区", "value": "370704" }, { "label": "奎文区", "value": "370705" }, { "label": "临朐县", "value": "370724" }, { "label": "昌乐县", "value": "370725" }, { "label": "潍坊滨海经济技术开发区", "value": "370772" }, { "label": "青州市", "value": "370781" }, { "label": "诸城市", "value": "370782" }, { "label": "寿光市", "value": "370783" }, { "label": "安丘市", "value": "370784" }, { "label": "高密市", "value": "370785" }, { "label": "昌邑市", "value": "370786" }], [{ "label": "任城区", "value": "370811" }, { "label": "兖州区", "value": "370812" }, { "label": "微山县", "value": "370826" }, { "label": "鱼台县", "value": "370827" }, { "label": "金乡县", "value": "370828" }, { "label": "嘉祥县", "value": "370829" }, { "label": "汶上县", "value": "370830" }, { "label": "泗水县", "value": "370831" }, { "label": "梁山县", "value": "370832" }, { "label": "济宁高新技术产业开发区", "value": "370871" }, { "label": "曲阜市", "value": "370881" }, { "label": "邹城市", "value": "370883" }], [{ "label": "泰山区", "value": "370902" }, { "label": "岱岳区", "value": "370911" }, { "label": "宁阳县", "value": "370921" }, { "label": "东平县", "value": "370923" }, { "label": "新泰市", "value": "370982" }, { "label": "肥城市", "value": "370983" }], [{ "label": "环翠区", "value": "371002" }, { "label": "文登区", "value": "371003" }, { "label": "威海火炬高技术产业开发区", "value": "371071" }, { "label": "威海经济技术开发区", "value": "371072" }, { "label": "威海临港经济技术开发区", "value": "371073" }, { "label": "荣成市", "value": "371082" }, { "label": "乳山市", "value": "371083" }], [{ "label": "东港区", "value": "371102" }, { "label": "岚山区", "value": "371103" }, { "label": "五莲县", "value": "371121" }, { "label": "莒县", "value": "371122" }, { "label": "日照经济技术开发区", "value": "371171" }, { "label": "日照国际海洋城", "value": "371172" }], [{ "label": "莱城区", "value": "371202" }, { "label": "钢城区", "value": "371203" }], [{ "label": "兰山区", "value": "371302" }, { "label": "罗庄区", "value": "371311" }, { "label": "河东区", "value": "371312" }, { "label": "沂南县", "value": "371321" }, { "label": "郯城县", "value": "371322" }, { "label": "沂水县", "value": "371323" }, { "label": "兰陵县", "value": "371324" }, { "label": "费县", "value": "371325" }, { "label": "平邑县", "value": "371326" }, { "label": "莒南县", "value": "371327" }, { "label": "蒙阴县", "value": "371328" }, { "label": "临沭县", "value": "371329" }, { "label": "临沂高新技术产业开发区", "value": "371371" }, { "label": "临沂经济技术开发区", "value": "371372" }, { "label": "临沂临港经济开发区", "value": "371373" }], [{ "label": "德城区", "value": "371402" }, { "label": "陵城区", "value": "371403" }, { "label": "宁津县", "value": "371422" }, { "label": "庆云县", "value": "371423" }, { "label": "临邑县", "value": "371424" }, { "label": "齐河县", "value": "371425" }, { "label": "平原县", "value": "371426" }, { "label": "夏津县", "value": "371427" }, { "label": "武城县", "value": "371428" }, { "label": "德州经济技术开发区", "value": "371471" }, { "label": "德州运河经济开发区", "value": "371472" }, { "label": "乐陵市", "value": "371481" }, { "label": "禹城市", "value": "371482" }], [{ "label": "东昌府区", "value": "371502" }, { "label": "阳谷县", "value": "371521" }, { "label": "莘县", "value": "371522" }, { "label": "茌平县", "value": "371523" }, { "label": "东阿县", "value": "371524" }, { "label": "冠县", "value": "371525" }, { "label": "高唐县", "value": "371526" }, { "label": "临清市", "value": "371581" }], [{ "label": "滨城区", "value": "371602" }, { "label": "沾化区", "value": "371603" }, { "label": "惠民县", "value": "371621" }, { "label": "阳信县", "value": "371622" }, { "label": "无棣县", "value": "371623" }, { "label": "博兴县", "value": "371625" }, { "label": "邹平县", "value": "371626" }], [{ "label": "牡丹区", "value": "371702" }, { "label": "定陶区", "value": "371703" }, { "label": "曹县", "value": "371721" }, { "label": "单县", "value": "371722" }, { "label": "成武县", "value": "371723" }, { "label": "巨野县", "value": "371724" }, { "label": "郓城县", "value": "371725" }, { "label": "鄄城县", "value": "371726" }, { "label": "东明县", "value": "371728" }, { "label": "菏泽经济技术开发区", "value": "371771" }, { "label": "菏泽高新技术开发区", "value": "371772" }]], [[{ "label": "中原区", "value": "410102" }, { "label": "二七区", "value": "410103" }, { "label": "管城回族区", "value": "410104" }, { "label": "金水区", "value": "410105" }, { "label": "上街区", "value": "410106" }, { "label": "惠济区", "value": "410108" }, { "label": "中牟县", "value": "410122" }, { "label": "郑州经济技术开发区", "value": "410171" }, { "label": "郑州高新技术产业开发区", "value": "410172" }, { "label": "郑州航空港经济综合实验区", "value": "410173" }, { "label": "巩义市", "value": "410181" }, { "label": "荥阳市", "value": "410182" }, { "label": "新密市", "value": "410183" }, { "label": "新郑市", "value": "410184" }, { "label": "登封市", "value": "410185" }], [{ "label": "龙亭区", "value": "410202" }, { "label": "顺河回族区", "value": "410203" }, { "label": "鼓楼区", "value": "410204" }, { "label": "禹王台区", "value": "410205" }, { "label": "祥符区", "value": "410212" }, { "label": "杞县", "value": "410221" }, { "label": "通许县", "value": "410222" }, { "label": "尉氏县", "value": "410223" }, { "label": "兰考县", "value": "410225" }], [{ "label": "老城区", "value": "410302" }, { "label": "西工区", "value": "410303" }, { "label": "瀍河回族区", "value": "410304" }, { "label": "涧西区", "value": "410305" }, { "label": "吉利区", "value": "410306" }, { "label": "洛龙区", "value": "410311" }, { "label": "孟津县", "value": "410322" }, { "label": "新安县", "value": "410323" }, { "label": "栾川县", "value": "410324" }, { "label": "嵩县", "value": "410325" }, { "label": "汝阳县", "value": "410326" }, { "label": "宜阳县", "value": "410327" }, { "label": "洛宁县", "value": "410328" }, { "label": "伊川县", "value": "410329" }, { "label": "洛阳高新技术产业开发区", "value": "410371" }, { "label": "偃师市", "value": "410381" }], [{ "label": "新华区", "value": "410402" }, { "label": "卫东区", "value": "410403" }, { "label": "石龙区", "value": "410404" }, { "label": "湛河区", "value": "410411" }, { "label": "宝丰县", "value": "410421" }, { "label": "叶县", "value": "410422" }, { "label": "鲁山县", "value": "410423" }, { "label": "郏县", "value": "410425" }, { "label": "平顶山高新技术产业开发区", "value": "410471" }, { "label": "平顶山市新城区", "value": "410472" }, { "label": "舞钢市", "value": "410481" }, { "label": "汝州市", "value": "410482" }], [{ "label": "文峰区", "value": "410502" }, { "label": "北关区", "value": "410503" }, { "label": "殷都区", "value": "410505" }, { "label": "龙安区", "value": "410506" }, { "label": "安阳县", "value": "410522" }, { "label": "汤阴县", "value": "410523" }, { "label": "滑县", "value": "410526" }, { "label": "内黄县", "value": "410527" }, { "label": "安阳高新技术产业开发区", "value": "410571" }, { "label": "林州市", "value": "410581" }], [{ "label": "鹤山区", "value": "410602" }, { "label": "山城区", "value": "410603" }, { "label": "淇滨区", "value": "410611" }, { "label": "浚县", "value": "410621" }, { "label": "淇县", "value": "410622" }, { "label": "鹤壁经济技术开发区", "value": "410671" }], [{ "label": "红旗区", "value": "410702" }, { "label": "卫滨区", "value": "410703" }, { "label": "凤泉区", "value": "410704" }, { "label": "牧野区", "value": "410711" }, { "label": "新乡县", "value": "410721" }, { "label": "获嘉县", "value": "410724" }, { "label": "原阳县", "value": "410725" }, { "label": "延津县", "value": "410726" }, { "label": "封丘县", "value": "410727" }, { "label": "长垣县", "value": "410728" }, { "label": "新乡高新技术产业开发区", "value": "410771" }, { "label": "新乡经济技术开发区", "value": "410772" }, { "label": "新乡市平原城乡一体化示范区", "value": "410773" }, { "label": "卫辉市", "value": "410781" }, { "label": "辉县市", "value": "410782" }], [{ "label": "解放区", "value": "410802" }, { "label": "中站区", "value": "410803" }, { "label": "马村区", "value": "410804" }, { "label": "山阳区", "value": "410811" }, { "label": "修武县", "value": "410821" }, { "label": "博爱县", "value": "410822" }, { "label": "武陟县", "value": "410823" }, { "label": "温县", "value": "410825" }, { "label": "焦作城乡一体化示范区", "value": "410871" }, { "label": "沁阳市", "value": "410882" }, { "label": "孟州市", "value": "410883" }], [{ "label": "华龙区", "value": "410902" }, { "label": "清丰县", "value": "410922" }, { "label": "南乐县", "value": "410923" }, { "label": "范县", "value": "410926" }, { "label": "台前县", "value": "410927" }, { "label": "濮阳县", "value": "410928" }, { "label": "河南濮阳工业园区", "value": "410971" }, { "label": "濮阳经济技术开发区", "value": "410972" }], [{ "label": "魏都区", "value": "411002" }, { "label": "建安区", "value": "411003" }, { "label": "鄢陵县", "value": "411024" }, { "label": "襄城县", "value": "411025" }, { "label": "许昌经济技术开发区", "value": "411071" }, { "label": "禹州市", "value": "411081" }, { "label": "长葛市", "value": "411082" }], [{ "label": "源汇区", "value": "411102" }, { "label": "郾城区", "value": "411103" }, { "label": "召陵区", "value": "411104" }, { "label": "舞阳县", "value": "411121" }, { "label": "临颍县", "value": "411122" }, { "label": "漯河经济技术开发区", "value": "411171" }], [{ "label": "湖滨区", "value": "411202" }, { "label": "陕州区", "value": "411203" }, { "label": "渑池县", "value": "411221" }, { "label": "卢氏县", "value": "411224" }, { "label": "河南三门峡经济开发区", "value": "411271" }, { "label": "义马市", "value": "411281" }, { "label": "灵宝市", "value": "411282" }], [{ "label": "宛城区", "value": "411302" }, { "label": "卧龙区", "value": "411303" }, { "label": "南召县", "value": "411321" }, { "label": "方城县", "value": "411322" }, { "label": "西峡县", "value": "411323" }, { "label": "镇平县", "value": "411324" }, { "label": "内乡县", "value": "411325" }, { "label": "淅川县", "value": "411326" }, { "label": "社旗县", "value": "411327" }, { "label": "唐河县", "value": "411328" }, { "label": "新野县", "value": "411329" }, { "label": "桐柏县", "value": "411330" }, { "label": "南阳高新技术产业开发区", "value": "411371" }, { "label": "南阳市城乡一体化示范区", "value": "411372" }, { "label": "邓州市", "value": "411381" }], [{ "label": "梁园区", "value": "411402" }, { "label": "睢阳区", "value": "411403" }, { "label": "民权县", "value": "411421" }, { "label": "睢县", "value": "411422" }, { "label": "宁陵县", "value": "411423" }, { "label": "柘城县", "value": "411424" }, { "label": "虞城县", "value": "411425" }, { "label": "夏邑县", "value": "411426" }, { "label": "豫东综合物流产业聚集区", "value": "411471" }, { "label": "河南商丘经济开发区", "value": "411472" }, { "label": "永城市", "value": "411481" }], [{ "label": "浉河区", "value": "411502" }, { "label": "平桥区", "value": "411503" }, { "label": "罗山县", "value": "411521" }, { "label": "光山县", "value": "411522" }, { "label": "新县", "value": "411523" }, { "label": "商城县", "value": "411524" }, { "label": "固始县", "value": "411525" }, { "label": "潢川县", "value": "411526" }, { "label": "淮滨县", "value": "411527" }, { "label": "息县", "value": "411528" }, { "label": "信阳高新技术产业开发区", "value": "411571" }], [{ "label": "川汇区", "value": "411602" }, { "label": "扶沟县", "value": "411621" }, { "label": "西华县", "value": "411622" }, { "label": "商水县", "value": "411623" }, { "label": "沈丘县", "value": "411624" }, { "label": "郸城县", "value": "411625" }, { "label": "淮阳县", "value": "411626" }, { "label": "太康县", "value": "411627" }, { "label": "鹿邑县", "value": "411628" }, { "label": "河南周口经济开发区", "value": "411671" }, { "label": "项城市", "value": "411681" }], [{ "label": "驿城区", "value": "411702" }, { "label": "西平县", "value": "411721" }, { "label": "上蔡县", "value": "411722" }, { "label": "平舆县", "value": "411723" }, { "label": "正阳县", "value": "411724" }, { "label": "确山县", "value": "411725" }, { "label": "泌阳县", "value": "411726" }, { "label": "汝南县", "value": "411727" }, { "label": "遂平县", "value": "411728" }, { "label": "新蔡县", "value": "411729" }, { "label": "河南驻马店经济开发区", "value": "411771" }], [{ "label": "济源市", "value": "419001" }]], [[{ "label": "江岸区", "value": "420102" }, { "label": "江汉区", "value": "420103" }, { "label": "硚口区", "value": "420104" }, { "label": "汉阳区", "value": "420105" }, { "label": "武昌区", "value": "420106" }, { "label": "青山区", "value": "420107" }, { "label": "洪山区", "value": "420111" }, { "label": "东西湖区", "value": "420112" }, { "label": "汉南区", "value": "420113" }, { "label": "蔡甸区", "value": "420114" }, { "label": "江夏区", "value": "420115" }, { "label": "黄陂区", "value": "420116" }, { "label": "新洲区", "value": "420117" }], [{ "label": "黄石港区", "value": "420202" }, { "label": "西塞山区", "value": "420203" }, { "label": "下陆区", "value": "420204" }, { "label": "铁山区", "value": "420205" }, { "label": "阳新县", "value": "420222" }, { "label": "大冶市", "value": "420281" }], [{ "label": "茅箭区", "value": "420302" }, { "label": "张湾区", "value": "420303" }, { "label": "郧阳区", "value": "420304" }, { "label": "郧西县", "value": "420322" }, { "label": "竹山县", "value": "420323" }, { "label": "竹溪县", "value": "420324" }, { "label": "房县", "value": "420325" }, { "label": "丹江口市", "value": "420381" }], [{ "label": "西陵区", "value": "420502" }, { "label": "伍家岗区", "value": "420503" }, { "label": "点军区", "value": "420504" }, { "label": "猇亭区", "value": "420505" }, { "label": "夷陵区", "value": "420506" }, { "label": "远安县", "value": "420525" }, { "label": "兴山县", "value": "420526" }, { "label": "秭归县", "value": "420527" }, { "label": "长阳土家族自治县", "value": "420528" }, { "label": "五峰土家族自治县", "value": "420529" }, { "label": "宜都市", "value": "420581" }, { "label": "当阳市", "value": "420582" }, { "label": "枝江市", "value": "420583" }], [{ "label": "襄城区", "value": "420602" }, { "label": "樊城区", "value": "420606" }, { "label": "襄州区", "value": "420607" }, { "label": "南漳县", "value": "420624" }, { "label": "谷城县", "value": "420625" }, { "label": "保康县", "value": "420626" }, { "label": "老河口市", "value": "420682" }, { "label": "枣阳市", "value": "420683" }, { "label": "宜城市", "value": "420684" }], [{ "label": "梁子湖区", "value": "420702" }, { "label": "华容区", "value": "420703" }, { "label": "鄂城区", "value": "420704" }], [{ "label": "东宝区", "value": "420802" }, { "label": "掇刀区", "value": "420804" }, { "label": "京山县", "value": "420821" }, { "label": "沙洋县", "value": "420822" }, { "label": "钟祥市", "value": "420881" }], [{ "label": "孝南区", "value": "420902" }, { "label": "孝昌县", "value": "420921" }, { "label": "大悟县", "value": "420922" }, { "label": "云梦县", "value": "420923" }, { "label": "应城市", "value": "420981" }, { "label": "安陆市", "value": "420982" }, { "label": "汉川市", "value": "420984" }], [{ "label": "沙市区", "value": "421002" }, { "label": "荆州区", "value": "421003" }, { "label": "公安县", "value": "421022" }, { "label": "监利县", "value": "421023" }, { "label": "江陵县", "value": "421024" }, { "label": "荆州经济技术开发区", "value": "421071" }, { "label": "石首市", "value": "421081" }, { "label": "洪湖市", "value": "421083" }, { "label": "松滋市", "value": "421087" }], [{ "label": "黄州区", "value": "421102" }, { "label": "团风县", "value": "421121" }, { "label": "红安县", "value": "421122" }, { "label": "罗田县", "value": "421123" }, { "label": "英山县", "value": "421124" }, { "label": "浠水县", "value": "421125" }, { "label": "蕲春县", "value": "421126" }, { "label": "黄梅县", "value": "421127" }, { "label": "龙感湖管理区", "value": "421171" }, { "label": "麻城市", "value": "421181" }, { "label": "武穴市", "value": "421182" }], [{ "label": "咸安区", "value": "421202" }, { "label": "嘉鱼县", "value": "421221" }, { "label": "通城县", "value": "421222" }, { "label": "崇阳县", "value": "421223" }, { "label": "通山县", "value": "421224" }, { "label": "赤壁市", "value": "421281" }], [{ "label": "曾都区", "value": "421303" }, { "label": "随县", "value": "421321" }, { "label": "广水市", "value": "421381" }], [{ "label": "恩施市", "value": "422801" }, { "label": "利川市", "value": "422802" }, { "label": "建始县", "value": "422822" }, { "label": "巴东县", "value": "422823" }, { "label": "宣恩县", "value": "422825" }, { "label": "咸丰县", "value": "422826" }, { "label": "来凤县", "value": "422827" }, { "label": "鹤峰县", "value": "422828" }], [{ "label": "仙桃市", "value": "429004" }, { "label": "潜江市", "value": "429005" }, { "label": "天门市", "value": "429006" }, { "label": "神农架林区", "value": "429021" }]], [[{ "label": "芙蓉区", "value": "430102" }, { "label": "天心区", "value": "430103" }, { "label": "岳麓区", "value": "430104" }, { "label": "开福区", "value": "430105" }, { "label": "雨花区", "value": "430111" }, { "label": "望城区", "value": "430112" }, { "label": "长沙县", "value": "430121" }, { "label": "浏阳市", "value": "430181" }, { "label": "宁乡市", "value": "430182" }], [{ "label": "荷塘区", "value": "430202" }, { "label": "芦淞区", "value": "430203" }, { "label": "石峰区", "value": "430204" }, { "label": "天元区", "value": "430211" }, { "label": "株洲县", "value": "430221" }, { "label": "攸县", "value": "430223" }, { "label": "茶陵县", "value": "430224" }, { "label": "炎陵县", "value": "430225" }, { "label": "云龙示范区", "value": "430271" }, { "label": "醴陵市", "value": "430281" }], [{ "label": "雨湖区", "value": "430302" }, { "label": "岳塘区", "value": "430304" }, { "label": "湘潭县", "value": "430321" }, { "label": "湖南湘潭高新技术产业园区", "value": "430371" }, { "label": "湘潭昭山示范区", "value": "430372" }, { "label": "湘潭九华示范区", "value": "430373" }, { "label": "湘乡市", "value": "430381" }, { "label": "韶山市", "value": "430382" }], [{ "label": "珠晖区", "value": "430405" }, { "label": "雁峰区", "value": "430406" }, { "label": "石鼓区", "value": "430407" }, { "label": "蒸湘区", "value": "430408" }, { "label": "南岳区", "value": "430412" }, { "label": "衡阳县", "value": "430421" }, { "label": "衡南县", "value": "430422" }, { "label": "衡山县", "value": "430423" }, { "label": "衡东县", "value": "430424" }, { "label": "祁东县", "value": "430426" }, { "label": "衡阳综合保税区", "value": "430471" }, { "label": "湖南衡阳高新技术产业园区", "value": "430472" }, { "label": "湖南衡阳松木经济开发区", "value": "430473" }, { "label": "耒阳市", "value": "430481" }, { "label": "常宁市", "value": "430482" }], [{ "label": "双清区", "value": "430502" }, { "label": "大祥区", "value": "430503" }, { "label": "北塔区", "value": "430511" }, { "label": "邵东县", "value": "430521" }, { "label": "新邵县", "value": "430522" }, { "label": "邵阳县", "value": "430523" }, { "label": "隆回县", "value": "430524" }, { "label": "洞口县", "value": "430525" }, { "label": "绥宁县", "value": "430527" }, { "label": "新宁县", "value": "430528" }, { "label": "城步苗族自治县", "value": "430529" }, { "label": "武冈市", "value": "430581" }], [{ "label": "岳阳楼区", "value": "430602" }, { "label": "云溪区", "value": "430603" }, { "label": "君山区", "value": "430611" }, { "label": "岳阳县", "value": "430621" }, { "label": "华容县", "value": "430623" }, { "label": "湘阴县", "value": "430624" }, { "label": "平江县", "value": "430626" }, { "label": "岳阳市屈原管理区", "value": "430671" }, { "label": "汨罗市", "value": "430681" }, { "label": "临湘市", "value": "430682" }], [{ "label": "武陵区", "value": "430702" }, { "label": "鼎城区", "value": "430703" }, { "label": "安乡县", "value": "430721" }, { "label": "汉寿县", "value": "430722" }, { "label": "澧县", "value": "430723" }, { "label": "临澧县", "value": "430724" }, { "label": "桃源县", "value": "430725" }, { "label": "石门县", "value": "430726" }, { "label": "常德市西洞庭管理区", "value": "430771" }, { "label": "津市市", "value": "430781" }], [{ "label": "永定区", "value": "430802" }, { "label": "武陵源区", "value": "430811" }, { "label": "慈利县", "value": "430821" }, { "label": "桑植县", "value": "430822" }], [{ "label": "资阳区", "value": "430902" }, { "label": "赫山区", "value": "430903" }, { "label": "南县", "value": "430921" }, { "label": "桃江县", "value": "430922" }, { "label": "安化县", "value": "430923" }, { "label": "益阳市大通湖管理区", "value": "430971" }, { "label": "湖南益阳高新技术产业园区", "value": "430972" }, { "label": "沅江市", "value": "430981" }], [{ "label": "北湖区", "value": "431002" }, { "label": "苏仙区", "value": "431003" }, { "label": "桂阳县", "value": "431021" }, { "label": "宜章县", "value": "431022" }, { "label": "永兴县", "value": "431023" }, { "label": "嘉禾县", "value": "431024" }, { "label": "临武县", "value": "431025" }, { "label": "汝城县", "value": "431026" }, { "label": "桂东县", "value": "431027" }, { "label": "安仁县", "value": "431028" }, { "label": "资兴市", "value": "431081" }], [{ "label": "零陵区", "value": "431102" }, { "label": "冷水滩区", "value": "431103" }, { "label": "祁阳县", "value": "431121" }, { "label": "东安县", "value": "431122" }, { "label": "双牌县", "value": "431123" }, { "label": "道县", "value": "431124" }, { "label": "江永县", "value": "431125" }, { "label": "宁远县", "value": "431126" }, { "label": "蓝山县", "value": "431127" }, { "label": "新田县", "value": "431128" }, { "label": "江华瑶族自治县", "value": "431129" }, { "label": "永州经济技术开发区", "value": "431171" }, { "label": "永州市金洞管理区", "value": "431172" }, { "label": "永州市回龙圩管理区", "value": "431173" }], [{ "label": "鹤城区", "value": "431202" }, { "label": "中方县", "value": "431221" }, { "label": "沅陵县", "value": "431222" }, { "label": "辰溪县", "value": "431223" }, { "label": "溆浦县", "value": "431224" }, { "label": "会同县", "value": "431225" }, { "label": "麻阳苗族自治县", "value": "431226" }, { "label": "新晃侗族自治县", "value": "431227" }, { "label": "芷江侗族自治县", "value": "431228" }, { "label": "靖州苗族侗族自治县", "value": "431229" }, { "label": "通道侗族自治县", "value": "431230" }, { "label": "怀化市洪江管理区", "value": "431271" }, { "label": "洪江市", "value": "431281" }], [{ "label": "娄星区", "value": "431302" }, { "label": "双峰县", "value": "431321" }, { "label": "新化县", "value": "431322" }, { "label": "冷水江市", "value": "431381" }, { "label": "涟源市", "value": "431382" }], [{ "label": "吉首市", "value": "433101" }, { "label": "泸溪县", "value": "433122" }, { "label": "凤凰县", "value": "433123" }, { "label": "花垣县", "value": "433124" }, { "label": "保靖县", "value": "433125" }, { "label": "古丈县", "value": "433126" }, { "label": "永顺县", "value": "433127" }, { "label": "龙山县", "value": "433130" }, { "label": "湖南吉首经济开发区", "value": "433172" }, { "label": "湖南永顺经济开发区", "value": "433173" }]], [[{ "label": "荔湾区", "value": "440103" }, { "label": "越秀区", "value": "440104" }, { "label": "海珠区", "value": "440105" }, { "label": "天河区", "value": "440106" }, { "label": "白云区", "value": "440111" }, { "label": "黄埔区", "value": "440112" }, { "label": "番禺区", "value": "440113" }, { "label": "花都区", "value": "440114" }, { "label": "南沙区", "value": "440115" }, { "label": "从化区", "value": "440117" }, { "label": "增城区", "value": "440118" }], [{ "label": "武江区", "value": "440203" }, { "label": "浈江区", "value": "440204" }, { "label": "曲江区", "value": "440205" }, { "label": "始兴县", "value": "440222" }, { "label": "仁化县", "value": "440224" }, { "label": "翁源县", "value": "440229" }, { "label": "乳源瑶族自治县", "value": "440232" }, { "label": "新丰县", "value": "440233" }, { "label": "乐昌市", "value": "440281" }, { "label": "南雄市", "value": "440282" }], [{ "label": "罗湖区", "value": "440303" }, { "label": "福田区", "value": "440304" }, { "label": "南山区", "value": "440305" }, { "label": "宝安区", "value": "440306" }, { "label": "龙岗区", "value": "440307" }, { "label": "盐田区", "value": "440308" }, { "label": "龙华区", "value": "440309" }, { "label": "坪山区", "value": "440310" }], [{ "label": "香洲区", "value": "440402" }, { "label": "斗门区", "value": "440403" }, { "label": "金湾区", "value": "440404" }], [{ "label": "龙湖区", "value": "440507" }, { "label": "金平区", "value": "440511" }, { "label": "濠江区", "value": "440512" }, { "label": "潮阳区", "value": "440513" }, { "label": "潮南区", "value": "440514" }, { "label": "澄海区", "value": "440515" }, { "label": "南澳县", "value": "440523" }], [{ "label": "禅城区", "value": "440604" }, { "label": "南海区", "value": "440605" }, { "label": "顺德区", "value": "440606" }, { "label": "三水区", "value": "440607" }, { "label": "高明区", "value": "440608" }], [{ "label": "蓬江区", "value": "440703" }, { "label": "江海区", "value": "440704" }, { "label": "新会区", "value": "440705" }, { "label": "台山市", "value": "440781" }, { "label": "开平市", "value": "440783" }, { "label": "鹤山市", "value": "440784" }, { "label": "恩平市", "value": "440785" }], [{ "label": "赤坎区", "value": "440802" }, { "label": "霞山区", "value": "440803" }, { "label": "坡头区", "value": "440804" }, { "label": "麻章区", "value": "440811" }, { "label": "遂溪县", "value": "440823" }, { "label": "徐闻县", "value": "440825" }, { "label": "廉江市", "value": "440881" }, { "label": "雷州市", "value": "440882" }, { "label": "吴川市", "value": "440883" }], [{ "label": "茂南区", "value": "440902" }, { "label": "电白区", "value": "440904" }, { "label": "高州市", "value": "440981" }, { "label": "化州市", "value": "440982" }, { "label": "信宜市", "value": "440983" }], [{ "label": "端州区", "value": "441202" }, { "label": "鼎湖区", "value": "441203" }, { "label": "高要区", "value": "441204" }, { "label": "广宁县", "value": "441223" }, { "label": "怀集县", "value": "441224" }, { "label": "封开县", "value": "441225" }, { "label": "德庆县", "value": "441226" }, { "label": "四会市", "value": "441284" }], [{ "label": "惠城区", "value": "441302" }, { "label": "惠阳区", "value": "441303" }, { "label": "博罗县", "value": "441322" }, { "label": "惠东县", "value": "441323" }, { "label": "龙门县", "value": "441324" }], [{ "label": "梅江区", "value": "441402" }, { "label": "梅县区", "value": "441403" }, { "label": "大埔县", "value": "441422" }, { "label": "丰顺县", "value": "441423" }, { "label": "五华县", "value": "441424" }, { "label": "平远县", "value": "441426" }, { "label": "蕉岭县", "value": "441427" }, { "label": "兴宁市", "value": "441481" }], [{ "label": "城区", "value": "441502" }, { "label": "海丰县", "value": "441521" }, { "label": "陆河县", "value": "441523" }, { "label": "陆丰市", "value": "441581" }], [{ "label": "源城区", "value": "441602" }, { "label": "紫金县", "value": "441621" }, { "label": "龙川县", "value": "441622" }, { "label": "连平县", "value": "441623" }, { "label": "和平县", "value": "441624" }, { "label": "东源县", "value": "441625" }], [{ "label": "江城区", "value": "441702" }, { "label": "阳东区", "value": "441704" }, { "label": "阳西县", "value": "441721" }, { "label": "阳春市", "value": "441781" }], [{ "label": "清城区", "value": "441802" }, { "label": "清新区", "value": "441803" }, { "label": "佛冈县", "value": "441821" }, { "label": "阳山县", "value": "441823" }, { "label": "连山壮族瑶族自治县", "value": "441825" }, { "label": "连南瑶族自治县", "value": "441826" }, { "label": "英德市", "value": "441881" }, { "label": "连州市", "value": "441882" }], [{ "label": "东莞市", "value": "441900" }], [{ "label": "中山市", "value": "442000" }], [{ "label": "湘桥区", "value": "445102" }, { "label": "潮安区", "value": "445103" }, { "label": "饶平县", "value": "445122" }], [{ "label": "榕城区", "value": "445202" }, { "label": "揭东区", "value": "445203" }, { "label": "揭西县", "value": "445222" }, { "label": "惠来县", "value": "445224" }, { "label": "普宁市", "value": "445281" }], [{ "label": "云城区", "value": "445302" }, { "label": "云安区", "value": "445303" }, { "label": "新兴县", "value": "445321" }, { "label": "郁南县", "value": "445322" }, { "label": "罗定市", "value": "445381" }]], [[{ "label": "兴宁区", "value": "450102" }, { "label": "青秀区", "value": "450103" }, { "label": "江南区", "value": "450105" }, { "label": "西乡塘区", "value": "450107" }, { "label": "良庆区", "value": "450108" }, { "label": "邕宁区", "value": "450109" }, { "label": "武鸣区", "value": "450110" }, { "label": "隆安县", "value": "450123" }, { "label": "马山县", "value": "450124" }, { "label": "上林县", "value": "450125" }, { "label": "宾阳县", "value": "450126" }, { "label": "横县", "value": "450127" }], [{ "label": "城中区", "value": "450202" }, { "label": "鱼峰区", "value": "450203" }, { "label": "柳南区", "value": "450204" }, { "label": "柳北区", "value": "450205" }, { "label": "柳江区", "value": "450206" }, { "label": "柳城县", "value": "450222" }, { "label": "鹿寨县", "value": "450223" }, { "label": "融安县", "value": "450224" }, { "label": "融水苗族自治县", "value": "450225" }, { "label": "三江侗族自治县", "value": "450226" }], [{ "label": "秀峰区", "value": "450302" }, { "label": "叠彩区", "value": "450303" }, { "label": "象山区", "value": "450304" }, { "label": "七星区", "value": "450305" }, { "label": "雁山区", "value": "450311" }, { "label": "临桂区", "value": "450312" }, { "label": "阳朔县", "value": "450321" }, { "label": "灵川县", "value": "450323" }, { "label": "全州县", "value": "450324" }, { "label": "兴安县", "value": "450325" }, { "label": "永福县", "value": "450326" }, { "label": "灌阳县", "value": "450327" }, { "label": "龙胜各族自治县", "value": "450328" }, { "label": "资源县", "value": "450329" }, { "label": "平乐县", "value": "450330" }, { "label": "荔浦县", "value": "450331" }, { "label": "恭城瑶族自治县", "value": "450332" }], [{ "label": "万秀区", "value": "450403" }, { "label": "长洲区", "value": "450405" }, { "label": "龙圩区", "value": "450406" }, { "label": "苍梧县", "value": "450421" }, { "label": "藤县", "value": "450422" }, { "label": "蒙山县", "value": "450423" }, { "label": "岑溪市", "value": "450481" }], [{ "label": "海城区", "value": "450502" }, { "label": "银海区", "value": "450503" }, { "label": "铁山港区", "value": "450512" }, { "label": "合浦县", "value": "450521" }], [{ "label": "港口区", "value": "450602" }, { "label": "防城区", "value": "450603" }, { "label": "上思县", "value": "450621" }, { "label": "东兴市", "value": "450681" }], [{ "label": "钦南区", "value": "450702" }, { "label": "钦北区", "value": "450703" }, { "label": "灵山县", "value": "450721" }, { "label": "浦北县", "value": "450722" }], [{ "label": "港北区", "value": "450802" }, { "label": "港南区", "value": "450803" }, { "label": "覃塘区", "value": "450804" }, { "label": "平南县", "value": "450821" }, { "label": "桂平市", "value": "450881" }], [{ "label": "玉州区", "value": "450902" }, { "label": "福绵区", "value": "450903" }, { "label": "容县", "value": "450921" }, { "label": "陆川县", "value": "450922" }, { "label": "博白县", "value": "450923" }, { "label": "兴业县", "value": "450924" }, { "label": "北流市", "value": "450981" }], [{ "label": "右江区", "value": "451002" }, { "label": "田阳县", "value": "451021" }, { "label": "田东县", "value": "451022" }, { "label": "平果县", "value": "451023" }, { "label": "德保县", "value": "451024" }, { "label": "那坡县", "value": "451026" }, { "label": "凌云县", "value": "451027" }, { "label": "乐业县", "value": "451028" }, { "label": "田林县", "value": "451029" }, { "label": "西林县", "value": "451030" }, { "label": "隆林各族自治县", "value": "451031" }, { "label": "靖西市", "value": "451081" }], [{ "label": "八步区", "value": "451102" }, { "label": "平桂区", "value": "451103" }, { "label": "昭平县", "value": "451121" }, { "label": "钟山县", "value": "451122" }, { "label": "富川瑶族自治县", "value": "451123" }], [{ "label": "金城江区", "value": "451202" }, { "label": "宜州区", "value": "451203" }, { "label": "南丹县", "value": "451221" }, { "label": "天峨县", "value": "451222" }, { "label": "凤山县", "value": "451223" }, { "label": "东兰县", "value": "451224" }, { "label": "罗城仫佬族自治县", "value": "451225" }, { "label": "环江毛南族自治县", "value": "451226" }, { "label": "巴马瑶族自治县", "value": "451227" }, { "label": "都安瑶族自治县", "value": "451228" }, { "label": "大化瑶族自治县", "value": "451229" }], [{ "label": "兴宾区", "value": "451302" }, { "label": "忻城县", "value": "451321" }, { "label": "象州县", "value": "451322" }, { "label": "武宣县", "value": "451323" }, { "label": "金秀瑶族自治县", "value": "451324" }, { "label": "合山市", "value": "451381" }], [{ "label": "江州区", "value": "451402" }, { "label": "扶绥县", "value": "451421" }, { "label": "宁明县", "value": "451422" }, { "label": "龙州县", "value": "451423" }, { "label": "大新县", "value": "451424" }, { "label": "天等县", "value": "451425" }, { "label": "凭祥市", "value": "451481" }]], [[{ "label": "秀英区", "value": "460105" }, { "label": "龙华区", "value": "460106" }, { "label": "琼山区", "value": "460107" }, { "label": "美兰区", "value": "460108" }], [{ "label": "海棠区", "value": "460202" }, { "label": "吉阳区", "value": "460203" }, { "label": "天涯区", "value": "460204" }, { "label": "崖州区", "value": "460205" }], [{ "label": "西沙群岛", "value": "460321" }, { "label": "南沙群岛", "value": "460322" }, { "label": "中沙群岛的岛礁及其海域", "value": "460323" }], [{ "label": "儋州市", "value": "460400" }], [{ "label": "五指山市", "value": "469001" }, { "label": "琼海市", "value": "469002" }, { "label": "文昌市", "value": "469005" }, { "label": "万宁市", "value": "469006" }, { "label": "东方市", "value": "469007" }, { "label": "定安县", "value": "469021" }, { "label": "屯昌县", "value": "469022" }, { "label": "澄迈县", "value": "469023" }, { "label": "临高县", "value": "469024" }, { "label": "白沙黎族自治县", "value": "469025" }, { "label": "昌江黎族自治县", "value": "469026" }, { "label": "乐东黎族自治县", "value": "469027" }, { "label": "陵水黎族自治县", "value": "469028" }, { "label": "保亭黎族苗族自治县", "value": "469029" }, { "label": "琼中黎族苗族自治县", "value": "469030" }]], [[{ "label": "万州区", "value": "500101" }, { "label": "涪陵区", "value": "500102" }, { "label": "渝中区", "value": "500103" }, { "label": "大渡口区", "value": "500104" }, { "label": "江北区", "value": "500105" }, { "label": "沙坪坝区", "value": "500106" }, { "label": "九龙坡区", "value": "500107" }, { "label": "南岸区", "value": "500108" }, { "label": "北碚区", "value": "500109" }, { "label": "綦江区", "value": "500110" }, { "label": "大足区", "value": "500111" }, { "label": "渝北区", "value": "500112" }, { "label": "巴南区", "value": "500113" }, { "label": "黔江区", "value": "500114" }, { "label": "长寿区", "value": "500115" }, { "label": "江津区", "value": "500116" }, { "label": "合川区", "value": "500117" }, { "label": "永川区", "value": "500118" }, { "label": "南川区", "value": "500119" }, { "label": "璧山区", "value": "500120" }, { "label": "铜梁区", "value": "500151" }, { "label": "潼南区", "value": "500152" }, { "label": "荣昌区", "value": "500153" }, { "label": "开州区", "value": "500154" }, { "label": "梁平区", "value": "500155" }, { "label": "武隆区", "value": "500156" }], [{ "label": "城口县", "value": "500229" }, { "label": "丰都县", "value": "500230" }, { "label": "垫江县", "value": "500231" }, { "label": "忠县", "value": "500233" }, { "label": "云阳县", "value": "500235" }, { "label": "奉节县", "value": "500236" }, { "label": "巫山县", "value": "500237" }, { "label": "巫溪县", "value": "500238" }, { "label": "石柱土家族自治县", "value": "500240" }, { "label": "秀山土家族苗族自治县", "value": "500241" }, { "label": "酉阳土家族苗族自治县", "value": "500242" }, { "label": "彭水苗族土家族自治县", "value": "500243" }]], [[{ "label": "锦江区", "value": "510104" }, { "label": "青羊区", "value": "510105" }, { "label": "金牛区", "value": "510106" }, { "label": "武侯区", "value": "510107" }, { "label": "成华区", "value": "510108" }, { "label": "龙泉驿区", "value": "510112" }, { "label": "青白江区", "value": "510113" }, { "label": "新都区", "value": "510114" }, { "label": "温江区", "value": "510115" }, { "label": "双流区", "value": "510116" }, { "label": "郫都区", "value": "510117" }, { "label": "金堂县", "value": "510121" }, { "label": "大邑县", "value": "510129" }, { "label": "蒲江县", "value": "510131" }, { "label": "新津县", "value": "510132" }, { "label": "都江堰市", "value": "510181" }, { "label": "彭州市", "value": "510182" }, { "label": "邛崃市", "value": "510183" }, { "label": "崇州市", "value": "510184" }, { "label": "简阳市", "value": "510185" }], [{ "label": "自流井区", "value": "510302" }, { "label": "贡井区", "value": "510303" }, { "label": "大安区", "value": "510304" }, { "label": "沿滩区", "value": "510311" }, { "label": "荣县", "value": "510321" }, { "label": "富顺县", "value": "510322" }], [{ "label": "东区", "value": "510402" }, { "label": "西区", "value": "510403" }, { "label": "仁和区", "value": "510411" }, { "label": "米易县", "value": "510421" }, { "label": "盐边县", "value": "510422" }], [{ "label": "江阳区", "value": "510502" }, { "label": "纳溪区", "value": "510503" }, { "label": "龙马潭区", "value": "510504" }, { "label": "泸县", "value": "510521" }, { "label": "合江县", "value": "510522" }, { "label": "叙永县", "value": "510524" }, { "label": "古蔺县", "value": "510525" }], [{ "label": "旌阳区", "value": "510603" }, { "label": "罗江区", "value": "510604" }, { "label": "中江县", "value": "510623" }, { "label": "广汉市", "value": "510681" }, { "label": "什邡市", "value": "510682" }, { "label": "绵竹市", "value": "510683" }], [{ "label": "涪城区", "value": "510703" }, { "label": "游仙区", "value": "510704" }, { "label": "安州区", "value": "510705" }, { "label": "三台县", "value": "510722" }, { "label": "盐亭县", "value": "510723" }, { "label": "梓潼县", "value": "510725" }, { "label": "北川羌族自治县", "value": "510726" }, { "label": "平武县", "value": "510727" }, { "label": "江油市", "value": "510781" }], [{ "label": "利州区", "value": "510802" }, { "label": "昭化区", "value": "510811" }, { "label": "朝天区", "value": "510812" }, { "label": "旺苍县", "value": "510821" }, { "label": "青川县", "value": "510822" }, { "label": "剑阁县", "value": "510823" }, { "label": "苍溪县", "value": "510824" }], [{ "label": "船山区", "value": "510903" }, { "label": "安居区", "value": "510904" }, { "label": "蓬溪县", "value": "510921" }, { "label": "射洪县", "value": "510922" }, { "label": "大英县", "value": "510923" }], [{ "label": "市中区", "value": "511002" }, { "label": "东兴区", "value": "511011" }, { "label": "威远县", "value": "511024" }, { "label": "资中县", "value": "511025" }, { "label": "内江经济开发区", "value": "511071" }, { "label": "隆昌市", "value": "511083" }], [{ "label": "市中区", "value": "511102" }, { "label": "沙湾区", "value": "511111" }, { "label": "五通桥区", "value": "511112" }, { "label": "金口河区", "value": "511113" }, { "label": "犍为县", "value": "511123" }, { "label": "井研县", "value": "511124" }, { "label": "夹江县", "value": "511126" }, { "label": "沐川县", "value": "511129" }, { "label": "峨边彝族自治县", "value": "511132" }, { "label": "马边彝族自治县", "value": "511133" }, { "label": "峨眉山市", "value": "511181" }], [{ "label": "顺庆区", "value": "511302" }, { "label": "高坪区", "value": "511303" }, { "label": "嘉陵区", "value": "511304" }, { "label": "南部县", "value": "511321" }, { "label": "营山县", "value": "511322" }, { "label": "蓬安县", "value": "511323" }, { "label": "仪陇县", "value": "511324" }, { "label": "西充县", "value": "511325" }, { "label": "阆中市", "value": "511381" }], [{ "label": "东坡区", "value": "511402" }, { "label": "彭山区", "value": "511403" }, { "label": "仁寿县", "value": "511421" }, { "label": "洪雅县", "value": "511423" }, { "label": "丹棱县", "value": "511424" }, { "label": "青神县", "value": "511425" }], [{ "label": "翠屏区", "value": "511502" }, { "label": "南溪区", "value": "511503" }, { "label": "宜宾县", "value": "511521" }, { "label": "江安县", "value": "511523" }, { "label": "长宁县", "value": "511524" }, { "label": "高县", "value": "511525" }, { "label": "珙县", "value": "511526" }, { "label": "筠连县", "value": "511527" }, { "label": "兴文县", "value": "511528" }, { "label": "屏山县", "value": "511529" }], [{ "label": "广安区", "value": "511602" }, { "label": "前锋区", "value": "511603" }, { "label": "岳池县", "value": "511621" }, { "label": "武胜县", "value": "511622" }, { "label": "邻水县", "value": "511623" }, { "label": "华蓥市", "value": "511681" }], [{ "label": "通川区", "value": "511702" }, { "label": "达川区", "value": "511703" }, { "label": "宣汉县", "value": "511722" }, { "label": "开江县", "value": "511723" }, { "label": "大竹县", "value": "511724" }, { "label": "渠县", "value": "511725" }, { "label": "达州经济开发区", "value": "511771" }, { "label": "万源市", "value": "511781" }], [{ "label": "雨城区", "value": "511802" }, { "label": "名山区", "value": "511803" }, { "label": "荥经县", "value": "511822" }, { "label": "汉源县", "value": "511823" }, { "label": "石棉县", "value": "511824" }, { "label": "天全县", "value": "511825" }, { "label": "芦山县", "value": "511826" }, { "label": "宝兴县", "value": "511827" }], [{ "label": "巴州区", "value": "511902" }, { "label": "恩阳区", "value": "511903" }, { "label": "通江县", "value": "511921" }, { "label": "南江县", "value": "511922" }, { "label": "平昌县", "value": "511923" }, { "label": "巴中经济开发区", "value": "511971" }], [{ "label": "雁江区", "value": "512002" }, { "label": "安岳县", "value": "512021" }, { "label": "乐至县", "value": "512022" }], [{ "label": "马尔康市", "value": "513201" }, { "label": "汶川县", "value": "513221" }, { "label": "理县", "value": "513222" }, { "label": "茂县", "value": "513223" }, { "label": "松潘县", "value": "513224" }, { "label": "九寨沟县", "value": "513225" }, { "label": "金川县", "value": "513226" }, { "label": "小金县", "value": "513227" }, { "label": "黑水县", "value": "513228" }, { "label": "壤塘县", "value": "513230" }, { "label": "阿坝县", "value": "513231" }, { "label": "若尔盖县", "value": "513232" }, { "label": "红原县", "value": "513233" }], [{ "label": "康定市", "value": "513301" }, { "label": "泸定县", "value": "513322" }, { "label": "丹巴县", "value": "513323" }, { "label": "九龙县", "value": "513324" }, { "label": "雅江县", "value": "513325" }, { "label": "道孚县", "value": "513326" }, { "label": "炉霍县", "value": "513327" }, { "label": "甘孜县", "value": "513328" }, { "label": "新龙县", "value": "513329" }, { "label": "德格县", "value": "513330" }, { "label": "白玉县", "value": "513331" }, { "label": "石渠县", "value": "513332" }, { "label": "色达县", "value": "513333" }, { "label": "理塘县", "value": "513334" }, { "label": "巴塘县", "value": "513335" }, { "label": "乡城县", "value": "513336" }, { "label": "稻城县", "value": "513337" }, { "label": "得荣县", "value": "513338" }], [{ "label": "西昌市", "value": "513401" }, { "label": "木里藏族自治县", "value": "513422" }, { "label": "盐源县", "value": "513423" }, { "label": "德昌县", "value": "513424" }, { "label": "会理县", "value": "513425" }, { "label": "会东县", "value": "513426" }, { "label": "宁南县", "value": "513427" }, { "label": "普格县", "value": "513428" }, { "label": "布拖县", "value": "513429" }, { "label": "金阳县", "value": "513430" }, { "label": "昭觉县", "value": "513431" }, { "label": "喜德县", "value": "513432" }, { "label": "冕宁县", "value": "513433" }, { "label": "越西县", "value": "513434" }, { "label": "甘洛县", "value": "513435" }, { "label": "美姑县", "value": "513436" }, { "label": "雷波县", "value": "513437" }]], [[{ "label": "南明区", "value": "520102" }, { "label": "云岩区", "value": "520103" }, { "label": "花溪区", "value": "520111" }, { "label": "乌当区", "value": "520112" }, { "label": "白云区", "value": "520113" }, { "label": "观山湖区", "value": "520115" }, { "label": "开阳县", "value": "520121" }, { "label": "息烽县", "value": "520122" }, { "label": "修文县", "value": "520123" }, { "label": "清镇市", "value": "520181" }], [{ "label": "钟山区", "value": "520201" }, { "label": "六枝特区", "value": "520203" }, { "label": "水城县", "value": "520221" }, { "label": "盘州市", "value": "520281" }], [{ "label": "红花岗区", "value": "520302" }, { "label": "汇川区", "value": "520303" }, { "label": "播州区", "value": "520304" }, { "label": "桐梓县", "value": "520322" }, { "label": "绥阳县", "value": "520323" }, { "label": "正安县", "value": "520324" }, { "label": "道真仡佬族苗族自治县", "value": "520325" }, { "label": "务川仡佬族苗族自治县", "value": "520326" }, { "label": "凤冈县", "value": "520327" }, { "label": "湄潭县", "value": "520328" }, { "label": "余庆县", "value": "520329" }, { "label": "习水县", "value": "520330" }, { "label": "赤水市", "value": "520381" }, { "label": "仁怀市", "value": "520382" }], [{ "label": "西秀区", "value": "520402" }, { "label": "平坝区", "value": "520403" }, { "label": "普定县", "value": "520422" }, { "label": "镇宁布依族苗族自治县", "value": "520423" }, { "label": "关岭布依族苗族自治县", "value": "520424" }, { "label": "紫云苗族布依族自治县", "value": "520425" }], [{ "label": "七星关区", "value": "520502" }, { "label": "大方县", "value": "520521" }, { "label": "黔西县", "value": "520522" }, { "label": "金沙县", "value": "520523" }, { "label": "织金县", "value": "520524" }, { "label": "纳雍县", "value": "520525" }, { "label": "威宁彝族回族苗族自治县", "value": "520526" }, { "label": "赫章县", "value": "520527" }], [{ "label": "碧江区", "value": "520602" }, { "label": "万山区", "value": "520603" }, { "label": "江口县", "value": "520621" }, { "label": "玉屏侗族自治县", "value": "520622" }, { "label": "石阡县", "value": "520623" }, { "label": "思南县", "value": "520624" }, { "label": "印江土家族苗族自治县", "value": "520625" }, { "label": "德江县", "value": "520626" }, { "label": "沿河土家族自治县", "value": "520627" }, { "label": "松桃苗族自治县", "value": "520628" }], [{ "label": "兴义市", "value": "522301" }, { "label": "兴仁县", "value": "522322" }, { "label": "普安县", "value": "522323" }, { "label": "晴隆县", "value": "522324" }, { "label": "贞丰县", "value": "522325" }, { "label": "望谟县", "value": "522326" }, { "label": "册亨县", "value": "522327" }, { "label": "安龙县", "value": "522328" }], [{ "label": "凯里市", "value": "522601" }, { "label": "黄平县", "value": "522622" }, { "label": "施秉县", "value": "522623" }, { "label": "三穗县", "value": "522624" }, { "label": "镇远县", "value": "522625" }, { "label": "岑巩县", "value": "522626" }, { "label": "天柱县", "value": "522627" }, { "label": "锦屏县", "value": "522628" }, { "label": "剑河县", "value": "522629" }, { "label": "台江县", "value": "522630" }, { "label": "黎平县", "value": "522631" }, { "label": "榕江县", "value": "522632" }, { "label": "从江县", "value": "522633" }, { "label": "雷山县", "value": "522634" }, { "label": "麻江县", "value": "522635" }, { "label": "丹寨县", "value": "522636" }], [{ "label": "都匀市", "value": "522701" }, { "label": "福泉市", "value": "522702" }, { "label": "荔波县", "value": "522722" }, { "label": "贵定县", "value": "522723" }, { "label": "瓮安县", "value": "522725" }, { "label": "独山县", "value": "522726" }, { "label": "平塘县", "value": "522727" }, { "label": "罗甸县", "value": "522728" }, { "label": "长顺县", "value": "522729" }, { "label": "龙里县", "value": "522730" }, { "label": "惠水县", "value": "522731" }, { "label": "三都水族自治县", "value": "522732" }]], [[{ "label": "五华区", "value": "530102" }, { "label": "盘龙区", "value": "530103" }, { "label": "官渡区", "value": "530111" }, { "label": "西山区", "value": "530112" }, { "label": "东川区", "value": "530113" }, { "label": "呈贡区", "value": "530114" }, { "label": "晋宁区", "value": "530115" }, { "label": "富民县", "value": "530124" }, { "label": "宜良县", "value": "530125" }, { "label": "石林彝族自治县", "value": "530126" }, { "label": "嵩明县", "value": "530127" }, { "label": "禄劝彝族苗族自治县", "value": "530128" }, { "label": "寻甸回族彝族自治县", "value": "530129" }, { "label": "安宁市", "value": "530181" }], [{ "label": "麒麟区", "value": "530302" }, { "label": "沾益区", "value": "530303" }, { "label": "马龙县", "value": "530321" }, { "label": "陆良县", "value": "530322" }, { "label": "师宗县", "value": "530323" }, { "label": "罗平县", "value": "530324" }, { "label": "富源县", "value": "530325" }, { "label": "会泽县", "value": "530326" }, { "label": "宣威市", "value": "530381" }], [{ "label": "红塔区", "value": "530402" }, { "label": "江川区", "value": "530403" }, { "label": "澄江县", "value": "530422" }, { "label": "通海县", "value": "530423" }, { "label": "华宁县", "value": "530424" }, { "label": "易门县", "value": "530425" }, { "label": "峨山彝族自治县", "value": "530426" }, { "label": "新平彝族傣族自治县", "value": "530427" }, { "label": "元江哈尼族彝族傣族自治县", "value": "530428" }], [{ "label": "隆阳区", "value": "530502" }, { "label": "施甸县", "value": "530521" }, { "label": "龙陵县", "value": "530523" }, { "label": "昌宁县", "value": "530524" }, { "label": "腾冲市", "value": "530581" }], [{ "label": "昭阳区", "value": "530602" }, { "label": "鲁甸县", "value": "530621" }, { "label": "巧家县", "value": "530622" }, { "label": "盐津县", "value": "530623" }, { "label": "大关县", "value": "530624" }, { "label": "永善县", "value": "530625" }, { "label": "绥江县", "value": "530626" }, { "label": "镇雄县", "value": "530627" }, { "label": "彝良县", "value": "530628" }, { "label": "威信县", "value": "530629" }, { "label": "水富县", "value": "530630" }], [{ "label": "古城区", "value": "530702" }, { "label": "玉龙纳西族自治县", "value": "530721" }, { "label": "永胜县", "value": "530722" }, { "label": "华坪县", "value": "530723" }, { "label": "宁蒗彝族自治县", "value": "530724" }], [{ "label": "思茅区", "value": "530802" }, { "label": "宁洱哈尼族彝族自治县", "value": "530821" }, { "label": "墨江哈尼族自治县", "value": "530822" }, { "label": "景东彝族自治县", "value": "530823" }, { "label": "景谷傣族彝族自治县", "value": "530824" }, { "label": "镇沅彝族哈尼族拉祜族自治县", "value": "530825" }, { "label": "江城哈尼族彝族自治县", "value": "530826" }, { "label": "孟连傣族拉祜族佤族自治县", "value": "530827" }, { "label": "澜沧拉祜族自治县", "value": "530828" }, { "label": "西盟佤族自治县", "value": "530829" }], [{ "label": "临翔区", "value": "530902" }, { "label": "凤庆县", "value": "530921" }, { "label": "云县", "value": "530922" }, { "label": "永德县", "value": "530923" }, { "label": "镇康县", "value": "530924" }, { "label": "双江拉祜族佤族布朗族傣族自治县", "value": "530925" }, { "label": "耿马傣族佤族自治县", "value": "530926" }, { "label": "沧源佤族自治县", "value": "530927" }], [{ "label": "楚雄市", "value": "532301" }, { "label": "双柏县", "value": "532322" }, { "label": "牟定县", "value": "532323" }, { "label": "南华县", "value": "532324" }, { "label": "姚安县", "value": "532325" }, { "label": "大姚县", "value": "532326" }, { "label": "永仁县", "value": "532327" }, { "label": "元谋县", "value": "532328" }, { "label": "武定县", "value": "532329" }, { "label": "禄丰县", "value": "532331" }], [{ "label": "个旧市", "value": "532501" }, { "label": "开远市", "value": "532502" }, { "label": "蒙自市", "value": "532503" }, { "label": "弥勒市", "value": "532504" }, { "label": "屏边苗族自治县", "value": "532523" }, { "label": "建水县", "value": "532524" }, { "label": "石屏县", "value": "532525" }, { "label": "泸西县", "value": "532527" }, { "label": "元阳县", "value": "532528" }, { "label": "红河县", "value": "532529" }, { "label": "金平苗族瑶族傣族自治县", "value": "532530" }, { "label": "绿春县", "value": "532531" }, { "label": "河口瑶族自治县", "value": "532532" }], [{ "label": "文山市", "value": "532601" }, { "label": "砚山县", "value": "532622" }, { "label": "西畴县", "value": "532623" }, { "label": "麻栗坡县", "value": "532624" }, { "label": "马关县", "value": "532625" }, { "label": "丘北县", "value": "532626" }, { "label": "广南县", "value": "532627" }, { "label": "富宁县", "value": "532628" }], [{ "label": "景洪市", "value": "532801" }, { "label": "勐海县", "value": "532822" }, { "label": "勐腊县", "value": "532823" }], [{ "label": "大理市", "value": "532901" }, { "label": "漾濞彝族自治县", "value": "532922" }, { "label": "祥云县", "value": "532923" }, { "label": "宾川县", "value": "532924" }, { "label": "弥渡县", "value": "532925" }, { "label": "南涧彝族自治县", "value": "532926" }, { "label": "巍山彝族回族自治县", "value": "532927" }, { "label": "永平县", "value": "532928" }, { "label": "云龙县", "value": "532929" }, { "label": "洱源县", "value": "532930" }, { "label": "剑川县", "value": "532931" }, { "label": "鹤庆县", "value": "532932" }], [{ "label": "瑞丽市", "value": "533102" }, { "label": "芒市", "value": "533103" }, { "label": "梁河县", "value": "533122" }, { "label": "盈江县", "value": "533123" }, { "label": "陇川县", "value": "533124" }], [{ "label": "泸水市", "value": "533301" }, { "label": "福贡县", "value": "533323" }, { "label": "贡山独龙族怒族自治县", "value": "533324" }, { "label": "兰坪白族普米族自治县", "value": "533325" }], [{ "label": "香格里拉市", "value": "533401" }, { "label": "德钦县", "value": "533422" }, { "label": "维西傈僳族自治县", "value": "533423" }]], [[{ "label": "城关区", "value": "540102" }, { "label": "堆龙德庆区", "value": "540103" }, { "label": "林周县", "value": "540121" }, { "label": "当雄县", "value": "540122" }, { "label": "尼木县", "value": "540123" }, { "label": "曲水县", "value": "540124" }, { "label": "达孜县", "value": "540126" }, { "label": "墨竹工卡县", "value": "540127" }, { "label": "格尔木藏青工业园区", "value": "540171" }, { "label": "拉萨经济技术开发区", "value": "540172" }, { "label": "西藏文化旅游创意园区", "value": "540173" }, { "label": "达孜工业园区", "value": "540174" }], [{ "label": "桑珠孜区", "value": "540202" }, { "label": "南木林县", "value": "540221" }, { "label": "江孜县", "value": "540222" }, { "label": "定日县", "value": "540223" }, { "label": "萨迦县", "value": "540224" }, { "label": "拉孜县", "value": "540225" }, { "label": "昂仁县", "value": "540226" }, { "label": "谢通门县", "value": "540227" }, { "label": "白朗县", "value": "540228" }, { "label": "仁布县", "value": "540229" }, { "label": "康马县", "value": "540230" }, { "label": "定结县", "value": "540231" }, { "label": "仲巴县", "value": "540232" }, { "label": "亚东县", "value": "540233" }, { "label": "吉隆县", "value": "540234" }, { "label": "聂拉木县", "value": "540235" }, { "label": "萨嘎县", "value": "540236" }, { "label": "岗巴县", "value": "540237" }], [{ "label": "卡若区", "value": "540302" }, { "label": "江达县", "value": "540321" }, { "label": "贡觉县", "value": "540322" }, { "label": "类乌齐县", "value": "540323" }, { "label": "丁青县", "value": "540324" }, { "label": "察雅县", "value": "540325" }, { "label": "八宿县", "value": "540326" }, { "label": "左贡县", "value": "540327" }, { "label": "芒康县", "value": "540328" }, { "label": "洛隆县", "value": "540329" }, { "label": "边坝县", "value": "540330" }], [{ "label": "巴宜区", "value": "540402" }, { "label": "工布江达县", "value": "540421" }, { "label": "米林县", "value": "540422" }, { "label": "墨脱县", "value": "540423" }, { "label": "波密县", "value": "540424" }, { "label": "察隅县", "value": "540425" }, { "label": "朗县", "value": "540426" }], [{ "label": "乃东区", "value": "540502" }, { "label": "扎囊县", "value": "540521" }, { "label": "贡嘎县", "value": "540522" }, { "label": "桑日县", "value": "540523" }, { "label": "琼结县", "value": "540524" }, { "label": "曲松县", "value": "540525" }, { "label": "措美县", "value": "540526" }, { "label": "洛扎县", "value": "540527" }, { "label": "加查县", "value": "540528" }, { "label": "隆子县", "value": "540529" }, { "label": "错那县", "value": "540530" }, { "label": "浪卡子县", "value": "540531" }], [{ "label": "那曲县", "value": "542421" }, { "label": "嘉黎县", "value": "542422" }, { "label": "比如县", "value": "542423" }, { "label": "聂荣县", "value": "542424" }, { "label": "安多县", "value": "542425" }, { "label": "申扎县", "value": "542426" }, { "label": "索县", "value": "542427" }, { "label": "班戈县", "value": "542428" }, { "label": "巴青县", "value": "542429" }, { "label": "尼玛县", "value": "542430" }, { "label": "双湖县", "value": "542431" }], [{ "label": "普兰县", "value": "542521" }, { "label": "札达县", "value": "542522" }, { "label": "噶尔县", "value": "542523" }, { "label": "日土县", "value": "542524" }, { "label": "革吉县", "value": "542525" }, { "label": "改则县", "value": "542526" }, { "label": "措勤县", "value": "542527" }]], [[{ "label": "新城区", "value": "610102" }, { "label": "碑林区", "value": "610103" }, { "label": "莲湖区", "value": "610104" }, { "label": "灞桥区", "value": "610111" }, { "label": "未央区", "value": "610112" }, { "label": "雁塔区", "value": "610113" }, { "label": "阎良区", "value": "610114" }, { "label": "临潼区", "value": "610115" }, { "label": "长安区", "value": "610116" }, { "label": "高陵区", "value": "610117" }, { "label": "鄠邑区", "value": "610118" }, { "label": "蓝田县", "value": "610122" }, { "label": "周至县", "value": "610124" }], [{ "label": "王益区", "value": "610202" }, { "label": "印台区", "value": "610203" }, { "label": "耀州区", "value": "610204" }, { "label": "宜君县", "value": "610222" }], [{ "label": "渭滨区", "value": "610302" }, { "label": "金台区", "value": "610303" }, { "label": "陈仓区", "value": "610304" }, { "label": "凤翔县", "value": "610322" }, { "label": "岐山县", "value": "610323" }, { "label": "扶风县", "value": "610324" }, { "label": "眉县", "value": "610326" }, { "label": "陇县", "value": "610327" }, { "label": "千阳县", "value": "610328" }, { "label": "麟游县", "value": "610329" }, { "label": "凤县", "value": "610330" }, { "label": "太白县", "value": "610331" }], [{ "label": "秦都区", "value": "610402" }, { "label": "杨陵区", "value": "610403" }, { "label": "渭城区", "value": "610404" }, { "label": "三原县", "value": "610422" }, { "label": "泾阳县", "value": "610423" }, { "label": "乾县", "value": "610424" }, { "label": "礼泉县", "value": "610425" }, { "label": "永寿县", "value": "610426" }, { "label": "彬县", "value": "610427" }, { "label": "长武县", "value": "610428" }, { "label": "旬邑县", "value": "610429" }, { "label": "淳化县", "value": "610430" }, { "label": "武功县", "value": "610431" }, { "label": "兴平市", "value": "610481" }], [{ "label": "临渭区", "value": "610502" }, { "label": "华州区", "value": "610503" }, { "label": "潼关县", "value": "610522" }, { "label": "大荔县", "value": "610523" }, { "label": "合阳县", "value": "610524" }, { "label": "澄城县", "value": "610525" }, { "label": "蒲城县", "value": "610526" }, { "label": "白水县", "value": "610527" }, { "label": "富平县", "value": "610528" }, { "label": "韩城市", "value": "610581" }, { "label": "华阴市", "value": "610582" }], [{ "label": "宝塔区", "value": "610602" }, { "label": "安塞区", "value": "610603" }, { "label": "延长县", "value": "610621" }, { "label": "延川县", "value": "610622" }, { "label": "子长县", "value": "610623" }, { "label": "志丹县", "value": "610625" }, { "label": "吴起县", "value": "610626" }, { "label": "甘泉县", "value": "610627" }, { "label": "富县", "value": "610628" }, { "label": "洛川县", "value": "610629" }, { "label": "宜川县", "value": "610630" }, { "label": "黄龙县", "value": "610631" }, { "label": "黄陵县", "value": "610632" }], [{ "label": "汉台区", "value": "610702" }, { "label": "南郑区", "value": "610703" }, { "label": "城固县", "value": "610722" }, { "label": "洋县", "value": "610723" }, { "label": "西乡县", "value": "610724" }, { "label": "勉县", "value": "610725" }, { "label": "宁强县", "value": "610726" }, { "label": "略阳县", "value": "610727" }, { "label": "镇巴县", "value": "610728" }, { "label": "留坝县", "value": "610729" }, { "label": "佛坪县", "value": "610730" }], [{ "label": "榆阳区", "value": "610802" }, { "label": "横山区", "value": "610803" }, { "label": "府谷县", "value": "610822" }, { "label": "靖边县", "value": "610824" }, { "label": "定边县", "value": "610825" }, { "label": "绥德县", "value": "610826" }, { "label": "米脂县", "value": "610827" }, { "label": "佳县", "value": "610828" }, { "label": "吴堡县", "value": "610829" }, { "label": "清涧县", "value": "610830" }, { "label": "子洲县", "value": "610831" }, { "label": "神木市", "value": "610881" }], [{ "label": "汉滨区", "value": "610902" }, { "label": "汉阴县", "value": "610921" }, { "label": "石泉县", "value": "610922" }, { "label": "宁陕县", "value": "610923" }, { "label": "紫阳县", "value": "610924" }, { "label": "岚皋县", "value": "610925" }, { "label": "平利县", "value": "610926" }, { "label": "镇坪县", "value": "610927" }, { "label": "旬阳县", "value": "610928" }, { "label": "白河县", "value": "610929" }], [{ "label": "商州区", "value": "611002" }, { "label": "洛南县", "value": "611021" }, { "label": "丹凤县", "value": "611022" }, { "label": "商南县", "value": "611023" }, { "label": "山阳县", "value": "611024" }, { "label": "镇安县", "value": "611025" }, { "label": "柞水县", "value": "611026" }]], [[{ "label": "城关区", "value": "620102" }, { "label": "七里河区", "value": "620103" }, { "label": "西固区", "value": "620104" }, { "label": "安宁区", "value": "620105" }, { "label": "红古区", "value": "620111" }, { "label": "永登县", "value": "620121" }, { "label": "皋兰县", "value": "620122" }, { "label": "榆中县", "value": "620123" }, { "label": "兰州新区", "value": "620171" }], [{ "label": "嘉峪关市", "value": "620201" }], [{ "label": "金川区", "value": "620302" }, { "label": "永昌县", "value": "620321" }], [{ "label": "白银区", "value": "620402" }, { "label": "平川区", "value": "620403" }, { "label": "靖远县", "value": "620421" }, { "label": "会宁县", "value": "620422" }, { "label": "景泰县", "value": "620423" }], [{ "label": "秦州区", "value": "620502" }, { "label": "麦积区", "value": "620503" }, { "label": "清水县", "value": "620521" }, { "label": "秦安县", "value": "620522" }, { "label": "甘谷县", "value": "620523" }, { "label": "武山县", "value": "620524" }, { "label": "张家川回族自治县", "value": "620525" }], [{ "label": "凉州区", "value": "620602" }, { "label": "民勤县", "value": "620621" }, { "label": "古浪县", "value": "620622" }, { "label": "天祝藏族自治县", "value": "620623" }], [{ "label": "甘州区", "value": "620702" }, { "label": "肃南裕固族自治县", "value": "620721" }, { "label": "民乐县", "value": "620722" }, { "label": "临泽县", "value": "620723" }, { "label": "高台县", "value": "620724" }, { "label": "山丹县", "value": "620725" }], [{ "label": "崆峒区", "value": "620802" }, { "label": "泾川县", "value": "620821" }, { "label": "灵台县", "value": "620822" }, { "label": "崇信县", "value": "620823" }, { "label": "华亭县", "value": "620824" }, { "label": "庄浪县", "value": "620825" }, { "label": "静宁县", "value": "620826" }, { "label": "平凉工业园区", "value": "620871" }], [{ "label": "肃州区", "value": "620902" }, { "label": "金塔县", "value": "620921" }, { "label": "瓜州县", "value": "620922" }, { "label": "肃北蒙古族自治县", "value": "620923" }, { "label": "阿克塞哈萨克族自治县", "value": "620924" }, { "label": "玉门市", "value": "620981" }, { "label": "敦煌市", "value": "620982" }], [{ "label": "西峰区", "value": "621002" }, { "label": "庆城县", "value": "621021" }, { "label": "环县", "value": "621022" }, { "label": "华池县", "value": "621023" }, { "label": "合水县", "value": "621024" }, { "label": "正宁县", "value": "621025" }, { "label": "宁县", "value": "621026" }, { "label": "镇原县", "value": "621027" }], [{ "label": "安定区", "value": "621102" }, { "label": "通渭县", "value": "621121" }, { "label": "陇西县", "value": "621122" }, { "label": "渭源县", "value": "621123" }, { "label": "临洮县", "value": "621124" }, { "label": "漳县", "value": "621125" }, { "label": "岷县", "value": "621126" }], [{ "label": "武都区", "value": "621202" }, { "label": "成县", "value": "621221" }, { "label": "文县", "value": "621222" }, { "label": "宕昌县", "value": "621223" }, { "label": "康县", "value": "621224" }, { "label": "西和县", "value": "621225" }, { "label": "礼县", "value": "621226" }, { "label": "徽县", "value": "621227" }, { "label": "两当县", "value": "621228" }], [{ "label": "临夏市", "value": "622901" }, { "label": "临夏县", "value": "622921" }, { "label": "康乐县", "value": "622922" }, { "label": "永靖县", "value": "622923" }, { "label": "广河县", "value": "622924" }, { "label": "和政县", "value": "622925" }, { "label": "东乡族自治县", "value": "622926" }, { "label": "积石山保安族东乡族撒拉族自治县", "value": "622927" }], [{ "label": "合作市", "value": "623001" }, { "label": "临潭县", "value": "623021" }, { "label": "卓尼县", "value": "623022" }, { "label": "舟曲县", "value": "623023" }, { "label": "迭部县", "value": "623024" }, { "label": "玛曲县", "value": "623025" }, { "label": "碌曲县", "value": "623026" }, { "label": "夏河县", "value": "623027" }]], [[{ "label": "城东区", "value": "630102" }, { "label": "城中区", "value": "630103" }, { "label": "城西区", "value": "630104" }, { "label": "城北区", "value": "630105" }, { "label": "大通回族土族自治县", "value": "630121" }, { "label": "湟中县", "value": "630122" }, { "label": "湟源县", "value": "630123" }], [{ "label": "乐都区", "value": "630202" }, { "label": "平安区", "value": "630203" }, { "label": "民和回族土族自治县", "value": "630222" }, { "label": "互助土族自治县", "value": "630223" }, { "label": "化隆回族自治县", "value": "630224" }, { "label": "循化撒拉族自治县", "value": "630225" }], [{ "label": "门源回族自治县", "value": "632221" }, { "label": "祁连县", "value": "632222" }, { "label": "海晏县", "value": "632223" }, { "label": "刚察县", "value": "632224" }], [{ "label": "同仁县", "value": "632321" }, { "label": "尖扎县", "value": "632322" }, { "label": "泽库县", "value": "632323" }, { "label": "河南蒙古族自治县", "value": "632324" }], [{ "label": "共和县", "value": "632521" }, { "label": "同德县", "value": "632522" }, { "label": "贵德县", "value": "632523" }, { "label": "兴海县", "value": "632524" }, { "label": "贵南县", "value": "632525" }], [{ "label": "玛沁县", "value": "632621" }, { "label": "班玛县", "value": "632622" }, { "label": "甘德县", "value": "632623" }, { "label": "达日县", "value": "632624" }, { "label": "久治县", "value": "632625" }, { "label": "玛多县", "value": "632626" }], [{ "label": "玉树市", "value": "632701" }, { "label": "杂多县", "value": "632722" }, { "label": "称多县", "value": "632723" }, { "label": "治多县", "value": "632724" }, { "label": "囊谦县", "value": "632725" }, { "label": "曲麻莱县", "value": "632726" }], [{ "label": "格尔木市", "value": "632801" }, { "label": "德令哈市", "value": "632802" }, { "label": "乌兰县", "value": "632821" }, { "label": "都兰县", "value": "632822" }, { "label": "天峻县", "value": "632823" }, { "label": "大柴旦行政委员会", "value": "632857" }, { "label": "冷湖行政委员会", "value": "632858" }, { "label": "茫崖行政委员会", "value": "632859" }]], [[{ "label": "兴庆区", "value": "640104" }, { "label": "西夏区", "value": "640105" }, { "label": "金凤区", "value": "640106" }, { "label": "永宁县", "value": "640121" }, { "label": "贺兰县", "value": "640122" }, { "label": "灵武市", "value": "640181" }], [{ "label": "大武口区", "value": "640202" }, { "label": "惠农区", "value": "640205" }, { "label": "平罗县", "value": "640221" }], [{ "label": "利通区", "value": "640302" }, { "label": "红寺堡区", "value": "640303" }, { "label": "盐池县", "value": "640323" }, { "label": "同心县", "value": "640324" }, { "label": "青铜峡市", "value": "640381" }], [{ "label": "原州区", "value": "640402" }, { "label": "西吉县", "value": "640422" }, { "label": "隆德县", "value": "640423" }, { "label": "泾源县", "value": "640424" }, { "label": "彭阳县", "value": "640425" }], [{ "label": "沙坡头区", "value": "640502" }, { "label": "中宁县", "value": "640521" }, { "label": "海原县", "value": "640522" }]], [[{ "label": "天山区", "value": "650102" }, { "label": "沙依巴克区", "value": "650103" }, { "label": "新市区", "value": "650104" }, { "label": "水磨沟区", "value": "650105" }, { "label": "头屯河区", "value": "650106" }, { "label": "达坂城区", "value": "650107" }, { "label": "米东区", "value": "650109" }, { "label": "乌鲁木齐县", "value": "650121" }, { "label": "乌鲁木齐经济技术开发区", "value": "650171" }, { "label": "乌鲁木齐高新技术产业开发区", "value": "650172" }], [{ "label": "独山子区", "value": "650202" }, { "label": "克拉玛依区", "value": "650203" }, { "label": "白碱滩区", "value": "650204" }, { "label": "乌尔禾区", "value": "650205" }], [{ "label": "高昌区", "value": "650402" }, { "label": "鄯善县", "value": "650421" }, { "label": "托克逊县", "value": "650422" }], [{ "label": "伊州区", "value": "650502" }, { "label": "巴里坤哈萨克自治县", "value": "650521" }, { "label": "伊吾县", "value": "650522" }], [{ "label": "昌吉市", "value": "652301" }, { "label": "阜康市", "value": "652302" }, { "label": "呼图壁县", "value": "652323" }, { "label": "玛纳斯县", "value": "652324" }, { "label": "奇台县", "value": "652325" }, { "label": "吉木萨尔县", "value": "652327" }, { "label": "木垒哈萨克自治县", "value": "652328" }], [{ "label": "博乐市", "value": "652701" }, { "label": "阿拉山口市", "value": "652702" }, { "label": "精河县", "value": "652722" }, { "label": "温泉县", "value": "652723" }], [{ "label": "库尔勒市", "value": "652801" }, { "label": "轮台县", "value": "652822" }, { "label": "尉犁县", "value": "652823" }, { "label": "若羌县", "value": "652824" }, { "label": "且末县", "value": "652825" }, { "label": "焉耆回族自治县", "value": "652826" }, { "label": "和静县", "value": "652827" }, { "label": "和硕县", "value": "652828" }, { "label": "博湖县", "value": "652829" }, { "label": "库尔勒经济技术开发区", "value": "652871" }], [{ "label": "阿克苏市", "value": "652901" }, { "label": "温宿县", "value": "652922" }, { "label": "库车县", "value": "652923" }, { "label": "沙雅县", "value": "652924" }, { "label": "新和县", "value": "652925" }, { "label": "拜城县", "value": "652926" }, { "label": "乌什县", "value": "652927" }, { "label": "阿瓦提县", "value": "652928" }, { "label": "柯坪县", "value": "652929" }], [{ "label": "阿图什市", "value": "653001" }, { "label": "阿克陶县", "value": "653022" }, { "label": "阿合奇县", "value": "653023" }, { "label": "乌恰县", "value": "653024" }], [{ "label": "喀什市", "value": "653101" }, { "label": "疏附县", "value": "653121" }, { "label": "疏勒县", "value": "653122" }, { "label": "英吉沙县", "value": "653123" }, { "label": "泽普县", "value": "653124" }, { "label": "莎车县", "value": "653125" }, { "label": "叶城县", "value": "653126" }, { "label": "麦盖提县", "value": "653127" }, { "label": "岳普湖县", "value": "653128" }, { "label": "伽师县", "value": "653129" }, { "label": "巴楚县", "value": "653130" }, { "label": "塔什库尔干塔吉克自治县", "value": "653131" }], [{ "label": "和田市", "value": "653201" }, { "label": "和田县", "value": "653221" }, { "label": "墨玉县", "value": "653222" }, { "label": "皮山县", "value": "653223" }, { "label": "洛浦县", "value": "653224" }, { "label": "策勒县", "value": "653225" }, { "label": "于田县", "value": "653226" }, { "label": "民丰县", "value": "653227" }], [{ "label": "伊宁市", "value": "654002" }, { "label": "奎屯市", "value": "654003" }, { "label": "霍尔果斯市", "value": "654004" }, { "label": "伊宁县", "value": "654021" }, { "label": "察布查尔锡伯自治县", "value": "654022" }, { "label": "霍城县", "value": "654023" }, { "label": "巩留县", "value": "654024" }, { "label": "新源县", "value": "654025" }, { "label": "昭苏县", "value": "654026" }, { "label": "特克斯县", "value": "654027" }, { "label": "尼勒克县", "value": "654028" }], [{ "label": "塔城市", "value": "654201" }, { "label": "乌苏市", "value": "654202" }, { "label": "额敏县", "value": "654221" }, { "label": "沙湾县", "value": "654223" }, { "label": "托里县", "value": "654224" }, { "label": "裕民县", "value": "654225" }, { "label": "和布克赛尔蒙古自治县", "value": "654226" }], [{ "label": "阿勒泰市", "value": "654301" }, { "label": "布尔津县", "value": "654321" }, { "label": "富蕴县", "value": "654322" }, { "label": "福海县", "value": "654323" }, { "label": "哈巴河县", "value": "654324" }, { "label": "青河县", "value": "654325" }, { "label": "吉木乃县", "value": "654326" }], [{ "label": "石河子市", "value": "659001" }, { "label": "阿拉尔市", "value": "659002" }, { "label": "图木舒克市", "value": "659003" }, { "label": "五家渠市", "value": "659004" }, { "label": "铁门关市", "value": "659006" }]], [[{ "label": "台北", "value": "660101" }], [{ "label": "高雄", "value": "660201" }], [{ "label": "基隆", "value": "660301" }], [{ "label": "台中", "value": "660401" }], [{ "label": "台南", "value": "660501" }], [{ "label": "新竹", "value": "660601" }], [{ "label": "嘉义", "value": "660701" }], [{ "label": "宜兰", "value": "660801" }], [{ "label": "桃园", "value": "660901" }], [{ "label": "苗栗", "value": "661001" }], [{ "label": "彰化", "value": "661101" }], [{ "label": "南投", "value": "661201" }], [{ "label": "云林", "value": "661301" }], [{ "label": "屏东", "value": "661401" }], [{ "label": "台东", "value": "661501" }], [{ "label": "花莲", "value": "661601" }], [{ "label": "澎湖", "value": "661701" }]], [[{ "label": "香港岛", "value": "670101" }], [{ "label": "九龙", "value": "670201" }], [{ "label": "新界", "value": "670301" }]], [[{ "label": "澳门半岛", "value": "680101" }], [{ "label": "氹仔岛", "value": "680201" }], [{ "label": "路环岛", "value": "680301" }], [{ "label": "路氹城", "value": "680401" }]]];var _default = areaData;exports.default = _default;
+
+/***/ }),
+
+/***/ 28:
+/*!*********************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/function/randomArray.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // 打乱数组
+function randomArray() {var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  // 原理是sort排序,Math.random()产生0<= x < 1之间的数,会导致x-0.05大于或者小于0
+  return array.sort(function () {return Math.random() - 0.5;});
+}var _default =
+
+randomArray;exports.default = _default;
+
+/***/ }),
+
+/***/ 29:
+/*!*****************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/libs/function/addUnit.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = addUnit;var _test = _interopRequireDefault(__webpack_require__(/*! ./test.js */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+// 添加单位，如果有rpx，%，px等单位结尾或者值为auto，直接返回，否则加上rpx单位结尾
+function addUnit() {var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'auto';var unit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'rpx';
+  value = String(value);
+  // 用uView内置验证规则中的number判断是否为数值
+  return _test.default.number(value) ? "".concat(value).concat(unit) : value;
+}
+
+/***/ }),
+
 /***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -16597,43 +11989,6 @@ module.exports = g;
 /***/ }),
 
 /***/ 30:
-/*!*********************************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/function/randomArray.js ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // 打乱数组
-function randomArray() {var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  // 原理是sort排序,Math.random()产生0<= x < 1之间的数,会导致x-0.05大于或者小于0
-  return array.sort(function () {return Math.random() - 0.5;});
-}var _default =
-
-randomArray;exports.default = _default;
-
-/***/ }),
-
-/***/ 31:
-/*!*****************************************************************!*\
-  !*** D:/project/businessCard/uview-ui/libs/function/addUnit.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = addUnit;var _test = _interopRequireDefault(__webpack_require__(/*! ./test.js */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-// 添加单位，如果有rpx，%，px等单位结尾或者值为auto，直接返回，否则加上rpx单位结尾
-function addUnit() {var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'auto';var unit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'rpx';
-  value = String(value);
-  // 用uView内置验证规则中的number判断是否为数值
-  return _test.default.number(value) ? "".concat(value).concat(unit) : value;
-}
-
-/***/ }),
-
-/***/ 32:
 /*!****************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/random.js ***!
   \****************************************************************/
@@ -16654,7 +12009,7 @@ random;exports.default = _default;
 
 /***/ }),
 
-/***/ 33:
+/***/ 31:
 /*!**************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/trim.js ***!
   \**************************************************************/
@@ -16680,7 +12035,7 @@ trim;exports.default = _default;
 
 /***/ }),
 
-/***/ 34:
+/***/ 32:
 /*!***************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/toast.js ***!
   \***************************************************************/
@@ -16701,7 +12056,7 @@ toast;exports.default = _default;
 
 /***/ }),
 
-/***/ 35:
+/***/ 33:
 /*!*******************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/getParent.js ***!
   \*******************************************************************/
@@ -16759,7 +12114,7 @@ function getParent(name, keys) {
 
 /***/ }),
 
-/***/ 36:
+/***/ 34:
 /*!*****************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/$parent.js ***!
   \*****************************************************************/
@@ -16788,7 +12143,688 @@ function $parent() {var name = arguments.length > 0 && arguments[0] !== undefine
 
 /***/ }),
 
-/***/ 37:
+/***/ 348:
+/*!********************************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/components/u-parse/libs/MpHtmlParser.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(uni) {/**
+ * html 解析器
+ * @tutorial https://github.com/jin-yufeng/Parser
+ * @version 20201029
+ * @author JinYufeng
+ * @listens MIT
+ */
+var cfg = __webpack_require__(/*! ./config.js */ 349),
+blankChar = cfg.blankChar,
+CssHandler = __webpack_require__(/*! ./CssHandler.js */ 350),
+windowWidth = uni.getSystemInfoSync().windowWidth;
+var emoji;
+
+function MpHtmlParser(data) {var _this = this;var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  this.attrs = {};
+  this.CssHandler = new CssHandler(options.tagStyle, windowWidth);
+  this.data = data;
+  this.domain = options.domain;
+  this.DOM = [];
+  this.i = this.start = this.audioNum = this.imgNum = this.videoNum = 0;
+  options.prot = (this.domain || '').includes('://') ? this.domain.split('://')[0] : 'http';
+  this.options = options;
+  this.state = this.Text;
+  this.STACK = [];
+  // 工具函数
+  this.bubble = function () {
+    for (var i = _this.STACK.length, item; item = _this.STACK[--i];) {
+      if (cfg.richOnlyTags[item.name]) return false;
+      item.c = 1;
+    }
+    return true;
+  };
+  this.decode = function (val, amp) {
+    var i = -1,
+    j,en;
+    while (1) {
+      if ((i = val.indexOf('&', i + 1)) == -1) break;
+      if ((j = val.indexOf(';', i + 2)) == -1) break;
+      if (val[i + 1] == '#') {
+        en = parseInt((val[i + 2] == 'x' ? '0' : '') + val.substring(i + 2, j));
+        if (!isNaN(en)) val = val.substr(0, i) + String.fromCharCode(en) + val.substr(j + 1);
+      } else {
+        en = val.substring(i + 1, j);
+        if (cfg.entities[en] || en == amp)
+        val = val.substr(0, i) + (cfg.entities[en] || '&') + val.substr(j + 1);
+      }
+    }
+    return val;
+  };
+  this.getUrl = function (url) {
+    if (url[0] == '/') {
+      if (url[1] == '/') url = _this.options.prot + ':' + url;else
+      if (_this.domain) url = _this.domain + url;
+    } else if (_this.domain && url.indexOf('data:') != 0 && !url.includes('://'))
+    url = _this.domain + '/' + url;
+    return url;
+  };
+  this.isClose = function () {return _this.data[_this.i] == '>' || _this.data[_this.i] == '/' && _this.data[_this.i + 1] == '>';};
+  this.section = function () {return _this.data.substring(_this.start, _this.i);};
+  this.parent = function () {return _this.STACK[_this.STACK.length - 1];};
+  this.siblings = function () {return _this.STACK.length ? _this.parent().children : _this.DOM;};
+}
+MpHtmlParser.prototype.parse = function () {
+  if (emoji) this.data = emoji.parseEmoji(this.data);
+  for (var c; c = this.data[this.i]; this.i++) {
+    this.state(c);}
+  if (this.state == this.Text) this.setText();
+  while (this.STACK.length) {this.popNode(this.STACK.pop());}
+  return this.DOM;
+};
+// 设置属性
+MpHtmlParser.prototype.setAttr = function () {
+  var name = this.attrName.toLowerCase(),
+  val = this.attrVal;
+  if (cfg.boolAttrs[name]) this.attrs[name] = 'T';else
+  if (val) {
+    if (name == 'src' || name == 'data-src' && !this.attrs.src) this.attrs.src = this.getUrl(this.decode(val, 'amp'));else
+    if (name == 'href' || name == 'style') this.attrs[name] = this.decode(val, 'amp');else
+    if (name.substr(0, 5) != 'data-') this.attrs[name] = val;
+  }
+  this.attrVal = '';
+  while (blankChar[this.data[this.i]]) {this.i++;}
+  if (this.isClose()) this.setNode();else
+  {
+    this.start = this.i;
+    this.state = this.AttrName;
+  }
+};
+// 设置文本节点
+MpHtmlParser.prototype.setText = function () {
+  var back,text = this.section();
+  if (!text) return;
+  text = cfg.onText && cfg.onText(text, function () {return back = true;}) || text;
+  if (back) {
+    this.data = this.data.substr(0, this.start) + text + this.data.substr(this.i);
+    var j = this.start + text.length;
+    for (this.i = this.start; this.i < j; this.i++) {this.state(this.data[this.i]);}
+    return;
+  }
+  if (!this.pre) {
+    // 合并空白符
+    var flag,tmp = [];
+    for (var i = text.length, c; c = text[--i];) {
+      if (!blankChar[c]) {
+        tmp.unshift(c);
+        if (!flag) flag = 1;
+      } else {
+        if (tmp[0] != ' ') tmp.unshift(' ');
+        if (c == '\n' && flag == void 0) flag = 0;
+      }}
+    if (flag == 0) return;
+    text = tmp.join('');
+  }
+  this.siblings().push({
+    type: 'text',
+    text: this.decode(text) });
+
+};
+// 设置元素节点
+MpHtmlParser.prototype.setNode = function () {
+  var node = {
+    name: this.tagName.toLowerCase(),
+    attrs: this.attrs },
+
+  close = cfg.selfClosingTags[node.name];
+  if (this.options.nodes.length) node.type = 'node';
+  this.attrs = {};
+  if (!cfg.ignoreTags[node.name]) {
+    // 处理属性
+    var attrs = node.attrs,
+    style = this.CssHandler.match(node.name, attrs, node) + (attrs.style || ''),
+    styleObj = {};
+    if (attrs.id) {
+      if (this.options.compress & 1) attrs.id = void 0;else
+      if (this.options.useAnchor) this.bubble();
+    }
+    if (this.options.compress & 2 && attrs.class) attrs.class = void 0;
+    switch (node.name) {
+      case 'a':
+      case 'ad':
+
+
+        this.bubble();
+        break;
+      case 'font':
+        if (attrs.color) {
+          styleObj['color'] = attrs.color;
+          attrs.color = void 0;
+        }
+        if (attrs.face) {
+          styleObj['font-family'] = attrs.face;
+          attrs.face = void 0;
+        }
+        if (attrs.size) {
+          var size = parseInt(attrs.size);
+          if (size < 1) size = 1;else
+          if (size > 7) size = 7;
+          var map = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'];
+          styleObj['font-size'] = map[size - 1];
+          attrs.size = void 0;
+        }
+        break;
+      case 'embed':
+
+        var src = node.attrs.src || '',
+        type = node.attrs.type || '';
+        if (type.includes('video') || src.includes('.mp4') || src.includes('.3gp') || src.includes('.m3u8'))
+        node.name = 'video';else
+        if (type.includes('audio') || src.includes('.m4a') || src.includes('.wav') || src.includes('.mp3') || src.includes(
+        '.aac'))
+        node.name = 'audio';else
+        break;
+        if (node.attrs.autostart)
+        node.attrs.autoplay = 'T';
+        node.attrs.controls = 'T';
+
+
+
+
+
+      case 'video':
+      case 'audio':
+        if (!attrs.id) attrs.id = node.name + ++this["".concat(node.name, "Num")];else
+        this["".concat(node.name, "Num")]++;
+        if (node.name == 'video') {
+          if (this.videoNum > 3)
+          node.lazyLoad = 1;
+          if (attrs.width) {
+            styleObj.width = parseFloat(attrs.width) + (attrs.width.includes('%') ? '%' : 'px');
+            attrs.width = void 0;
+          }
+          if (attrs.height) {
+            styleObj.height = parseFloat(attrs.height) + (attrs.height.includes('%') ? '%' : 'px');
+            attrs.height = void 0;
+          }
+        }
+        if (!attrs.controls && !attrs.autoplay) attrs.controls = 'T';
+        attrs.source = [];
+        if (attrs.src) {
+          attrs.source.push(attrs.src);
+          attrs.src = void 0;
+        }
+        this.bubble();
+        break;
+      case 'td':
+      case 'th':
+        if (attrs.colspan || attrs.rowspan)
+        for (var k = this.STACK.length, item; item = this.STACK[--k];) {
+          if (item.name == 'table') {
+            item.flag = 1;
+            break;
+          }}}
+
+    if (attrs.align) {
+      if (node.name == 'table') {
+        if (attrs.align == 'center') styleObj['margin-inline-start'] = styleObj['margin-inline-end'] = 'auto';else
+        styleObj['float'] = attrs.align;
+      } else styleObj['text-align'] = attrs.align;
+      attrs.align = void 0;
+    }
+    // 压缩 style
+    var styles = style.split(';');
+    style = '';
+    for (var i = 0, len = styles.length; i < len; i++) {
+      var info = styles[i].split(':');
+      if (info.length < 2) continue;
+      var _key = info[0].trim().toLowerCase(),
+      _value = info.slice(1).join(':').trim();
+      if (_value[0] == '-' || _value.includes('safe'))
+      style += ";".concat(_key, ":").concat(_value);else
+      if (!styleObj[_key] || _value.includes('import') || !styleObj[_key].includes('import'))
+      styleObj[_key] = _value;
+    }
+    if (node.name == 'img') {
+      if (attrs.src && !attrs.ignore) {
+        if (this.bubble())
+        attrs.i = (this.imgNum++).toString();else
+        attrs.ignore = 'T';
+      }
+      if (attrs.ignore) {
+        style += ';-webkit-touch-callout:none';
+        styleObj['max-width'] = '100%';
+      }
+      var width;
+      if (styleObj.width) width = styleObj.width;else
+      if (attrs.width) width = attrs.width.includes('%') ? attrs.width : parseFloat(attrs.width) + 'px';
+      if (width) {
+        styleObj.width = width;
+        attrs.width = '100%';
+        if (parseInt(width) > windowWidth) {
+          styleObj.height = '';
+          if (attrs.height) attrs.height = void 0;
+        }
+      }
+      if (styleObj.height) {
+        attrs.height = styleObj.height;
+        styleObj.height = '';
+      } else if (attrs.height && !attrs.height.includes('%'))
+      attrs.height = parseFloat(attrs.height) + 'px';
+    }
+    for (var key in styleObj) {
+      var value = styleObj[key];
+      if (!value) continue;
+      if (key.includes('flex') || key == 'order' || key == 'self-align') node.c = 1;
+      // 填充链接
+      if (value.includes('url')) {
+        var j = value.indexOf('(');
+        if (j++ != -1) {
+          while (value[j] == '"' || value[j] == "'" || blankChar[value[j]]) {j++;}
+          value = value.substr(0, j) + this.getUrl(value.substr(j));
+        }
+      }
+      // 转换 rpx
+      else if (value.includes('rpx'))
+        value = value.replace(/[0-9.]+\s*rpx/g, function ($) {return parseFloat($) * windowWidth / 750 + 'px';});else
+        if (key == 'white-space' && value.includes('pre') && !close)
+        this.pre = node.pre = true;
+      style += ";".concat(key, ":").concat(value);
+    }
+    style = style.substr(1);
+    if (style) attrs.style = style;
+    if (!close) {
+      node.children = [];
+      if (node.name == 'pre' && cfg.highlight) {
+        this.remove(node);
+        this.pre = node.pre = true;
+      }
+      this.siblings().push(node);
+      this.STACK.push(node);
+    } else if (!cfg.filter || cfg.filter(node, this) != false)
+    this.siblings().push(node);
+  } else {
+    if (!close) this.remove(node);else
+    if (node.name == 'source') {
+      var parent = this.parent();
+      if (parent && (parent.name == 'video' || parent.name == 'audio') && node.attrs.src)
+      parent.attrs.source.push(node.attrs.src);
+    } else if (node.name == 'base' && !this.domain) this.domain = node.attrs.href;
+  }
+  if (this.data[this.i] == '/') this.i++;
+  this.start = this.i + 1;
+  this.state = this.Text;
+};
+// 移除标签
+MpHtmlParser.prototype.remove = function (node) {var _this2 = this;
+  var name = node.name,
+  j = this.i;
+  // 处理 svg
+  var handleSvg = function handleSvg() {
+    var src = _this2.data.substring(j, _this2.i + 1);
+    node.attrs.xmlns = 'http://www.w3.org/2000/svg';
+    for (var key in node.attrs) {
+      if (key == 'viewbox') src = " viewBox=\"".concat(node.attrs.viewbox, "\"") + src;else
+      if (key != 'style') src = " ".concat(key, "=\"").concat(node.attrs[key], "\"") + src;
+    }
+    src = '<svg' + src;
+    var parent = _this2.parent();
+    if (node.attrs.width == '100%' && parent && (parent.attrs.style || '').includes('inline'))
+    parent.attrs.style = 'width:300px;max-width:100%;' + parent.attrs.style;
+    _this2.siblings().push({
+      name: 'img',
+      attrs: {
+        src: 'data:image/svg+xml;utf8,' + src.replace(/#/g, '%23'),
+        style: node.attrs.style,
+        ignore: 'T' } });
+
+
+  };
+  if (node.name == 'svg' && this.data[j] == '/') return handleSvg(this.i++);
+  while (1) {
+    if ((this.i = this.data.indexOf('</', this.i + 1)) == -1) {
+      if (name == 'pre' || name == 'svg') this.i = j;else
+      this.i = this.data.length;
+      return;
+    }
+    this.start = this.i += 2;
+    while (!blankChar[this.data[this.i]] && !this.isClose()) {this.i++;}
+    if (this.section().toLowerCase() == name) {
+      // 代码块高亮
+      if (name == 'pre') {
+        this.data = this.data.substr(0, j + 1) + cfg.highlight(this.data.substring(j + 1, this.i - 5), node.attrs) + this.data.
+        substr(this.i - 5);
+        return this.i = j;
+      } else if (name == 'style')
+      this.CssHandler.getStyle(this.data.substring(j + 1, this.i - 7));else
+      if (name == 'title')
+      this.DOM.title = this.data.substring(j + 1, this.i - 7);
+      if ((this.i = this.data.indexOf('>', this.i)) == -1) this.i = this.data.length;
+      if (name == 'svg') handleSvg();
+      return;
+    }
+  }
+};
+// 节点出栈处理
+MpHtmlParser.prototype.popNode = function (node) {
+  // 空白符处理
+  if (node.pre) {
+    node.pre = this.pre = void 0;
+    for (var i = this.STACK.length; i--;) {
+      if (this.STACK[i].pre)
+      this.pre = true;}
+  }
+  var siblings = this.siblings(),
+  len = siblings.length,
+  childs = node.children;
+  if (node.name == 'head' || cfg.filter && cfg.filter(node, this) == false)
+  return siblings.pop();
+  var attrs = node.attrs;
+  // 替换一些标签名
+  if (cfg.blockTags[node.name]) node.name = 'div';else
+  if (!cfg.trustTags[node.name]) node.name = 'span';
+  // 处理列表
+  if (node.c && (node.name == 'ul' || node.name == 'ol')) {
+    if ((node.attrs.style || '').includes('list-style:none')) {
+      for (var _i = 0, child; child = childs[_i++];) {
+        if (child.name == 'li')
+        child.name = 'div';}
+    } else if (node.name == 'ul') {
+      var floor = 1;
+      for (var _i2 = this.STACK.length; _i2--;) {
+        if (this.STACK[_i2].name == 'ul') floor++;}
+      if (floor != 1)
+      for (var _i3 = childs.length; _i3--;) {
+        childs[_i3].floor = floor;}
+    } else {
+      for (var _i4 = 0, num = 1, _child; _child = childs[_i4++];) {
+        if (_child.name == 'li') {
+          _child.type = 'ol';
+          _child.num = function (num, type) {
+            if (type == 'a') return String.fromCharCode(97 + (num - 1) % 26);
+            if (type == 'A') return String.fromCharCode(65 + (num - 1) % 26);
+            if (type == 'i' || type == 'I') {
+              num = (num - 1) % 99 + 1;
+              var one = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'],
+              ten = ['X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC'],
+              res = (ten[Math.floor(num / 10) - 1] || '') + (one[num % 10 - 1] || '');
+              if (type == 'i') return res.toLowerCase();
+              return res;
+            }
+            return num;
+          }(num++, attrs.type) + '.';
+        }}
+    }
+  }
+  // 处理表格
+  if (node.name == 'table') {
+    var padding = parseFloat(attrs.cellpadding),
+    spacing = parseFloat(attrs.cellspacing),
+    border = parseFloat(attrs.border);
+    if (node.c) {
+      if (isNaN(padding)) padding = 2;
+      if (isNaN(spacing)) spacing = 2;
+    }
+    if (border) attrs.style = "border:".concat(border, "px solid gray;").concat(attrs.style || '');
+    if (node.flag && node.c) {
+      // 有 colspan 或 rowspan 且含有链接的表格转为 grid 布局实现
+      attrs.style = "".concat(attrs.style || '', ";").concat(spacing ? ";grid-gap:".concat(spacing, "px") : ';border-left:0;border-top:0');
+      var row = 1,
+      col = 1,
+      colNum,
+      trs = [],
+      children = [],
+      map = {};
+      (function f(ns) {
+        for (var i = 0; i < ns.length; i++) {
+          if (ns[i].name == 'tr') trs.push(ns[i]);else
+          f(ns[i].children || []);
+        }
+      })(node.children);
+      for (var _i5 = 0; _i5 < trs.length; _i5++) {
+        for (var j = 0, td; td = trs[_i5].children[j]; j++) {
+          if (td.name == 'td' || td.name == 'th') {
+            while (map[row + '.' + col]) {col++;}
+            var cell = {
+              name: 'div',
+              c: 1,
+              attrs: {
+                style: (td.attrs.style || '') + (border ? ";border:".concat(border, "px solid gray") + (spacing ? '' :
+                ';border-right:0;border-bottom:0') : '') + (padding ? ";padding:".concat(padding, "px") : '') },
+
+              children: td.children };
+
+            if (td.attrs.colspan) {
+              cell.attrs.style += ';grid-column-start:' + col + ';grid-column-end:' + (col + parseInt(td.attrs.colspan));
+              if (!td.attrs.rowspan) cell.attrs.style += ';grid-row-start:' + row + ';grid-row-end:' + (row + 1);
+              col += parseInt(td.attrs.colspan) - 1;
+            }
+            if (td.attrs.rowspan) {
+              cell.attrs.style += ';grid-row-start:' + row + ';grid-row-end:' + (row + parseInt(td.attrs.rowspan));
+              if (!td.attrs.colspan) cell.attrs.style += ';grid-column-start:' + col + ';grid-column-end:' + (col + 1);
+              for (var k = 1; k < td.attrs.rowspan; k++) {map[row + k + '.' + col] = 1;}
+            }
+            children.push(cell);
+            col++;
+          }
+        }
+        if (!colNum) {
+          colNum = col - 1;
+          attrs.style += ";grid-template-columns:repeat(".concat(colNum, ",auto)");
+        }
+        col = 1;
+        row++;
+      }
+      node.children = children;
+    } else {
+      attrs.style = "border-spacing:".concat(spacing, "px;").concat(attrs.style || '');
+      if (border || padding)
+      (function f(ns) {
+        for (var i = 0, n; n = ns[i]; i++) {
+          if (n.name == 'th' || n.name == 'td') {
+            if (border) n.attrs.style = "border:".concat(border, "px solid gray;").concat(n.attrs.style || '');
+            if (padding) n.attrs.style = "padding:".concat(padding, "px;").concat(n.attrs.style || '');
+          } else f(n.children || []);
+        }
+      })(childs);
+    }
+    if (this.options.autoscroll) {
+      var table = Object.assign({}, node);
+      node.name = 'div';
+      node.attrs = {
+        style: 'overflow:scroll' };
+
+      node.children = [table];
+    }
+  }
+  this.CssHandler.pop && this.CssHandler.pop(node);
+  // 自动压缩
+  if (node.name == 'div' && !Object.keys(attrs).length && childs.length == 1 && childs[0].name == 'div')
+  siblings[len - 1] = childs[0];
+};
+// 状态机
+MpHtmlParser.prototype.Text = function (c) {
+  if (c == '<') {
+    var next = this.data[this.i + 1],
+    isLetter = function isLetter(c) {return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';};
+    if (isLetter(next)) {
+      this.setText();
+      this.start = this.i + 1;
+      this.state = this.TagName;
+    } else if (next == '/') {
+      this.setText();
+      if (isLetter(this.data[++this.i + 1])) {
+        this.start = this.i + 1;
+        this.state = this.EndTag;
+      } else this.Comment();
+    } else if (next == '!' || next == '?') {
+      this.setText();
+      this.Comment();
+    }
+  }
+};
+MpHtmlParser.prototype.Comment = function () {
+  var key;
+  if (this.data.substring(this.i + 2, this.i + 4) == '--') key = '-->';else
+  if (this.data.substring(this.i + 2, this.i + 9) == '[CDATA[') key = ']]>';else
+  key = '>';
+  if ((this.i = this.data.indexOf(key, this.i + 2)) == -1) this.i = this.data.length;else
+  this.i += key.length - 1;
+  this.start = this.i + 1;
+  this.state = this.Text;
+};
+MpHtmlParser.prototype.TagName = function (c) {
+  if (blankChar[c]) {
+    this.tagName = this.section();
+    while (blankChar[this.data[this.i]]) {this.i++;}
+    if (this.isClose()) this.setNode();else
+    {
+      this.start = this.i;
+      this.state = this.AttrName;
+    }
+  } else if (this.isClose()) {
+    this.tagName = this.section();
+    this.setNode();
+  }
+};
+MpHtmlParser.prototype.AttrName = function (c) {
+  if (c == '=' || blankChar[c] || this.isClose()) {
+    this.attrName = this.section();
+    if (blankChar[c])
+    while (blankChar[this.data[++this.i]]) {;}
+    if (this.data[this.i] == '=') {
+      while (blankChar[this.data[++this.i]]) {;}
+      this.start = this.i--;
+      this.state = this.AttrValue;
+    } else this.setAttr();
+  }
+};
+MpHtmlParser.prototype.AttrValue = function (c) {
+  if (c == '"' || c == "'") {
+    this.start++;
+    if ((this.i = this.data.indexOf(c, this.i + 1)) == -1) return this.i = this.data.length;
+    this.attrVal = this.section();
+    this.i++;
+  } else {
+    for (; !blankChar[this.data[this.i]] && !this.isClose(); this.i++) {;}
+    this.attrVal = this.section();
+  }
+  this.setAttr();
+};
+MpHtmlParser.prototype.EndTag = function (c) {
+  if (blankChar[c] || c == '>' || c == '/') {
+    var name = this.section().toLowerCase();
+    for (var i = this.STACK.length; i--;) {
+      if (this.STACK[i].name == name) break;}
+    if (i != -1) {
+      var node;
+      while ((node = this.STACK.pop()).name != name) {this.popNode(node);}
+      this.popNode(node);
+    } else if (name == 'p' || name == 'br')
+    this.siblings().push({
+      name: name,
+      attrs: {} });
+
+    this.i = this.data.indexOf('>', this.i);
+    this.start = this.i + 1;
+    if (this.i == -1) this.i = this.data.length;else
+    this.state = this.Text;
+  }
+};
+module.exports = MpHtmlParser;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 349:
+/*!**************************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/components/u-parse/libs/config.js ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* 配置文件 */
+var cfg = {
+  // 出错占位图
+  errorImg: null,
+  // 过滤器函数
+  filter: null,
+  // 代码高亮函数
+  highlight: null,
+  // 文本处理函数
+  onText: null,
+  // 实体编码列表
+  entities: {
+    quot: '"',
+    apos: "'",
+    semi: ';',
+    nbsp: '\xA0',
+    ensp: "\u2002",
+    emsp: "\u2003",
+    ndash: '–',
+    mdash: '—',
+    middot: '·',
+    lsquo: '‘',
+    rsquo: '’',
+    ldquo: '“',
+    rdquo: '”',
+    bull: '•',
+    hellip: '…' },
+
+  blankChar: makeMap(' ,\xA0,\t,\r,\n,\f'),
+  boolAttrs: makeMap('allowfullscreen,autoplay,autostart,controls,ignore,loop,muted'),
+  // 块级标签，将被转为 div
+  blockTags: makeMap('address,article,aside,body,caption,center,cite,footer,header,html,nav,pre,section'),
+  // 将被移除的标签
+  ignoreTags: makeMap('area,base,canvas,frame,iframe,input,link,map,meta,param,script,source,style,svg,textarea,title,track,wbr'),
+  // 只能被 rich-text 显示的标签
+  richOnlyTags: makeMap('a,colgroup,fieldset,legend'),
+  // 自闭合的标签
+  selfClosingTags: makeMap('area,base,br,col,circle,ellipse,embed,frame,hr,img,input,line,link,meta,param,path,polygon,rect,source,track,use,wbr'),
+  // 信任的标签
+  trustTags: makeMap('a,abbr,ad,audio,b,blockquote,br,code,col,colgroup,dd,del,dl,dt,div,em,fieldset,h1,h2,h3,h4,h5,h6,hr,i,img,ins,label,legend,li,ol,p,q,source,span,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,title,ul,video'),
+  // 默认的标签样式
+  userAgentStyles: {
+    address: 'font-style:italic',
+    big: 'display:inline;font-size:1.2em',
+    blockquote: 'background-color:#f6f6f6;border-left:3px solid #dbdbdb;color:#6c6c6c;padding:5px 0 5px 10px',
+    caption: 'display:table-caption;text-align:center',
+    center: 'text-align:center',
+    cite: 'font-style:italic',
+    dd: 'margin-left:40px',
+    mark: 'background-color:yellow',
+    pre: 'font-family:monospace;white-space:pre;overflow:scroll',
+    s: 'text-decoration:line-through',
+    small: 'display:inline;font-size:0.8em',
+    u: 'text-decoration:underline' } };
+
+
+
+function makeMap(str) {
+  var map = Object.create(null),
+  list = str.split(',');
+  for (var i = list.length; i--;) {
+    map[list[i]] = true;}
+  return map;
+}
+
+
+if (wx.canIUse('editor')) {
+  cfg.blockTags.pre = void 0;
+  cfg.ignoreTags.rp = true;
+  Object.assign(cfg.richOnlyTags, makeMap('bdi,bdo,caption,rt,ruby'));
+  Object.assign(cfg.trustTags, makeMap('bdi,bdo,caption,pre,rt,ruby'));
+}
+
+
+
+
+
+
+
+module.exports = cfg;
+
+/***/ }),
+
+/***/ 35:
 /*!*************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/sys.js ***!
   \*************************************************************/
@@ -16807,7 +12843,117 @@ function sys() {
 
 /***/ }),
 
-/***/ 38:
+/***/ 350:
+/*!******************************************************************************!*\
+  !*** D:/project/businessCard/uview-ui/components/u-parse/libs/CssHandler.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var cfg = __webpack_require__(/*! ./config.js */ 349),
+isLetter = function isLetter(c) {return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';};
+
+function CssHandler(tagStyle) {
+  var styles = Object.assign(Object.create(null), cfg.userAgentStyles);
+  for (var item in tagStyle) {
+    styles[item] = (styles[item] ? styles[item] + ';' : '') + tagStyle[item];}
+  this.styles = styles;
+}
+CssHandler.prototype.getStyle = function (data) {
+  this.styles = new parser(data, this.styles).parse();
+};
+CssHandler.prototype.match = function (name, attrs) {
+  var tmp,matched = (tmp = this.styles[name]) ? tmp + ';' : '';
+  if (attrs.class) {
+    var items = attrs.class.split(' ');
+    for (var i = 0, item; item = items[i]; i++) {
+      if (tmp = this.styles['.' + item])
+      matched += tmp + ';';}
+  }
+  if (tmp = this.styles['#' + attrs.id])
+  matched += tmp + ';';
+  return matched;
+};
+module.exports = CssHandler;
+
+function parser(data, init) {
+  this.data = data;
+  this.floor = 0;
+  this.i = 0;
+  this.list = [];
+  this.res = init;
+  this.state = this.Space;
+}
+parser.prototype.parse = function () {
+  for (var c; c = this.data[this.i]; this.i++) {
+    this.state(c);}
+  return this.res;
+};
+parser.prototype.section = function () {
+  return this.data.substring(this.start, this.i);
+};
+// 状态机
+parser.prototype.Space = function (c) {
+  if (c == '.' || c == '#' || isLetter(c)) {
+    this.start = this.i;
+    this.state = this.Name;
+  } else if (c == '/' && this.data[this.i + 1] == '*')
+  this.Comment();else
+  if (!cfg.blankChar[c] && c != ';')
+  this.state = this.Ignore;
+};
+parser.prototype.Comment = function () {
+  this.i = this.data.indexOf('*/', this.i) + 1;
+  if (!this.i) this.i = this.data.length;
+  this.state = this.Space;
+};
+parser.prototype.Ignore = function (c) {
+  if (c == '{') this.floor++;else
+  if (c == '}' && ! --this.floor) {
+    this.list = [];
+    this.state = this.Space;
+  }
+};
+parser.prototype.Name = function (c) {
+  if (cfg.blankChar[c]) {
+    this.list.push(this.section());
+    this.state = this.NameSpace;
+  } else if (c == '{') {
+    this.list.push(this.section());
+    this.Content();
+  } else if (c == ',') {
+    this.list.push(this.section());
+    this.Comma();
+  } else if (!isLetter(c) && (c < '0' || c > '9') && c != '-' && c != '_')
+  this.state = this.Ignore;
+};
+parser.prototype.NameSpace = function (c) {
+  if (c == '{') this.Content();else
+  if (c == ',') this.Comma();else
+  if (!cfg.blankChar[c]) this.state = this.Ignore;
+};
+parser.prototype.Comma = function () {
+  while (cfg.blankChar[this.data[++this.i]]) {;}
+  if (this.data[this.i] == '{') this.Content();else
+  {
+    this.start = this.i--;
+    this.state = this.Name;
+  }
+};
+parser.prototype.Content = function () {
+  this.start = ++this.i;
+  if ((this.i = this.data.indexOf('}', this.i)) == -1) this.i = this.data.length;
+  var content = this.section();
+  for (var i = 0, item; item = this.list[i++];) {
+    if (this.res[item]) this.res[item] += ';' + content;else
+    this.res[item] = content;}
+  this.list = [];
+  this.state = this.Space;
+};
+
+/***/ }),
+
+/***/ 36:
 /*!******************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/debounce.js ***!
   \******************************************************************/
@@ -16847,7 +12993,7 @@ debounce;exports.default = _default;
 
 /***/ }),
 
-/***/ 39:
+/***/ 37:
 /*!******************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/function/throttle.js ***!
   \******************************************************************/
@@ -16890,18 +13036,7 @@ throttle;exports.default = _default;
 
 /***/ }),
 
-/***/ 4:
-/*!******************************************!*\
-  !*** D:/project/businessCard/pages.json ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
-/***/ 40:
+/***/ 38:
 /*!**************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/config/config.js ***!
   \**************************************************************/
@@ -16925,7 +13060,7 @@ var version = '1.8.3';var _default =
 
 /***/ }),
 
-/***/ 41:
+/***/ 39:
 /*!**************************************************************!*\
   !*** D:/project/businessCard/uview-ui/libs/config/zIndex.js ***!
   \**************************************************************/
@@ -16955,25 +13090,4789 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 
-/***/ 48:
+/***/ 4:
+/*!******************************************!*\
+  !*** D:/project/businessCard/pages.json ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ 40:
+/*!***************************************************!*\
+  !*** D:/project/businessCard/static/js/moment.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var require;//! moment.js
+
+;(function (global, factory) {
+   true ? module.exports = factory() :
+  undefined;
+})(this, function () {'use strict';
+
+  var hookCallback;
+
+  function hooks() {
+    return hookCallback.apply(null, arguments);
+  }
+
+  // This is done to register the method called with moment()
+  // without creating circular dependencies.
+  function setHookCallback(callback) {
+    hookCallback = callback;
+  }
+
+  function isArray(input) {
+    return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+  }
+
+  function isObject(input) {
+    // IE8 will treat undefined and null as object if it wasn't for
+    // input != null
+    return input != null && Object.prototype.toString.call(input) === '[object Object]';
+  }
+
+  function isObjectEmpty(obj) {
+    if (Object.getOwnPropertyNames) {
+      return Object.getOwnPropertyNames(obj).length === 0;
+    } else {
+      var k;
+      for (k in obj) {
+        if (obj.hasOwnProperty(k)) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+
+  function isUndefined(input) {
+    return input === void 0;
+  }
+
+  function isNumber(input) {
+    return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
+  }
+
+  function isDate(input) {
+    return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
+  }
+
+  function map(arr, fn) {
+    var res = [],i;
+    for (i = 0; i < arr.length; ++i) {
+      res.push(fn(arr[i], i));
+    }
+    return res;
+  }
+
+  function hasOwnProp(a, b) {
+    return Object.prototype.hasOwnProperty.call(a, b);
+  }
+
+  function extend(a, b) {
+    for (var i in b) {
+      if (hasOwnProp(b, i)) {
+        a[i] = b[i];
+      }
+    }
+
+    if (hasOwnProp(b, 'toString')) {
+      a.toString = b.toString;
+    }
+
+    if (hasOwnProp(b, 'valueOf')) {
+      a.valueOf = b.valueOf;
+    }
+
+    return a;
+  }
+
+  function createUTC(input, format, locale, strict) {
+    return createLocalOrUTC(input, format, locale, strict, true).utc();
+  }
+
+  function defaultParsingFlags() {
+    // We need to deep clone this object.
+    return {
+      empty: false,
+      unusedTokens: [],
+      unusedInput: [],
+      overflow: -2,
+      charsLeftOver: 0,
+      nullInput: false,
+      invalidMonth: null,
+      invalidFormat: false,
+      userInvalidated: false,
+      iso: false,
+      parsedDateParts: [],
+      meridiem: null,
+      rfc2822: false,
+      weekdayMismatch: false };
+
+  }
+
+  function getParsingFlags(m) {
+    if (m._pf == null) {
+      m._pf = defaultParsingFlags();
+    }
+    return m._pf;
+  }
+
+  var some;
+  if (Array.prototype.some) {
+    some = Array.prototype.some;
+  } else {
+    some = function some(fun) {
+      var t = Object(this);
+      var len = t.length >>> 0;
+
+      for (var i = 0; i < len; i++) {
+        if (i in t && fun.call(this, t[i], i, t)) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+  }
+
+  function isValid(m) {
+    if (m._isValid == null) {
+      var flags = getParsingFlags(m);
+      var parsedParts = some.call(flags.parsedDateParts, function (i) {
+        return i != null;
+      });
+      var isNowValid = !isNaN(m._d.getTime()) &&
+      flags.overflow < 0 &&
+      !flags.empty &&
+      !flags.invalidMonth &&
+      !flags.invalidWeekday &&
+      !flags.weekdayMismatch &&
+      !flags.nullInput &&
+      !flags.invalidFormat &&
+      !flags.userInvalidated && (
+      !flags.meridiem || flags.meridiem && parsedParts);
+
+      if (m._strict) {
+        isNowValid = isNowValid &&
+        flags.charsLeftOver === 0 &&
+        flags.unusedTokens.length === 0 &&
+        flags.bigHour === undefined;
+      }
+
+      if (Object.isFrozen == null || !Object.isFrozen(m)) {
+        m._isValid = isNowValid;
+      } else
+      {
+        return isNowValid;
+      }
+    }
+    return m._isValid;
+  }
+
+  function createInvalid(flags) {
+    var m = createUTC(NaN);
+    if (flags != null) {
+      extend(getParsingFlags(m), flags);
+    } else
+    {
+      getParsingFlags(m).userInvalidated = true;
+    }
+
+    return m;
+  }
+
+  // Plugins that add properties should also add the key here (null value),
+  // so we can properly clone ourselves.
+  var momentProperties = hooks.momentProperties = [];
+
+  function copyConfig(to, from) {
+    var i, prop, val;
+
+    if (!isUndefined(from._isAMomentObject)) {
+      to._isAMomentObject = from._isAMomentObject;
+    }
+    if (!isUndefined(from._i)) {
+      to._i = from._i;
+    }
+    if (!isUndefined(from._f)) {
+      to._f = from._f;
+    }
+    if (!isUndefined(from._l)) {
+      to._l = from._l;
+    }
+    if (!isUndefined(from._strict)) {
+      to._strict = from._strict;
+    }
+    if (!isUndefined(from._tzm)) {
+      to._tzm = from._tzm;
+    }
+    if (!isUndefined(from._isUTC)) {
+      to._isUTC = from._isUTC;
+    }
+    if (!isUndefined(from._offset)) {
+      to._offset = from._offset;
+    }
+    if (!isUndefined(from._pf)) {
+      to._pf = getParsingFlags(from);
+    }
+    if (!isUndefined(from._locale)) {
+      to._locale = from._locale;
+    }
+
+    if (momentProperties.length > 0) {
+      for (i = 0; i < momentProperties.length; i++) {
+        prop = momentProperties[i];
+        val = from[prop];
+        if (!isUndefined(val)) {
+          to[prop] = val;
+        }
+      }
+    }
+
+    return to;
+  }
+
+  var updateInProgress = false;
+
+  // Moment prototype object
+  function Moment(config) {
+    copyConfig(this, config);
+    this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+    if (!this.isValid()) {
+      this._d = new Date(NaN);
+    }
+    // Prevent infinite loop in case updateOffset creates new moment
+    // objects.
+    if (updateInProgress === false) {
+      updateInProgress = true;
+      hooks.updateOffset(this);
+      updateInProgress = false;
+    }
+  }
+
+  function isMoment(obj) {
+    return obj instanceof Moment || obj != null && obj._isAMomentObject != null;
+  }
+
+  function absFloor(number) {
+    if (number < 0) {
+      // -0 -> 0
+      return Math.ceil(number) || 0;
+    } else {
+      return Math.floor(number);
+    }
+  }
+
+  function toInt(argumentForCoercion) {
+    var coercedNumber = +argumentForCoercion,
+    value = 0;
+
+    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+      value = absFloor(coercedNumber);
+    }
+
+    return value;
+  }
+
+  // compare two arrays, return the number of differences
+  function compareArrays(array1, array2, dontConvert) {
+    var len = Math.min(array1.length, array2.length),
+    lengthDiff = Math.abs(array1.length - array2.length),
+    diffs = 0,
+    i;
+    for (i = 0; i < len; i++) {
+      if (dontConvert && array1[i] !== array2[i] ||
+      !dontConvert && toInt(array1[i]) !== toInt(array2[i])) {
+        diffs++;
+      }
+    }
+    return diffs + lengthDiff;
+  }
+
+  function warn(msg) {
+    if (hooks.suppressDeprecationWarnings === false &&
+    typeof console !== 'undefined' && console.warn) {
+      console.warn('Deprecation warning: ' + msg);
+    }
+  }
+
+  function deprecate(msg, fn) {
+    var firstTime = true;
+
+    return extend(function () {
+      if (hooks.deprecationHandler != null) {
+        hooks.deprecationHandler(null, msg);
+      }
+      if (firstTime) {
+        var args = [];
+        var arg;
+        for (var i = 0; i < arguments.length; i++) {
+          arg = '';
+          if (typeof arguments[i] === 'object') {
+            arg += '\n[' + i + '] ';
+            for (var key in arguments[0]) {
+              arg += key + ': ' + arguments[0][key] + ', ';
+            }
+            arg = arg.slice(0, -2); // Remove trailing comma and space
+          } else {
+            arg = arguments[i];
+          }
+          args.push(arg);
+        }
+        warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + new Error().stack);
+        firstTime = false;
+      }
+      return fn.apply(this, arguments);
+    }, fn);
+  }
+
+  var deprecations = {};
+
+  function deprecateSimple(name, msg) {
+    if (hooks.deprecationHandler != null) {
+      hooks.deprecationHandler(name, msg);
+    }
+    if (!deprecations[name]) {
+      warn(msg);
+      deprecations[name] = true;
+    }
+  }
+
+  hooks.suppressDeprecationWarnings = false;
+  hooks.deprecationHandler = null;
+
+  function isFunction(input) {
+    return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
+  }
+
+  function set(config) {
+    var prop, i;
+    for (i in config) {
+      prop = config[i];
+      if (isFunction(prop)) {
+        this[i] = prop;
+      } else {
+        this['_' + i] = prop;
+      }
+    }
+    this._config = config;
+    // Lenient ordinal parsing accepts just a number in addition to
+    // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+    // TODO: Remove "ordinalParse" fallback in next major release.
+    this._dayOfMonthOrdinalParseLenient = new RegExp(
+    (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
+    '|' + /\d{1,2}/.source);
+  }
+
+  function mergeConfigs(parentConfig, childConfig) {
+    var res = extend({}, parentConfig),prop;
+    for (prop in childConfig) {
+      if (hasOwnProp(childConfig, prop)) {
+        if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+          res[prop] = {};
+          extend(res[prop], parentConfig[prop]);
+          extend(res[prop], childConfig[prop]);
+        } else if (childConfig[prop] != null) {
+          res[prop] = childConfig[prop];
+        } else {
+          delete res[prop];
+        }
+      }
+    }
+    for (prop in parentConfig) {
+      if (hasOwnProp(parentConfig, prop) &&
+      !hasOwnProp(childConfig, prop) &&
+      isObject(parentConfig[prop])) {
+        // make sure changes to properties don't modify parent config
+        res[prop] = extend({}, res[prop]);
+      }
+    }
+    return res;
+  }
+
+  function Locale(config) {
+    if (config != null) {
+      this.set(config);
+    }
+  }
+
+  var keys;
+
+  if (Object.keys) {
+    keys = Object.keys;
+  } else {
+    keys = function keys(obj) {
+      var i,res = [];
+      for (i in obj) {
+        if (hasOwnProp(obj, i)) {
+          res.push(i);
+        }
+      }
+      return res;
+    };
+  }
+
+  var defaultCalendar = {
+    sameDay: '[Today at] LT',
+    nextDay: '[Tomorrow at] LT',
+    nextWeek: 'dddd [at] LT',
+    lastDay: '[Yesterday at] LT',
+    lastWeek: '[Last] dddd [at] LT',
+    sameElse: 'L' };
+
+
+  function calendar(key, mom, now) {
+    var output = this._calendar[key] || this._calendar['sameElse'];
+    return isFunction(output) ? output.call(mom, now) : output;
+  }
+
+  var defaultLongDateFormat = {
+    LTS: 'h:mm:ss A',
+    LT: 'h:mm A',
+    L: 'MM/DD/YYYY',
+    LL: 'MMMM D, YYYY',
+    LLL: 'MMMM D, YYYY h:mm A',
+    LLLL: 'dddd, MMMM D, YYYY h:mm A' };
+
+
+  function longDateFormat(key) {
+    var format = this._longDateFormat[key],
+    formatUpper = this._longDateFormat[key.toUpperCase()];
+
+    if (format || !formatUpper) {
+      return format;
+    }
+
+    this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
+      return val.slice(1);
+    });
+
+    return this._longDateFormat[key];
+  }
+
+  var defaultInvalidDate = 'Invalid date';
+
+  function invalidDate() {
+    return this._invalidDate;
+  }
+
+  var defaultOrdinal = '%d';
+  var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
+
+  function ordinal(number) {
+    return this._ordinal.replace('%d', number);
+  }
+
+  var defaultRelativeTime = {
+    future: 'in %s',
+    past: '%s ago',
+    s: 'a few seconds',
+    ss: '%d seconds',
+    m: 'a minute',
+    mm: '%d minutes',
+    h: 'an hour',
+    hh: '%d hours',
+    d: 'a day',
+    dd: '%d days',
+    M: 'a month',
+    MM: '%d months',
+    y: 'a year',
+    yy: '%d years' };
+
+
+  function relativeTime(number, withoutSuffix, string, isFuture) {
+    var output = this._relativeTime[string];
+    return isFunction(output) ?
+    output(number, withoutSuffix, string, isFuture) :
+    output.replace(/%d/i, number);
+  }
+
+  function pastFuture(diff, output) {
+    var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+    return isFunction(format) ? format(output) : format.replace(/%s/i, output);
+  }
+
+  var aliases = {};
+
+  function addUnitAlias(unit, shorthand) {
+    var lowerCase = unit.toLowerCase();
+    aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+  }
+
+  function normalizeUnits(units) {
+    return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
+  }
+
+  function normalizeObjectUnits(inputObject) {
+    var normalizedInput = {},
+    normalizedProp,
+    prop;
+
+    for (prop in inputObject) {
+      if (hasOwnProp(inputObject, prop)) {
+        normalizedProp = normalizeUnits(prop);
+        if (normalizedProp) {
+          normalizedInput[normalizedProp] = inputObject[prop];
+        }
+      }
+    }
+
+    return normalizedInput;
+  }
+
+  var priorities = {};
+
+  function addUnitPriority(unit, priority) {
+    priorities[unit] = priority;
+  }
+
+  function getPrioritizedUnits(unitsObj) {
+    var units = [];
+    for (var u in unitsObj) {
+      units.push({ unit: u, priority: priorities[u] });
+    }
+    units.sort(function (a, b) {
+      return a.priority - b.priority;
+    });
+    return units;
+  }
+
+  function zeroFill(number, targetLength, forceSign) {
+    var absNumber = '' + Math.abs(number),
+    zerosToFill = targetLength - absNumber.length,
+    sign = number >= 0;
+    return (sign ? forceSign ? '+' : '' : '-') +
+    Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
+  }
+
+  var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
+
+  var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
+
+  var formatFunctions = {};
+
+  var formatTokenFunctions = {};
+
+  // token:    'M'
+  // padded:   ['MM', 2]
+  // ordinal:  'Mo'
+  // callback: function () { this.month() + 1 }
+  function addFormatToken(token, padded, ordinal, callback) {
+    var func = callback;
+    if (typeof callback === 'string') {
+      func = function func() {
+        return this[callback]();
+      };
+    }
+    if (token) {
+      formatTokenFunctions[token] = func;
+    }
+    if (padded) {
+      formatTokenFunctions[padded[0]] = function () {
+        return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+      };
+    }
+    if (ordinal) {
+      formatTokenFunctions[ordinal] = function () {
+        return this.localeData().ordinal(func.apply(this, arguments), token);
+      };
+    }
+  }
+
+  function removeFormattingTokens(input) {
+    if (input.match(/\[[\s\S]/)) {
+      return input.replace(/^\[|\]$/g, '');
+    }
+    return input.replace(/\\/g, '');
+  }
+
+  function makeFormatFunction(format) {
+    var array = format.match(formattingTokens),i,length;
+
+    for (i = 0, length = array.length; i < length; i++) {
+      if (formatTokenFunctions[array[i]]) {
+        array[i] = formatTokenFunctions[array[i]];
+      } else {
+        array[i] = removeFormattingTokens(array[i]);
+      }
+    }
+
+    return function (mom) {
+      var output = '',i;
+      for (i = 0; i < length; i++) {
+        output += isFunction(array[i]) ? array[i].call(mom, format) : array[i];
+      }
+      return output;
+    };
+  }
+
+  // format date using native date object
+  function formatMoment(m, format) {
+    if (!m.isValid()) {
+      return m.localeData().invalidDate();
+    }
+
+    format = expandFormat(format, m.localeData());
+    formatFunctions[format] = formatFunctions[format] || makeFormatFunction(format);
+
+    return formatFunctions[format](m);
+  }
+
+  function expandFormat(format, locale) {
+    var i = 5;
+
+    function replaceLongDateFormatTokens(input) {
+      return locale.longDateFormat(input) || input;
+    }
+
+    localFormattingTokens.lastIndex = 0;
+    while (i >= 0 && localFormattingTokens.test(format)) {
+      format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+      localFormattingTokens.lastIndex = 0;
+      i -= 1;
+    }
+
+    return format;
+  }
+
+  var match1 = /\d/; //       0 - 9
+  var match2 = /\d\d/; //      00 - 99
+  var match3 = /\d{3}/; //     000 - 999
+  var match4 = /\d{4}/; //    0000 - 9999
+  var match6 = /[+-]?\d{6}/; // -999999 - 999999
+  var match1to2 = /\d\d?/; //       0 - 99
+  var match3to4 = /\d\d\d\d?/; //     999 - 9999
+  var match5to6 = /\d\d\d\d\d\d?/; //   99999 - 999999
+  var match1to3 = /\d{1,3}/; //       0 - 999
+  var match1to4 = /\d{1,4}/; //       0 - 9999
+  var match1to6 = /[+-]?\d{1,6}/; // -999999 - 999999
+
+  var matchUnsigned = /\d+/; //       0 - inf
+  var matchSigned = /[+-]?\d+/; //    -inf - inf
+
+  var matchOffset = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
+  var matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi; // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+
+  var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
+
+  // any word (or two) characters or numbers including two/three word month in arabic.
+  // includes scottish gaelic two word and hyphenated months
+  var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
+
+  var regexes = {};
+
+  function addRegexToken(token, regex, strictRegex) {
+    regexes[token] = isFunction(regex) ? regex : function (isStrict, localeData) {
+      return isStrict && strictRegex ? strictRegex : regex;
+    };
+  }
+
+  function getParseRegexForToken(token, config) {
+    if (!hasOwnProp(regexes, token)) {
+      return new RegExp(unescapeFormat(token));
+    }
+
+    return regexes[token](config._strict, config._locale);
+  }
+
+  // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+  function unescapeFormat(s) {
+    return regexEscape(s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
+      return p1 || p2 || p3 || p4;
+    }));
+  }
+
+  function regexEscape(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  }
+
+  var tokens = {};
+
+  function addParseToken(token, callback) {
+    var i,func = callback;
+    if (typeof token === 'string') {
+      token = [token];
+    }
+    if (isNumber(callback)) {
+      func = function func(input, array) {
+        array[callback] = toInt(input);
+      };
+    }
+    for (i = 0; i < token.length; i++) {
+      tokens[token[i]] = func;
+    }
+  }
+
+  function addWeekParseToken(token, callback) {
+    addParseToken(token, function (input, array, config, token) {
+      config._w = config._w || {};
+      callback(input, config._w, config, token);
+    });
+  }
+
+  function addTimeToArrayFromToken(token, input, config) {
+    if (input != null && hasOwnProp(tokens, token)) {
+      tokens[token](input, config._a, config, token);
+    }
+  }
+
+  var YEAR = 0;
+  var MONTH = 1;
+  var DATE = 2;
+  var HOUR = 3;
+  var MINUTE = 4;
+  var SECOND = 5;
+  var MILLISECOND = 6;
+  var WEEK = 7;
+  var WEEKDAY = 8;
+
+  // FORMATTING
+
+  addFormatToken('Y', 0, 0, function () {
+    var y = this.year();
+    return y <= 9999 ? '' + y : '+' + y;
+  });
+
+  addFormatToken(0, ['YY', 2], 0, function () {
+    return this.year() % 100;
+  });
+
+  addFormatToken(0, ['YYYY', 4], 0, 'year');
+  addFormatToken(0, ['YYYYY', 5], 0, 'year');
+  addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+  // ALIASES
+
+  addUnitAlias('year', 'y');
+
+  // PRIORITIES
+
+  addUnitPriority('year', 1);
+
+  // PARSING
+
+  addRegexToken('Y', matchSigned);
+  addRegexToken('YY', match1to2, match2);
+  addRegexToken('YYYY', match1to4, match4);
+  addRegexToken('YYYYY', match1to6, match6);
+  addRegexToken('YYYYYY', match1to6, match6);
+
+  addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+  addParseToken('YYYY', function (input, array) {
+    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+  });
+  addParseToken('YY', function (input, array) {
+    array[YEAR] = hooks.parseTwoDigitYear(input);
+  });
+  addParseToken('Y', function (input, array) {
+    array[YEAR] = parseInt(input, 10);
+  });
+
+  // HELPERS
+
+  function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+  }
+
+  function isLeapYear(year) {
+    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
+  }
+
+  // HOOKS
+
+  hooks.parseTwoDigitYear = function (input) {
+    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+  };
+
+  // MOMENTS
+
+  var getSetYear = makeGetSet('FullYear', true);
+
+  function getIsLeapYear() {
+    return isLeapYear(this.year());
+  }
+
+  function makeGetSet(unit, keepTime) {
+    return function (value) {
+      if (value != null) {
+        set$1(this, unit, value);
+        hooks.updateOffset(this, keepTime);
+        return this;
+      } else {
+        return get(this, unit);
+      }
+    };
+  }
+
+  function get(mom, unit) {
+    return mom.isValid() ?
+    mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+  }
+
+  function set$1(mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+      if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+      } else
+      {
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+      }
+    }
+  }
+
+  // MOMENTS
+
+  function stringGet(units) {
+    units = normalizeUnits(units);
+    if (isFunction(this[units])) {
+      return this[units]();
+    }
+    return this;
+  }
+
+
+  function stringSet(units, value) {
+    if (typeof units === 'object') {
+      units = normalizeObjectUnits(units);
+      var prioritized = getPrioritizedUnits(units);
+      for (var i = 0; i < prioritized.length; i++) {
+        this[prioritized[i].unit](units[prioritized[i].unit]);
+      }
+    } else {
+      units = normalizeUnits(units);
+      if (isFunction(this[units])) {
+        return this[units](value);
+      }
+    }
+    return this;
+  }
+
+  function mod(n, x) {
+    return (n % x + x) % x;
+  }
+
+  var indexOf;
+
+  if (Array.prototype.indexOf) {
+    indexOf = Array.prototype.indexOf;
+  } else {
+    indexOf = function indexOf(o) {
+      // I know
+      var i;
+      for (i = 0; i < this.length; ++i) {
+        if (this[i] === o) {
+          return i;
+        }
+      }
+      return -1;
+    };
+  }
+
+  function daysInMonth(year, month) {
+    if (isNaN(year) || isNaN(month)) {
+      return NaN;
+    }
+    var modMonth = mod(month, 12);
+    year += (month - modMonth) / 12;
+    return modMonth === 1 ? isLeapYear(year) ? 29 : 28 : 31 - modMonth % 7 % 2;
+  }
+
+  // FORMATTING
+
+  addFormatToken('M', ['MM', 2], 'Mo', function () {
+    return this.month() + 1;
+  });
+
+  addFormatToken('MMM', 0, 0, function (format) {
+    return this.localeData().monthsShort(this, format);
+  });
+
+  addFormatToken('MMMM', 0, 0, function (format) {
+    return this.localeData().months(this, format);
+  });
+
+  // ALIASES
+
+  addUnitAlias('month', 'M');
+
+  // PRIORITY
+
+  addUnitPriority('month', 8);
+
+  // PARSING
+
+  addRegexToken('M', match1to2);
+  addRegexToken('MM', match1to2, match2);
+  addRegexToken('MMM', function (isStrict, locale) {
+    return locale.monthsShortRegex(isStrict);
+  });
+  addRegexToken('MMMM', function (isStrict, locale) {
+    return locale.monthsRegex(isStrict);
+  });
+
+  addParseToken(['M', 'MM'], function (input, array) {
+    array[MONTH] = toInt(input) - 1;
+  });
+
+  addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
+    var month = config._locale.monthsParse(input, token, config._strict);
+    // if we didn't find a month name, mark the date as invalid.
+    if (month != null) {
+      array[MONTH] = month;
+    } else {
+      getParsingFlags(config).invalidMonth = input;
+    }
+  });
+
+  // LOCALES
+
+  var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
+  var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+  function localeMonths(m, format) {
+    if (!m) {
+      return isArray(this._months) ? this._months :
+      this._months['standalone'];
+    }
+    return isArray(this._months) ? this._months[m.month()] :
+    this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
+  }
+
+  var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+  function localeMonthsShort(m, format) {
+    if (!m) {
+      return isArray(this._monthsShort) ? this._monthsShort :
+      this._monthsShort['standalone'];
+    }
+    return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
+    this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
+  }
+
+  function handleStrictParse(monthName, format, strict) {
+    var i,ii,mom,llc = monthName.toLocaleLowerCase();
+    if (!this._monthsParse) {
+      // this is not used
+      this._monthsParse = [];
+      this._longMonthsParse = [];
+      this._shortMonthsParse = [];
+      for (i = 0; i < 12; ++i) {
+        mom = createUTC([2000, i]);
+        this._shortMonthsParse[i] = this.monthsShort(mom, '').toLocaleLowerCase();
+        this._longMonthsParse[i] = this.months(mom, '').toLocaleLowerCase();
+      }
+    }
+
+    if (strict) {
+      if (format === 'MMM') {
+        ii = indexOf.call(this._shortMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._longMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    } else {
+      if (format === 'MMM') {
+        ii = indexOf.call(this._shortMonthsParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._longMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._longMonthsParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._shortMonthsParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    }
+  }
+
+  function localeMonthsParse(monthName, format, strict) {
+    var i, mom, regex;
+
+    if (this._monthsParseExact) {
+      return handleStrictParse.call(this, monthName, format, strict);
+    }
+
+    if (!this._monthsParse) {
+      this._monthsParse = [];
+      this._longMonthsParse = [];
+      this._shortMonthsParse = [];
+    }
+
+    // TODO: add sorting
+    // Sorting makes sure if one month (or abbr) is a prefix of another
+    // see sorting in computeMonthsParse
+    for (i = 0; i < 12; i++) {
+      // make the regex if we don't have it already
+      mom = createUTC([2000, i]);
+      if (strict && !this._longMonthsParse[i]) {
+        this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
+        this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
+      }
+      if (!strict && !this._monthsParse[i]) {
+        regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+        this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+      }
+      // test the regex
+      if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
+        return i;
+      } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
+        return i;
+      } else if (!strict && this._monthsParse[i].test(monthName)) {
+        return i;
+      }
+    }
+  }
+
+  // MOMENTS
+
+  function setMonth(mom, value) {
+    var dayOfMonth;
+
+    if (!mom.isValid()) {
+      // No op
+      return mom;
+    }
+
+    if (typeof value === 'string') {
+      if (/^\d+$/.test(value)) {
+        value = toInt(value);
+      } else {
+        value = mom.localeData().monthsParse(value);
+        // TODO: Another silent failure?
+        if (!isNumber(value)) {
+          return mom;
+        }
+      }
+    }
+
+    dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
+    mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+    return mom;
+  }
+
+  function getSetMonth(value) {
+    if (value != null) {
+      setMonth(this, value);
+      hooks.updateOffset(this, true);
+      return this;
+    } else {
+      return get(this, 'Month');
+    }
+  }
+
+  function getDaysInMonth() {
+    return daysInMonth(this.year(), this.month());
+  }
+
+  var defaultMonthsShortRegex = matchWord;
+  function monthsShortRegex(isStrict) {
+    if (this._monthsParseExact) {
+      if (!hasOwnProp(this, '_monthsRegex')) {
+        computeMonthsParse.call(this);
+      }
+      if (isStrict) {
+        return this._monthsShortStrictRegex;
+      } else {
+        return this._monthsShortRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_monthsShortRegex')) {
+        this._monthsShortRegex = defaultMonthsShortRegex;
+      }
+      return this._monthsShortStrictRegex && isStrict ?
+      this._monthsShortStrictRegex : this._monthsShortRegex;
+    }
+  }
+
+  var defaultMonthsRegex = matchWord;
+  function monthsRegex(isStrict) {
+    if (this._monthsParseExact) {
+      if (!hasOwnProp(this, '_monthsRegex')) {
+        computeMonthsParse.call(this);
+      }
+      if (isStrict) {
+        return this._monthsStrictRegex;
+      } else {
+        return this._monthsRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_monthsRegex')) {
+        this._monthsRegex = defaultMonthsRegex;
+      }
+      return this._monthsStrictRegex && isStrict ?
+      this._monthsStrictRegex : this._monthsRegex;
+    }
+  }
+
+  function computeMonthsParse() {
+    function cmpLenRev(a, b) {
+      return b.length - a.length;
+    }
+
+    var shortPieces = [],longPieces = [],mixedPieces = [],
+    i,mom;
+    for (i = 0; i < 12; i++) {
+      // make the regex if we don't have it already
+      mom = createUTC([2000, i]);
+      shortPieces.push(this.monthsShort(mom, ''));
+      longPieces.push(this.months(mom, ''));
+      mixedPieces.push(this.months(mom, ''));
+      mixedPieces.push(this.monthsShort(mom, ''));
+    }
+    // Sorting makes sure if one month (or abbr) is a prefix of another it
+    // will match the longer piece.
+    shortPieces.sort(cmpLenRev);
+    longPieces.sort(cmpLenRev);
+    mixedPieces.sort(cmpLenRev);
+    for (i = 0; i < 12; i++) {
+      shortPieces[i] = regexEscape(shortPieces[i]);
+      longPieces[i] = regexEscape(longPieces[i]);
+    }
+    for (i = 0; i < 24; i++) {
+      mixedPieces[i] = regexEscape(mixedPieces[i]);
+    }
+
+    this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+    this._monthsShortRegex = this._monthsRegex;
+    this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+    this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+  }
+
+  function createDate(y, m, d, h, M, s, ms) {
+    // can't just apply() to create a date:
+    // https://stackoverflow.com/q/181348
+    var date;
+    // the date constructor remaps years 0-99 to 1900-1999
+    if (y < 100 && y >= 0) {
+      // preserve leap years using a full 400 year cycle, then reset
+      date = new Date(y + 400, m, d, h, M, s, ms);
+      if (isFinite(date.getFullYear())) {
+        date.setFullYear(y);
+      }
+    } else {
+      date = new Date(y, m, d, h, M, s, ms);
+    }
+
+    return date;
+  }
+
+  function createUTCDate(y) {
+    var date;
+    // the Date.UTC function remaps years 0-99 to 1900-1999
+    if (y < 100 && y >= 0) {
+      var args = Array.prototype.slice.call(arguments);
+      // preserve leap years using a full 400 year cycle, then reset
+      args[0] = y + 400;
+      date = new Date(Date.UTC.apply(null, args));
+      if (isFinite(date.getUTCFullYear())) {
+        date.setUTCFullYear(y);
+      }
+    } else {
+      date = new Date(Date.UTC.apply(null, arguments));
+    }
+
+    return date;
+  }
+
+  // start-of-first-week - start-of-year
+  function firstWeekOffset(year, dow, doy) {
+    var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+    fwd = 7 + dow - doy,
+    // first-week day local weekday -- which local weekday is fwd
+    fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
+
+    return -fwdlw + fwd - 1;
+  }
+
+  // https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+  function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
+    var localWeekday = (7 + weekday - dow) % 7,
+    weekOffset = firstWeekOffset(year, dow, doy),
+    dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
+    resYear,resDayOfYear;
+
+    if (dayOfYear <= 0) {
+      resYear = year - 1;
+      resDayOfYear = daysInYear(resYear) + dayOfYear;
+    } else if (dayOfYear > daysInYear(year)) {
+      resYear = year + 1;
+      resDayOfYear = dayOfYear - daysInYear(year);
+    } else {
+      resYear = year;
+      resDayOfYear = dayOfYear;
+    }
+
+    return {
+      year: resYear,
+      dayOfYear: resDayOfYear };
+
+  }
+
+  function weekOfYear(mom, dow, doy) {
+    var weekOffset = firstWeekOffset(mom.year(), dow, doy),
+    week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
+    resWeek,resYear;
+
+    if (week < 1) {
+      resYear = mom.year() - 1;
+      resWeek = week + weeksInYear(resYear, dow, doy);
+    } else if (week > weeksInYear(mom.year(), dow, doy)) {
+      resWeek = week - weeksInYear(mom.year(), dow, doy);
+      resYear = mom.year() + 1;
+    } else {
+      resYear = mom.year();
+      resWeek = week;
+    }
+
+    return {
+      week: resWeek,
+      year: resYear };
+
+  }
+
+  function weeksInYear(year, dow, doy) {
+    var weekOffset = firstWeekOffset(year, dow, doy),
+    weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
+    return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+  }
+
+  // FORMATTING
+
+  addFormatToken('w', ['ww', 2], 'wo', 'week');
+  addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
+
+  // ALIASES
+
+  addUnitAlias('week', 'w');
+  addUnitAlias('isoWeek', 'W');
+
+  // PRIORITIES
+
+  addUnitPriority('week', 5);
+  addUnitPriority('isoWeek', 5);
+
+  // PARSING
+
+  addRegexToken('w', match1to2);
+  addRegexToken('ww', match1to2, match2);
+  addRegexToken('W', match1to2);
+  addRegexToken('WW', match1to2, match2);
+
+  addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
+    week[token.substr(0, 1)] = toInt(input);
+  });
+
+  // HELPERS
+
+  // LOCALES
+
+  function localeWeek(mom) {
+    return weekOfYear(mom, this._week.dow, this._week.doy).week;
+  }
+
+  var defaultLocaleWeek = {
+    dow: 0, // Sunday is the first day of the week.
+    doy: 6 // The week that contains Jan 6th is the first week of the year.
+  };
+
+  function localeFirstDayOfWeek() {
+    return this._week.dow;
+  }
+
+  function localeFirstDayOfYear() {
+    return this._week.doy;
+  }
+
+  // MOMENTS
+
+  function getSetWeek(input) {
+    var week = this.localeData().week(this);
+    return input == null ? week : this.add((input - week) * 7, 'd');
+  }
+
+  function getSetISOWeek(input) {
+    var week = weekOfYear(this, 1, 4).week;
+    return input == null ? week : this.add((input - week) * 7, 'd');
+  }
+
+  // FORMATTING
+
+  addFormatToken('d', 0, 'do', 'day');
+
+  addFormatToken('dd', 0, 0, function (format) {
+    return this.localeData().weekdaysMin(this, format);
+  });
+
+  addFormatToken('ddd', 0, 0, function (format) {
+    return this.localeData().weekdaysShort(this, format);
+  });
+
+  addFormatToken('dddd', 0, 0, function (format) {
+    return this.localeData().weekdays(this, format);
+  });
+
+  addFormatToken('e', 0, 0, 'weekday');
+  addFormatToken('E', 0, 0, 'isoWeekday');
+
+  // ALIASES
+
+  addUnitAlias('day', 'd');
+  addUnitAlias('weekday', 'e');
+  addUnitAlias('isoWeekday', 'E');
+
+  // PRIORITY
+  addUnitPriority('day', 11);
+  addUnitPriority('weekday', 11);
+  addUnitPriority('isoWeekday', 11);
+
+  // PARSING
+
+  addRegexToken('d', match1to2);
+  addRegexToken('e', match1to2);
+  addRegexToken('E', match1to2);
+  addRegexToken('dd', function (isStrict, locale) {
+    return locale.weekdaysMinRegex(isStrict);
+  });
+  addRegexToken('ddd', function (isStrict, locale) {
+    return locale.weekdaysShortRegex(isStrict);
+  });
+  addRegexToken('dddd', function (isStrict, locale) {
+    return locale.weekdaysRegex(isStrict);
+  });
+
+  addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
+    var weekday = config._locale.weekdaysParse(input, token, config._strict);
+    // if we didn't get a weekday name, mark the date as invalid
+    if (weekday != null) {
+      week.d = weekday;
+    } else {
+      getParsingFlags(config).invalidWeekday = input;
+    }
+  });
+
+  addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
+    week[token] = toInt(input);
+  });
+
+  // HELPERS
+
+  function parseWeekday(input, locale) {
+    if (typeof input !== 'string') {
+      return input;
+    }
+
+    if (!isNaN(input)) {
+      return parseInt(input, 10);
+    }
+
+    input = locale.weekdaysParse(input);
+    if (typeof input === 'number') {
+      return input;
+    }
+
+    return null;
+  }
+
+  function parseIsoWeekday(input, locale) {
+    if (typeof input === 'string') {
+      return locale.weekdaysParse(input) % 7 || 7;
+    }
+    return isNaN(input) ? null : input;
+  }
+
+  // LOCALES
+  function shiftWeekdays(ws, n) {
+    return ws.slice(n, 7).concat(ws.slice(0, n));
+  }
+
+  var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+  function localeWeekdays(m, format) {
+    var weekdays = isArray(this._weekdays) ? this._weekdays :
+    this._weekdays[m && m !== true && this._weekdays.isFormat.test(format) ? 'format' : 'standalone'];
+    return m === true ? shiftWeekdays(weekdays, this._week.dow) :
+    m ? weekdays[m.day()] : weekdays;
+  }
+
+  var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
+  function localeWeekdaysShort(m) {
+    return m === true ? shiftWeekdays(this._weekdaysShort, this._week.dow) :
+    m ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+  }
+
+  var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
+  function localeWeekdaysMin(m) {
+    return m === true ? shiftWeekdays(this._weekdaysMin, this._week.dow) :
+    m ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+  }
+
+  function handleStrictParse$1(weekdayName, format, strict) {
+    var i,ii,mom,llc = weekdayName.toLocaleLowerCase();
+    if (!this._weekdaysParse) {
+      this._weekdaysParse = [];
+      this._shortWeekdaysParse = [];
+      this._minWeekdaysParse = [];
+
+      for (i = 0; i < 7; ++i) {
+        mom = createUTC([2000, 1]).day(i);
+        this._minWeekdaysParse[i] = this.weekdaysMin(mom, '').toLocaleLowerCase();
+        this._shortWeekdaysParse[i] = this.weekdaysShort(mom, '').toLocaleLowerCase();
+        this._weekdaysParse[i] = this.weekdays(mom, '').toLocaleLowerCase();
+      }
+    }
+
+    if (strict) {
+      if (format === 'dddd') {
+        ii = indexOf.call(this._weekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else if (format === 'ddd') {
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    } else {
+      if (format === 'dddd') {
+        ii = indexOf.call(this._weekdaysParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else if (format === 'ddd') {
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._weekdaysParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      } else {
+        ii = indexOf.call(this._minWeekdaysParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._weekdaysParse, llc);
+        if (ii !== -1) {
+          return ii;
+        }
+        ii = indexOf.call(this._shortWeekdaysParse, llc);
+        return ii !== -1 ? ii : null;
+      }
+    }
+  }
+
+  function localeWeekdaysParse(weekdayName, format, strict) {
+    var i, mom, regex;
+
+    if (this._weekdaysParseExact) {
+      return handleStrictParse$1.call(this, weekdayName, format, strict);
+    }
+
+    if (!this._weekdaysParse) {
+      this._weekdaysParse = [];
+      this._minWeekdaysParse = [];
+      this._shortWeekdaysParse = [];
+      this._fullWeekdaysParse = [];
+    }
+
+    for (i = 0; i < 7; i++) {
+      // make the regex if we don't have it already
+
+      mom = createUTC([2000, 1]).day(i);
+      if (strict && !this._fullWeekdaysParse[i]) {
+        this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\\.?') + '$', 'i');
+        this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\\.?') + '$', 'i');
+        this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\\.?') + '$', 'i');
+      }
+      if (!this._weekdaysParse[i]) {
+        regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
+        this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
+      }
+      // test the regex
+      if (strict && format === 'dddd' && this._fullWeekdaysParse[i].test(weekdayName)) {
+        return i;
+      } else if (strict && format === 'ddd' && this._shortWeekdaysParse[i].test(weekdayName)) {
+        return i;
+      } else if (strict && format === 'dd' && this._minWeekdaysParse[i].test(weekdayName)) {
+        return i;
+      } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
+        return i;
+      }
+    }
+  }
+
+  // MOMENTS
+
+  function getSetDayOfWeek(input) {
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    }
+    var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+    if (input != null) {
+      input = parseWeekday(input, this.localeData());
+      return this.add(input - day, 'd');
+    } else {
+      return day;
+    }
+  }
+
+  function getSetLocaleDayOfWeek(input) {
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    }
+    var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+    return input == null ? weekday : this.add(input - weekday, 'd');
+  }
+
+  function getSetISODayOfWeek(input) {
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    }
+
+    // behaves the same as moment#day except
+    // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+    // as a setter, sunday should belong to the previous week.
+
+    if (input != null) {
+      var weekday = parseIsoWeekday(input, this.localeData());
+      return this.day(this.day() % 7 ? weekday : weekday - 7);
+    } else {
+      return this.day() || 7;
+    }
+  }
+
+  var defaultWeekdaysRegex = matchWord;
+  function weekdaysRegex(isStrict) {
+    if (this._weekdaysParseExact) {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        computeWeekdaysParse.call(this);
+      }
+      if (isStrict) {
+        return this._weekdaysStrictRegex;
+      } else {
+        return this._weekdaysRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        this._weekdaysRegex = defaultWeekdaysRegex;
+      }
+      return this._weekdaysStrictRegex && isStrict ?
+      this._weekdaysStrictRegex : this._weekdaysRegex;
+    }
+  }
+
+  var defaultWeekdaysShortRegex = matchWord;
+  function weekdaysShortRegex(isStrict) {
+    if (this._weekdaysParseExact) {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        computeWeekdaysParse.call(this);
+      }
+      if (isStrict) {
+        return this._weekdaysShortStrictRegex;
+      } else {
+        return this._weekdaysShortRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_weekdaysShortRegex')) {
+        this._weekdaysShortRegex = defaultWeekdaysShortRegex;
+      }
+      return this._weekdaysShortStrictRegex && isStrict ?
+      this._weekdaysShortStrictRegex : this._weekdaysShortRegex;
+    }
+  }
+
+  var defaultWeekdaysMinRegex = matchWord;
+  function weekdaysMinRegex(isStrict) {
+    if (this._weekdaysParseExact) {
+      if (!hasOwnProp(this, '_weekdaysRegex')) {
+        computeWeekdaysParse.call(this);
+      }
+      if (isStrict) {
+        return this._weekdaysMinStrictRegex;
+      } else {
+        return this._weekdaysMinRegex;
+      }
+    } else {
+      if (!hasOwnProp(this, '_weekdaysMinRegex')) {
+        this._weekdaysMinRegex = defaultWeekdaysMinRegex;
+      }
+      return this._weekdaysMinStrictRegex && isStrict ?
+      this._weekdaysMinStrictRegex : this._weekdaysMinRegex;
+    }
+  }
+
+
+  function computeWeekdaysParse() {
+    function cmpLenRev(a, b) {
+      return b.length - a.length;
+    }
+
+    var minPieces = [],shortPieces = [],longPieces = [],mixedPieces = [],
+    i,mom,minp,shortp,longp;
+    for (i = 0; i < 7; i++) {
+      // make the regex if we don't have it already
+      mom = createUTC([2000, 1]).day(i);
+      minp = this.weekdaysMin(mom, '');
+      shortp = this.weekdaysShort(mom, '');
+      longp = this.weekdays(mom, '');
+      minPieces.push(minp);
+      shortPieces.push(shortp);
+      longPieces.push(longp);
+      mixedPieces.push(minp);
+      mixedPieces.push(shortp);
+      mixedPieces.push(longp);
+    }
+    // Sorting makes sure if one weekday (or abbr) is a prefix of another it
+    // will match the longer piece.
+    minPieces.sort(cmpLenRev);
+    shortPieces.sort(cmpLenRev);
+    longPieces.sort(cmpLenRev);
+    mixedPieces.sort(cmpLenRev);
+    for (i = 0; i < 7; i++) {
+      shortPieces[i] = regexEscape(shortPieces[i]);
+      longPieces[i] = regexEscape(longPieces[i]);
+      mixedPieces[i] = regexEscape(mixedPieces[i]);
+    }
+
+    this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+    this._weekdaysShortRegex = this._weekdaysRegex;
+    this._weekdaysMinRegex = this._weekdaysRegex;
+
+    this._weekdaysStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+    this._weekdaysShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+    this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
+  }
+
+  // FORMATTING
+
+  function hFormat() {
+    return this.hours() % 12 || 12;
+  }
+
+  function kFormat() {
+    return this.hours() || 24;
+  }
+
+  addFormatToken('H', ['HH', 2], 0, 'hour');
+  addFormatToken('h', ['hh', 2], 0, hFormat);
+  addFormatToken('k', ['kk', 2], 0, kFormat);
+
+  addFormatToken('hmm', 0, 0, function () {
+    return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
+  });
+
+  addFormatToken('hmmss', 0, 0, function () {
+    return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2) +
+    zeroFill(this.seconds(), 2);
+  });
+
+  addFormatToken('Hmm', 0, 0, function () {
+    return '' + this.hours() + zeroFill(this.minutes(), 2);
+  });
+
+  addFormatToken('Hmmss', 0, 0, function () {
+    return '' + this.hours() + zeroFill(this.minutes(), 2) +
+    zeroFill(this.seconds(), 2);
+  });
+
+  function meridiem(token, lowercase) {
+    addFormatToken(token, 0, 0, function () {
+      return this.localeData().meridiem(this.hours(), this.minutes(), lowercase);
+    });
+  }
+
+  meridiem('a', true);
+  meridiem('A', false);
+
+  // ALIASES
+
+  addUnitAlias('hour', 'h');
+
+  // PRIORITY
+  addUnitPriority('hour', 13);
+
+  // PARSING
+
+  function matchMeridiem(isStrict, locale) {
+    return locale._meridiemParse;
+  }
+
+  addRegexToken('a', matchMeridiem);
+  addRegexToken('A', matchMeridiem);
+  addRegexToken('H', match1to2);
+  addRegexToken('h', match1to2);
+  addRegexToken('k', match1to2);
+  addRegexToken('HH', match1to2, match2);
+  addRegexToken('hh', match1to2, match2);
+  addRegexToken('kk', match1to2, match2);
+
+  addRegexToken('hmm', match3to4);
+  addRegexToken('hmmss', match5to6);
+  addRegexToken('Hmm', match3to4);
+  addRegexToken('Hmmss', match5to6);
+
+  addParseToken(['H', 'HH'], HOUR);
+  addParseToken(['k', 'kk'], function (input, array, config) {
+    var kInput = toInt(input);
+    array[HOUR] = kInput === 24 ? 0 : kInput;
+  });
+  addParseToken(['a', 'A'], function (input, array, config) {
+    config._isPm = config._locale.isPM(input);
+    config._meridiem = input;
+  });
+  addParseToken(['h', 'hh'], function (input, array, config) {
+    array[HOUR] = toInt(input);
+    getParsingFlags(config).bigHour = true;
+  });
+  addParseToken('hmm', function (input, array, config) {
+    var pos = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos));
+    array[MINUTE] = toInt(input.substr(pos));
+    getParsingFlags(config).bigHour = true;
+  });
+  addParseToken('hmmss', function (input, array, config) {
+    var pos1 = input.length - 4;
+    var pos2 = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos1));
+    array[MINUTE] = toInt(input.substr(pos1, 2));
+    array[SECOND] = toInt(input.substr(pos2));
+    getParsingFlags(config).bigHour = true;
+  });
+  addParseToken('Hmm', function (input, array, config) {
+    var pos = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos));
+    array[MINUTE] = toInt(input.substr(pos));
+  });
+  addParseToken('Hmmss', function (input, array, config) {
+    var pos1 = input.length - 4;
+    var pos2 = input.length - 2;
+    array[HOUR] = toInt(input.substr(0, pos1));
+    array[MINUTE] = toInt(input.substr(pos1, 2));
+    array[SECOND] = toInt(input.substr(pos2));
+  });
+
+  // LOCALES
+
+  function localeIsPM(input) {
+    // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+    // Using charAt should be more compatible.
+    return (input + '').toLowerCase().charAt(0) === 'p';
+  }
+
+  var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
+  function localeMeridiem(hours, minutes, isLower) {
+    if (hours > 11) {
+      return isLower ? 'pm' : 'PM';
+    } else {
+      return isLower ? 'am' : 'AM';
+    }
+  }
+
+
+  // MOMENTS
+
+  // Setting the hour should keep the time, because the user explicitly
+  // specified which hour they want. So trying to maintain the same hour (in
+  // a new timezone) makes sense. Adding/subtracting hours does not follow
+  // this rule.
+  var getSetHour = makeGetSet('Hours', true);
+
+  var baseConfig = {
+    calendar: defaultCalendar,
+    longDateFormat: defaultLongDateFormat,
+    invalidDate: defaultInvalidDate,
+    ordinal: defaultOrdinal,
+    dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
+    relativeTime: defaultRelativeTime,
+
+    months: defaultLocaleMonths,
+    monthsShort: defaultLocaleMonthsShort,
+
+    week: defaultLocaleWeek,
+
+    weekdays: defaultLocaleWeekdays,
+    weekdaysMin: defaultLocaleWeekdaysMin,
+    weekdaysShort: defaultLocaleWeekdaysShort,
+
+    meridiemParse: defaultLocaleMeridiemParse };
+
+
+  // internal storage for locale config files
+  var locales = {};
+  var localeFamilies = {};
+  var globalLocale;
+
+  function normalizeLocale(key) {
+    return key ? key.toLowerCase().replace('_', '-') : key;
+  }
+
+  // pick the locale from the array
+  // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+  // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+  function chooseLocale(names) {
+    var i = 0,j,next,locale,split;
+
+    while (i < names.length) {
+      split = normalizeLocale(names[i]).split('-');
+      j = split.length;
+      next = normalizeLocale(names[i + 1]);
+      next = next ? next.split('-') : null;
+      while (j > 0) {
+        locale = loadLocale(split.slice(0, j).join('-'));
+        if (locale) {
+          return locale;
+        }
+        if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+          //the next array item is better than a shallower substring of this one
+          break;
+        }
+        j--;
+      }
+      i++;
+    }
+    return globalLocale;
+  }
+
+  function loadLocale(name) {
+    var oldLocale = null;
+    // TODO: Find a better way to register and load all the locales in Node
+    if (!locales[name] && typeof module !== 'undefined' &&
+    module && module.exports) {
+      try {
+        oldLocale = globalLocale._abbr;
+        var aliasedRequire = require;
+        !(function webpackMissingModule() { var e = new Error("Cannot find module 'undefined'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+        getSetGlobalLocale(oldLocale);
+      } catch (e) {}
+    }
+    return locales[name];
+  }
+
+  // This function will load locale and then set the global locale.  If
+  // no arguments are passed in, it will simply return the current global
+  // locale key.
+  function getSetGlobalLocale(key, values) {
+    var data;
+    if (key) {
+      if (isUndefined(values)) {
+        data = getLocale(key);
+      } else
+      {
+        data = defineLocale(key, values);
+      }
+
+      if (data) {
+        // moment.duration._locale = moment._locale = data;
+        globalLocale = data;
+      } else
+      {
+        if (typeof console !== 'undefined' && console.warn) {
+          //warn user if arguments are passed but the locale could not be set
+          console.warn('Locale ' + key + ' not found. Did you forget to load it?');
+        }
+      }
+    }
+
+    return globalLocale._abbr;
+  }
+
+  function defineLocale(name, config) {
+    if (config !== null) {
+      var locale,parentConfig = baseConfig;
+      config.abbr = name;
+      if (locales[name] != null) {
+        deprecateSimple('defineLocaleOverride',
+        'use moment.updateLocale(localeName, config) to change ' +
+        'an existing locale. moment.defineLocale(localeName, ' +
+        'config) should only be used for creating a new locale ' +
+        'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.');
+        parentConfig = locales[name]._config;
+      } else if (config.parentLocale != null) {
+        if (locales[config.parentLocale] != null) {
+          parentConfig = locales[config.parentLocale]._config;
+        } else {
+          locale = loadLocale(config.parentLocale);
+          if (locale != null) {
+            parentConfig = locale._config;
+          } else {
+            if (!localeFamilies[config.parentLocale]) {
+              localeFamilies[config.parentLocale] = [];
+            }
+            localeFamilies[config.parentLocale].push({
+              name: name,
+              config: config });
+
+            return null;
+          }
+        }
+      }
+      locales[name] = new Locale(mergeConfigs(parentConfig, config));
+
+      if (localeFamilies[name]) {
+        localeFamilies[name].forEach(function (x) {
+          defineLocale(x.name, x.config);
+        });
+      }
+
+      // backwards compat for now: also set the locale
+      // make sure we set the locale AFTER all child locales have been
+      // created, so we won't end up with the child locale set.
+      getSetGlobalLocale(name);
+
+
+      return locales[name];
+    } else {
+      // useful for testing
+      delete locales[name];
+      return null;
+    }
+  }
+
+  function updateLocale(name, config) {
+    if (config != null) {
+      var locale,tmpLocale,parentConfig = baseConfig;
+      // MERGE
+      tmpLocale = loadLocale(name);
+      if (tmpLocale != null) {
+        parentConfig = tmpLocale._config;
+      }
+      config = mergeConfigs(parentConfig, config);
+      locale = new Locale(config);
+      locale.parentLocale = locales[name];
+      locales[name] = locale;
+
+      // backwards compat for now: also set the locale
+      getSetGlobalLocale(name);
+    } else {
+      // pass null for config to unupdate, useful for tests
+      if (locales[name] != null) {
+        if (locales[name].parentLocale != null) {
+          locales[name] = locales[name].parentLocale;
+        } else if (locales[name] != null) {
+          delete locales[name];
+        }
+      }
+    }
+    return locales[name];
+  }
+
+  // returns locale data
+  function getLocale(key) {
+    var locale;
+
+    if (key && key._locale && key._locale._abbr) {
+      key = key._locale._abbr;
+    }
+
+    if (!key) {
+      return globalLocale;
+    }
+
+    if (!isArray(key)) {
+      //short-circuit everything else
+      locale = loadLocale(key);
+      if (locale) {
+        return locale;
+      }
+      key = [key];
+    }
+
+    return chooseLocale(key);
+  }
+
+  function listLocales() {
+    return keys(locales);
+  }
+
+  function checkOverflow(m) {
+    var overflow;
+    var a = m._a;
+
+    if (a && getParsingFlags(m).overflow === -2) {
+      overflow =
+      a[MONTH] < 0 || a[MONTH] > 11 ? MONTH :
+      a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH]) ? DATE :
+      a[HOUR] < 0 || a[HOUR] > 24 || a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0) ? HOUR :
+      a[MINUTE] < 0 || a[MINUTE] > 59 ? MINUTE :
+      a[SECOND] < 0 || a[SECOND] > 59 ? SECOND :
+      a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND :
+      -1;
+
+      if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+        overflow = DATE;
+      }
+      if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
+        overflow = WEEK;
+      }
+      if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
+        overflow = WEEKDAY;
+      }
+
+      getParsingFlags(m).overflow = overflow;
+    }
+
+    return m;
+  }
+
+  // Pick the first defined of two or three arguments.
+  function defaults(a, b, c) {
+    if (a != null) {
+      return a;
+    }
+    if (b != null) {
+      return b;
+    }
+    return c;
+  }
+
+  function currentDateArray(config) {
+    // hooks is actually the exported moment object
+    var nowValue = new Date(hooks.now());
+    if (config._useUTC) {
+      return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+    }
+    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+  }
+
+  // convert an array to a date.
+  // the array should mirror the parameters below
+  // note: all values past the year are optional and will default to the lowest possible value.
+  // [year, month, day , hour, minute, second, millisecond]
+  function configFromArray(config) {
+    var i,date,input = [],currentDate,expectedWeekday,yearToUse;
+
+    if (config._d) {
+      return;
+    }
+
+    currentDate = currentDateArray(config);
+
+    //compute day of the year from weeks and weekdays
+    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+      dayOfYearFromWeekInfo(config);
+    }
+
+    //if the day of the year is set, figure out what it is
+    if (config._dayOfYear != null) {
+      yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+      if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
+        getParsingFlags(config)._overflowDayOfYear = true;
+      }
+
+      date = createUTCDate(yearToUse, 0, config._dayOfYear);
+      config._a[MONTH] = date.getUTCMonth();
+      config._a[DATE] = date.getUTCDate();
+    }
+
+    // Default to current date.
+    // * if no year, month, day of month are given, default to today
+    // * if day of month is given, default month and year
+    // * if month is given, default only year
+    // * if year is given, don't default anything
+    for (i = 0; i < 3 && config._a[i] == null; ++i) {
+      config._a[i] = input[i] = currentDate[i];
+    }
+
+    // Zero out whatever was not defaulted, including time
+    for (; i < 7; i++) {
+      config._a[i] = input[i] = config._a[i] == null ? i === 2 ? 1 : 0 : config._a[i];
+    }
+
+    // Check for 24:00:00.000
+    if (config._a[HOUR] === 24 &&
+    config._a[MINUTE] === 0 &&
+    config._a[SECOND] === 0 &&
+    config._a[MILLISECOND] === 0) {
+      config._nextDay = true;
+      config._a[HOUR] = 0;
+    }
+
+    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+    expectedWeekday = config._useUTC ? config._d.getUTCDay() : config._d.getDay();
+
+    // Apply timezone offset from input. The actual utcOffset can be changed
+    // with parseZone.
+    if (config._tzm != null) {
+      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+    }
+
+    if (config._nextDay) {
+      config._a[HOUR] = 24;
+    }
+
+    // check for mismatching day of week
+    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== expectedWeekday) {
+      getParsingFlags(config).weekdayMismatch = true;
+    }
+  }
+
+  function dayOfYearFromWeekInfo(config) {
+    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+
+    w = config._w;
+    if (w.GG != null || w.W != null || w.E != null) {
+      dow = 1;
+      doy = 4;
+
+      // TODO: We need to take the current isoWeekYear, but that depends on
+      // how we interpret now (local, utc, fixed offset). So create
+      // a now version of current config (take local/utc/offset flags, and
+      // create now).
+      weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+      week = defaults(w.W, 1);
+      weekday = defaults(w.E, 1);
+      if (weekday < 1 || weekday > 7) {
+        weekdayOverflow = true;
+      }
+    } else {
+      dow = config._locale._week.dow;
+      doy = config._locale._week.doy;
+
+      var curWeek = weekOfYear(createLocal(), dow, doy);
+
+      weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+      // Default to current week.
+      week = defaults(w.w, curWeek.week);
+
+      if (w.d != null) {
+        // weekday -- low day numbers are considered next week
+        weekday = w.d;
+        if (weekday < 0 || weekday > 6) {
+          weekdayOverflow = true;
+        }
+      } else if (w.e != null) {
+        // local weekday -- counting starts from beginning of week
+        weekday = w.e + dow;
+        if (w.e < 0 || w.e > 6) {
+          weekdayOverflow = true;
+        }
+      } else {
+        // default to beginning of week
+        weekday = dow;
+      }
+    }
+    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+      getParsingFlags(config)._overflowWeeks = true;
+    } else if (weekdayOverflow != null) {
+      getParsingFlags(config)._overflowWeekday = true;
+    } else {
+      temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+      config._a[YEAR] = temp.year;
+      config._dayOfYear = temp.dayOfYear;
+    }
+  }
+
+  // iso 8601 regex
+  // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+  var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
+  var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/;
+
+  var tzRegex = /Z|[+-]\d\d(?::?\d\d)?/;
+
+  var isoDates = [
+  ['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/],
+  ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/],
+  ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/],
+  ['GGGG-[W]WW', /\d{4}-W\d\d/, false],
+  ['YYYY-DDD', /\d{4}-\d{3}/],
+  ['YYYY-MM', /\d{4}-\d\d/, false],
+  ['YYYYYYMMDD', /[+-]\d{10}/],
+  ['YYYYMMDD', /\d{8}/],
+  // YYYYMM is NOT allowed by the standard
+  ['GGGG[W]WWE', /\d{4}W\d{3}/],
+  ['GGGG[W]WW', /\d{4}W\d{2}/, false],
+  ['YYYYDDD', /\d{7}/]];
+
+
+  // iso time formats and regexes
+  var isoTimes = [
+  ['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/],
+  ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/],
+  ['HH:mm:ss', /\d\d:\d\d:\d\d/],
+  ['HH:mm', /\d\d:\d\d/],
+  ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/],
+  ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/],
+  ['HHmmss', /\d\d\d\d\d\d/],
+  ['HHmm', /\d\d\d\d/],
+  ['HH', /\d\d/]];
+
+
+  var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
+
+  // date from iso format
+  function configFromISO(config) {
+    var i,l,
+    string = config._i,
+    match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
+    allowTime,dateFormat,timeFormat,tzFormat;
+
+    if (match) {
+      getParsingFlags(config).iso = true;
+
+      for (i = 0, l = isoDates.length; i < l; i++) {
+        if (isoDates[i][1].exec(match[1])) {
+          dateFormat = isoDates[i][0];
+          allowTime = isoDates[i][2] !== false;
+          break;
+        }
+      }
+      if (dateFormat == null) {
+        config._isValid = false;
+        return;
+      }
+      if (match[3]) {
+        for (i = 0, l = isoTimes.length; i < l; i++) {
+          if (isoTimes[i][1].exec(match[3])) {
+            // match[2] should be 'T' or space
+            timeFormat = (match[2] || ' ') + isoTimes[i][0];
+            break;
+          }
+        }
+        if (timeFormat == null) {
+          config._isValid = false;
+          return;
+        }
+      }
+      if (!allowTime && timeFormat != null) {
+        config._isValid = false;
+        return;
+      }
+      if (match[4]) {
+        if (tzRegex.exec(match[4])) {
+          tzFormat = 'Z';
+        } else {
+          config._isValid = false;
+          return;
+        }
+      }
+      config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
+      configFromStringAndFormat(config);
+    } else {
+      config._isValid = false;
+    }
+  }
+
+  // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
+  var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
+  function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+    var result = [
+    untruncateYear(yearStr),
+    defaultLocaleMonthsShort.indexOf(monthStr),
+    parseInt(dayStr, 10),
+    parseInt(hourStr, 10),
+    parseInt(minuteStr, 10)];
+
+
+    if (secondStr) {
+      result.push(parseInt(secondStr, 10));
+    }
+
+    return result;
+  }
+
+  function untruncateYear(yearStr) {
+    var year = parseInt(yearStr, 10);
+    if (year <= 49) {
+      return 2000 + year;
+    } else if (year <= 999) {
+      return 1900 + year;
+    }
+    return year;
+  }
+
+  function preprocessRFC2822(s) {
+    // Remove comments and folding whitespace and replace multiple-spaces with a single space
+    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+  }
+
+  function checkWeekday(weekdayStr, parsedInput, config) {
+    if (weekdayStr) {
+      // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+      var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+      weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
+      if (weekdayProvided !== weekdayActual) {
+        getParsingFlags(config).weekdayMismatch = true;
+        config._isValid = false;
+        return false;
+      }
+    }
+    return true;
+  }
+
+  var obsOffsets = {
+    UT: 0,
+    GMT: 0,
+    EDT: -4 * 60,
+    EST: -5 * 60,
+    CDT: -5 * 60,
+    CST: -6 * 60,
+    MDT: -6 * 60,
+    MST: -7 * 60,
+    PDT: -7 * 60,
+    PST: -8 * 60 };
+
+
+  function calculateOffset(obsOffset, militaryOffset, numOffset) {
+    if (obsOffset) {
+      return obsOffsets[obsOffset];
+    } else if (militaryOffset) {
+      // the only allowed military tz is Z
+      return 0;
+    } else {
+      var hm = parseInt(numOffset, 10);
+      var m = hm % 100,h = (hm - m) / 100;
+      return h * 60 + m;
+    }
+  }
+
+  // date and time from ref 2822 format
+  function configFromRFC2822(config) {
+    var match = rfc2822.exec(preprocessRFC2822(config._i));
+    if (match) {
+      var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+      if (!checkWeekday(match[1], parsedArray, config)) {
+        return;
+      }
+
+      config._a = parsedArray;
+      config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+      config._d = createUTCDate.apply(null, config._a);
+      config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
+      getParsingFlags(config).rfc2822 = true;
+    } else {
+      config._isValid = false;
+    }
+  }
+
+  // date from iso format or fallback
+  function configFromString(config) {
+    var matched = aspNetJsonRegex.exec(config._i);
+
+    if (matched !== null) {
+      config._d = new Date(+matched[1]);
+      return;
+    }
+
+    configFromISO(config);
+    if (config._isValid === false) {
+      delete config._isValid;
+    } else {
+      return;
+    }
+
+    configFromRFC2822(config);
+    if (config._isValid === false) {
+      delete config._isValid;
+    } else {
+      return;
+    }
+
+    // Final attempt, use Input Fallback
+    hooks.createFromInputFallback(config);
+  }
+
+  hooks.createFromInputFallback = deprecate(
+  'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' +
+  'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
+  'discouraged and will be removed in an upcoming major release. Please refer to ' +
+  'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
+  function (config) {
+    config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+  });
+
+
+  // constant that refers to the ISO standard
+  hooks.ISO_8601 = function () {};
+
+  // constant that refers to the RFC 2822 form
+  hooks.RFC_2822 = function () {};
+
+  // date from string and format string
+  function configFromStringAndFormat(config) {
+    // TODO: Move this to another part of the creation flow to prevent circular deps
+    if (config._f === hooks.ISO_8601) {
+      configFromISO(config);
+      return;
+    }
+    if (config._f === hooks.RFC_2822) {
+      configFromRFC2822(config);
+      return;
+    }
+    config._a = [];
+    getParsingFlags(config).empty = true;
+
+    // This array is used to make a Date, either with `new Date` or `Date.UTC`
+    var string = '' + config._i,
+    i,parsedInput,tokens,token,skipped,
+    stringLength = string.length,
+    totalParsedInputLength = 0;
+
+    tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
+
+    for (i = 0; i < tokens.length; i++) {
+      token = tokens[i];
+      parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
+      // console.log('token', token, 'parsedInput', parsedInput,
+      //         'regex', getParseRegexForToken(token, config));
+      if (parsedInput) {
+        skipped = string.substr(0, string.indexOf(parsedInput));
+        if (skipped.length > 0) {
+          getParsingFlags(config).unusedInput.push(skipped);
+        }
+        string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
+        totalParsedInputLength += parsedInput.length;
+      }
+      // don't parse if it's not a known token
+      if (formatTokenFunctions[token]) {
+        if (parsedInput) {
+          getParsingFlags(config).empty = false;
+        } else
+        {
+          getParsingFlags(config).unusedTokens.push(token);
+        }
+        addTimeToArrayFromToken(token, parsedInput, config);
+      } else
+      if (config._strict && !parsedInput) {
+        getParsingFlags(config).unusedTokens.push(token);
+      }
+    }
+
+    // add remaining unparsed input length to the string
+    getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
+    if (string.length > 0) {
+      getParsingFlags(config).unusedInput.push(string);
+    }
+
+    // clear _12h flag if hour is <= 12
+    if (config._a[HOUR] <= 12 &&
+    getParsingFlags(config).bigHour === true &&
+    config._a[HOUR] > 0) {
+      getParsingFlags(config).bigHour = undefined;
+    }
+
+    getParsingFlags(config).parsedDateParts = config._a.slice(0);
+    getParsingFlags(config).meridiem = config._meridiem;
+    // handle meridiem
+    config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
+
+    configFromArray(config);
+    checkOverflow(config);
+  }
+
+
+  function meridiemFixWrap(locale, hour, meridiem) {
+    var isPm;
+
+    if (meridiem == null) {
+      // nothing to do
+      return hour;
+    }
+    if (locale.meridiemHour != null) {
+      return locale.meridiemHour(hour, meridiem);
+    } else if (locale.isPM != null) {
+      // Fallback
+      isPm = locale.isPM(meridiem);
+      if (isPm && hour < 12) {
+        hour += 12;
+      }
+      if (!isPm && hour === 12) {
+        hour = 0;
+      }
+      return hour;
+    } else {
+      // this is not supposed to happen
+      return hour;
+    }
+  }
+
+  // date from string and array of format strings
+  function configFromStringAndArray(config) {
+    var tempConfig,
+    bestMoment,
+
+    scoreToBeat,
+    i,
+    currentScore;
+
+    if (config._f.length === 0) {
+      getParsingFlags(config).invalidFormat = true;
+      config._d = new Date(NaN);
+      return;
+    }
+
+    for (i = 0; i < config._f.length; i++) {
+      currentScore = 0;
+      tempConfig = copyConfig({}, config);
+      if (config._useUTC != null) {
+        tempConfig._useUTC = config._useUTC;
+      }
+      tempConfig._f = config._f[i];
+      configFromStringAndFormat(tempConfig);
+
+      if (!isValid(tempConfig)) {
+        continue;
+      }
+
+      // if there is any input that was not parsed add a penalty for that format
+      currentScore += getParsingFlags(tempConfig).charsLeftOver;
+
+      //or tokens
+      currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+
+      getParsingFlags(tempConfig).score = currentScore;
+
+      if (scoreToBeat == null || currentScore < scoreToBeat) {
+        scoreToBeat = currentScore;
+        bestMoment = tempConfig;
+      }
+    }
+
+    extend(config, bestMoment || tempConfig);
+  }
+
+  function configFromObject(config) {
+    if (config._d) {
+      return;
+    }
+
+    var i = normalizeObjectUnits(config._i);
+    config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
+      return obj && parseInt(obj, 10);
+    });
+
+    configFromArray(config);
+  }
+
+  function createFromConfig(config) {
+    var res = new Moment(checkOverflow(prepareConfig(config)));
+    if (res._nextDay) {
+      // Adding is smart enough around DST
+      res.add(1, 'd');
+      res._nextDay = undefined;
+    }
+
+    return res;
+  }
+
+  function prepareConfig(config) {
+    var input = config._i,
+    format = config._f;
+
+    config._locale = config._locale || getLocale(config._l);
+
+    if (input === null || format === undefined && input === '') {
+      return createInvalid({ nullInput: true });
+    }
+
+    if (typeof input === 'string') {
+      config._i = input = config._locale.preparse(input);
+    }
+
+    if (isMoment(input)) {
+      return new Moment(checkOverflow(input));
+    } else if (isDate(input)) {
+      config._d = input;
+    } else if (isArray(format)) {
+      configFromStringAndArray(config);
+    } else if (format) {
+      configFromStringAndFormat(config);
+    } else {
+      configFromInput(config);
+    }
+
+    if (!isValid(config)) {
+      config._d = null;
+    }
+
+    return config;
+  }
+
+  function configFromInput(config) {
+    var input = config._i;
+    if (isUndefined(input)) {
+      config._d = new Date(hooks.now());
+    } else if (isDate(input)) {
+      config._d = new Date(input.valueOf());
+    } else if (typeof input === 'string') {
+      configFromString(config);
+    } else if (isArray(input)) {
+      config._a = map(input.slice(0), function (obj) {
+        return parseInt(obj, 10);
+      });
+      configFromArray(config);
+    } else if (isObject(input)) {
+      configFromObject(config);
+    } else if (isNumber(input)) {
+      // from milliseconds
+      config._d = new Date(input);
+    } else {
+      hooks.createFromInputFallback(config);
+    }
+  }
+
+  function createLocalOrUTC(input, format, locale, strict, isUTC) {
+    var c = {};
+
+    if (locale === true || locale === false) {
+      strict = locale;
+      locale = undefined;
+    }
+
+    if (isObject(input) && isObjectEmpty(input) ||
+    isArray(input) && input.length === 0) {
+      input = undefined;
+    }
+    // object construction must be done this way.
+    // https://github.com/moment/moment/issues/1423
+    c._isAMomentObject = true;
+    c._useUTC = c._isUTC = isUTC;
+    c._l = locale;
+    c._i = input;
+    c._f = format;
+    c._strict = strict;
+
+    return createFromConfig(c);
+  }
+
+  function createLocal(input, format, locale, strict) {
+    return createLocalOrUTC(input, format, locale, strict, false);
+  }
+
+  var prototypeMin = deprecate(
+  'moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/',
+  function () {
+    var other = createLocal.apply(null, arguments);
+    if (this.isValid() && other.isValid()) {
+      return other < this ? this : other;
+    } else {
+      return createInvalid();
+    }
+  });
+
+
+  var prototypeMax = deprecate(
+  'moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/',
+  function () {
+    var other = createLocal.apply(null, arguments);
+    if (this.isValid() && other.isValid()) {
+      return other > this ? this : other;
+    } else {
+      return createInvalid();
+    }
+  });
+
+
+  // Pick a moment m from moments so that m[fn](other) is true for all
+  // other. This relies on the function fn to be transitive.
+  //
+  // moments should either be an array of moment objects or an array, whose
+  // first element is an array of moment objects.
+  function pickBy(fn, moments) {
+    var res, i;
+    if (moments.length === 1 && isArray(moments[0])) {
+      moments = moments[0];
+    }
+    if (!moments.length) {
+      return createLocal();
+    }
+    res = moments[0];
+    for (i = 1; i < moments.length; ++i) {
+      if (!moments[i].isValid() || moments[i][fn](res)) {
+        res = moments[i];
+      }
+    }
+    return res;
+  }
+
+  // TODO: Use [].sort instead?
+  function min() {
+    var args = [].slice.call(arguments, 0);
+
+    return pickBy('isBefore', args);
+  }
+
+  function max() {
+    var args = [].slice.call(arguments, 0);
+
+    return pickBy('isAfter', args);
+  }
+
+  var now = function now() {
+    return Date.now ? Date.now() : +new Date();
+  };
+
+  var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', 'millisecond'];
+
+  function isDurationValid(m) {
+    for (var key in m) {
+      if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+        return false;
+      }
+    }
+
+    var unitHasDecimal = false;
+    for (var i = 0; i < ordering.length; ++i) {
+      if (m[ordering[i]]) {
+        if (unitHasDecimal) {
+          return false; // only allow non-integers for smallest unit
+        }
+        if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
+          unitHasDecimal = true;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  function isValid$1() {
+    return this._isValid;
+  }
+
+  function createInvalid$1() {
+    return createDuration(NaN);
+  }
+
+  function Duration(duration) {
+    var normalizedInput = normalizeObjectUnits(duration),
+    years = normalizedInput.year || 0,
+    quarters = normalizedInput.quarter || 0,
+    months = normalizedInput.month || 0,
+    weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
+    days = normalizedInput.day || 0,
+    hours = normalizedInput.hour || 0,
+    minutes = normalizedInput.minute || 0,
+    seconds = normalizedInput.second || 0,
+    milliseconds = normalizedInput.millisecond || 0;
+
+    this._isValid = isDurationValid(normalizedInput);
+
+    // representation for dateAddRemove
+    this._milliseconds = +milliseconds +
+    seconds * 1e3 + // 1000
+    minutes * 6e4 + // 1000 * 60
+    hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
+    // Because of dateAddRemove treats 24 hours as different from a
+    // day when working around DST, we need to store them separately
+    this._days = +days +
+    weeks * 7;
+    // It is impossible to translate months into days without knowing
+    // which months you are are talking about, so we have to store
+    // it separately.
+    this._months = +months +
+    quarters * 3 +
+    years * 12;
+
+    this._data = {};
+
+    this._locale = getLocale();
+
+    this._bubble();
+  }
+
+  function isDuration(obj) {
+    return obj instanceof Duration;
+  }
+
+  function absRound(number) {
+    if (number < 0) {
+      return Math.round(-1 * number) * -1;
+    } else {
+      return Math.round(number);
+    }
+  }
+
+  // FORMATTING
+
+  function offset(token, separator) {
+    addFormatToken(token, 0, 0, function () {
+      var offset = this.utcOffset();
+      var sign = '+';
+      if (offset < 0) {
+        offset = -offset;
+        sign = '-';
+      }
+      return sign + zeroFill(~~(offset / 60), 2) + separator + zeroFill(~~offset % 60, 2);
+    });
+  }
+
+  offset('Z', ':');
+  offset('ZZ', '');
+
+  // PARSING
+
+  addRegexToken('Z', matchShortOffset);
+  addRegexToken('ZZ', matchShortOffset);
+  addParseToken(['Z', 'ZZ'], function (input, array, config) {
+    config._useUTC = true;
+    config._tzm = offsetFromString(matchShortOffset, input);
+  });
+
+  // HELPERS
+
+  // timezone chunker
+  // '+10:00' > ['10',  '00']
+  // '-1530'  > ['-15', '30']
+  var chunkOffset = /([\+\-]|\d\d)/gi;
+
+  function offsetFromString(matcher, string) {
+    var matches = (string || '').match(matcher);
+
+    if (matches === null) {
+      return null;
+    }
+
+    var chunk = matches[matches.length - 1] || [];
+    var parts = (chunk + '').match(chunkOffset) || ['-', 0, 0];
+    var minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+    return minutes === 0 ?
+    0 :
+    parts[0] === '+' ? minutes : -minutes;
+  }
+
+  // Return a moment from input, that is local/utc/zone equivalent to model.
+  function cloneWithOffset(input, model) {
+    var res, diff;
+    if (model._isUTC) {
+      res = model.clone();
+      diff = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf();
+      // Use low-level api, because this fn is low-level api.
+      res._d.setTime(res._d.valueOf() + diff);
+      hooks.updateOffset(res, false);
+      return res;
+    } else {
+      return createLocal(input).local();
+    }
+  }
+
+  function getDateOffset(m) {
+    // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+    // https://github.com/moment/moment/pull/1871
+    return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
+  }
+
+  // HOOKS
+
+  // This function will be called whenever a moment is mutated.
+  // It is intended to keep the offset in sync with the timezone.
+  hooks.updateOffset = function () {};
+
+  // MOMENTS
+
+  // keepLocalTime = true means only change the timezone, without
+  // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
+  // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
+  // +0200, so we adjust the time as needed, to be valid.
+  //
+  // Keeping the time actually adds/subtracts (one hour)
+  // from the actual represented time. That is why we call updateOffset
+  // a second time. In case it wants us to change the offset again
+  // _changeInProgress == true case, then we have to adjust, because
+  // there is no such time in the given timezone.
+  function getSetOffset(input, keepLocalTime, keepMinutes) {
+    var offset = this._offset || 0,
+    localAdjust;
+    if (!this.isValid()) {
+      return input != null ? this : NaN;
+    }
+    if (input != null) {
+      if (typeof input === 'string') {
+        input = offsetFromString(matchShortOffset, input);
+        if (input === null) {
+          return this;
+        }
+      } else if (Math.abs(input) < 16 && !keepMinutes) {
+        input = input * 60;
+      }
+      if (!this._isUTC && keepLocalTime) {
+        localAdjust = getDateOffset(this);
+      }
+      this._offset = input;
+      this._isUTC = true;
+      if (localAdjust != null) {
+        this.add(localAdjust, 'm');
+      }
+      if (offset !== input) {
+        if (!keepLocalTime || this._changeInProgress) {
+          addSubtract(this, createDuration(input - offset, 'm'), 1, false);
+        } else if (!this._changeInProgress) {
+          this._changeInProgress = true;
+          hooks.updateOffset(this, true);
+          this._changeInProgress = null;
+        }
+      }
+      return this;
+    } else {
+      return this._isUTC ? offset : getDateOffset(this);
+    }
+  }
+
+  function getSetZone(input, keepLocalTime) {
+    if (input != null) {
+      if (typeof input !== 'string') {
+        input = -input;
+      }
+
+      this.utcOffset(input, keepLocalTime);
+
+      return this;
+    } else {
+      return -this.utcOffset();
+    }
+  }
+
+  function setOffsetToUTC(keepLocalTime) {
+    return this.utcOffset(0, keepLocalTime);
+  }
+
+  function setOffsetToLocal(keepLocalTime) {
+    if (this._isUTC) {
+      this.utcOffset(0, keepLocalTime);
+      this._isUTC = false;
+
+      if (keepLocalTime) {
+        this.subtract(getDateOffset(this), 'm');
+      }
+    }
+    return this;
+  }
+
+  function setOffsetToParsedOffset() {
+    if (this._tzm != null) {
+      this.utcOffset(this._tzm, false, true);
+    } else if (typeof this._i === 'string') {
+      var tZone = offsetFromString(matchOffset, this._i);
+      if (tZone != null) {
+        this.utcOffset(tZone);
+      } else
+      {
+        this.utcOffset(0, true);
+      }
+    }
+    return this;
+  }
+
+  function hasAlignedHourOffset(input) {
+    if (!this.isValid()) {
+      return false;
+    }
+    input = input ? createLocal(input).utcOffset() : 0;
+
+    return (this.utcOffset() - input) % 60 === 0;
+  }
+
+  function isDaylightSavingTime() {
+    return (
+      this.utcOffset() > this.clone().month(0).utcOffset() ||
+      this.utcOffset() > this.clone().month(5).utcOffset());
+
+  }
+
+  function isDaylightSavingTimeShifted() {
+    if (!isUndefined(this._isDSTShifted)) {
+      return this._isDSTShifted;
+    }
+
+    var c = {};
+
+    copyConfig(c, this);
+    c = prepareConfig(c);
+
+    if (c._a) {
+      var other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
+      this._isDSTShifted = this.isValid() &&
+      compareArrays(c._a, other.toArray()) > 0;
+    } else {
+      this._isDSTShifted = false;
+    }
+
+    return this._isDSTShifted;
+  }
+
+  function isLocal() {
+    return this.isValid() ? !this._isUTC : false;
+  }
+
+  function isUtcOffset() {
+    return this.isValid() ? this._isUTC : false;
+  }
+
+  function isUtc() {
+    return this.isValid() ? this._isUTC && this._offset === 0 : false;
+  }
+
+  // ASP.NET json date format regex
+  var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
+
+  // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+  // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+  // and further modified to allow for strings containing both week and day
+  var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
+
+  function createDuration(input, key) {
+    var duration = input,
+    // matching against regexp is expensive, do it on demand
+    match = null,
+    sign,
+    ret,
+    diffRes;
+
+    if (isDuration(input)) {
+      duration = {
+        ms: input._milliseconds,
+        d: input._days,
+        M: input._months };
+
+    } else if (isNumber(input)) {
+      duration = {};
+      if (key) {
+        duration[key] = input;
+      } else {
+        duration.milliseconds = input;
+      }
+    } else if (!!(match = aspNetRegex.exec(input))) {
+      sign = match[1] === '-' ? -1 : 1;
+      duration = {
+        y: 0,
+        d: toInt(match[DATE]) * sign,
+        h: toInt(match[HOUR]) * sign,
+        m: toInt(match[MINUTE]) * sign,
+        s: toInt(match[SECOND]) * sign,
+        ms: toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
+      };
+    } else if (!!(match = isoRegex.exec(input))) {
+      sign = match[1] === '-' ? -1 : 1;
+      duration = {
+        y: parseIso(match[2], sign),
+        M: parseIso(match[3], sign),
+        w: parseIso(match[4], sign),
+        d: parseIso(match[5], sign),
+        h: parseIso(match[6], sign),
+        m: parseIso(match[7], sign),
+        s: parseIso(match[8], sign) };
+
+    } else if (duration == null) {// checks for null or undefined
+      duration = {};
+    } else if (typeof duration === 'object' && ('from' in duration || 'to' in duration)) {
+      diffRes = momentsDifference(createLocal(duration.from), createLocal(duration.to));
+
+      duration = {};
+      duration.ms = diffRes.milliseconds;
+      duration.M = diffRes.months;
+    }
+
+    ret = new Duration(duration);
+
+    if (isDuration(input) && hasOwnProp(input, '_locale')) {
+      ret._locale = input._locale;
+    }
+
+    return ret;
+  }
+
+  createDuration.fn = Duration.prototype;
+  createDuration.invalid = createInvalid$1;
+
+  function parseIso(inp, sign) {
+    // We'd normally use ~~inp for this, but unfortunately it also
+    // converts floats to ints.
+    // inp may be undefined, so careful calling replace on it.
+    var res = inp && parseFloat(inp.replace(',', '.'));
+    // apply sign while we're at it
+    return (isNaN(res) ? 0 : res) * sign;
+  }
+
+  function positiveMomentsDifference(base, other) {
+    var res = {};
+
+    res.months = other.month() - base.month() +
+    (other.year() - base.year()) * 12;
+    if (base.clone().add(res.months, 'M').isAfter(other)) {
+      --res.months;
+    }
+
+    res.milliseconds = +other - +base.clone().add(res.months, 'M');
+
+    return res;
+  }
+
+  function momentsDifference(base, other) {
+    var res;
+    if (!(base.isValid() && other.isValid())) {
+      return { milliseconds: 0, months: 0 };
+    }
+
+    other = cloneWithOffset(other, base);
+    if (base.isBefore(other)) {
+      res = positiveMomentsDifference(base, other);
+    } else {
+      res = positiveMomentsDifference(other, base);
+      res.milliseconds = -res.milliseconds;
+      res.months = -res.months;
+    }
+
+    return res;
+  }
+
+  // TODO: remove 'name' arg after deprecation is removed
+  function createAdder(direction, name) {
+    return function (val, period) {
+      var dur, tmp;
+      //invert the arguments, but complain about it
+      if (period !== null && !isNaN(+period)) {
+        deprecateSimple(name, 'moment().' + name + '(period, number) is deprecated. Please use moment().' + name + '(number, period). ' +
+        'See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info.');
+        tmp = val;val = period;period = tmp;
+      }
+
+      val = typeof val === 'string' ? +val : val;
+      dur = createDuration(val, period);
+      addSubtract(this, dur, direction);
+      return this;
+    };
+  }
+
+  function addSubtract(mom, duration, isAdding, updateOffset) {
+    var milliseconds = duration._milliseconds,
+    days = absRound(duration._days),
+    months = absRound(duration._months);
+
+    if (!mom.isValid()) {
+      // No op
+      return;
+    }
+
+    updateOffset = updateOffset == null ? true : updateOffset;
+
+    if (months) {
+      setMonth(mom, get(mom, 'Month') + months * isAdding);
+    }
+    if (days) {
+      set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
+    }
+    if (milliseconds) {
+      mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+    }
+    if (updateOffset) {
+      hooks.updateOffset(mom, days || months);
+    }
+  }
+
+  var add = createAdder(1, 'add');
+  var subtract = createAdder(-1, 'subtract');
+
+  function getCalendarFormat(myMoment, now) {
+    var diff = myMoment.diff(now, 'days', true);
+    return diff < -6 ? 'sameElse' :
+    diff < -1 ? 'lastWeek' :
+    diff < 0 ? 'lastDay' :
+    diff < 1 ? 'sameDay' :
+    diff < 2 ? 'nextDay' :
+    diff < 7 ? 'nextWeek' : 'sameElse';
+  }
+
+  function calendar$1(time, formats) {
+    // We want to compare the start of today, vs this.
+    // Getting start-of-today depends on whether we're local/utc/offset or not.
+    var now = time || createLocal(),
+    sod = cloneWithOffset(now, this).startOf('day'),
+    format = hooks.calendarFormat(this, sod) || 'sameElse';
+
+    var output = formats && (isFunction(formats[format]) ? formats[format].call(this, now) : formats[format]);
+
+    return this.format(output || this.localeData().calendar(format, this, createLocal(now)));
+  }
+
+  function clone() {
+    return new Moment(this);
+  }
+
+  function isAfter(input, units) {
+    var localInput = isMoment(input) ? input : createLocal(input);
+    if (!(this.isValid() && localInput.isValid())) {
+      return false;
+    }
+    units = normalizeUnits(units) || 'millisecond';
+    if (units === 'millisecond') {
+      return this.valueOf() > localInput.valueOf();
+    } else {
+      return localInput.valueOf() < this.clone().startOf(units).valueOf();
+    }
+  }
+
+  function isBefore(input, units) {
+    var localInput = isMoment(input) ? input : createLocal(input);
+    if (!(this.isValid() && localInput.isValid())) {
+      return false;
+    }
+    units = normalizeUnits(units) || 'millisecond';
+    if (units === 'millisecond') {
+      return this.valueOf() < localInput.valueOf();
+    } else {
+      return this.clone().endOf(units).valueOf() < localInput.valueOf();
+    }
+  }
+
+  function isBetween(from, to, units, inclusivity) {
+    var localFrom = isMoment(from) ? from : createLocal(from),
+    localTo = isMoment(to) ? to : createLocal(to);
+    if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+      return false;
+    }
+    inclusivity = inclusivity || '()';
+    return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) && (
+    inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
+  }
+
+  function isSame(input, units) {
+    var localInput = isMoment(input) ? input : createLocal(input),
+    inputMs;
+    if (!(this.isValid() && localInput.isValid())) {
+      return false;
+    }
+    units = normalizeUnits(units) || 'millisecond';
+    if (units === 'millisecond') {
+      return this.valueOf() === localInput.valueOf();
+    } else {
+      inputMs = localInput.valueOf();
+      return this.clone().startOf(units).valueOf() <= inputMs && inputMs <= this.clone().endOf(units).valueOf();
+    }
+  }
+
+  function isSameOrAfter(input, units) {
+    return this.isSame(input, units) || this.isAfter(input, units);
+  }
+
+  function isSameOrBefore(input, units) {
+    return this.isSame(input, units) || this.isBefore(input, units);
+  }
+
+  function diff(input, units, asFloat) {
+    var that,
+    zoneDelta,
+    output;
+
+    if (!this.isValid()) {
+      return NaN;
+    }
+
+    that = cloneWithOffset(input, this);
+
+    if (!that.isValid()) {
+      return NaN;
+    }
+
+    zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
+
+    units = normalizeUnits(units);
+
+    switch (units) {
+      case 'year':output = monthDiff(this, that) / 12;break;
+      case 'month':output = monthDiff(this, that);break;
+      case 'quarter':output = monthDiff(this, that) / 3;break;
+      case 'second':output = (this - that) / 1e3;break; // 1000
+      case 'minute':output = (this - that) / 6e4;break; // 1000 * 60
+      case 'hour':output = (this - that) / 36e5;break; // 1000 * 60 * 60
+      case 'day':output = (this - that - zoneDelta) / 864e5;break; // 1000 * 60 * 60 * 24, negate dst
+      case 'week':output = (this - that - zoneDelta) / 6048e5;break; // 1000 * 60 * 60 * 24 * 7, negate dst
+      default:output = this - that;}
+
+
+    return asFloat ? output : absFloor(output);
+  }
+
+  function monthDiff(a, b) {
+    // difference in months
+    var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month()),
+    // b is in (anchor - 1 month, anchor + 1 month)
+    anchor = a.clone().add(wholeMonthDiff, 'months'),
+    anchor2,adjust;
+
+    if (b - anchor < 0) {
+      anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
+      // linear across the month
+      adjust = (b - anchor) / (anchor - anchor2);
+    } else {
+      anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
+      // linear across the month
+      adjust = (b - anchor) / (anchor2 - anchor);
+    }
+
+    //check for negative zero, return zero if negative zero
+    return -(wholeMonthDiff + adjust) || 0;
+  }
+
+  hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+  hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
+
+  function toString() {
+    return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
+  }
+
+  function toISOString(keepOffset) {
+    if (!this.isValid()) {
+      return null;
+    }
+    var utc = keepOffset !== true;
+    var m = utc ? this.clone().utc() : this;
+    if (m.year() < 0 || m.year() > 9999) {
+      return formatMoment(m, utc ? 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYYYY-MM-DD[T]HH:mm:ss.SSSZ');
+    }
+    if (isFunction(Date.prototype.toISOString)) {
+      // native implementation is ~50x faster, use it when we can
+      if (utc) {
+        return this.toDate().toISOString();
+      } else {
+        return new Date(this.valueOf() + this.utcOffset() * 60 * 1000).toISOString().replace('Z', formatMoment(m, 'Z'));
+      }
+    }
+    return formatMoment(m, utc ? 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]' : 'YYYY-MM-DD[T]HH:mm:ss.SSSZ');
+  }
+
+  /**
+     * Return a human readable representation of a moment that can
+     * also be evaluated to get a new moment which is the same
+     *
+     * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
+     */
+  function inspect() {
+    if (!this.isValid()) {
+      return 'moment.invalid(/* ' + this._i + ' */)';
+    }
+    var func = 'moment';
+    var zone = '';
+    if (!this.isLocal()) {
+      func = this.utcOffset() === 0 ? 'moment.utc' : 'moment.parseZone';
+      zone = 'Z';
+    }
+    var prefix = '[' + func + '("]';
+    var year = 0 <= this.year() && this.year() <= 9999 ? 'YYYY' : 'YYYYYY';
+    var datetime = '-MM-DD[T]HH:mm:ss.SSS';
+    var suffix = zone + '[")]';
+
+    return this.format(prefix + year + datetime + suffix);
+  }
+
+  function format(inputString) {
+    if (!inputString) {
+      inputString = this.isUtc() ? hooks.defaultFormatUtc : hooks.defaultFormat;
+    }
+    var output = formatMoment(this, inputString);
+    return this.localeData().postformat(output);
+  }
+
+  function from(time, withoutSuffix) {
+    if (this.isValid() && (
+    isMoment(time) && time.isValid() ||
+    createLocal(time).isValid())) {
+      return createDuration({ to: this, from: time }).locale(this.locale()).humanize(!withoutSuffix);
+    } else {
+      return this.localeData().invalidDate();
+    }
+  }
+
+  function fromNow(withoutSuffix) {
+    return this.from(createLocal(), withoutSuffix);
+  }
+
+  function to(time, withoutSuffix) {
+    if (this.isValid() && (
+    isMoment(time) && time.isValid() ||
+    createLocal(time).isValid())) {
+      return createDuration({ from: this, to: time }).locale(this.locale()).humanize(!withoutSuffix);
+    } else {
+      return this.localeData().invalidDate();
+    }
+  }
+
+  function toNow(withoutSuffix) {
+    return this.to(createLocal(), withoutSuffix);
+  }
+
+  // If passed a locale key, it will set the locale for this
+  // instance.  Otherwise, it will return the locale configuration
+  // variables for this instance.
+  function locale(key) {
+    var newLocaleData;
+
+    if (key === undefined) {
+      return this._locale._abbr;
+    } else {
+      newLocaleData = getLocale(key);
+      if (newLocaleData != null) {
+        this._locale = newLocaleData;
+      }
+      return this;
+    }
+  }
+
+  var lang = deprecate(
+  'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
+  function (key) {
+    if (key === undefined) {
+      return this.localeData();
+    } else {
+      return this.locale(key);
+    }
+  });
+
+
+  function localeData() {
+    return this._locale;
+  }
+
+  var MS_PER_SECOND = 1000;
+  var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+  var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+  var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+  // actual modulo - handles negative numbers (for dates before 1970):
+  function mod$1(dividend, divisor) {
+    return (dividend % divisor + divisor) % divisor;
+  }
+
+  function localStartOfDate(y, m, d) {
+    // the date constructor remaps years 0-99 to 1900-1999
+    if (y < 100 && y >= 0) {
+      // preserve leap years using a full 400 year cycle, then reset
+      return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+    } else {
+      return new Date(y, m, d).valueOf();
+    }
+  }
+
+  function utcStartOfDate(y, m, d) {
+    // Date.UTC remaps years 0-99 to 1900-1999
+    if (y < 100 && y >= 0) {
+      // preserve leap years using a full 400 year cycle, then reset
+      return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+    } else {
+      return Date.UTC(y, m, d);
+    }
+  }
+
+  function startOf(units) {
+    var time;
+    units = normalizeUnits(units);
+    if (units === undefined || units === 'millisecond' || !this.isValid()) {
+      return this;
+    }
+
+    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+    switch (units) {
+      case 'year':
+        time = startOfDate(this.year(), 0, 1);
+        break;
+      case 'quarter':
+        time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+        break;
+      case 'month':
+        time = startOfDate(this.year(), this.month(), 1);
+        break;
+      case 'week':
+        time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+        break;
+      case 'isoWeek':
+        time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+        break;
+      case 'day':
+      case 'date':
+        time = startOfDate(this.year(), this.month(), this.date());
+        break;
+      case 'hour':
+        time = this._d.valueOf();
+        time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+        break;
+      case 'minute':
+        time = this._d.valueOf();
+        time -= mod$1(time, MS_PER_MINUTE);
+        break;
+      case 'second':
+        time = this._d.valueOf();
+        time -= mod$1(time, MS_PER_SECOND);
+        break;}
+
+
+    this._d.setTime(time);
+    hooks.updateOffset(this, true);
+    return this;
+  }
+
+  function endOf(units) {
+    var time;
+    units = normalizeUnits(units);
+    if (units === undefined || units === 'millisecond' || !this.isValid()) {
+      return this;
+    }
+
+    var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+    switch (units) {
+      case 'year':
+        time = startOfDate(this.year() + 1, 0, 1) - 1;
+        break;
+      case 'quarter':
+        time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+        break;
+      case 'month':
+        time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+        break;
+      case 'week':
+        time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+        break;
+      case 'isoWeek':
+        time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+        break;
+      case 'day':
+      case 'date':
+        time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+        break;
+      case 'hour':
+        time = this._d.valueOf();
+        time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+        break;
+      case 'minute':
+        time = this._d.valueOf();
+        time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+        break;
+      case 'second':
+        time = this._d.valueOf();
+        time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+        break;}
+
+
+    this._d.setTime(time);
+    hooks.updateOffset(this, true);
+    return this;
+  }
+
+  function valueOf() {
+    return this._d.valueOf() - (this._offset || 0) * 60000;
+  }
+
+  function unix() {
+    return Math.floor(this.valueOf() / 1000);
+  }
+
+  function toDate() {
+    return new Date(this.valueOf());
+  }
+
+  function toArray() {
+    var m = this;
+    return [m.year(), m.month(), m.date(), m.hour(), m.minute(), m.second(), m.millisecond()];
+  }
+
+  function toObject() {
+    var m = this;
+    return {
+      years: m.year(),
+      months: m.month(),
+      date: m.date(),
+      hours: m.hours(),
+      minutes: m.minutes(),
+      seconds: m.seconds(),
+      milliseconds: m.milliseconds() };
+
+  }
+
+  function toJSON() {
+    // new Date(NaN).toJSON() === null
+    return this.isValid() ? this.toISOString() : null;
+  }
+
+  function isValid$2() {
+    return isValid(this);
+  }
+
+  function parsingFlags() {
+    return extend({}, getParsingFlags(this));
+  }
+
+  function invalidAt() {
+    return getParsingFlags(this).overflow;
+  }
+
+  function creationData() {
+    return {
+      input: this._i,
+      format: this._f,
+      locale: this._locale,
+      isUTC: this._isUTC,
+      strict: this._strict };
+
+  }
+
+  // FORMATTING
+
+  addFormatToken(0, ['gg', 2], 0, function () {
+    return this.weekYear() % 100;
+  });
+
+  addFormatToken(0, ['GG', 2], 0, function () {
+    return this.isoWeekYear() % 100;
+  });
+
+  function addWeekYearFormatToken(token, getter) {
+    addFormatToken(0, [token, token.length], 0, getter);
+  }
+
+  addWeekYearFormatToken('gggg', 'weekYear');
+  addWeekYearFormatToken('ggggg', 'weekYear');
+  addWeekYearFormatToken('GGGG', 'isoWeekYear');
+  addWeekYearFormatToken('GGGGG', 'isoWeekYear');
+
+  // ALIASES
+
+  addUnitAlias('weekYear', 'gg');
+  addUnitAlias('isoWeekYear', 'GG');
+
+  // PRIORITY
+
+  addUnitPriority('weekYear', 1);
+  addUnitPriority('isoWeekYear', 1);
+
+
+  // PARSING
+
+  addRegexToken('G', matchSigned);
+  addRegexToken('g', matchSigned);
+  addRegexToken('GG', match1to2, match2);
+  addRegexToken('gg', match1to2, match2);
+  addRegexToken('GGGG', match1to4, match4);
+  addRegexToken('gggg', match1to4, match4);
+  addRegexToken('GGGGG', match1to6, match6);
+  addRegexToken('ggggg', match1to6, match6);
+
+  addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
+    week[token.substr(0, 2)] = toInt(input);
+  });
+
+  addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
+    week[token] = hooks.parseTwoDigitYear(input);
+  });
+
+  // MOMENTS
+
+  function getSetWeekYear(input) {
+    return getSetWeekYearHelper.call(this,
+    input,
+    this.week(),
+    this.weekday(),
+    this.localeData()._week.dow,
+    this.localeData()._week.doy);
+  }
+
+  function getSetISOWeekYear(input) {
+    return getSetWeekYearHelper.call(this,
+    input, this.isoWeek(), this.isoWeekday(), 1, 4);
+  }
+
+  function getISOWeeksInYear() {
+    return weeksInYear(this.year(), 1, 4);
+  }
+
+  function getWeeksInYear() {
+    var weekInfo = this.localeData()._week;
+    return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+  }
+
+  function getSetWeekYearHelper(input, week, weekday, dow, doy) {
+    var weeksTarget;
+    if (input == null) {
+      return weekOfYear(this, dow, doy).year;
+    } else {
+      weeksTarget = weeksInYear(input, dow, doy);
+      if (week > weeksTarget) {
+        week = weeksTarget;
+      }
+      return setWeekAll.call(this, input, week, weekday, dow, doy);
+    }
+  }
+
+  function setWeekAll(weekYear, week, weekday, dow, doy) {
+    var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
+    date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
+
+    this.year(date.getUTCFullYear());
+    this.month(date.getUTCMonth());
+    this.date(date.getUTCDate());
+    return this;
+  }
+
+  // FORMATTING
+
+  addFormatToken('Q', 0, 'Qo', 'quarter');
+
+  // ALIASES
+
+  addUnitAlias('quarter', 'Q');
+
+  // PRIORITY
+
+  addUnitPriority('quarter', 7);
+
+  // PARSING
+
+  addRegexToken('Q', match1);
+  addParseToken('Q', function (input, array) {
+    array[MONTH] = (toInt(input) - 1) * 3;
+  });
+
+  // MOMENTS
+
+  function getSetQuarter(input) {
+    return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
+  }
+
+  // FORMATTING
+
+  addFormatToken('D', ['DD', 2], 'Do', 'date');
+
+  // ALIASES
+
+  addUnitAlias('date', 'D');
+
+  // PRIORITY
+  addUnitPriority('date', 9);
+
+  // PARSING
+
+  addRegexToken('D', match1to2);
+  addRegexToken('DD', match1to2, match2);
+  addRegexToken('Do', function (isStrict, locale) {
+    // TODO: Remove "ordinalParse" fallback in next major release.
+    return isStrict ?
+    locale._dayOfMonthOrdinalParse || locale._ordinalParse :
+    locale._dayOfMonthOrdinalParseLenient;
+  });
+
+  addParseToken(['D', 'DD'], DATE);
+  addParseToken('Do', function (input, array) {
+    array[DATE] = toInt(input.match(match1to2)[0]);
+  });
+
+  // MOMENTS
+
+  var getSetDayOfMonth = makeGetSet('Date', true);
+
+  // FORMATTING
+
+  addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
+
+  // ALIASES
+
+  addUnitAlias('dayOfYear', 'DDD');
+
+  // PRIORITY
+  addUnitPriority('dayOfYear', 4);
+
+  // PARSING
+
+  addRegexToken('DDD', match1to3);
+  addRegexToken('DDDD', match3);
+  addParseToken(['DDD', 'DDDD'], function (input, array, config) {
+    config._dayOfYear = toInt(input);
+  });
+
+  // HELPERS
+
+  // MOMENTS
+
+  function getSetDayOfYear(input) {
+    var dayOfYear = Math.round((this.clone().startOf('day') - this.clone().startOf('year')) / 864e5) + 1;
+    return input == null ? dayOfYear : this.add(input - dayOfYear, 'd');
+  }
+
+  // FORMATTING
+
+  addFormatToken('m', ['mm', 2], 0, 'minute');
+
+  // ALIASES
+
+  addUnitAlias('minute', 'm');
+
+  // PRIORITY
+
+  addUnitPriority('minute', 14);
+
+  // PARSING
+
+  addRegexToken('m', match1to2);
+  addRegexToken('mm', match1to2, match2);
+  addParseToken(['m', 'mm'], MINUTE);
+
+  // MOMENTS
+
+  var getSetMinute = makeGetSet('Minutes', false);
+
+  // FORMATTING
+
+  addFormatToken('s', ['ss', 2], 0, 'second');
+
+  // ALIASES
+
+  addUnitAlias('second', 's');
+
+  // PRIORITY
+
+  addUnitPriority('second', 15);
+
+  // PARSING
+
+  addRegexToken('s', match1to2);
+  addRegexToken('ss', match1to2, match2);
+  addParseToken(['s', 'ss'], SECOND);
+
+  // MOMENTS
+
+  var getSetSecond = makeGetSet('Seconds', false);
+
+  // FORMATTING
+
+  addFormatToken('S', 0, 0, function () {
+    return ~~(this.millisecond() / 100);
+  });
+
+  addFormatToken(0, ['SS', 2], 0, function () {
+    return ~~(this.millisecond() / 10);
+  });
+
+  addFormatToken(0, ['SSS', 3], 0, 'millisecond');
+  addFormatToken(0, ['SSSS', 4], 0, function () {
+    return this.millisecond() * 10;
+  });
+  addFormatToken(0, ['SSSSS', 5], 0, function () {
+    return this.millisecond() * 100;
+  });
+  addFormatToken(0, ['SSSSSS', 6], 0, function () {
+    return this.millisecond() * 1000;
+  });
+  addFormatToken(0, ['SSSSSSS', 7], 0, function () {
+    return this.millisecond() * 10000;
+  });
+  addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
+    return this.millisecond() * 100000;
+  });
+  addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
+    return this.millisecond() * 1000000;
+  });
+
+
+  // ALIASES
+
+  addUnitAlias('millisecond', 'ms');
+
+  // PRIORITY
+
+  addUnitPriority('millisecond', 16);
+
+  // PARSING
+
+  addRegexToken('S', match1to3, match1);
+  addRegexToken('SS', match1to3, match2);
+  addRegexToken('SSS', match1to3, match3);
+
+  var token;
+  for (token = 'SSSS'; token.length <= 9; token += 'S') {
+    addRegexToken(token, matchUnsigned);
+  }
+
+  function parseMs(input, array) {
+    array[MILLISECOND] = toInt(('0.' + input) * 1000);
+  }
+
+  for (token = 'S'; token.length <= 9; token += 'S') {
+    addParseToken(token, parseMs);
+  }
+  // MOMENTS
+
+  var getSetMillisecond = makeGetSet('Milliseconds', false);
+
+  // FORMATTING
+
+  addFormatToken('z', 0, 0, 'zoneAbbr');
+  addFormatToken('zz', 0, 0, 'zoneName');
+
+  // MOMENTS
+
+  function getZoneAbbr() {
+    return this._isUTC ? 'UTC' : '';
+  }
+
+  function getZoneName() {
+    return this._isUTC ? 'Coordinated Universal Time' : '';
+  }
+
+  var proto = Moment.prototype;
+
+  proto.add = add;
+  proto.calendar = calendar$1;
+  proto.clone = clone;
+  proto.diff = diff;
+  proto.endOf = endOf;
+  proto.format = format;
+  proto.from = from;
+  proto.fromNow = fromNow;
+  proto.to = to;
+  proto.toNow = toNow;
+  proto.get = stringGet;
+  proto.invalidAt = invalidAt;
+  proto.isAfter = isAfter;
+  proto.isBefore = isBefore;
+  proto.isBetween = isBetween;
+  proto.isSame = isSame;
+  proto.isSameOrAfter = isSameOrAfter;
+  proto.isSameOrBefore = isSameOrBefore;
+  proto.isValid = isValid$2;
+  proto.lang = lang;
+  proto.locale = locale;
+  proto.localeData = localeData;
+  proto.max = prototypeMax;
+  proto.min = prototypeMin;
+  proto.parsingFlags = parsingFlags;
+  proto.set = stringSet;
+  proto.startOf = startOf;
+  proto.subtract = subtract;
+  proto.toArray = toArray;
+  proto.toObject = toObject;
+  proto.toDate = toDate;
+  proto.toISOString = toISOString;
+  proto.inspect = inspect;
+  proto.toJSON = toJSON;
+  proto.toString = toString;
+  proto.unix = unix;
+  proto.valueOf = valueOf;
+  proto.creationData = creationData;
+  proto.year = getSetYear;
+  proto.isLeapYear = getIsLeapYear;
+  proto.weekYear = getSetWeekYear;
+  proto.isoWeekYear = getSetISOWeekYear;
+  proto.quarter = proto.quarters = getSetQuarter;
+  proto.month = getSetMonth;
+  proto.daysInMonth = getDaysInMonth;
+  proto.week = proto.weeks = getSetWeek;
+  proto.isoWeek = proto.isoWeeks = getSetISOWeek;
+  proto.weeksInYear = getWeeksInYear;
+  proto.isoWeeksInYear = getISOWeeksInYear;
+  proto.date = getSetDayOfMonth;
+  proto.day = proto.days = getSetDayOfWeek;
+  proto.weekday = getSetLocaleDayOfWeek;
+  proto.isoWeekday = getSetISODayOfWeek;
+  proto.dayOfYear = getSetDayOfYear;
+  proto.hour = proto.hours = getSetHour;
+  proto.minute = proto.minutes = getSetMinute;
+  proto.second = proto.seconds = getSetSecond;
+  proto.millisecond = proto.milliseconds = getSetMillisecond;
+  proto.utcOffset = getSetOffset;
+  proto.utc = setOffsetToUTC;
+  proto.local = setOffsetToLocal;
+  proto.parseZone = setOffsetToParsedOffset;
+  proto.hasAlignedHourOffset = hasAlignedHourOffset;
+  proto.isDST = isDaylightSavingTime;
+  proto.isLocal = isLocal;
+  proto.isUtcOffset = isUtcOffset;
+  proto.isUtc = isUtc;
+  proto.isUTC = isUtc;
+  proto.zoneAbbr = getZoneAbbr;
+  proto.zoneName = getZoneName;
+  proto.dates = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
+  proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
+  proto.years = deprecate('years accessor is deprecated. Use year instead', getSetYear);
+  proto.zone = deprecate('moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/', getSetZone);
+  proto.isDSTShifted = deprecate('isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information', isDaylightSavingTimeShifted);
+
+  function createUnix(input) {
+    return createLocal(input * 1000);
+  }
+
+  function createInZone() {
+    return createLocal.apply(null, arguments).parseZone();
+  }
+
+  function preParsePostFormat(string) {
+    return string;
+  }
+
+  var proto$1 = Locale.prototype;
+
+  proto$1.calendar = calendar;
+  proto$1.longDateFormat = longDateFormat;
+  proto$1.invalidDate = invalidDate;
+  proto$1.ordinal = ordinal;
+  proto$1.preparse = preParsePostFormat;
+  proto$1.postformat = preParsePostFormat;
+  proto$1.relativeTime = relativeTime;
+  proto$1.pastFuture = pastFuture;
+  proto$1.set = set;
+
+  proto$1.months = localeMonths;
+  proto$1.monthsShort = localeMonthsShort;
+  proto$1.monthsParse = localeMonthsParse;
+  proto$1.monthsRegex = monthsRegex;
+  proto$1.monthsShortRegex = monthsShortRegex;
+  proto$1.week = localeWeek;
+  proto$1.firstDayOfYear = localeFirstDayOfYear;
+  proto$1.firstDayOfWeek = localeFirstDayOfWeek;
+
+  proto$1.weekdays = localeWeekdays;
+  proto$1.weekdaysMin = localeWeekdaysMin;
+  proto$1.weekdaysShort = localeWeekdaysShort;
+  proto$1.weekdaysParse = localeWeekdaysParse;
+
+  proto$1.weekdaysRegex = weekdaysRegex;
+  proto$1.weekdaysShortRegex = weekdaysShortRegex;
+  proto$1.weekdaysMinRegex = weekdaysMinRegex;
+
+  proto$1.isPM = localeIsPM;
+  proto$1.meridiem = localeMeridiem;
+
+  function get$1(format, index, field, setter) {
+    var locale = getLocale();
+    var utc = createUTC().set(setter, index);
+    return locale[field](utc, format);
+  }
+
+  function listMonthsImpl(format, index, field) {
+    if (isNumber(format)) {
+      index = format;
+      format = undefined;
+    }
+
+    format = format || '';
+
+    if (index != null) {
+      return get$1(format, index, field, 'month');
+    }
+
+    var i;
+    var out = [];
+    for (i = 0; i < 12; i++) {
+      out[i] = get$1(format, i, field, 'month');
+    }
+    return out;
+  }
+
+  // ()
+  // (5)
+  // (fmt, 5)
+  // (fmt)
+  // (true)
+  // (true, 5)
+  // (true, fmt, 5)
+  // (true, fmt)
+  function listWeekdaysImpl(localeSorted, format, index, field) {
+    if (typeof localeSorted === 'boolean') {
+      if (isNumber(format)) {
+        index = format;
+        format = undefined;
+      }
+
+      format = format || '';
+    } else {
+      format = localeSorted;
+      index = format;
+      localeSorted = false;
+
+      if (isNumber(format)) {
+        index = format;
+        format = undefined;
+      }
+
+      format = format || '';
+    }
+
+    var locale = getLocale(),
+    shift = localeSorted ? locale._week.dow : 0;
+
+    if (index != null) {
+      return get$1(format, (index + shift) % 7, field, 'day');
+    }
+
+    var i;
+    var out = [];
+    for (i = 0; i < 7; i++) {
+      out[i] = get$1(format, (i + shift) % 7, field, 'day');
+    }
+    return out;
+  }
+
+  function listMonths(format, index) {
+    return listMonthsImpl(format, index, 'months');
+  }
+
+  function listMonthsShort(format, index) {
+    return listMonthsImpl(format, index, 'monthsShort');
+  }
+
+  function listWeekdays(localeSorted, format, index) {
+    return listWeekdaysImpl(localeSorted, format, index, 'weekdays');
+  }
+
+  function listWeekdaysShort(localeSorted, format, index) {
+    return listWeekdaysImpl(localeSorted, format, index, 'weekdaysShort');
+  }
+
+  function listWeekdaysMin(localeSorted, format, index) {
+    return listWeekdaysImpl(localeSorted, format, index, 'weekdaysMin');
+  }
+
+  getSetGlobalLocale('en', {
+    dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
+    ordinal: function ordinal(number) {
+      var b = number % 10,
+      output = toInt(number % 100 / 10) === 1 ? 'th' :
+      b === 1 ? 'st' :
+      b === 2 ? 'nd' :
+      b === 3 ? 'rd' : 'th';
+      return number + output;
+    } });
+
+
+  // Side effect imports
+
+  hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', getSetGlobalLocale);
+  hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', getLocale);
+
+  var mathAbs = Math.abs;
+
+  function abs() {
+    var data = this._data;
+
+    this._milliseconds = mathAbs(this._milliseconds);
+    this._days = mathAbs(this._days);
+    this._months = mathAbs(this._months);
+
+    data.milliseconds = mathAbs(data.milliseconds);
+    data.seconds = mathAbs(data.seconds);
+    data.minutes = mathAbs(data.minutes);
+    data.hours = mathAbs(data.hours);
+    data.months = mathAbs(data.months);
+    data.years = mathAbs(data.years);
+
+    return this;
+  }
+
+  function addSubtract$1(duration, input, value, direction) {
+    var other = createDuration(input, value);
+
+    duration._milliseconds += direction * other._milliseconds;
+    duration._days += direction * other._days;
+    duration._months += direction * other._months;
+
+    return duration._bubble();
+  }
+
+  // supports only 2.0-style add(1, 's') or add(duration)
+  function add$1(input, value) {
+    return addSubtract$1(this, input, value, 1);
+  }
+
+  // supports only 2.0-style subtract(1, 's') or subtract(duration)
+  function subtract$1(input, value) {
+    return addSubtract$1(this, input, value, -1);
+  }
+
+  function absCeil(number) {
+    if (number < 0) {
+      return Math.floor(number);
+    } else {
+      return Math.ceil(number);
+    }
+  }
+
+  function bubble() {
+    var milliseconds = this._milliseconds;
+    var days = this._days;
+    var months = this._months;
+    var data = this._data;
+    var seconds, minutes, hours, years, monthsFromDays;
+
+    // if we have a mix of positive and negative values, bubble down first
+    // check: https://github.com/moment/moment/issues/2166
+    if (!(milliseconds >= 0 && days >= 0 && months >= 0 ||
+    milliseconds <= 0 && days <= 0 && months <= 0)) {
+      milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
+      days = 0;
+      months = 0;
+    }
+
+    // The following code bubbles up values, see the tests for
+    // examples of what that means.
+    data.milliseconds = milliseconds % 1000;
+
+    seconds = absFloor(milliseconds / 1000);
+    data.seconds = seconds % 60;
+
+    minutes = absFloor(seconds / 60);
+    data.minutes = minutes % 60;
+
+    hours = absFloor(minutes / 60);
+    data.hours = hours % 24;
+
+    days += absFloor(hours / 24);
+
+    // convert days to months
+    monthsFromDays = absFloor(daysToMonths(days));
+    months += monthsFromDays;
+    days -= absCeil(monthsToDays(monthsFromDays));
+
+    // 12 months -> 1 year
+    years = absFloor(months / 12);
+    months %= 12;
+
+    data.days = days;
+    data.months = months;
+    data.years = years;
+
+    return this;
+  }
+
+  function daysToMonths(days) {
+    // 400 years have 146097 days (taking into account leap year rules)
+    // 400 years have 12 months === 4800
+    return days * 4800 / 146097;
+  }
+
+  function monthsToDays(months) {
+    // the reverse of daysToMonths
+    return months * 146097 / 4800;
+  }
+
+  function as(units) {
+    if (!this.isValid()) {
+      return NaN;
+    }
+    var days;
+    var months;
+    var milliseconds = this._milliseconds;
+
+    units = normalizeUnits(units);
+
+    if (units === 'month' || units === 'quarter' || units === 'year') {
+      days = this._days + milliseconds / 864e5;
+      months = this._months + daysToMonths(days);
+      switch (units) {
+        case 'month':return months;
+        case 'quarter':return months / 3;
+        case 'year':return months / 12;}
+
+    } else {
+      // handle milliseconds separately because of floating point math errors (issue #1867)
+      days = this._days + Math.round(monthsToDays(this._months));
+      switch (units) {
+        case 'week':return days / 7 + milliseconds / 6048e5;
+        case 'day':return days + milliseconds / 864e5;
+        case 'hour':return days * 24 + milliseconds / 36e5;
+        case 'minute':return days * 1440 + milliseconds / 6e4;
+        case 'second':return days * 86400 + milliseconds / 1000;
+        // Math.floor prevents floating point math errors here
+        case 'millisecond':return Math.floor(days * 864e5) + milliseconds;
+        default:throw new Error('Unknown unit ' + units);}
+
+    }
+  }
+
+  // TODO: Use this.as('ms')?
+  function valueOf$1() {
+    if (!this.isValid()) {
+      return NaN;
+    }
+    return (
+      this._milliseconds +
+      this._days * 864e5 +
+      this._months % 12 * 2592e6 +
+      toInt(this._months / 12) * 31536e6);
+
+  }
+
+  function makeAs(alias) {
+    return function () {
+      return this.as(alias);
+    };
+  }
+
+  var asMilliseconds = makeAs('ms');
+  var asSeconds = makeAs('s');
+  var asMinutes = makeAs('m');
+  var asHours = makeAs('h');
+  var asDays = makeAs('d');
+  var asWeeks = makeAs('w');
+  var asMonths = makeAs('M');
+  var asQuarters = makeAs('Q');
+  var asYears = makeAs('y');
+
+  function clone$1() {
+    return createDuration(this);
+  }
+
+  function get$2(units) {
+    units = normalizeUnits(units);
+    return this.isValid() ? this[units + 's']() : NaN;
+  }
+
+  function makeGetter(name) {
+    return function () {
+      return this.isValid() ? this._data[name] : NaN;
+    };
+  }
+
+  var milliseconds = makeGetter('milliseconds');
+  var seconds = makeGetter('seconds');
+  var minutes = makeGetter('minutes');
+  var hours = makeGetter('hours');
+  var days = makeGetter('days');
+  var months = makeGetter('months');
+  var years = makeGetter('years');
+
+  function weeks() {
+    return absFloor(this.days() / 7);
+  }
+
+  var round = Math.round;
+  var thresholds = {
+    ss: 44, // a few seconds to seconds
+    s: 45, // seconds to minute
+    m: 45, // minutes to hour
+    h: 22, // hours to day
+    d: 26, // days to month
+    M: 11 // months to year
+  };
+
+  // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+  function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+    return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+  }
+
+  function relativeTime$1(posNegDuration, withoutSuffix, locale) {
+    var duration = createDuration(posNegDuration).abs();
+    var seconds = round(duration.as('s'));
+    var minutes = round(duration.as('m'));
+    var hours = round(duration.as('h'));
+    var days = round(duration.as('d'));
+    var months = round(duration.as('M'));
+    var years = round(duration.as('y'));
+
+    var a = seconds <= thresholds.ss && ['s', seconds] ||
+    seconds < thresholds.s && ['ss', seconds] ||
+    minutes <= 1 && ['m'] ||
+    minutes < thresholds.m && ['mm', minutes] ||
+    hours <= 1 && ['h'] ||
+    hours < thresholds.h && ['hh', hours] ||
+    days <= 1 && ['d'] ||
+    days < thresholds.d && ['dd', days] ||
+    months <= 1 && ['M'] ||
+    months < thresholds.M && ['MM', months] ||
+    years <= 1 && ['y'] || ['yy', years];
+
+    a[2] = withoutSuffix;
+    a[3] = +posNegDuration > 0;
+    a[4] = locale;
+    return substituteTimeAgo.apply(null, a);
+  }
+
+  // This function allows you to set the rounding function for relative time strings
+  function getSetRelativeTimeRounding(roundingFunction) {
+    if (roundingFunction === undefined) {
+      return round;
+    }
+    if (typeof roundingFunction === 'function') {
+      round = roundingFunction;
+      return true;
+    }
+    return false;
+  }
+
+  // This function allows you to set a threshold for relative time strings
+  function getSetRelativeTimeThreshold(threshold, limit) {
+    if (thresholds[threshold] === undefined) {
+      return false;
+    }
+    if (limit === undefined) {
+      return thresholds[threshold];
+    }
+    thresholds[threshold] = limit;
+    if (threshold === 's') {
+      thresholds.ss = limit - 1;
+    }
+    return true;
+  }
+
+  function humanize(withSuffix) {
+    if (!this.isValid()) {
+      return this.localeData().invalidDate();
+    }
+
+    var locale = this.localeData();
+    var output = relativeTime$1(this, !withSuffix, locale);
+
+    if (withSuffix) {
+      output = locale.pastFuture(+this, output);
+    }
+
+    return locale.postformat(output);
+  }
+
+  var abs$1 = Math.abs;
+
+  function sign(x) {
+    return (x > 0) - (x < 0) || +x;
+  }
+
+  function toISOString$1() {
+    // for ISO strings we do not use the normal bubbling rules:
+    //  * milliseconds bubble up until they become hours
+    //  * days do not bubble at all
+    //  * months bubble up until they become years
+    // This is because there is no context-free conversion between hours and days
+    // (think of clock changes)
+    // and also not between days and months (28-31 days per month)
+    if (!this.isValid()) {
+      return this.localeData().invalidDate();
+    }
+
+    var seconds = abs$1(this._milliseconds) / 1000;
+    var days = abs$1(this._days);
+    var months = abs$1(this._months);
+    var minutes, hours, years;
+
+    // 3600 seconds -> 60 minutes -> 1 hour
+    minutes = absFloor(seconds / 60);
+    hours = absFloor(minutes / 60);
+    seconds %= 60;
+    minutes %= 60;
+
+    // 12 months -> 1 year
+    years = absFloor(months / 12);
+    months %= 12;
+
+
+    // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+    var Y = years;
+    var M = months;
+    var D = days;
+    var h = hours;
+    var m = minutes;
+    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
+    var total = this.asSeconds();
+
+    if (!total) {
+      // this is the same as C#'s (Noda) and python (isodate)...
+      // but not other JS (goog.date)
+      return 'P0D';
+    }
+
+    var totalSign = total < 0 ? '-' : '';
+    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
+    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
+    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+
+    return totalSign + 'P' + (
+    Y ? ymSign + Y + 'Y' : '') + (
+    M ? ymSign + M + 'M' : '') + (
+    D ? daysSign + D + 'D' : '') + (
+    h || m || s ? 'T' : '') + (
+    h ? hmsSign + h + 'H' : '') + (
+    m ? hmsSign + m + 'M' : '') + (
+    s ? hmsSign + s + 'S' : '');
+  }
+
+  var proto$2 = Duration.prototype;
+
+  proto$2.isValid = isValid$1;
+  proto$2.abs = abs;
+  proto$2.add = add$1;
+  proto$2.subtract = subtract$1;
+  proto$2.as = as;
+  proto$2.asMilliseconds = asMilliseconds;
+  proto$2.asSeconds = asSeconds;
+  proto$2.asMinutes = asMinutes;
+  proto$2.asHours = asHours;
+  proto$2.asDays = asDays;
+  proto$2.asWeeks = asWeeks;
+  proto$2.asMonths = asMonths;
+  proto$2.asQuarters = asQuarters;
+  proto$2.asYears = asYears;
+  proto$2.valueOf = valueOf$1;
+  proto$2._bubble = bubble;
+  proto$2.clone = clone$1;
+  proto$2.get = get$2;
+  proto$2.milliseconds = milliseconds;
+  proto$2.seconds = seconds;
+  proto$2.minutes = minutes;
+  proto$2.hours = hours;
+  proto$2.days = days;
+  proto$2.weeks = weeks;
+  proto$2.months = months;
+  proto$2.years = years;
+  proto$2.humanize = humanize;
+  proto$2.toISOString = toISOString$1;
+  proto$2.toString = toISOString$1;
+  proto$2.toJSON = toISOString$1;
+  proto$2.locale = locale;
+  proto$2.localeData = localeData;
+
+  proto$2.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', toISOString$1);
+  proto$2.lang = lang;
+
+  // Side effect imports
+
+  // FORMATTING
+
+  addFormatToken('X', 0, 0, 'unix');
+  addFormatToken('x', 0, 0, 'valueOf');
+
+  // PARSING
+
+  addRegexToken('x', matchSigned);
+  addRegexToken('X', matchTimestamp);
+  addParseToken('X', function (input, array, config) {
+    config._d = new Date(parseFloat(input, 10) * 1000);
+  });
+  addParseToken('x', function (input, array, config) {
+    config._d = new Date(toInt(input));
+  });
+
+  // Side effect imports
+
+
+  hooks.version = '2.24.0';
+
+  setHookCallback(createLocal);
+
+  hooks.fn = proto;
+  hooks.min = min;
+  hooks.max = max;
+  hooks.now = now;
+  hooks.utc = createUTC;
+  hooks.unix = createUnix;
+  hooks.months = listMonths;
+  hooks.isDate = isDate;
+  hooks.locale = getSetGlobalLocale;
+  hooks.invalid = createInvalid;
+  hooks.duration = createDuration;
+  hooks.isMoment = isMoment;
+  hooks.weekdays = listWeekdays;
+  hooks.parseZone = createInZone;
+  hooks.localeData = getLocale;
+  hooks.isDuration = isDuration;
+  hooks.monthsShort = listMonthsShort;
+  hooks.weekdaysMin = listWeekdaysMin;
+  hooks.defineLocale = defineLocale;
+  hooks.updateLocale = updateLocale;
+  hooks.locales = listLocales;
+  hooks.weekdaysShort = listWeekdaysShort;
+  hooks.normalizeUnits = normalizeUnits;
+  hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+  hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
+  hooks.calendarFormat = getCalendarFormat;
+  hooks.prototype = proto;
+
+  // currently HTML5 input type only supports 24-hour formats
+  hooks.HTML5_FMT = {
+    DATETIME_LOCAL: 'YYYY-MM-DDTHH:mm', // <input type="datetime-local" />
+    DATETIME_LOCAL_SECONDS: 'YYYY-MM-DDTHH:mm:ss', // <input type="datetime-local" step="1" />
+    DATETIME_LOCAL_MS: 'YYYY-MM-DDTHH:mm:ss.SSS', // <input type="datetime-local" step="0.001" />
+    DATE: 'YYYY-MM-DD', // <input type="date" />
+    TIME: 'HH:mm', // <input type="time" />
+    TIME_SECONDS: 'HH:mm:ss', // <input type="time" step="1" />
+    TIME_MS: 'HH:mm:ss.SSS', // <input type="time" step="0.001" />
+    WEEK: 'GGGG-[W]WW', // <input type="week" />
+    MONTH: 'YYYY-MM' // <input type="month" />
+  };
+
+  return hooks;
+
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../chromeDownLoads/HBuilderX.2.9.8.20201110/HBuilderX/plugins/uniapp-cli/node_modules/webpack/buildin/module.js */ 41)(module)))
+
+/***/ }),
+
+/***/ 41:
+/*!***********************************!*\
+  !*** (webpack)/buildin/module.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if (!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+
+/***/ 42:
+/*!********************************************************!*\
+  !*** D:/project/businessCard/static/js/momentLocal.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // 导出moment.js中文翻译对象
+var localLanguageObj = {
+  months: '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'),
+  monthsShort: '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'),
+  weekdays: '星期日_星期一_星期二_星期三_星期四_星期五_星期六'.split('_'),
+  weekdaysShort: '周日_周一_周二_周三_周四_周五_周六'.split('_'),
+  weekdaysMin: '日_一_二_三_四_五_六'.split('_'),
+  longDateFormat: {
+    LT: 'HH:mm',
+    LTS: 'HH:mm:ss',
+    L: 'YYYY-MM-DD',
+    LL: 'YYYY年MM月DD日',
+    LLL: 'YYYY年MM月DD日Ah点mm分',
+    LLLL: 'YYYY年MM月DD日ddddAh点mm分',
+    l: 'YYYY-M-D',
+    ll: 'YYYY年M月D日',
+    lll: 'YYYY年M月D日 HH:mm',
+    llll: 'YYYY年M月D日dddd HH:mm' },
+
+  meridiemParse: /凌晨|早上|上午|中午|下午|晚上/,
+  meridiemHour: function meridiemHour(hour, meridiem) {
+    if (hour === 12) {
+      hour = 0;
+    }
+    if (meridiem === '凌晨' || meridiem === '早上' ||
+    meridiem === '上午') {
+      return hour;
+    } else if (meridiem === '下午' || meridiem === '晚上') {
+      return hour + 12;
+    } else {
+      // '中午'
+      return hour >= 11 ? hour : hour + 12;
+    }
+  },
+  meridiem: function meridiem(hour, minute, isLower) {
+    var hm = hour * 100 + minute;
+    if (hm < 600) {
+      return '凌晨';
+    } else if (hm < 900) {
+      return '早上';
+    } else if (hm < 1130) {
+      return '上午';
+    } else if (hm < 1230) {
+      return '中午';
+    } else if (hm < 1800) {
+      return '下午';
+    } else {
+      return '晚上';
+    }
+  },
+  calendar: {
+    sameDay: '[今天]LT',
+    nextDay: '[明天]LT',
+    nextWeek: '[下]ddddLT',
+    lastDay: '[昨天]LT',
+    lastWeek: '[上]ddddLT',
+    sameElse: 'L' },
+
+  dayOfMonthOrdinalParse: /\d{1,2}(日|月|周)/,
+  ordinal: function ordinal(number, period) {
+    switch (period) {
+      case 'd':
+      case 'D':
+      case 'DDD':
+        return number + '日';
+      case 'M':
+        return number + '月';
+      case 'w':
+      case 'W':
+        return number + '周';
+      default:
+        return number;}
+
+  },
+  relativeTime: {
+    future: '%s内',
+    past: '%s前',
+    s: '几秒',
+    ss: '%d秒',
+    m: '1分钟',
+    mm: '%d分钟',
+    h: '1小时',
+    hh: '%d小时',
+    d: '1天',
+    dd: '%d天',
+    M: '1个月',
+    MM: '%d个月',
+    y: '1年',
+    yy: '%d年' },
+
+  week: {
+    // GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
+    dow: 1, // Monday is the first day of the week.
+    doy: 4 // The week that contains Jan 4th is the first week of the year.
+  } };var _default =
+
+localLanguageObj;exports.default = _default;
+
+/***/ }),
+
+/***/ 49:
 /*!****************************************************!*\
   !*** D:/project/businessCard/services/services.js ***!
   \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(uni) {var _regeneratorRuntime = __webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 21);function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+/* WEBPACK VAR INJECTION */(function(uni) {var _regeneratorRuntime = __webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19);function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 var baseURL = 'http://192.168.188.139:9999';
 var normalHeader = {};
 
 
 var token = function token() {
   var value = uni.getStorageSync('token');
-  return 'bearer ddbd3fcc-991d-4de2-a31d-1c351cc6170f';
+  return 'bearer 58043982-63fa-4db8-aca3-e548309dfb24';
   if (value) {
     return value;
   } else {
-    return 'bearer ddbd3fcc-991d-4de2-a31d-1c351cc6170f';
+    return 'bearer 58043982-63fa-4db8-aca3-e548309dfb24';
   }
 };
 
@@ -16999,13 +17898,14 @@ var myHttp = function myHttp(_ref) {var url = _ref.url,data = _ref.data,method =
       header: header,
       data: data,
       success: function success(res) {
-        console.log('success');
+        console.log(url);
+        console.log('调用接口 success');
 
         console.log(res);
         resolve(res);
       },
       fail: function fail(res) {
-        console.log('fail');
+        console.log('调用接口 fail');
 
         console.log(res);
         resolve(res);
@@ -17061,7 +17961,6 @@ var getCompanyInfoById = function getCompanyInfoById(data) {
 //  参数： 销售id
 //	/card/cardWeChat/cardsalesinfo/getCardSalesInfoById/
 var getCardSalesInfoById = function getCardSalesInfoById(data) {
-
   return myHttp(
   {
     url: '/card/cardWeChat/cardsalesinfo/getCardSalesInfoById/' + data.id,
@@ -17071,10 +17970,22 @@ var getCardSalesInfoById = function getCardSalesInfoById(data) {
 
 };
 
+//	 修改销售信息
+//   /card/cardWeChat/cardsalesinfo/updateCardSalesInfo	
+var updateCardSalesInfo = function updateCardSalesInfo(data) {
+  return myHttp(
+  {
+    url: '/card/cardWeChat/cardsalesinfo/updateCardSalesInfo',
+    method: 'POST',
+    data: data,
+    header: tokenHeadr });
+
+
+};
+
 // 添加用户活跃记录
 //	/card/cardWeChat/cardClientActiverecord/addActiverecord
 var addActiverecord = function addActiverecord(data) {
-
   return myHttp(
   {
     url: '/card/cardWeChat/cardClientActiverecord/addActiverecord',
@@ -17088,7 +17999,6 @@ var addActiverecord = function addActiverecord(data) {
 // 	根据 销售Id 获取销售所绑定的用户
 //  /card/cardWeChat/cardclientinfo/getClientInfosByCardSalesId/
 var getClientInfosByCardSalesId = function getClientInfosByCardSalesId(data) {
-
   return myHttp(
   {
     url: '/card/cardWeChat/cardclientinfo/getClientInfosByCardSalesId/' + data.id,
@@ -17101,7 +18011,6 @@ var getClientInfosByCardSalesId = function getClientInfosByCardSalesId(data) {
 // 	根据输入内容 搜索用户
 //	/card/cardWeChat/cardclientinfo/getClientInfosBySearchContent
 var getClientInfosBySearchContent = function getClientInfosBySearchContent(data) {
-
   return myHttp(
   {
     url: '/card/cardWeChat/cardclientinfo/getClientInfosBySearchContent',
@@ -17112,18 +18021,46 @@ var getClientInfosBySearchContent = function getClientInfosBySearchContent(data)
 
 };
 
+//根据销售 id 查询 其所有用户的活跃记录
+// 	/card/cardWeChat/cardClientActiverecord/getCardClientActiverecordByWeek
+var getCardClientActiverecordByWeek = function getCardClientActiverecordByWeek(data) {
+  return myHttp(
+  {
+    url: '/card/cardWeChat/cardClientActiverecord/getCardClientActiverecordByWeek',
+    method: 'GET',
+    data: data,
+    header: tokenHeadr });
+
+
+};
+
+// 	销售增加用户追踪记录
+//	/card/cardWeChat/cardClientFollowupType/addFollowupType
+var addFollowupType = function addFollowupType(data) {
+  // return myHttp(
+  // 	{
+  // 		url:'/card/cardWeChat/cardClientFollowupType/addFollowupType',
+  // 		method:'POST',
+  // 		data:data,
+  // 		header:tokenHeadr,
+  // 	}
+  // )   
+};
+
 
 module.exports = {
   getCompanyInfoById: getCompanyInfoById,
-  getCardSalesInfoById: getCardSalesInfoById,
+  getCardSalesInfoById: getCardSalesInfoById, //	获取销售信息
+  updateCardSalesInfo: updateCardSalesInfo, //	修改销售信息
   getClientInfosByCardSalesId: getClientInfosByCardSalesId,
   getClientInfosBySearchContent: getClientInfosBySearchContent,
-  addActiverecord: addActiverecord };
+  addActiverecord: addActiverecord,
+  getCardClientActiverecordByWeek: getCardClientActiverecordByWeek };
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
-/***/ 49:
+/***/ 50:
 /*!***************************************************!*\
   !*** D:/project/businessCard/static/js/common.js ***!
   \***************************************************/
@@ -17131,7 +18068,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 21));var _services = __webpack_require__(/*! @/services/services.js */ 48);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+/* WEBPACK VAR INJECTION */(function(uni) {var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));var _services = __webpack_require__(/*! @/services/services.js */ 49);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 
 // 预览图片
 var previewImg = function previewImg(arg) {var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -17283,16 +18220,16 @@ var getCompanyInfo = function getCompanyInfo(data) {
 
 var userActiveList = [
 '正在查看 你的 名片', //	查看名片
-'靠谱 +1 ，及时沟通，效率更高', //  点赞
 '正在分享 你的 名片', //  分享名片
-'保留了您的微信号，请及时回复', //  复制微信号
-'保留了您的电话号码，请及时回复' //  保存通讯录
+'靠谱 +1 ，及时沟通，效率更高', //  点赞
+'保留了您的电话号码，请及时回复', //  保存通讯录
+'保留了您的微信号，请及时回复' //  复制微信号
 ];
 
 
 var userAction = /*#__PURE__*/function () {var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(clientId, saleId, type) {var activeContent, addRes;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
             activeContent = userActiveList[type];_context3.next = 3;return (
-              (0, _services.addActiverecord)({ activeContent: activeContent, clientId: clientId, saleId: saleId }));case 3:addRes = _context3.sent;
+              (0, _services.addActiverecord)({ activeContent: activeContent, clientId: clientId, saleId: saleId, activeType: type }));case 3:addRes = _context3.sent;
 
             if (addRes.data.data == 1) {
               console.log('aaaaaaaaaaaa');
@@ -17318,7 +18255,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 66:
+/***/ 75:
 /*!***************************************************!*\
   !*** D:/project/businessCard/static/js/pinyin.js ***!
   \***************************************************/

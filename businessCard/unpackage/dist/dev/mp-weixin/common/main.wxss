@@ -7852,11 +7852,81 @@ u-dropdown {
   font-weight: bold;
   color: #000;
 }
+.self-shadow {
+  box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5);
+}
+.btn-hover {
+  position: relative;
+  top: 5rpx;
+  background-color: #efefef;
+  box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5) inset;
+}
 .underLine {
   text-decoration: underline;
 }
 .self-avatar {
   border-radius: 50%;
   overflow: hidden;
+}
+.absolute-btn-container {
+  position: relative;
+  overflow: hidden;
+}
+.absolute-btn-container .absolute-btn {
+  position: absolute;
+  z-index: 100;
+  left: -10%;
+  top: -10%;
+  width: 120%;
+  height: 120%;
+  background-color: rgba(255, 255, 255, 0);
+}
+image {
+  width: 100%;
+  height: 100%;
+}
+.introduce-card {
+  width: 710rpx;
+  margin: auto;
+  border-radius: 20rpx;
+  box-shadow: 0px 2px 4px rgba(136, 136, 136, 0.5);
+  margin-bottom: 50rpx;
+}
+.introduce-card .content {
+  background-color: #FFFFFF;
+  padding: 30rpx 20rpx;
+  border-radius: 0 0 20rpx 20rpx;
+}
+.introduce-card .content .bottom {
+  margin-top: 20rpx;
+}
+.introduce-card .content .bottom .title {
+  color: #666666;
+}
+.introduce-card .content .bottom .bottom-main {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 6rpx 00;
+}
+.card-head {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 20rpx;
+  border-radius: 20rpx 20rpx 0 0;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #F6F6F6;
+}
+.card-head .icon-container {
+  width: 2em;
+  height: 2em;
+  margin-right: 16rpx;
+}
+.card-head .icon-container image {
+  width: 100%;
+  height: 100%;
 }
 
