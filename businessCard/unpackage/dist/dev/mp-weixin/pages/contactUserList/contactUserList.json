@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "销售搜索页面",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-search": "/uview-ui/components/u-search/u-search"
-  }
-}

@@ -1,1 +1,0 @@
-.contact-container{min-height:100vh;background-color:#fff}.tag-list{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-flow:row wrap;flex-flow:row wrap;padding:20rpx;background-color:#fff}.tag-list .item{margin:20rpx 0 0 30rpx;font-size:1.1em}.tag-list .active-tag{border:1rpx solid #19be6b;color:#19be6b}

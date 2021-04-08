@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "uni-app",
-  "usingComponents": {
-    "item-card": "/components/ItemCard",
-    "fixed-chat": "/components/FixedChat"
-  }
-}
