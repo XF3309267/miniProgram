@@ -1,0 +1,196 @@
+{
+	"easycom": {
+			"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+		},
+	"pages": [
+
+		{
+		    "path" : "pages/salesManager/salesManager",
+		    "style" :                                                                                    
+		    {
+				"navigationStyle": "custom",
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		}
+    ],
+	"subPackages":[
+		{
+			"root":"pageScond",
+			"pages":[
+				{
+				    "path" : "index/index",
+				    "style" :                                                                                    
+				    {
+						"navigationStyle": "custom",
+				        "navigationBarTitleText": "",
+				        "enablePullDownRefresh": false
+				    }
+				    
+				},
+				{
+				    "path" : "personal/personal",
+				    "style" :                                                                                    
+				    {
+						"navigationStyle": "custom",
+				        "navigationBarTitleText": "个人中心",
+				        "enablePullDownRefresh": false
+				    }
+				    
+				},
+				{
+				    "path" : "products/products",
+				    "style" :                                                                                    
+				    {
+						"navigationStyle": "custom",
+				        "navigationBarTitleText": "产品列表",
+				        "enablePullDownRefresh": false
+				    }
+				    
+				}
+				
+				]
+		},
+		{
+			"root":"pageSalesManager",
+			"pages":[
+				{
+				    "path" : "contactUserList/contactUserList",
+				    "style" :                                                                                    
+				    {
+						
+						"navigationStyle": "custom",
+				        "navigationBarTitleText": "销售搜索页面",
+				        "enablePullDownRefresh": false
+				    }
+				    
+				},	
+				{
+					"path" : "setTag/setTag",
+					"style" :                                                                                    
+					{
+						"navigationStyle": "custom",
+					    "navigationBarTitleText": "",
+					    "enablePullDownRefresh": false
+					}
+				},
+				{
+					"path" : "setCustomerLabel/setCustomerLabel",
+					"style" :                                                                                    
+					{
+						"navigationStyle": "custom",
+					    "navigationBarTitleText": "",
+					    "enablePullDownRefresh": false
+					}
+				},
+				{
+					"path" : "salesManagerInfoEdit/salesManagerInfoEdit",
+					"style" :                                                                                    
+					{
+						"navigationStyle": "custom",
+					    "navigationBarTitleText": "",
+					    "enablePullDownRefresh": false
+					}
+				},
+				{
+					"path" : "customerRecord/customerRecord",
+					"style" :                                                                                    
+					{
+						"navigationStyle": "custom",
+					    "navigationBarTitleText": "",
+					    "enablePullDownRefresh": false
+					}
+				},
+				{
+					"path" : "bindSalesManager/bindSalesManager",
+					"style" :                                                                                    
+					{
+						"navigationStyle": "custom",
+					    "navigationBarTitleText": "员工绑定",
+					    "enablePullDownRefresh": false
+					}
+				},
+				{
+					    "path" : "personInfoEdit/personInfoEdit",
+					    "style" :                                                                                    
+					    {
+							"navigationStyle": "custom",
+					        "navigationBarTitleText": "",
+					        "enablePullDownRefresh": false
+									
+					    }
+				}
+			]
+		},
+		{
+			"root":"pageChat",
+			"pages":[
+				{
+					"path" : "chatPerson/chatPerson",
+					"style" :                                                                                    
+					{
+						
+					    "navigationBarTitleText": ""
+					    
+					}
+				},
+				{
+					"path" : "chatroom/chatroom",
+					"style" :                                                                                    
+					{
+						
+					    "navigationBarTitleText": ""
+					    
+					}
+				},
+				{
+					"path" : "chatSalesManager/chatSalesManager",
+					"style" :                                                                                    
+					{
+					    "navigationBarTitleText": ""
+					    
+					}
+				}
+			]
+		}
+	],
+	"globalStyle": {
+		"backgroundTextStyle": "dark",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationBarTextStyle": "black",
+		"app-plus": {
+		    "softinputNavBar": "adjustPan",
+				"bounce": "none"
+		}
+	}
+	// "tabBar":{
+	// 	"selectedColor": "#0e932e",
+	// 	"list":[
+	// 		{
+	// 			"text": "名片",
+	// 			"pagePath": "pages/salesManager/salesManager",
+	// 			"iconPath": "/static/img/tabBarIcon/card.png",
+	// 			"selectedIconPath": "/static/img/tabBarIcon/cardA.png"
+	// 		},
+	// 		{
+	// 			"text":"企业介绍",
+	// 			"pagePath": "pages/index/index",
+	// 			"iconPath": "/static/img/tabBarIcon/home.png",
+	// 			"selectedIconPath": "/static/img/tabBarIcon/homeA.png"
+	// 		},
+	// 		{
+	// 			"text":"产品介绍",
+	// 			"pagePath": "pages/products/products",
+	// 			"iconPath": "/static/img/tabBarIcon/product.png",
+	// 			"selectedIconPath": "/static/img/tabBarIcon/productA.png"
+	// 		}
+	// 		,
+	// 		{
+	// 			"text": "我的",
+	// 			"pagePath": "pages/personal/personal",
+	// 			"iconPath": "/static/img/tabBarIcon/person.png",
+	// 			"selectedIconPath": "/static/img/tabBarIcon/personA.png"
+	// 		}
+	// 	]
+	// }
+}
